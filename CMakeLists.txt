@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(PROJECT_NAME atlas)
-project(${PROJECT_NAME})
+set(ATLAS atlas)
+project(${ATLAS})
 
 # Define useful variables for build.
-set(ROOT_DIR "${CMAKE_SOURCE_DIR}")
-set(ATLAS_SOURCE_ROOT "${ROOT_DIR}/source")
-set(ATLAS_INCLUDE_ROOT "${ROOT_DIR}/include")
+set(ATLAS_ROOT_DIR "${CMAKE_SOURCE_DIR}")
+set(ATLAS_SOURCE_ROOT "${ATLAS_ROOT_DIR}/source")
+set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include")
 
-set(ATLAS_EXTERNAL_ROOT "${ROOT_DIR}/external")
-set(GLM_ROOT "${ATLAS_EXTERNAL_ROOT}/glm")
-set(GLFW_ROOT "${ATLAS_EXTERNAL_ROOT}/glfw")
+set(ATLAS_EXTERNAL_ROOT "${ATLAS_ROOT_DIR}/external")
+set(ATLAS_GLM_ROOT "${ATLAS_EXTERNAL_ROOT}/glm")
+set(ATLAS_GLFW_ROOT "${ATLAS_EXTERNAL_ROOT}/glfw")
 
 # Set folders for VS solutions.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -38,7 +38,7 @@ else()
 endif()
 
 # Add GLFW.
-add_subdirectory("${GLFW_ROOT}")
+add_subdirectory("${ATLAS_GLFW_ROOT}")
 
 # Add GLEW except on apple.
 if (NOT APPLE)
@@ -50,8 +50,9 @@ if (NOT APPLE)
     endif()
 endif()
 
-include_directories("${GLFW_ROOT}/include"
-    ${GLM_ROOT}
+include_directories(
+    "${ATLAS_GLFW_ROOT}/include"
+    ${ATLAS_GLM_ROOT}
     ${ATLAS_INCLUDE_ROOT})
 
 # Now add the source and include folders.
@@ -59,5 +60,5 @@ include("${ATLAS_INCLUDE_ROOT}/atlas/CMakeLists.txt")
 include("${ATLAS_SOURCE_ROOT}/atlas/CMakeLists.txt")
 
 # Add the library.
-add_library(${PROJECT_NAME} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
-target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
+add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
+target_link_libraries(${ATLAS} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
