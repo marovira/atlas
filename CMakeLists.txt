@@ -55,8 +55,8 @@ include_directories("${GLFW_ROOT}/include"
     ${ATLAS_INCLUDE_ROOT})
 
 # Now add the source and include folders.
-include("${ATLAS_INCLUDE_ROOT}/CMakeLists.txt")
-include("${ATLAS_SOURCE_ROOT}/CMakeLists.txt")
+include("${ATLAS_INCLUDE_ROOT}/atlas/CMakeLists.txt")
+include("${ATLAS_SOURCE_ROOT}/atlas/CMakeLists.txt")
 
 # Add the library.
 add_library(${PROJECT_NAME} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
