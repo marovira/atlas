@@ -1,6 +1,6 @@
-#include "GLShader.hpp"
-#include "Log.hpp"
-#include "Platform.hpp"
+#include "atlas/GLShader.hpp"
+#include "atlas/Log.hpp"
+#include "atlas/Platform.hpp"
 
 #include <iostream>
 

@@ -1,4 +1,4 @@
-#include "Platform.hpp"
+#include "atlas/Platform.hpp"
 
 #ifdef APOLLO_PLATFORM_WINDOWS
 #define WIN32_LEAN_AND_MEAN
@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <vector>
 
-#include "Log.hpp"
+#include "atlas/Log.hpp"
 
 static const int kMaxLogLength = 16 * 1024;
 static const std::vector<std::string> kLevelStrings =
