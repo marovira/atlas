@@ -5,7 +5,7 @@
 
 #include "Platform.hpp"
 
-#if !defined(APOLLO_PLATFORM_APPLE)
+#if !defined(ATLAS_PLATFORM_APPLE)
 #include <GL/glew.h>
 #else
 #include <OpenGL/gl3.h>
