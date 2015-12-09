@@ -4,7 +4,7 @@ set(ATLAS atlas)
 project(${ATLAS})
 
 # Define useful variables for build.
-set(ATLAS_ROOT_DIR "${CMAKE_SOURCE_DIR}")
+set(ATLAS_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(ATLAS_SOURCE_ROOT "${ATLAS_ROOT_DIR}/source")
 set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include")
 
