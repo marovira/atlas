@@ -6,7 +6,7 @@ project(${ATLAS})
 # Define useful variables for build.
 set(ATLAS_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(ATLAS_SOURCE_ROOT "${ATLAS_ROOT_DIR}/source")
-set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include" PARENT_SCOPE)
+set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include")
 
 set(ATLAS_EXTERNAL_ROOT "${ATLAS_ROOT_DIR}/external")
 set(ATLAS_GLM_ROOT "${ATLAS_EXTERNAL_ROOT}/glm")
@@ -62,3 +62,8 @@ include("${ATLAS_SOURCE_ROOT}/atlas/CMakeLists.txt")
 # Add the library.
 add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
 target_link_libraries(${ATLAS} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
+
+# Make the include path visible to the parent if we're on a different project.
+if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ${ATLAS})
+    set(ATLAS_INCLUDE_DIRS ${ATLAS_INCLUDE_ROOT} ${GLEW_INCLUDE_DIRS} PARENT_SCOPE)
+endif()
