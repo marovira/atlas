@@ -15,6 +15,7 @@ namespace atlas
 
     class Film
     {
+    public:
         Film();
         Film(int hRes, int vRes);
         ~Film();
@@ -25,6 +26,7 @@ namespace atlas
         int getHRes() const;
         int getVRes() const;
         float getAspectRatio() const;
+        const FilmFrame& getCurrentFrame() const;
 
         void drawPixel(int x, int y, RGBColour const& pixel);
         void saveToPPM(std::string const& frameName) const;

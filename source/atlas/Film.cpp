@@ -42,6 +42,17 @@ namespace atlas
         FilmFrame frame;
     };
 
+    Film::Film() :
+        mImpl(new FilmImpl)
+    { }
+
+    Film::Film(int hRes, int vRes) :
+        mImpl(new FilmImpl(hRes, vRes))
+    { }
+
+    Film::~Film()
+    { }
+
     void Film::setShowOutOfGamut(bool showOutOfGamut)
     {
         mImpl->showOutOfGamut = showOutOfGamut;
@@ -65,6 +76,11 @@ namespace atlas
     float Film::getAspectRatio() const
     {
         return mImpl->aspectRatio;
+    }
+
+    const FilmFrame& Film::getCurrentFrame() const
+    {
+        return mImpl->frame;
     }
 
     void Film::drawPixel(int x, int y, RGBColour const& pixel)
