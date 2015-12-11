@@ -37,7 +37,11 @@ else()
     endif()
 endif()
 
-# Add GLFW.
+# Prevent GLFW from generating targets to build tests and examples.
+set(GLFW_BUILD_EXAMPLES OFF)
+set(GLFW_BUILD_TESTS OFF)
+
+# Now add GLFW.
 add_subdirectory("${ATLAS_GLFW_ROOT}")
 
 # Add GLEW except on apple.
