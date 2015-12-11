@@ -25,6 +25,7 @@ namespace atlas
         static Application& getInstance();
 
         void createWindow(int width, int height, std::string const& title);
+        void hideWindow() const;
         void runApplication();
 
         void addScene(Scene* scene);

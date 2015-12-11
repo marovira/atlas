@@ -12,7 +12,8 @@ namespace atlas
 
     struct Application::ApplicationImpl
     {
-        ApplicationImpl()
+        ApplicationImpl() :
+            currentWindow(nullptr)
         { }
 
         ~ApplicationImpl()
@@ -20,7 +21,7 @@ namespace atlas
 
         GLFWwindow* currentWindow;
         std::vector<ScenePointer> sceneList;
-        int currentScene;
+        size_t currentScene;
     };
 
     static void mousePressCallback(GLFWwindow* window, int button,
@@ -134,6 +135,18 @@ namespace atlas
         glfwSetCursorPosCallback(mImpl->currentWindow, mouseMoveCallback);
     }
 
+    void Application::hideWindow() const
+    {
+        if (mImpl->currentWindow == nullptr)
+        {
+            WARN_LOG("Cannot hide an empty window.");
+            return;
+        }
+
+        glfwHideWindow(mImpl->currentWindow);
+        glfwSetWindowShouldClose(mImpl->currentWindow, GL_FALSE);
+    }
+
     void Application::runApplication()
     {
         if (mImpl->currentWindow == nullptr)
@@ -148,8 +161,10 @@ namespace atlas
             return;
         }
 
+        glfwShowWindow(mImpl->currentWindow);
+
         int width, height;
-        int currentScene = mImpl->currentScene;
+        size_t currentScene = mImpl->currentScene;
         glfwGetWindowSize(mImpl->currentWindow, &width, &height);
         mImpl->sceneList[currentScene]->screenResizeEvent(width, height);
 
@@ -170,7 +185,6 @@ namespace atlas
     void Application::addScene(Scene* scene)
     {
         mImpl->sceneList.push_back(ScenePointer(scene));
-        scene = nullptr;
         mImpl->currentScene = mImpl->sceneList.size() - 1;
     }
 
