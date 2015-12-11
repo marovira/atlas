@@ -59,6 +59,9 @@ include_directories(
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas")
 add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas")
 
+source_group("include\\atlas" FILES ${ATLAS_INCLUDE_LIST})
+source_group("source\\atlas" FILES ${ATLAS_SOURCE_LIST})
+
 # Add the library.
 add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
 target_link_libraries(${ATLAS} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
