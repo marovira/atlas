@@ -56,8 +56,8 @@ include_directories(
     ${ATLAS_INCLUDE_ROOT})
 
 # Now add the source and include folders.
-include("${ATLAS_INCLUDE_ROOT}/atlas/CMakeLists.txt")
-include("${ATLAS_SOURCE_ROOT}/atlas/CMakeLists.txt")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas")
 
 # Add the library.
 add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})

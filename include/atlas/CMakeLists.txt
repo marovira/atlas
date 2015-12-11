@@ -15,7 +15,8 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/GLHeader.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/GLShaderInfo.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Scene.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Application.hpp")
+    "${ATLAS_INCLUDE_ROOT}/atlas/Application.hpp"
+    PARENT_SCOPE)
 
 source_group("include" FILES)
 source_group("include\\atlas" FILES ${ATLAS_INCLUDE_LIST})
