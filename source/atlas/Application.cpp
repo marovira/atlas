@@ -74,6 +74,7 @@ namespace atlas
         else
         {
             glfwSetWindowShouldClose(window, GL_FALSE);
+            glfwHideWindow(window);
         }
     }
 
