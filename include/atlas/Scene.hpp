@@ -21,6 +21,7 @@ namespace atlas
         virtual void screenResizeEvent(int width, int height);
         virtual void updateScene(double time);
         virtual void renderScene();
+        virtual bool sceneEnded();
 
     protected:
         Matrix4 mProjection;

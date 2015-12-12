@@ -65,6 +65,18 @@ namespace atlas
         ERROR_LOG(std::to_string(error) + ":" + message);
     }
 
+    static void windowCloseCallback(GLFWwindow* window)
+    {
+        if (APP.getCurrentScene()->sceneEnded())
+        {
+            glfwSetWindowShouldClose(window, GL_TRUE);
+        }
+        else
+        {
+            glfwSetWindowShouldClose(window, GL_FALSE);
+        }
+    }
+
     Application::Application() :
         mImpl(new ApplicationImpl)
     {
@@ -133,18 +145,7 @@ namespace atlas
         glfwSetWindowSizeCallback(mImpl->currentWindow, windowSizeCallback);
         glfwSetMouseButtonCallback(mImpl->currentWindow, mousePressCallback);
         glfwSetCursorPosCallback(mImpl->currentWindow, mouseMoveCallback);
-    }
-
-    void Application::hideWindow() const
-    {
-        if (mImpl->currentWindow == nullptr)
-        {
-            WARN_LOG("Cannot hide an empty window.");
-            return;
-        }
-
-        glfwHideWindow(mImpl->currentWindow);
-        glfwSetWindowShouldClose(mImpl->currentWindow, GL_FALSE);
+        glfwSetWindowCloseCallback(mImpl->currentWindow, windowCloseCallback);
     }
 
     void Application::runApplication()
