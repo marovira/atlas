@@ -23,4 +23,5 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/Ray.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/ShadeRec.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Time.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/Geometry.hpp"
     PARENT_SCOPE)
