@@ -18,4 +18,6 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/Application.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/RGBColour.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Film.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/Quaternion.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/GLFW.hpp"
     PARENT_SCOPE)
