@@ -24,4 +24,5 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/ShadeRec.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Time.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Geometry.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/GLCamera.hpp"
     PARENT_SCOPE)
