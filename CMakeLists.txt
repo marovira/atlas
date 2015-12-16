@@ -10,6 +10,7 @@ set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include")
 
 set(ATLAS_EXTERNAL_ROOT "${ATLAS_ROOT_DIR}/external")
 set(ATLAS_GLM_ROOT "${ATLAS_EXTERNAL_ROOT}/glm")
+set(ATLAS_GLI_ROOT "${ATLAS_EXTERNAL_ROOT}/gli")
 set(ATLAS_GLFW_ROOT "${ATLAS_EXTERNAL_ROOT}/glfw")
 
 # Set folders for VS solutions.
@@ -57,6 +58,7 @@ endif()
 include_directories(
     "${ATLAS_GLFW_ROOT}/include"
     ${ATLAS_GLM_ROOT}
+    ${ATLAS_GLI_ROOT}
     ${ATLAS_INCLUDE_ROOT})
 
 # Now add the source and include folders.
