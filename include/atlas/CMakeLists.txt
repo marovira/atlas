@@ -25,4 +25,5 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/Time.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Geometry.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/GLCamera.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/GLImage.hpp"
     PARENT_SCOPE)
