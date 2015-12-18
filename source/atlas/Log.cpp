@@ -1,6 +1,6 @@
 #include "atlas/Platform.hpp"
 
-#ifdef APOLLO_PLATFORM_WINDOWS
+#ifdef ATLAS_PLATFORM_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
@@ -33,7 +33,7 @@ namespace atlas
         char buf[kMaxLogLength];
         memcpy(buf, message.c_str(), kMaxLogLength);
 
-#ifdef APOLLO_PLATFORM_WINDOWS
+#ifdef ATLAS_PLATFORM_WINDOWS
         strncat_s(buf, "\n", 3);
 
         WCHAR wszBuf[kMaxLogLength] = { 0 };

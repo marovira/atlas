@@ -18,7 +18,7 @@ namespace atlas
         const GLchar* readShaderSource(std::string const& filename)
         {
             FILE* infile;
-#if defined(APOLLO_PLATFORM_WINDOWS)
+#if defined(ATLAS_PLATFORM_WINDOWS)
             fopen_s(&infile, filename.c_str(), "rb");
 #else
             infile = fopen(filename.c_str(), "rb");
