@@ -33,6 +33,12 @@ namespace atlas
             int length = ftell(infile);
             fseek(infile, 0, SEEK_SET);
 
+            if (length == 0)
+            {
+                fclose(infile);
+                return nullptr;
+            }
+
             GLchar* source = new GLchar[length + 1];
             fread(source, 1, length, infile);
             fclose(infile);
