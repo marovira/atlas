@@ -81,4 +81,11 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ${ATLAS})
         ${ATLAS_GLI_ROOT}
         "${ATLAS_GLFW_ROOT}/include"
         PARENT_SCOPE)
+
+    set(ATLAS_LIBRARIES
+        ${ATLAS}
+        glfw
+        ${GLFW_LIBRARIES}
+        ${GLEW_LIBRARIES}
+        PARENT_SCOPE)
 endif()
