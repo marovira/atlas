@@ -15,4 +15,10 @@
 
 #define USING_GLM_NS using namespace glm;
 
+#ifdef USING_GLI_NS
+#undef USING_GLI_NS
+#endif
+
+#define USING_GLI_NS using namespace gli;
+
 #endif
