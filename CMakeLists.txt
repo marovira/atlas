@@ -74,5 +74,11 @@ target_link_libraries(${ATLAS} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
 
 # Make the include path visible to the parent if we're on a different project.
 if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ${ATLAS})
-    set(ATLAS_INCLUDE_DIRS ${ATLAS_INCLUDE_ROOT} ${GLEW_INCLUDE_DIRS} PARENT_SCOPE)
+    set(ATLAS_INCLUDE_DIRS 
+        ${ATLAS_INCLUDE_ROOT} 
+        ${GLEW_INCLUDE_DIRS} 
+        ${ATLAS_GLM_ROOT}
+        ${ATLAS_GLI_ROOT}
+        "${ATLAS_GLFW_ROOT}/include"
+        PARENT_SCOPE)
 endif()
