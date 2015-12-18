@@ -7,4 +7,5 @@ set(ATLAS_SOURCE_LIST
     "${ATLAS_SOURCE_ROOT}/atlas/Ray.cpp"
     "${ATLAS_SOURCE_ROOT}/atlas/Geometry.cpp"
     "${ATLAS_SOURCE_ROOT}/atlas/GLCamera.cpp"
+    "${ATLAS_SOURCE_ROOT}/atlas/Texture.cpp"
     PARENT_SCOPE)
