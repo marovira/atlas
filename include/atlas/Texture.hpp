@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "GLHeader.hpp"
+
 #include <string>
 
 namespace atlas
