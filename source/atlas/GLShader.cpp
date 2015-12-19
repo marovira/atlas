@@ -105,7 +105,8 @@ namespace atlas
                 glGetShaderInfoLog(handle, len, &len, log);
 
                 ERROR_LOG("Shader compilation failed: " + std::string(log));
-                
+
+                deleteShaders();
                 delete[] log;
                 return;
             }
@@ -136,15 +137,9 @@ namespace atlas
             glGetShaderInfoLog(mImpl->shaderProgram, len, &len, log);
 
             ERROR_LOG("Shader linking failed: " + std::string(log));
+
+            deleteShaders();
             delete[] log;
-
-            for (auto& shader : mImpl->shaders)
-            {
-                glDeleteShader(shader.shaderHandle);
-                shader.shaderHandle = 0;
-            }
-
-            mImpl->shaders.clear();
             return;
         }
     }
