@@ -19,8 +19,6 @@ namespace atlas
         void loadTexture(std::string const& filename);
         void renderTexture();
         void destroyTexture();
-        
-        //TODO: Implement ray tracing interface.
 
     private:
         GLuint mTextureId;

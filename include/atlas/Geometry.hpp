@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Vector.hpp"
-#include "ShadeRec.hpp"
 #include "Ray.hpp"
 #include "Matrix.hpp"
 #include "GLShader.hpp"
@@ -23,17 +22,9 @@ namespace atlas
         Geometry(Geometry const& geom) = default;
         virtual ~Geometry();
 
-        // Ray tracing functions.
-        virtual bool hit(Ray const& ray, float& tMin, ShadeRec& sr);
-        virtual bool shadowHit(Ray const& ray, float& tMin);
-        virtual RGBColour shade(ShadeRec& sr);
-
         virtual void updateGeometry(Time const& t);
         virtual void renderGeometry(Matrix4 projection, Matrix4 view);
         virtual void transformGeometry(Matrix4 const& t);
-
-        virtual Normal getNormal() const;
-        virtual Normal getNormal(Point const& p) const;
 
     protected:
         virtual bool intersectRay(Ray const& ray, float& tMin);
