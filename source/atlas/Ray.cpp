@@ -27,6 +27,6 @@ namespace atlas
 
     bool Ray::operator!=(Ray const& rhs)
     {
-        return ((*this) != rhs);
+        return !((*this) == rhs);
     }
 }
