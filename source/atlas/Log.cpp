@@ -21,7 +21,7 @@ std::vector<std::string>
     "debug",
     "info",
     "log",
-    "error"
+    "error",
     "critical"
 };
 
@@ -76,6 +76,6 @@ namespace atlas
 
         logMessage.append(sevLevel);
         logMessage.append(message);
-        _log(message);
+        _log(logMessage);
     }
 }
