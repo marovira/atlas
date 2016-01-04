@@ -12,8 +12,15 @@ namespace atlas
             shaderProgram(0)
         { }
 
+        GLShaderImpl(GLShaderImpl const& impl) = default;
+
         ~GLShaderImpl()
         { }
+
+        GLShaderImpl* clone() const
+        {
+            return new GLShaderImpl(*this);
+        }
 
         const GLchar* readShaderSource(std::string const& filename)
         {
@@ -52,6 +59,10 @@ namespace atlas
 
     GLShader::GLShader() :
         mImpl(new GLShaderImpl)
+    { }
+
+    GLShader::GLShader(GLShader const& shader) :
+        mImpl(shader.mImpl->clone())
     { }
 
     GLShader::~GLShader()

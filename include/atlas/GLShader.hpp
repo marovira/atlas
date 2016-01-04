@@ -16,6 +16,7 @@ namespace atlas
     {
     public:
         GLShader();
+        GLShader(GLShader const& shader);
         ~GLShader();
 
         void compileShaders(std::vector<GLShaderInfo> const& shaders);
