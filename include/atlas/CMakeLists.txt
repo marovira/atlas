@@ -26,4 +26,5 @@ set(ATLAS_INCLUDE_LIST
     "${ATLAS_INCLUDE_ROOT}/atlas/GLCamera.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/Texture.hpp"
     "${ATLAS_INCLUDE_ROOT}/atlas/GLImage.hpp"
+    "${ATLAS_INCLUDE_ROOT}/atlas/GLError.hpp"
     PARENT_SCOPE)
