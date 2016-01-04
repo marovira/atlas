@@ -18,7 +18,7 @@ namespace atlas
 
     Texture::~Texture()
     {
-        destroyTexture();
+        deleteTexture();
     }
 
     void Texture::loadTexture(std::string const& filename)
@@ -39,8 +39,8 @@ namespace atlas
 
         if (mTextureId != 0)
         {
-            WARN_LOG("Current texture will be deleted.");
-            destroyTexture();
+            WARN_LOG("Texture is not empty. Will destroy previous texture.");
+            deleteTexture();
         }
 
         glGenTextures(1, &mTextureId);
@@ -189,13 +189,13 @@ namespace atlas
         }
     }
 
-    void Texture::renderTexture()
+    GLuint Texture::getTexture() const
     {
-
+        return mTextureId;
     }
 
-    void Texture::destroyTexture()
+    void Texture::deleteTexture()
     {
-
+        glDeleteTextures(1, &mTextureId);
     }
 }

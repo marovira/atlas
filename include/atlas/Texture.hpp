@@ -17,9 +17,9 @@ namespace atlas
         ~Texture();
 
         void loadTexture(std::string const& filename);
-        void renderTexture();
-        void destroyTexture();
-
+        GLuint getTexture() const;
+        void deleteTexture();
+        
     private:
         GLuint mTextureId;
     };
