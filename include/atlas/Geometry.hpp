@@ -30,6 +30,7 @@ namespace atlas
         virtual bool intersectRay(Ray const& ray, float& tMin);
 
         std::vector<GLShader> mShaders;
+        typedef std::pair<std::string, GLuint> UniformKey;
         std::map<std::string, GLuint> mUniforms;
         Matrix4 mModel;
     };
