@@ -5,6 +5,7 @@
 
 #include "Atlas.hpp"
 #include "Matrix.hpp"
+#include "Time.hpp"
 
 namespace atlas
 {
@@ -26,6 +27,7 @@ namespace atlas
     protected:
         Matrix4 mProjection;
         Matrix4 mView;
+        Time mTime;
     };
 }
 
