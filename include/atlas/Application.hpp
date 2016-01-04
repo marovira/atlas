@@ -27,6 +27,8 @@ namespace atlas
         void createWindow(int width, int height, std::string const& title);
         void runApplication();
 
+        void getCursorPosition(double* x, double *y);
+
         void addScene(Scene* scene);
         Scene* getCurrentScene() const;
 

@@ -184,6 +184,11 @@ namespace atlas
         }
     }
 
+    void Application::getCursorPosition(double* x, double *y)
+    {
+        glfwGetCursorPos(mImpl->currentWindow, x, y);
+    }
+
     void Application::addScene(Scene* scene)
     {
         mImpl->sceneList.push_back(ScenePointer(scene));
