@@ -214,7 +214,7 @@ namespace atlas
 
     void GLShader::enableShaders() const
     {
-        if (mImpl->shaderProgram)
+        if (mImpl->shaderProgram && glIsProgram(mImpl->shaderProgram))
         {
             glUseProgram(mImpl->shaderProgram);
         }
