@@ -6,7 +6,7 @@ namespace atlas
 {
     namespace gl
     {
-        void checkGLErrors()
+        void ErrorCheck::checkGLErrors()
         {
             GLenum err = GL_NO_ERROR;
             while ((err = glGetError()) != GL_NO_ERROR)
