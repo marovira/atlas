@@ -1,11 +1,11 @@
-#include "atlas/core/Scene.hpp"
+#include "atlas/utils/Scene.hpp"
 #include "atlas/math/Math.hpp"
 #include "atlas/core/Macros.hpp"
 #include "atlas/gl/GL.hpp"
 
 namespace atlas
 {
-    namespace core
+    namespace utils
     {
         Scene::Scene()
         { }

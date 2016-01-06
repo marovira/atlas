@@ -15,7 +15,6 @@ namespace atlas
 {
     namespace core
     {
-        class Scene;
         class Timer;
     }
 }

@@ -1,18 +1,18 @@
-#ifndef ATLAS_INCLUDE_ATLAS_CORE_APPLICATION_HPP
-#define ATLAS_INCLUDE_ATLAS_CORE_APPLICATION_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_UTILS_APPLICATION_HPP
+#define ATLAS_INCLUDE_ATLAS_UTILS_APPLICATION_HPP
 
 #pragma once
 
-#include "Core.hpp"
+#include "Utils.hpp"
 
 #include <string>
 #include <memory>
 
-#define APPLICATION Application::getInstance()
+#define APPLICATION atlas::utils::Application::getInstance()
 
 namespace atlas
 {
-    namespace core
+    namespace utils
     {
         class Application
         {

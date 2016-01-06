@@ -1,15 +1,15 @@
-#ifndef ATLAS_INCLUDE_ATLAS_CORE_SCENE_HPP
-#define ATLAS_INCLUDE_ATLAS_CORE_SCENE_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_UTILS_SCENE_HPP
+#define ATLAS_INCLUDE_ATLAS_UTILS_SCENE_HPP
 
 #pragma once
 
-#include "Core.hpp"
+#include "Utils.hpp"
+#include "Time.hpp"
 #include "atlas/math/Matrix.hpp"
-#include "atlas/utils/Time.hpp"
 
 namespace atlas
 {
-    namespace core
+    namespace utils
     {
         class Scene
         {

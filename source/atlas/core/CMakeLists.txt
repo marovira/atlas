@@ -1,7 +1,5 @@
 set(ATLAS_SOURCE_CORE_ROOT "${ATLAS_SOURCE_ROOT}/atlas/core")
 
 set(ATLAS_SOURCE_CORE_LIST
-    "${ATLAS_SOURCE_CORE_ROOT}/Application.cpp"
     "${ATLAS_SOURCE_CORE_ROOT}/Log.cpp"
-    "${ATLAS_SOURCE_CORE_ROOT}/Scene.cpp"
     PARENT_SCOPE)

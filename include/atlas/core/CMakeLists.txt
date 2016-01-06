@@ -1,7 +1,6 @@
 set(ATLAS_INCLUDE_CORE_ROOT "${ATLAS_INCLUDE_ROOT}/atlas/core")
 
 set(ATLAS_INCLUDE_CORE_LIST 
-    "${ATLAS_INCLUDE_CORE_ROOT}/Application.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Constants.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Core.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Float.hpp"
@@ -10,6 +9,5 @@ set(ATLAS_INCLUDE_CORE_LIST
     "${ATLAS_INCLUDE_CORE_ROOT}/Log.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Macros.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Platform.hpp"
-    "${ATLAS_INCLUDE_CORE_ROOT}/Scene.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Timer.hpp"
     PARENT_SCOPE)

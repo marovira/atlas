@@ -1,7 +1,7 @@
-#include "atlas/core/Application.hpp"
+#include "atlas/utils/Application.hpp"
+#include "atlas/utils/Scene.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
-#include "atlas/core/Scene.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/GLFW.hpp"
 
@@ -9,7 +9,7 @@
 
 namespace atlas
 {
-    namespace core
+    namespace utils
     {
 
         typedef std::unique_ptr<Scene> ScenePointer;

@@ -17,6 +17,7 @@ namespace atlas
     {
         class Film;
         class Geometry;
+        class Scene;
         struct Time;
     }
 }

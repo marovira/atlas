@@ -1,7 +1,9 @@
 set(ATLAS_SOURCE_UTILS_ROOT "${ATLAS_SOURCE_ROOT}/atlas/utils")
 
 set(ATLAS_SOURCE_UTILS_LIST
+    "${ATLAS_SOURCE_UTILS_ROOT}/Application.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/Camera.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/Film.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/Geometry.cpp"
+    "${ATLAS_SOURCE_UTILS_ROOT}/Scene.cpp"
     PARENT_SCOPE)
