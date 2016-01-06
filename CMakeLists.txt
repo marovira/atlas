@@ -25,6 +25,8 @@ if (MSVC)
         -wd4610 # nonstandard extension used.
         -wd4316 # object allocated on the heap may not be aligned 16.
         -wd4201 # nonstandard extension used: nameless struct/union.
+        -wd4310 # cast truncates constant value.
+        -wd4458 # declaration of '' hides class member.
         -D_CRT_SECURE_NO_WARNINGS
         )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
