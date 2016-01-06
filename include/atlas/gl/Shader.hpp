@@ -3,41 +3,69 @@
 
 #pragma once
 
-#include "GLHeader.hpp"
+#include "GL.hpp"
+
 #include <vector>
 #include <string>
 #include <memory>
 
-#include "GLShaderInfo.hpp"
-
 namespace atlas
 {
-    class GLShader
+    namespace gl
     {
-    public:
-        GLShader();
-        GLShader(GLShader const& shader);
-        ~GLShader();
+        struct ShaderInfo
+        {
+            ShaderInfo() :
+                shaderType(0),
+                shaderHandle(0)
+            { }
 
-        void compileShaders(std::vector<GLShaderInfo> const& shaders);
-        void linkShaders();
-        void deleteShader(std::string const& filename);
-        void deleteShaders();
+            ShaderInfo(GLenum type, std::string const& name) :
+                shaderType(type),
+                shaderFile(name),
+                shaderHandle(0)
+            { }
 
-        void bindAttribute(GLuint location, std::string const& name) const;
+            ShaderInfo(ShaderInfo const& shader, GLuint handle) :
+                shaderType(shader.shaderType),
+                shaderFile(shader.shaderFile),
+                shaderHandle(handle)
+            { }
 
-        void enableShaders() const;
-        void disableShaders() const;
+            ShaderInfo(ShaderInfo const& shader) = default;
 
-        GLint getShaderProgram() const;
+            GLenum shaderType;
+            std::string shaderFile;
+            GLuint shaderHandle;
+        };
 
-        GLint getUniformVariable(std::string const& name) const;
-        GLint getAttributeVariable(std::string const& name) const;
+        class GLShader
+        {
+        public:
+            GLShader();
+            GLShader(GLShader const& shader);
+            ~GLShader();
 
-    private:
-        struct GLShaderImpl;
-        std::unique_ptr<GLShaderImpl> mImpl;
-    };
+            void compileShaders(std::vector<ShaderInfo> const& shaders);
+            void linkShaders();
+            void deleteShader(std::string const& filename);
+            void deleteShaders();
+
+            void bindAttribute(GLuint location, std::string const& name) const;
+
+            void enableShaders() const;
+            void disableShaders() const;
+
+            GLint getShaderProgram() const;
+
+            GLint getUniformVariable(std::string const& name) const;
+            GLint getAttributeVariable(std::string const& name) const;
+
+        private:
+            struct GLShaderImpl;
+            std::unique_ptr<GLShaderImpl> mImpl;
+        };
+    }
 }
 
 #endif

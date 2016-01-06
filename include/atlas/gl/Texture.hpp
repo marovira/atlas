@@ -1,28 +1,31 @@
-#ifndef ATLAS_INCLUDE_ATLAS_TEXTURE_HPP
-#define ATLAS_INCLUDE_ATLAS_TEXTURE_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_GL_TEXTURE_HPP
+#define ATLAS_INCLUDE_ATLAS_GL_TEXTURE_HPP
 
 #pragma once
 
-#include "GLHeader.hpp"
+#include "GL.hpp"
 
 #include <string>
 
 namespace atlas
 {
-    class Texture
+    namespace gl
     {
-    public:
-        Texture();
-        Texture(std::string const& filename);
-        ~Texture();
+        class Texture
+        {
+        public:
+            Texture();
+            Texture(std::string const& filename);
+            ~Texture();
 
-        void loadTexture(std::string const& filename);
-        GLuint getTexture() const;
-        void deleteTexture();
-        
-    private:
-        GLuint mTextureId;
-    };
+            void loadTexture(std::string const& filename);
+            GLuint getTexture() const;
+            void deleteTexture();
+            
+        private:
+            GLuint mTextureId;
+        };
+    }
 }
 
 #endif
