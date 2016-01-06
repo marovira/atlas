@@ -1,39 +1,43 @@
-#ifndef ATLAS_INCLUDE_ALTAS_TIMER_HPP
-#define ATLAS_INCLUDE_ALTAS_TIMER_HPP
+#ifndef ATLAS_INCLUDE_ALTAS_CORE_TIMER_HPP
+#define ATLAS_INCLUDE_ALTAS_CORE_TIMER_HPP
 
 #pragma once
+
+#include "Core.hpp"
 
 #include <iostream>
 #include <chrono>
 
-#include "Atlas.hpp"
 
 namespace atlas
 {
-    template <class GenType>
-    class Timer
+    namespace core
     {
-    public:
-        Timer() :
-            mBegin(Clock::now())
-        { }
-
-        inline void reset()
+        template <class GenType>
+        class Timer
         {
-            mBegin = Clock::now();
-        }
+        public:
+            Timer() :
+                mBegin(Clock::now())
+            { }
 
-        GenType elapsed() const
-        {
-            return std::chrono::duration_cast<Second>(
-                    Clock::now() - mBegin).count();
-        }
+            inline void reset()
+            {
+                mBegin = Clock::now();
+            }
 
-    private:
-        typedef std::chrono::high_resolution_clock Clock;
-        typedef std::chrono::duration<GenType, std::ratio<1>> Second;
-        std::chrono::time_point<Clock> mBegin;
-    };
+            GenType elapsed() const
+            {
+                return std::chrono::duration_cast<Second>(
+                        Clock::now() - mBegin).count();
+            }
+
+        private:
+            typedef std::chrono::high_resolution_clock Clock;
+            typedef std::chrono::duration<GenType, std::ratio<1>> Second;
+            std::chrono::time_point<Clock> mBegin;
+        };
+    }
 }
 
 #endif

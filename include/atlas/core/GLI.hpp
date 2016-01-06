@@ -1,7 +1,9 @@
-#ifndef ATLAS_INCLUDE_ATLAS_GL_IMAGE_HPP
-#define ATLAS_INCLUDE_ATLAS_GL_IMAGE_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_CORE_GLI_HPP
+#define ATLAS_INCLUDE_ATLAS_CORE_GLI_HPP
 
 #pragma once
+
+#include "Core.hpp"
 
 #include <gli/texture.hpp>
 #include <gli/load.hpp>

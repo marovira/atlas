@@ -1,34 +1,37 @@
-#ifndef ATLAS_INCLUDE_ATLAS_SCENE_HPP
-#define ATLAS_INCLUDE_ATLAS_SCENE_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_CORE_SCENE_HPP
+#define ATLAS_INCLUDE_ATLAS_CORE_SCENE_HPP
 
 #pragma once
 
-#include "Atlas.hpp"
-#include "Matrix.hpp"
-#include "Time.hpp"
+#include "Core.hpp"
+#include "atlas/math/Matrix.hpp"
+#include "atlas/utils/Time.hpp"
 
 namespace atlas
 {
-    class Scene
+    namespace core
     {
-    public:
-        Scene();
-        ~Scene();
+        class Scene
+        {
+        public:
+            Scene();
+            ~Scene();
 
-        virtual void mousePressEvent(int button, int action, int modifiers);
-        virtual void mouseMoveEvent(double xPos, double yPos);
-        virtual void keyPressEvent(int key, int scancode, int action,
-            int mods);
-        virtual void screenResizeEvent(int width, int height);
-        virtual void updateScene(double time);
-        virtual void renderScene();
-        virtual bool sceneEnded();
+            virtual void mousePressEvent(int button, int action, int modifiers);
+            virtual void mouseMoveEvent(double xPos, double yPos);
+            virtual void keyPressEvent(int key, int scancode, int action,
+                int mods);
+            virtual void screenResizeEvent(int width, int height);
+            virtual void updateScene(double time);
+            virtual void renderScene();
+            virtual bool sceneEnded();
 
-    protected:
-        Matrix4 mProjection;
-        Matrix4 mView;
-        Time mTime;
-    };
+        protected:
+            math::Matrix4 mProjection;
+            math::Matrix4 mView;
+            utils::Time mTime;
+        };
+    }
 }
 
 #endif
