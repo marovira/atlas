@@ -1,8 +1,9 @@
-#ifndef ATLAS_INCLUDE_ATLAS_FILM_HPP
-#define ATLAS_INCLUDE_ATLAS_FILM_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_UTILS_FILM_HPP
+#define ATLAS_INCLUDE_ATLAS_UTILS_FILM_HPP
 
 #pragma once
 
+#include "Utils.hpp"
 #include "RGBColour.hpp"
 
 #include <vector>
@@ -11,32 +12,35 @@
 
 namespace atlas
 {
-    typedef std::vector<RGBColour> FilmFrame;
-
-    class Film
+    namespace utils
     {
-    public:
-        Film();
-        Film(int hRes, int vRes);
-        ~Film();
+        typedef std::vector<RGBColour> FilmFrame;
 
-        void setShowOutOfGamut(bool showOutOfGamut);
-        void setGamma(float gamma);
+        class Film
+        {
+        public:
+            Film();
+            Film(int hRes, int vRes);
+            ~Film();
 
-        int getHRes() const;
-        int getVRes() const;
-        float getAspectRatio() const;
-        const FilmFrame& getCurrentFrame() const;
+            void setShowOutOfGamut(bool showOutOfGamut);
+            void setGamma(float gamma);
 
-        void drawPixel(int x, int y, RGBColour const& pixel);
-        void saveToPPM(std::string const& frameName) const;
+            int getHRes() const;
+            int getVRes() const;
+            float getAspectRatio() const;
+            const FilmFrame& getCurrentFrame() const;
 
-        RGBColour& operator()(int x, int y);
+            void drawPixel(int x, int y, RGBColour const& pixel);
+            void saveToPPM(std::string const& frameName) const;
 
-    private:
-        struct FilmImpl;
-        std::unique_ptr<FilmImpl> mImpl;
-    };
+            RGBColour& operator()(int x, int y);
+
+        private:
+            struct FilmImpl;
+            std::unique_ptr<FilmImpl> mImpl;
+        };
+    }
 }
 
 #endif

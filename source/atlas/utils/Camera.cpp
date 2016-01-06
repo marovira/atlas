@@ -1,35 +1,38 @@
-#include "atlas/GLCamera.hpp"
-#include "atlas/Macros.hpp"
+#include "atlas/utils/Camera.hpp"
+#include "atlas/core/Macros.hpp"
 
 namespace atlas
 {
-    GLCamera::GLCamera()
-    { }
-
-    GLCamera::~GLCamera()
-    { }
-
-    void GLCamera::mouseDown(Point2 const& point, CameraMovements movement)
+    namespace utils
     {
-        UNUSED(point);
-        UNUSED(movement);
+        Camera::Camera()
+        { }
+
+        Camera::~Camera()
+        { }
+
+        void Camera::mouseDown(math::Point2 const& point, 
+            CameraMovements movement)
+        {
+            UNUSED(point);
+            UNUSED(movement);
+        }
+
+        void Camera::mouseDrag(math::Point2 const& point)
+        {
+            UNUSED(point);
+        }
+
+        void Camera::mouseUp()
+        { }
+
+        void Camera::resetCamera()
+        { }
+
+        math::Matrix4 Camera::getCameraMatrix()
+        {
+            return math::Matrix4();
+        }
+
     }
-
-    void GLCamera::mouseDrag(Point2 const& point)
-    {
-        UNUSED(point);
-    }
-
-    void GLCamera::mouseUp()
-    { }
-
-    void GLCamera::resetCamera()
-    { }
-
-    Matrix4 GLCamera::getCameraMatrix()
-    {
-        return Matrix4();
-    }
-
-    
 }
