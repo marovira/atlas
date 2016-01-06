@@ -1,5 +1,6 @@
 #include "atlas/utils/Geometry.hpp"
 #include "atlas/core/Macros.hpp"
+#include "atlas/gl/Shader.hpp"
 
 namespace atlas
 {
@@ -7,6 +8,16 @@ namespace atlas
     {
         Geometry::Geometry()
         { }
+        
+        Geometry::Geometry(Geometry const& geom) :
+            mUniforms(geom.mUniforms),
+            mModel(geom.mModel)
+        {
+            for (auto& shader : geom.mShaders)
+            {
+                mShaders.emplace_back(ShaderPointer(new gl::Shader(*shader)));
+            }
+        }
 
         Geometry::~Geometry()
         { }

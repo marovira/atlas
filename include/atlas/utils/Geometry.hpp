@@ -8,11 +8,12 @@
 #include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
 #include "atlas/math/Matrix.hpp"
-#include "atlas/gl/Shader.hpp"
+#include "atlas/gl/GL.hpp"
 
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 namespace atlas
 {
@@ -22,7 +23,7 @@ namespace atlas
         {
         public:
             Geometry();
-            Geometry(Geometry const& geom) = default;
+            Geometry(Geometry const& geom);
             virtual ~Geometry();
 
             virtual void updateGeometry(Time const& t);
@@ -33,7 +34,8 @@ namespace atlas
         protected:
             virtual bool intersectRay(math::Ray const& ray, float& tMin);
 
-            std::vector<gl::Shader> mShaders;
+            typedef std::unique_ptr<gl::Shader> ShaderPointer;
+            std::vector<ShaderPointer> mShaders;
             typedef std::pair<std::string, GLuint> UniformKey;
             std::map<std::string, GLuint> mUniforms;
             math::Matrix4 mModel;
