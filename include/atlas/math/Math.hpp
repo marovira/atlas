@@ -3,9 +3,15 @@
 
 #pragma once
 
+#include "atlas/Atlas.hpp"
+
 #include <glm/trigonometric.hpp>
 #include <glm/exponential.hpp>
 
-#include "Atlas.hpp"
+#ifndef USING_ATLAS_MATH_NS
+#undef USING_ATLAS_MATH_NS
+#endif
+
+#define USING_ATLAS_MATH_NS using namespace atlas::math
 
 #endif

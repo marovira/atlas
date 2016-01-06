@@ -1,28 +1,53 @@
-#ifndef ATLAS_INCLUDE_ATLAS_RAY_HPP
-#define ATLAS_INCLUDE_ATLAS_RAY_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_MATH_RAY_HPP
+#define ATLAS_INCLUDE_ATLAS_MATH_RAY_HPP
 
 #pragma once
 
+#include "Math.hpp"
 #include "Vector.hpp"
 
 namespace atlas
 {
-    struct Ray
+    namespace math
     {
-        Ray();
-        Ray(atlas::Point const& origin, atlas::Vector const& dir);
-        Ray(Ray const& ray) = default;
-        ~Ray();
+        struct Ray
+        {
+            Ray() :
+                o(0.0f),
+                d(0.0f, 1.0f, 0.0f)
+            { }
 
-        Ray& operator=(Ray const& rhs) = default;
+            Ray(Point const& origin, Vector const& dir) :
+                o(origin),
+                d(dir)
+            { }
 
-        atlas::Point operator()(float t) const;
-        bool operator==(Ray const& rhs);
-        bool operator!=(Ray const& rhs);
+            Ray(Ray const& ray) = default;
+            ~Ray()
+            { }
 
-        atlas::Point o;
-        atlas::Vector d;
-    };
+            Ray& operator=(Ray const& rhs) = default;
+
+            Point operator()(float t) const
+            {
+                return o + (t * d);
+            }
+
+            bool operator==(Ray const& rhs)
+            {
+                return (o == rhs.o) && (d == rhs.d);
+            }
+
+            bool operator!=(Ray const& rhs)
+            {
+                return !((*this) == rhs);
+            }
+
+            Point o;
+            Vector d;
+        };
+
+    }
 }
 
 #endif
