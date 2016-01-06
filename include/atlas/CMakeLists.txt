@@ -1,30 +1,23 @@
+set(ATLAS_INCLUDE_ROOT_LIST
+    "${ATLAS_INCLUDE_ROOT}/atlas/Atlas.hpp")
+
+# Traverse the lower include directories.
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/core")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/gl")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/math")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/utils")
+
+# Wrap each of the variables coming from the folders and pass them up.
+set(ATLAS_INCLUDE_CORE_LIST_PARENT ${ATLAS_INCLUDE_CORE_LIST} PARENT_SCOPE)
+set(ATLAS_INCLUDE_GL_LIST_PARENT ${ATLAS_INCLUDE_GL_LIST} PARENT_SCOPE)
+set(ATLAS_INCLUDE_MATH_LIST_PARENT ${ATLAS_INCLUDE_MATH_LIST} PARENT_SCOPE)
+set(ATLAS_INCLUDE_UTILS_LIST_PARENT ${ATLAS_INCLUDE_UTILS_LIST} PARENT_SCOPE)
+set(ATLAS_INCLUDE_ROOT_LIST_PARENT ${ATLAS_INCLUDE_ROOT_LIST} PARENT_SCOPE)
+
+# Now assemble the final list and pass it up.
 set(ATLAS_INCLUDE_LIST
-    "${ATLAS_INCLUDE_ROOT}/atlas/Macros.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Platform.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Constants.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Float.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Math.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Log.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Timer.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/RandomGenerator.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Vector.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Matrix.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Atlas.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Solvers.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLShader.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLHeader.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLShaderInfo.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Scene.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Application.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/RGBColour.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Film.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Quaternion.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLFW.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Ray.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Time.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Geometry.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLCamera.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/Texture.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLImage.hpp"
-    "${ATLAS_INCLUDE_ROOT}/atlas/GLError.hpp"
+    ${ATLAS_INCLUDE_CORE_LIST}
+    ${ATLAS_INCLUDE_GL_LIST}
+    ${ATLAS_INCLUDE_MATH_LIST}
+    ${ATLAS_INCLUDE_UTILS_LIST}
     PARENT_SCOPE)

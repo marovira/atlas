@@ -1,12 +1,16 @@
+# Traverse the lower source directories.
+add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/core")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/gl")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/utils")
+
+# Wrap each of the variables coming from the folders and pass them up.
+set(ATLAS_SOURCE_CORE_LIST_PARENT ${ATLAS_SOURCE_CORE_LIST} PARENT_SCOPE)
+set(ATLAS_SOURCE_GL_LIST_PARENT ${ATLAS_SOURCE_GL_LIST} PARENT_SCOPE)
+set(ATLAS_SOURCE_UTILS_LIST_PARENT ${ATLAS_SOURCE_UTILS_LIST} PARENT_SCOPE)
+
+# Now assemble the final list and pass it up.
 set(ATLAS_SOURCE_LIST
-    "${ATLAS_SOURCE_ROOT}/atlas/Log.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/GLShader.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Scene.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Application.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Film.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Ray.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Geometry.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/GLCamera.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/Texture.cpp"
-    "${ATLAS_SOURCE_ROOT}/atlas/GLError.cpp"
+    ${ATLAS_SOURCE_CORE_LIST}
+    ${ATLAS_SOURCE_GL_LIST}
+    ${ATLAS_SOURCE_UTILS_LIST}
     PARENT_SCOPE)

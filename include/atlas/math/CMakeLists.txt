@@ -1,0 +1,11 @@
+set(ATLAS_INCLUDE_MATH_ROOT "${ATLAS_INCLUDE_ROOT}/atlas/math")
+
+set(ATLAS_INCLUDE_MATH_LIST
+    "${ATLAS_INCLUDE_MATH_ROOT}/Math.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Matrix.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Quaternion.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/RandomGenerator.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Ray.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Solvers.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Vector.hpp"
+    PARENT_SCOPE)

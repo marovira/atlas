@@ -1,0 +1,8 @@
+set(ATLAS_SOURCE_GL_ROOT "${ATLAS_SOURCE_ROOT}/atlas/gl")
+
+set(ATLAS_SOURCE_GL_LIST
+    "${ATLAS_SOURCE_GL_ROOT}/Camera.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/ErrorCheck.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/Shader.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/Texture.cpp"
+    PARENT_SCOPE)

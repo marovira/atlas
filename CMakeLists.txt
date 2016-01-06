@@ -61,12 +61,20 @@ include_directories(
     ${ATLAS_GLI_ROOT}
     ${ATLAS_INCLUDE_ROOT})
 
-# Now add the source and include folders.
+# Now add the include folders and set up the directory structure for IDEs.
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas")
+
+source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_LIST_PARENT})
+source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_LIST_PARENT})
+source_group("include\\atlas\\gl" FILES ${ATLAS_INCLUDE_GL_LIST_PARENT})
+source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_LIST_PARENT})
+source_group("include\\atlas\\utils" FILES ${ATLAS_INCLUDE_UTILS_LIST_PARENT})
+
 add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas")
 
-source_group("include\\atlas" FILES ${ATLAS_INCLUDE_LIST})
-source_group("source\\atlas" FILES ${ATLAS_SOURCE_LIST})
+source_group("source\\atlas\\core" FILES ${ATLAS_SOURCE_CORE_LIST_PARENT})
+source_group("source\\atlas\\gl" FILES ${ATLAS_SOURCE_GL_LIST_PARENT})
+source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_LIST_PARENT})
 
 # Add the library.
 add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
