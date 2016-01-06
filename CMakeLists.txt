@@ -64,6 +64,7 @@ include_directories(
 # Now add the include folders and set up the directory structure for IDEs.
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas")
 
+source_group("include" FILES)
 source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_LIST_PARENT})
 source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_LIST_PARENT})
 source_group("include\\atlas\\gl" FILES ${ATLAS_INCLUDE_GL_LIST_PARENT})
