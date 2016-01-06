@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Scene.hpp"
 
 #include <string>
 #include <memory>

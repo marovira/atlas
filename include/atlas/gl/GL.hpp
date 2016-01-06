@@ -19,4 +19,13 @@
 
 #define USING_ATLAS_GL_NS using namespace atlas::gl
 
+namespace atlas
+{
+    namespace gl
+    {
+        class Shader;
+        class Texture;
+    }
+}
+
 #endif

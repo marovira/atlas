@@ -1,6 +1,7 @@
 #include "atlas/core/Application.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
+#include "atlas/core/Scene.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/GLFW.hpp"
 

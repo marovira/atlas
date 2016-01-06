@@ -11,4 +11,13 @@
 
 #define USING_ATLAS_CORE_NS using namespace atlas::core
 
+namespace atlas
+{
+    namespace core
+    {
+        class Scene;
+        class Timer;
+    }
+}
+
 #endif

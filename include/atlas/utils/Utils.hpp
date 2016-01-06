@@ -11,4 +11,14 @@
 
 #define USING_ATLAS_UTILS_NS using namespace atlas::utils
 
+namespace atlas
+{
+    namespace utils
+    {
+        class Film;
+        class Geometry;
+        struct Time;
+    }
+}
+
 #endif
