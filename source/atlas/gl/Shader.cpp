@@ -8,7 +8,7 @@ namespace atlas
 {
     namespace gl
     {
-        struct GLShader::GLShaderImpl
+        struct Shader::GLShaderImpl
         {
             GLShaderImpl() :
                 shaderProgram(0)
@@ -59,20 +59,20 @@ namespace atlas
             std::vector<ShaderInfo> shaders;
         };
 
-        GLShader::GLShader() :
+        Shader::Shader() :
             mImpl(new GLShaderImpl)
         { }
 
-        GLShader::GLShader(GLShader const& shader) :
+        Shader::Shader(Shader const& shader) :
             mImpl(shader.mImpl->clone())
         { }
 
-        GLShader::~GLShader()
+        Shader::~Shader()
         {
             deleteShaders();
         }
 
-        void GLShader::compileShaders(std::vector<ShaderInfo> const& shaders)
+        void Shader::compileShaders(std::vector<ShaderInfo> const& shaders)
         {
             if (shaders.empty())
             {
@@ -129,7 +129,7 @@ namespace atlas
             }
         }
 
-        void GLShader::linkShaders()
+        void Shader::linkShaders()
         {
             if (!mImpl->shaderProgram)
             {
@@ -157,7 +157,7 @@ namespace atlas
             }
         }
 
-        void GLShader::deleteShader(std::string const& filename)
+        void Shader::deleteShader(std::string const& filename)
         {
             int index = 0;
             for (auto& shader : mImpl->shaders)
@@ -183,7 +183,7 @@ namespace atlas
             }
         }
 
-        void GLShader::deleteShaders()
+        void Shader::deleteShaders()
         {
             for (auto& shader : mImpl->shaders)
             {
@@ -200,7 +200,7 @@ namespace atlas
             }
         }
 
-        void GLShader::bindAttribute(GLuint location, 
+        void Shader::bindAttribute(GLuint location, 
             std::string const& name) const
         {
             if (mImpl->shaderProgram)
@@ -215,7 +215,7 @@ namespace atlas
             }
         }
 
-        void GLShader::enableShaders() const
+        void Shader::enableShaders() const
         {
             if (mImpl->shaderProgram)
             {
@@ -238,17 +238,17 @@ namespace atlas
             }
         }
 
-        void GLShader::disableShaders() const
+        void Shader::disableShaders() const
         {
             glUseProgram(0);
         }
 
-        GLint GLShader::getShaderProgram() const
+        GLint Shader::getShaderProgram() const
         {
             return mImpl->shaderProgram;
         }
 
-        GLint GLShader::getUniformVariable(std::string const& name) const
+        GLint Shader::getUniformVariable(std::string const& name) const
         {
             if (mImpl->shaderProgram)
             {
@@ -264,7 +264,7 @@ namespace atlas
             }
         }
 
-        GLint GLShader::getAttributeVariable(std::string const& name) const
+        GLint Shader::getAttributeVariable(std::string const& name) const
         {
             if (mImpl->shaderProgram)
             {

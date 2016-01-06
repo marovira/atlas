@@ -39,12 +39,12 @@ namespace atlas
             GLuint shaderHandle;
         };
 
-        class GLShader
+        class Shader
         {
         public:
-            GLShader();
-            GLShader(GLShader const& shader);
-            ~GLShader();
+            Shader();
+            Shader(Shader const& shader);
+            ~Shader();
 
             void compileShaders(std::vector<ShaderInfo> const& shaders);
             void linkShaders();
