@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "Core.hpp"
-
 #include <GLFW/glfw3.h>
 
 #endif

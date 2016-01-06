@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "Core.hpp"
-
 #define UNUSED(expr) (void)expr
 
 #if defined(_DEBUG) || defined(DEBUG) || defined(__DEBUG__)

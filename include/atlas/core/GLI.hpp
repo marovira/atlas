@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "Core.hpp"
-
 #include <gli/texture.hpp>
 #include <gli/load.hpp>
 #include <gli/save.hpp>
