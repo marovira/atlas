@@ -99,7 +99,7 @@ namespace atlas
                     for (std::size_t level = 0; level < tex.levels(); ++level)
                     {
                         GLsizei const layerGL = static_cast<GLsizei>(layer);
-                        tvec3<GLsizei> dimensions(tex.dimensions(level));
+                        tvec3<GLsizei> dims(tex.dimensions(level));
                         if (is_target_cube(tex.target()))
                         {
                             target = static_cast<GLenum>(
@@ -112,7 +112,7 @@ namespace atlas
                             if (is_compressed(tex.format()))
                             {
                                 glCompressedTexSubImage1D(target,
-                                    static_cast<GLint>(level), 0, dimensions.x,
+                                    static_cast<GLint>(level), 0, dims.x,
                                     format.Internal, 
                                     static_cast<GLsizei>(tex.size(level)),
                                     tex.data(layer, face, level));
@@ -120,7 +120,7 @@ namespace atlas
                             else
                             {
                                 glTexSubImage1D(target,
-                                    static_cast<GLint>(level), 0, dimensions.x,
+                                    static_cast<GLint>(level), 0, dims.x,
                                     format.External, format.Type,
                                     tex.data(layer, face, level));
                             }
@@ -136,9 +136,9 @@ namespace atlas
                             {
                                 glCompressedTexSubImage2D(target,
                                     static_cast<GLint>(level), 0, 0,
-                                    dimensions.x,
+                                    dims.x,
                                     (tex.target() == TARGET_1D_ARRAY) ? 
-                                    layerGL : dimensions.y,
+                                    layerGL : dims.y,
                                     format.Internal, 
                                     static_cast<GLsizei>(tex.size(level)),
                                     tex.data(layer, face, level));
@@ -147,9 +147,9 @@ namespace atlas
                             {
                                 glTexSubImage2D(target,
                                     static_cast<GLint>(level), 0, 0,
-                                    dimensions.x,
+                                    dims.x,
                                     (tex.target() == TARGET_1D_ARRAY) ?
-                                    layerGL : dimensions.y, 
+                                    layerGL : dims.y, 
                                     format.External, format.Type, 
                                     tex.data(layer, face, level));
                             }
@@ -165,9 +165,9 @@ namespace atlas
                             {
                                 glCompressedTexSubImage3D(target,
                                     static_cast<GLint>(level), 0, 0, 0,
-                                    dimensions.x, dimensions.y,
+                                    dims.x, dims.y,
                                     (tex.target() == TARGET_3D) ? 
-                                    dimensions.z : layerGL, format.Internal,
+                                    dims.z : layerGL, format.Internal,
                                     static_cast<GLsizei>(tex.size(level)),
                                     tex.data(layer, face, level));
                             }
@@ -175,9 +175,9 @@ namespace atlas
                             {
                                 glTexSubImage3D(target,
                                     static_cast<GLint>(level), 0, 0, 0,
-                                    dimensions.x, dimensions.y,
+                                    dims.x, dims.y,
                                     (tex.target() == TARGET_3D) ? 
-                                    dimensions.z : layerGL, format.External, 
+                                    dims.z : layerGL, format.External, 
                                     format.Type, tex.data(layer, face, level));
                             }
                             
