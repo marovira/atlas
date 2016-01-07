@@ -26,24 +26,12 @@ namespace atlas
                     message = "(1282) Invalid operation";
                     break;
 
-                case GL_STACK_OVERFLOW:
-                    message = "(1283) Stack overflow";
-                    break;
-
-                case GL_STACK_UNDERFLOW:
-                    message = "(1284) Stack underflow";
-                    break;
-
                 case GL_OUT_OF_MEMORY:
                     message = "(1285) Out of memory";
                     break;
 
                 case GL_INVALID_FRAMEBUFFER_OPERATION:
                     message = "(1286) Invalid framebuffer operation";
-                    break;
-
-                case GL_CONTEXT_LOST:
-                    message = "(1287) Context lost";
                     break;
 
                 default:
