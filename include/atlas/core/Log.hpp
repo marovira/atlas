@@ -13,12 +13,13 @@ namespace atlas
     namespace core
     {
     /**
-    * \class Logger
+    * \class Log
     * \brief Provides a simple, cross-platform way of producing output for
-    * logging and debugging purposes. The output is directed to stdout (in the
-    * case of Linux and OSX) and to both stdout and the debug console for
-    * Windows (provided the console exists). The log output is formatted as
-    * follows:
+    * logging and debugging purposes.
+    * 
+    * The output is directed to stdout (in the case of Linux and OSX) and to 
+    * both stdout and the debug console for Windows (provided the console 
+    * exists). The log output is formatted as follows:
     * \verbatim
     12:12:12    [flag] : <message> \endverbatim
     * The timestamp is generated using the STD <tt> \<chrono\> </tt> library.
