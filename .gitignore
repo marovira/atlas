@@ -1,7 +1,8 @@
 # Build folders #
 build/
-bin/
 doc/
+bin/
+html/
 
 # Generated files #
 generated/
