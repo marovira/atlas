@@ -55,6 +55,23 @@ namespace atlas
                 return const_cast<const GLchar*>(source);
             }
 
+            bool checkShaderProgram() const
+            {
+                if (shaderProgram == 0)
+                {
+                    ERROR_LOG(std::string("The shader program is null. ") +
+                        std::string("Have you called compileShaders?"));
+                    return false;
+                }
+
+                if (!glIsProgram(shaderProgram))
+                {
+                    ERROR_LOG(std::string("The shader program is invalid. ") +
+                        std::string("Did your shader get deleted?"));
+                }
+
+            }
+
             GLint shaderProgram;
             std::vector<ShaderInfo> shaders;
         };
@@ -77,6 +94,13 @@ namespace atlas
             if (shaders.empty())
             {
                 WARN_LOG("Received empty shader list.");
+                return;
+            }
+
+            if (!mImpl->shaderProgram)
+            {
+                WARN_LOG(std::string("Cannot create a new shader program") +
+                    std::string("when one already exists."));
                 return;
             }
 
@@ -157,32 +181,6 @@ namespace atlas
             }
         }
 
-        void Shader::deleteShader(std::string const& filename)
-        {
-            int index = 0;
-            for (auto& shader : mImpl->shaders)
-            {
-                if (filename.compare(shader.shaderFile) == 0)
-                {
-                    glDetachShader(mImpl->shaderProgram, shader.shaderHandle);
-                    glDeleteShader(shader.shaderHandle);
-                    mImpl->shaders.erase(mImpl->shaders.begin() + index);
-                }
-                else
-                {
-                    WARN_LOG("Could not find shader with filename " + filename);
-                    break;
-                }
-            }
-
-            // If all shaders have been deleted, then delete the program as well.
-            if (mImpl->shaders.empty() && mImpl->shaderProgram)
-            {
-                glDeleteProgram(mImpl->shaderProgram);
-                mImpl->shaderProgram = 0;
-            }
-        }
-
         void Shader::deleteShaders()
         {
             for (auto& shader : mImpl->shaders)
@@ -203,38 +201,26 @@ namespace atlas
         void Shader::bindAttribute(GLuint location, 
             std::string const& name) const
         {
-            if (mImpl->shaderProgram)
+            if (mImpl->checkShaderProgram())
             {
-                glBindAttribLocation(mImpl->shaderProgram, location, name.c_str());
+                glBindAttribLocation(mImpl->shaderProgram, location,
+                    name.c_str());
             }
             else
             {
-                WARN_LOG(
-                    std::string("Cannot bind attribute without a shader") +
-                    std::string("program. Have you called compileShaders()?"));
+                ERROR_LOG("Cannot bind attribute without a shader program.");
             }
         }
 
         void Shader::enableShaders() const
         {
-            if (mImpl->shaderProgram)
+            if (mImpl->checkShaderProgram())
             {
-                if (glIsProgram(mImpl->shaderProgram))
-                {
-                    glUseProgram(mImpl->shaderProgram);
-                }
-                else
-                {
-                    ERROR_LOG(
-                        std::string("The shader program is invalid.") +
-                        std::string("Did your shader get deleted somewhere?"));
-                }
+                glUseProgram(mImpl->shaderProgram);
             }
             else
             {
-                WARN_LOG(
-                    std::string("Cannot enable shaders without a shader") +
-                    std::string("program. Have you called compileShaders()?"));
+                ERROR_LOG("Cannot enable shaders without a shader program.");
             }
         }
 
@@ -250,32 +236,45 @@ namespace atlas
 
         GLint Shader::getUniformVariable(std::string const& name) const
         {
-            if (mImpl->shaderProgram)
+            if (mImpl->checkShaderProgram())
             {
-                return glGetUniformLocation(mImpl->shaderProgram, name.c_str());
+                GLint ret = glGetUniformLocation(mImpl->shaderProgram, 
+                    name.c_str());
+                if (ret == -1)
+                {
+                    ERROR_LOG(std::string("The uniform location \"") + name +
+                        std::string("\" is invalid."));
+                }
+                return ret;
             }
             else
             {
-                WARN_LOG(
+                ERROR_LOG(
                     std::string("Cannot access uniform variables without ") +
-                    std::string("a shader program. Have you called ") +
-                    std::string("compileShaders()?"));
+                    std::string("a shader program."));
                 return -1;
             }
         }
 
         GLint Shader::getAttributeVariable(std::string const& name) const
         {
-            if (mImpl->shaderProgram)
+            if (mImpl->checkShaderProgram())
             {
-                return glGetAttribLocation(mImpl->shaderProgram, name.c_str());
+                GLint ret = glGetAttribLocation(mImpl->shaderProgram,
+                    name.c_str());
+                if (ret == -1)
+                {
+                    ERROR_LOG(std::string("The attribute location \"") + name +
+                        std::string("\" is invalid."));
+                }
+                
+                return ret;
             }
             else
             {
-                WARN_LOG(
+                ERROR_LOG(
                     std::string("Cannot access attribute location without ") +
-                    std::string("a shader program. Have you called ") +
-                    std::string("compileShaders()?"));
+                    std::string("a shader program."));
                 return -1;
             }
         }

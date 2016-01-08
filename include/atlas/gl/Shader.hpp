@@ -141,7 +141,6 @@ namespace atlas
              *	and an error is written to the Log.
              */
             void linkShaders();
-            void deleteShader(std::string const& filename);
 
             /**
              *	Deletes all the shaders stored by the class along with the
@@ -153,6 +152,10 @@ namespace atlas
              *	Wraps around the glBindAttribLocation function. If the
              *	shader program hasn't been created, or it is invalid, the
              *	function writes an error to the Log and returns.
+             *	
+             *	\warning
+             *	This function does not check the OpenGL error queue for errors
+             *	after attempting to bind the attribute location.
              *	
              *	@param[in] location The attribute location.
              *	@param[in] name The name of the attribute to bind.
