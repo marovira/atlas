@@ -35,7 +35,7 @@ namespace atlas
     * 
     
     */
-        class Logger
+        class Log
         {
         public:
             /**
@@ -86,7 +86,7 @@ namespace atlas
  * the full namespace path. This is used to construct the other macros.
  */
 #define LOG(level, message) \
-        atlas::core::Logger::log(level, message)
+        atlas::core::Log::log(level, message)
 
 /**
  * \def DEBUG_LOG(message)
@@ -97,7 +97,7 @@ namespace atlas
  */
 #ifdef ATLAS_DEBUG
 #define DEBUG_LOG(message) \
-        LOG(atlas::core::Logger::SeverityLevel::DEBUG, message)
+        LOG(atlas::core::Log::SeverityLevel::DEBUG, message)
 #else
 #define DEBUG_LOG(message)
 #endif
@@ -107,27 +107,27 @@ namespace atlas
  * Outputs the given message with the "info" flag enabled.
  */
 #define INFO_LOG(message) \
-        LOG(atlas::core::Logger::SeverityLevel::INFO, message)
+        LOG(atlas::core::Log::SeverityLevel::INFO, message)
 
 /**
  * \def WARN_LOG(message)
  * Outputs the given message with the "warning" flag enabled.
  */
 #define WARN_LOG(message) \
-        LOG(atlas::core::Logger::SeverityLevel::WARNING, message)
+        LOG(atlas::core::Log::SeverityLevel::WARNING, message)
 
 /**
  * \def ERROR_LOG(message)
  * Outputs the given message with the "error" flag enabled.
  */
 #define ERROR_LOG(message) \
-        LOG(atlas::core::Logger::SeverityLevel::ERR, message)
+        LOG(atlas::core::Log::SeverityLevel::ERR, message)
 
 /**
  * \def CRITICAL_LOG(message)
  * Outputs the given message with the "critical" flag enabled.
  */
 #define CRITICAL_LOG(message) \
-         LOG(atlas::core::Logger::SeverityLevel::CRITICAL, message)
+         LOG(atlas::core::Log::SeverityLevel::CRITICAL, message)
 
 #endif

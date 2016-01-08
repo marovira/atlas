@@ -62,7 +62,7 @@ namespace atlas
             return stream.str();
         }
 
-        void Logger::log(SeverityLevel level, std::string const& message)
+        void Log::log(SeverityLevel level, std::string const& message)
         {
             std::string logMessage = "";
 
