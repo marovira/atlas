@@ -28,18 +28,27 @@ namespace atlas
         {
         public:
             /**
-             * Constructs and initializes the timer to the current time.
+             * Constructs the timer and initializes it to 0.
              */
             Timer() :
-                mBegin(Clock::now())
+                mBegin(Second(0))
             { }
 
             /**
-             * Resets the timer to the time whenever this function is called.
+             * Sets the timer to the current time. The elapsed time can be
+             * retrieved by calling the ellapsed() function.
+             */
+            inline void start()
+            {
+                mBegin = Clock::now();
+            }
+
+            /**
+             * Resets the timer back to 0.
              */
             inline void reset()
             {
-                mBegin = Clock::now();
+                mBegin = Second(0);
             }
 
             /**

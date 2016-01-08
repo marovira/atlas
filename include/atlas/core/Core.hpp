@@ -27,6 +27,7 @@ namespace atlas
 {
     namespace core
     {
+        template <class GenType>
         class Timer;
     }
 }
