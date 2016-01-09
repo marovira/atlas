@@ -1,7 +1,7 @@
 # Traverse the lower source directories.
-add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/core")
-add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/gl")
-add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas/utils")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/core")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/gl")
+add_subdirectory("${ATLAS_SOURCE_ROOT}/utils")
 
 # Wrap each of the variables coming from the folders and pass them up.
 set(ATLAS_SOURCE_CORE_LIST_PARENT ${ATLAS_SOURCE_CORE_LIST} PARENT_SCOPE)

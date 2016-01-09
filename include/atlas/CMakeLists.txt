@@ -1,11 +1,11 @@
 set(ATLAS_INCLUDE_ROOT_LIST
-    "${ATLAS_INCLUDE_ROOT}/atlas/Atlas.hpp")
+    "${ATLAS_INCLUDE_ROOT}/Atlas.hpp")
 
 # Traverse the lower include directories.
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/core")
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/gl")
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/math")
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas/utils")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/core")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/gl")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/math")
+add_subdirectory("${ATLAS_INCLUDE_ROOT}/utils")
 
 # Wrap each of the variables coming from the folders and pass them up.
 set(ATLAS_INCLUDE_CORE_LIST_PARENT ${ATLAS_INCLUDE_CORE_LIST} PARENT_SCOPE)

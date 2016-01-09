@@ -1,22 +1,39 @@
+#================================
+# Project setup.
+#================================
+project(ATLAS)
+
 cmake_minimum_required(VERSION 3.0)
 
-set(ATLAS atlas)
-project(${ATLAS})
+# Now setup the version data.
+set(ATLAS_VERSION_MAJOR "1")
+set(ATLAS_VERSION_MINOR "0")
+set(ATLAS_VERSION_PATCH "0")
+set(ATLAS_VERSION_EXTRA "")
+set(ATLAS_VERSION "${ATLAS_VERSION_MAJOR}.${ATLAS_VERSION_MINOR}")
+set(ATLAS_VERSION_FULL "${ATLAS_VERSION}.${ATLAS_VERSION_PATCH}${ATLAS_VERSION_EXTRA}")
 
-# Define useful variables for build.
-set(ATLAS_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(ATLAS_SOURCE_ROOT "${ATLAS_ROOT_DIR}/source")
-set(ATLAS_INCLUDE_ROOT "${ATLAS_ROOT_DIR}/include")
-
-set(ATLAS_EXTERNAL_ROOT "${ATLAS_ROOT_DIR}/external")
-set(ATLAS_GLM_ROOT "${ATLAS_EXTERNAL_ROOT}/glm")
-set(ATLAS_GLI_ROOT "${ATLAS_EXTERNAL_ROOT}/gli")
-set(ATLAS_GLFW_ROOT "${ATLAS_EXTERNAL_ROOT}/glfw")
-
-# Set folders for VS solutions.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# Set compiler settings.
+# Setup the options
+option(ATLAS_BUILD_DOCS "Build the Atlas documentation" ON)
+
+#================================
+# Directory variables.
+#================================
+# Set up the directory roots for Atlas sources.
+set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
+set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
+set(ATLAS_DOCS_ROOT "${ATLAS_SOURCE_DIR}/docs")
+
+# Now the external directories.
+set(ATLAS_GLM_ROOT "${ATLAS_SOURCE_DIR}/external/glm")
+set(ATLAS_GLI_ROOT "${ATLAS_SOURCE_DIR}/external/gli")
+set(ATLAS_GLFW_ROOT "${ATLAS_SOURCE_DIR}/external/glfw")
+
+#================================
+# Compilation flags.
+#================================
 if (MSVC)
     add_definitions(
         -wd4714 # force inline not inlined.
@@ -40,32 +57,60 @@ else()
     endif()
 endif()
 
-# Prevent GLFW from generating targets to build tests and examples.
-set(GLFW_BUILD_EXAMPLES OFF)
-set(GLFW_BUILD_TESTS OFF)
+#================================
+# External dependencies.
+#================================
+# If we want to build documentation, we need Doxygen.
+if (ATLAS_BUILD_DOCS)
+    # Skip the graph stuff from Doxygen.
+    set(DOXYGEN_SKIP_DOT TRUE)
+    find_package(Doxygen)
+endif()
 
-# Now add GLFW.
-add_subdirectory("${ATLAS_GLFW_ROOT}")
-
-# Add GLEW except on apple.
 if (NOT APPLE)
     find_package(GLEW REQUIRED)
-    if (GLEW_FOUND)
-        include_directories(${GLEW_INCLUDE_DIRS})
-    else()
-        message(FATAL_ERROR "Cannot build atlas without GLEW.")
+    if (NOT GLEW_FOUND)
+        message(FATAL_ERROR "Cannot build Atlas without GLEW. Please see the wiki for information on how to install GLEW on your platform.")
     endif()
 endif()
 
+#================================
+# Generate files.
+#================================
+if (ATLAS_BUILD_DOCS)
+    configure_file("${ATLAS_DOCS_ROOT}/Doxyfile.in"
+        "${ATLAS_BINARY_DIR}/docs/Doxyfile" @ONLY)
+endif()
+
+#================================
+# Add subdirectories.
+#================================
+# Prevent GLFW from building examples and tests.
+set(GLFW_BUILD_EXAMPLES OFF)
+set(GLFW_BUILD_TESTS OFF)
+add_subdirectory("${ATLAS_GLFW_ROOT}")
+
+# Now add the Atlas source and include directories.
+add_subdirectory("${ATLAS_INCLUDE_ROOT}")
+add_subdirectory("${ATLAS_SOURCE_ROOT}")
+
+if (DOXYGEN_FOUND AND ATLAS_BUILD_DOCS)
+    add_subdirectory("${ATLAS_DOCS_ROOT}")
+endif()
+
+#================================
+# Include directories.
+#================================
 include_directories(
     "${ATLAS_GLFW_ROOT}/include"
     ${ATLAS_GLM_ROOT}
     ${ATLAS_GLI_ROOT}
-    ${ATLAS_INCLUDE_ROOT})
+    "${ATLAS_SOURCE_DIR}/include"
+    )
 
-# Now add the include folders and set up the directory structure for IDEs.
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/atlas")
-
+#================================
+# Source groups.
+#================================
 source_group("include" FILES)
 source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_LIST_PARENT})
 source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_LIST_PARENT})
@@ -73,20 +118,23 @@ source_group("include\\atlas\\gl" FILES ${ATLAS_INCLUDE_GL_LIST_PARENT})
 source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_LIST_PARENT})
 source_group("include\\atlas\\utils" FILES ${ATLAS_INCLUDE_UTILS_LIST_PARENT})
 
-add_subdirectory("${ATLAS_SOURCE_ROOT}/atlas")
-
 source_group("source\\atlas\\core" FILES ${ATLAS_SOURCE_CORE_LIST_PARENT})
 source_group("source\\atlas\\gl" FILES ${ATLAS_SOURCE_GL_LIST_PARENT})
 source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_LIST_PARENT})
 
-# Add the library.
-add_library(${ATLAS} ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
-target_link_libraries(${ATLAS} glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
+#================================
+# Build the library.
+#================================
+add_library(ATLAS ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
+target_link_libraries(ATLAS glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
 
-# Make the include path visible to the parent if we're on a different project.
-if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ${ATLAS})
+#================================
+# Set external variables.
+#================================
+# Make the include directories and libraries visible to other projects.
+if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ATLAS)
     set(ATLAS_INCLUDE_DIRS 
-        ${ATLAS_INCLUDE_ROOT} 
+        "${ATLAS_SOURCE_DIR}/include"
         ${GLEW_INCLUDE_DIRS} 
         ${ATLAS_GLM_ROOT}
         ${ATLAS_GLI_ROOT}
@@ -94,7 +142,7 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ${ATLAS})
         PARENT_SCOPE)
 
     set(ATLAS_LIBRARIES
-        ${ATLAS}
+        ATLAS
         glfw
         ${GLFW_LIBRARIES}
         ${GLEW_LIBRARIES}
