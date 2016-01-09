@@ -1,3 +1,40 @@
+/**
+ *	\file Solvers.hpp
+ *	\brief Defines solvers for equations of degree 2, 3, and 4.
+ *	
+ *	\note
+ *	The code for solving equations of degree 2, 3, and 4 comes from here:
+ *  Roots3And4.c
+ *
+ *  Utility functions to find cubic and quartic roots,
+ *  coefficients are passed like this:
+ *
+ *      c[0] + c[1]*x + c[2]*x^2 + c[3]*x^3 + c[4]*x^4 = 0
+ *
+ *  The functions return the number of non-complex roots and
+ *  put the values into the s array.
+
+ *  Author: Mauricio Andres Rovira Galvez (marovira@uvic.ca)
+ *  Jan 08, 2016     Updated the code from standard C into templated C++.
+ *
+ *  Author:         Jochen Schwarze (schwarze@isa.de)
+ * 
+ *  Jan 26, 1990    Version for Graphics Gems
+ *  Oct 11, 1990    Fixed sign problem for negative q's in SolveQuartic
+ *  	    	    		(reported by Mark Podlipec),
+ *  	    	    		Old-style function definitions,
+ *  	    	    		IsZero() as a macro
+ *  Nov 23, 1990  Some systems do not declare acos() and cbrt() in
+ *                <math.h>, though the functions exist in the library.
+ *                If large coefficients are used, EQN_EPS should be
+ *                reduced considerably (e.g. to 1E-30), results will be
+ *                correct but multiple roots might be reported more
+ *                than once.
+ * 
+ * \warning
+ * As of the time of this writing, this code is still experimental as it 
+ * hasn't been fully tested.
+ */
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_SOLVERS_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_SOLVERS_HPP
 
@@ -13,6 +50,15 @@ namespace atlas
 {
     namespace math
     {
+        /**
+         *	Solves equations of degree 2. The coefficients are specified from
+         *	lowest to highest degree.
+         *	
+         *	@tparam GenType The precision to use.
+         *	@param[in] coeffs The list of coefficients for the equation.
+         *	@param[out] roots The roots of the equation (if any).
+         *	@return The number of roots it could find.
+         */
         template <typename GenType = float>
         int solveQuadric(std::vector<GenType>& coeffs,
             std::vector<GenType>& roots)
@@ -44,8 +90,17 @@ namespace atlas
             }
         }
 
+        /**
+         *	Solves cubic equations with coefficients specified as above.
+         *	
+         *	@tparam GenType The precision to use.
+         *	@param[in] coeffs The list of coefficients for the equation.
+         *	@param[out] roots The roots of the equation (if any).
+         *	@return The number of roots it could find.
+         */
         template <typename GenType = float>
-        int solveCubic(std::vector<GenType>& coeffs, std::vector<GenType>& roots)
+        int solveCubic(std::vector<GenType>& coeffs, 
+            std::vector<GenType>& roots)
         {
             USING_ATLAS_CORE_NS;
             USING_GLM_NS;
@@ -127,6 +182,15 @@ namespace atlas
             return num;
         }
 
+        /**
+         *	Solves equations of degree 4. The coefficients are specified from
+         *	lowest to highest exponent as above.
+         *	
+         *	@tparam GenType The precision to use.	
+         *	@param[in] coeffs The coefficient list.
+         *	@param[out] roots The roots of the equation (if any).
+         *	@return The number of roots it could find.
+         */
         template <typename GenType = float>
         int solveQuartic(std::vector<GenType>& coeffs,
             std::vector<GenType>& roots)
