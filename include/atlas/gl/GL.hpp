@@ -1,6 +1,6 @@
 /**
  * \file GL.hpp
- * \brief Includes all of the necessary headers for OpenGL.
+ * \brief Main header for the GL module.
  * 
  * This header essentially encapsulates the inclusion of the headers
  * for OpenGL depending on the platform. All the user has to do is add the
@@ -8,7 +8,9 @@
  * \code
  * #include <atlas/gl/GL.hpp>
  * \endcode
- * and all OpenGL functionality will be available.
+ * and all OpenGL functionality will be available. It also defines the
+ * macro for its namespace. All headers within this module include this
+ * header.
  * 
  * \note
  * Atlas uses GLEW to handle all of the extensions for OpenGL in Linux
