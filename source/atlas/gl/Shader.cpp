@@ -68,8 +68,10 @@ namespace atlas
                 {
                     ERROR_LOG(std::string("The shader program is invalid. ") +
                         std::string("Did your shader get deleted?"));
+                    return false;
                 }
 
+                return true;
             }
 
             GLint shaderProgram;
@@ -97,9 +99,9 @@ namespace atlas
                 return;
             }
 
-            if (!mImpl->shaderProgram)
+            if (mImpl->shaderProgram)
             {
-                WARN_LOG(std::string("Cannot create a new shader program") +
+                WARN_LOG(std::string("Cannot create a new shader program ") +
                     std::string("when one already exists."));
                 return;
             }
