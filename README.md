@@ -1,17 +1,7 @@
 # Atlas Framework v1.0
 
 ## What is Atlas?
-It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. The framework is defined with the following goals in mind:
-
-* Simplicity. The code base should be fairly simple and straight-forward to understand.
-* Ease of use. The code base should allow a user to have a window with a simple rendering context by writing as little code as possible. (This can be accomplished with less than 10 lines of code!).
-* Readability. The code base should be human-readable.
-* Modern. The code base should use as many modern techniques as possible.
-* Design. The code base should use as many code patterns as appropriate while mantaining a coherent design. This should allow for faster compile times and faster debugging.
-* Performance. While not as important as the rest, the framework should still support a high level of performance to be used for any application as required.
-
-Ultimately, Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up
-things on their own machines. To this end, Atlas provides support for the following things:
+It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up things on their own machines. To this end, Atlas provides support for the following things:
 
 * Cross-platform creation of windows and OpenGL contexts.
 * Full vector, matrix, and quaternion library with support for all common graphics operations.
