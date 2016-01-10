@@ -13,8 +13,6 @@ It is a simple, light-weight graphics framework designed to support all types of
 * Wrappers for shaders and textures.
 * and more...
 
-For a fully detailed explanation of how Atlas is organized and how to use it, please see the wiki.
-
 ## Dependencies
 For the most part, Atlas is a self-contained library. It does have two dependencies that are **not** included with Atlas. These are:
 
@@ -37,8 +35,6 @@ include_directories(${ATLAS_INCLUDE_DIRS})
 ...
 target_link_libraries(${APP_NAME} ${ATLAS_LIBRARIES})
 ~~~
-
-For a more detailed explanation and other ways to build, please see the wiki.
 
 ## Supported Platforms and Compilers
 Atlas currently supports the following platforms:
@@ -75,4 +71,4 @@ At this point in time, you can support Atlas in one of two ways:
 * Create a ticket in the repo requesting a bug/feature/enhancement.
 * Making a pull request.
 
-If you are planning on making a pull request, please make sure that you take note of the coding standards outlined in the wiki. 
+If you are planning on making a pull request, please make sure that you take note of the coding standards used throughout Atlas.
