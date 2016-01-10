@@ -1,7 +1,7 @@
 #================================
 # Project setup.
 #================================
-project(ATLAS)
+project(atlas)
 
 cmake_minimum_required(VERSION 3.0)
 
@@ -22,6 +22,8 @@ option(ATLAS_BUILD_DOCS "Build the Atlas documentation" ON)
 # Directory variables.
 #================================
 # Set up the directory roots for Atlas sources.
+set(ATLAS_SOURCE_DIR "${PROJECT_SOURCE_DIR}")
+set(ATLAS_BINARY_DIR "${PROJECT_BINARY_DIR}")
 set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
 set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
 set(ATLAS_DOCS_ROOT "${ATLAS_SOURCE_DIR}/docs")
@@ -125,14 +127,15 @@ source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_LIST_PARENT})
 #================================
 # Build the library.
 #================================
-add_library(ATLAS ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
-target_link_libraries(ATLAS glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
+add_library(atlas ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
+target_link_libraries(atlas glfw ${GLFW_LIBRARIES} ${GLEW_LIBRARIES})
+set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
 #================================
 # Set external variables.
 #================================
 # Make the include directories and libraries visible to other projects.
-if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ATLAS)
+if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
     set(ATLAS_INCLUDE_DIRS 
         "${ATLAS_SOURCE_DIR}/include"
         ${GLEW_INCLUDE_DIRS} 
@@ -142,7 +145,7 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL ATLAS)
         PARENT_SCOPE)
 
     set(ATLAS_LIBRARIES
-        ATLAS
+        atlas
         glfw
         ${GLFW_LIBRARIES}
         ${GLEW_LIBRARIES}
