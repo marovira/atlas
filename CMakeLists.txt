@@ -28,6 +28,10 @@ set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
 set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
 set(ATLAS_DOCS_ROOT "${ATLAS_SOURCE_DIR}/docs")
 
+# Set the configs folder.
+set(ATLAS_CONFIG_ROOT "${ATLAS_SOURCE_DIR}/config")
+
+
 # Now the external directories.
 set(ATLAS_GLM_ROOT "${ATLAS_SOURCE_DIR}/external/glm")
 set(ATLAS_GLI_ROOT "${ATLAS_SOURCE_DIR}/external/gli")
@@ -36,45 +40,12 @@ set(ATLAS_GLFW_ROOT "${ATLAS_SOURCE_DIR}/external/glfw")
 #================================
 # Compilation flags.
 #================================
-if (MSVC)
-    add_definitions(
-        -wd4714 # force inline not inlined.
-        -wd4510 # default constructor could not be generated.
-        -wd4512 # assignment operator could not be generated.
-        -wd4610 # nonstandard extension used.
-        -wd4316 # object allocated on the heap may not be aligned 16.
-        -wd4201 # nonstandard extension used: nameless struct/union.
-        -wd4310 # cast truncates constant value.
-        -wd4458 # declaration of '' hides class member.
-        -D_CRT_SECURE_NO_WARNINGS
-        )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-else()
-    set(CMAKE_CXX_FLAGS_DEBUG "-g")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-
-    # Clang requires an additional library to be linked to use C++11.
-    if (CLANG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-    endif()
-endif()
+include("${ATLAS_CONFIG_ROOT}/Compiler.cmake")
 
 #================================
 # External dependencies.
 #================================
-# If we want to build documentation, we need Doxygen.
-if (ATLAS_BUILD_DOCS)
-    # Skip the graph stuff from Doxygen.
-    set(DOXYGEN_SKIP_DOT TRUE)
-    find_package(Doxygen)
-endif()
-
-if (NOT APPLE)
-    find_package(GLEW REQUIRED)
-    if (NOT GLEW_FOUND)
-        message(FATAL_ERROR "Cannot build Atlas without GLEW. Please see the wiki for information on how to install GLEW on your platform.")
-    endif()
-endif()
+include("${ATLAS_CONFIG_ROOT}/Externals.cmake")
 
 #================================
 # Generate files.
@@ -88,8 +59,6 @@ endif()
 # Add subdirectories.
 #================================
 # Prevent GLFW from building examples and tests.
-set(GLFW_BUILD_EXAMPLES OFF)
-set(GLFW_BUILD_TESTS OFF)
 add_subdirectory("${ATLAS_GLFW_ROOT}")
 
 # Now add the Atlas source and include directories.
@@ -113,16 +82,7 @@ include_directories(
 #================================
 # Source groups.
 #================================
-source_group("include" FILES)
-source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_LIST_PARENT})
-source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_LIST_PARENT})
-source_group("include\\atlas\\gl" FILES ${ATLAS_INCLUDE_GL_LIST_PARENT})
-source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_LIST_PARENT})
-source_group("include\\atlas\\utils" FILES ${ATLAS_INCLUDE_UTILS_LIST_PARENT})
-
-source_group("source\\atlas\\core" FILES ${ATLAS_SOURCE_CORE_LIST_PARENT})
-source_group("source\\atlas\\gl" FILES ${ATLAS_SOURCE_GL_LIST_PARENT})
-source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_LIST_PARENT})
+include("${ATLAS_CONFIG_ROOT}/SourceGroups.cmake")
 
 #================================
 # Build the library.
