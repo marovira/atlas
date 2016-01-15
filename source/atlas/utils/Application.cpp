@@ -4,6 +4,7 @@
 #include "atlas/core/Platform.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/GLFW.hpp"
+#include "atlas/core/Float.hpp"
 
 #include <vector>
 
@@ -23,8 +24,48 @@ namespace atlas
             ~ApplicationImpl()
             { }
 
+            void insertScene(Scene* scene)
+            {
+                sceneList.push_back(ScenePointer(scene));
+                currentScene = sceneList.size() - 1;
+                sceneTicks.push_back(-1.0);
+            }
+
+            void getNextScene()
+            {
+                if (sceneList.size() == 1)
+                {
+                    return;
+                }
+
+                sceneTicks[currentScene] = glfwGetTime();
+                currentScene = (currentScene + 1) % sceneList.size();
+
+                double newTime =
+                    (core::areEqual<double>(-1.0, sceneTicks[currentScene])) ?
+                    0 : sceneTicks[currentScene];
+                glfwSetTime(newTime);
+            }
+
+            void getPreviousScene()
+            {
+                if (sceneList.size() == 1)
+                {
+                    return;
+                }
+
+                sceneTicks[currentScene] = glfwGetTime();
+                currentScene = (currentScene - 1) % sceneList.size();
+
+                double newTime =
+                    (core::areEqual<double>(-1.0, sceneTicks[currentScene])) ?
+                    0 : sceneTicks[currentScene];
+                glfwSetTime(newTime);
+            }
+
             GLFWwindow* currentWindow;
             std::vector<ScenePointer> sceneList;
+            std::vector<double> sceneTicks;
             size_t currentScene;
         };
 
@@ -49,6 +90,15 @@ namespace atlas
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
             {
                 glfwSetWindowShouldClose(window, GL_TRUE);
+            }
+            else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+            {
+                APPLICATION.nextScene();
+            }
+            else if (key == GLFW_KEY_TAB && action == GLFW_PRESS &&
+                mods == GLFW_KEY_LEFT_SHIFT)
+            {
+                APPLICATION.previousScene();
             }
             else
             {
@@ -203,8 +253,17 @@ namespace atlas
 
         void Application::addScene(Scene* scene)
         {
-            mImpl->sceneList.push_back(ScenePointer(scene));
-            mImpl->currentScene = mImpl->sceneList.size() - 1;
+            mImpl->insertScene(scene);
+        }
+
+        void Application::nextScene()
+        {
+            mImpl->getNextScene();
+        }
+
+        void Application::previousScene()
+        {
+            mImpl->getPreviousScene();
         }
 
         Scene* Application::getCurrentScene() const

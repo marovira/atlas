@@ -124,6 +124,30 @@ namespace atlas
             void addScene(Scene* scene);
 
             /**
+             *	Moves to the next scene in the queue. If there is only 
+             *	one scene, this does nothing.
+             *	
+             *	\note
+             *	When scenes are shifted, the current tick is stored and
+             *	preserved for when that particular scene is displayed again.
+             *	In other words, time is "frozen" for scenes when they leave
+             *	the screen and is reactivated when they return.
+             */
+            void nextScene();
+
+            /**
+             *	Moves to the previous scene in the queue. If there is only 
+             *	one scene, this does nothing.
+             *	
+             *	\note
+             *	When scenes are shifted, the current tick is stored and
+             *	preserved for when that particular scene is displayed again.
+             *	In other words, time is "frozen" for scenes when they leave
+             *	the screen and is reactivated when they return.
+             */
+            void previousScene();
+
+            /**
              *	Returns the scene that is currently being played.
              *	
              *	@return The current scene.
