@@ -190,7 +190,6 @@ namespace atlas
 
             glfwMakeContextCurrent(mImpl->currentWindow);
 
-#if !defined(ATLAS_PLATFORM_APPLE)
             if (glewInit() != GLEW_OK)
             {
                 CRITICAL_LOG("Could not initialize GLEW.");
@@ -198,7 +197,7 @@ namespace atlas
                 glfwTerminate();
                 exit(EXIT_FAILURE);
             }
-#endif
+
             glfwSetKeyCallback(mImpl->currentWindow, 
                 keyPressCallback);
             glfwSetWindowSizeCallback(mImpl->currentWindow, 
