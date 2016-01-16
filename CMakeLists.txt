@@ -17,6 +17,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Setup the options
 option(ATLAS_BUILD_DOCS "Build the Atlas documentation" ON)
+option(ATLAS_INCLUDE_TEXTURE "Includes the Texture class (broken in labs)" OFF)
 
 #================================
 # Directory variables.

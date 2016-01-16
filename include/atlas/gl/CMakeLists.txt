@@ -4,5 +4,8 @@ set(ATLAS_INCLUDE_GL_LIST
     "${ATLAS_INCLUDE_GL_ROOT}/ErrorCheck.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/GL.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/Shader.hpp"
-    "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp"
     PARENT_SCOPE)
+
+if (ATLAS_INCLUDE_TEXTURE)
+    list(APPEND ATLAS_INCLUDE_GL_LIST "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp")
+endif()
