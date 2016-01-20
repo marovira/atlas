@@ -104,6 +104,13 @@ namespace atlas
              */
             virtual void transformGeometry(math::Matrix4 const& t);
 
+            /**
+             *	This is called whenever the geometry needs to be restored
+             *	to its initial state. Use it to restart things like
+             *	animations.
+             */
+            virtual void resetGeometry();
+
         protected:
             /**
              *	This tests the object for intersection against the provided

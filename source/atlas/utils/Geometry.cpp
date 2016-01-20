@@ -39,6 +39,9 @@ namespace atlas
             UNUSED(t);
         }
 
+        void Geometry::resetGeometry()
+        { }
+
         bool Geometry::intersectRay(math::Ray const& ray, float& tMin)
         {
             UNUSED(ray);
