@@ -111,12 +111,21 @@ namespace atlas
             int height)
         {
             UNUSED(window);
+            UNUSED(width);
+            UNUSED(height);
+        }
+
+        static void frameBufferSizeCallback(GLFWwindow* window, int width,
+            int height)
+        {
+            UNUSED(window);
 
             width = (width < 1) ? 1 : width;
             height = (height < 1) ? 1 : height;
 
             APPLICATION.getCurrentScene()->screenResizeEvent(width, height);
         }
+
         static void errorCallback(int error, const char* message)
         {
             ERROR_LOG(std::to_string(error) + ":" + message);
@@ -202,6 +211,8 @@ namespace atlas
                 keyPressCallback);
             glfwSetWindowSizeCallback(mImpl->currentWindow, 
                 windowSizeCallback);
+            glfwSetFramebufferSizeCallback(mImpl->currentWindow,
+                frameBufferSizeCallback);
             glfwSetMouseButtonCallback(mImpl->currentWindow, 
                 mousePressCallback);
             glfwSetCursorPosCallback(mImpl->currentWindow, 
@@ -228,7 +239,7 @@ namespace atlas
 
             int width, height;
             size_t currentScene = mImpl->currentScene;
-            glfwGetWindowSize(mImpl->currentWindow, &width, &height);
+            glfwGetFramebufferSize(mImpl->currentWindow, &width, &height);
             mImpl->sceneList[currentScene]->screenResizeEvent(width, height);
 
             glfwSetTime(0.0);
