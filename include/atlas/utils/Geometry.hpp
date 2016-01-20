@@ -133,14 +133,14 @@ namespace atlas
              *	\typedef UniformKey
              *	Makes adding new uniform pairs easier and more readable.
              */
-            typedef std::pair<std::string, GLuint> UniformKey;
+            typedef std::pair<std::string, GLint> UniformKey;
 
             /**
              *	\var mUniforms
              *	The map of uniform variables for the shaders. The variables
              *	can be accessed by their name.
              */
-            std::map<std::string, GLuint> mUniforms;
+            std::map<std::string, GLint> mUniforms;
 
             /**
              *	\var mModel
