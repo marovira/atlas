@@ -40,6 +40,13 @@ namespace atlas
          */
         typedef glm::vec3 Vector;
 
+
+        /**
+         *	\typedef Vector4
+         *	A 4D vector.
+         */
+        typedef glm::vec4 Vector4;
+
         /**
          *	\typedef Point
          *	A point in 3D space.
