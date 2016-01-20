@@ -1,4 +1,4 @@
-# Atlas Framework v1.0
+# Atlas Framework v1.1
 
 ## What is Atlas?
 It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up things on their own machines. To this end, Atlas provides support for the following things:
@@ -72,3 +72,6 @@ At this point in time, you can support Atlas in one of two ways:
 * Making a pull request.
 
 If you are planning on making a pull request, please make sure that you take note of the coding standards used throughout Atlas.
+
+## Changelog
+Please see [here](https://github.com/marovira/atlas/wiki/Changelog) for the list of new features/fixes!
