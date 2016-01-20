@@ -13,11 +13,14 @@ namespace atlas
         Scene::~Scene()
         { }
 
-        void Scene::mousePressEvent(int button, int action, int modifiers)
+        void Scene::mousePressEvent(int button, int action, int modifiers, 
+            double xPos, double yPos)
         {
             UNUSED(button);
             UNUSED(action);
             UNUSED(modifiers);
+            UNUSED(xPos);
+            UNUSED(yPos);
         }
 
         void Scene::mouseMoveEvent(double xPos, double yPos)

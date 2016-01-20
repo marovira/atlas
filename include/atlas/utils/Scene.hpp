@@ -82,8 +82,11 @@ namespace atlas
              *	\param[in] button The button for which the event happened.
              *	\param[in] action The action that occurred.
              *	\param[in] modifiers The modifier keys that were pressed.
+             *  \param[in] xPos The x position of the cursor on the screen.
+             *  \param[in] yPos The y position of the cursor on the screen.
              */
-            virtual void mousePressEvent(int button, int action, int modifiers);
+            virtual void mousePressEvent(int button, int action, int modifiers,
+                double xPos, double yPos);
 
             /**
              *	This is called by the Application after a mouse move happens.
