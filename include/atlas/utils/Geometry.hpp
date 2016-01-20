@@ -8,7 +8,7 @@
 #include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
 #include "atlas/math/Matrix.hpp"
-#include "atlas/gl/GL.hpp"
+#include "atlas/gl/Shader.hpp"
 
 #include <vector>
 #include <map>
