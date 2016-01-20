@@ -181,11 +181,12 @@ namespace atlas
                 return;
             }
 
-#if defined(ATLAS_PLATFORM_APPLE)
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+
+#ifdef ATLAS_PLATFORM_APPLE
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
             mImpl->currentWindow = glfwCreateWindow(width, height, 
@@ -198,6 +199,13 @@ namespace atlas
             }
 
             glfwMakeContextCurrent(mImpl->currentWindow);
+
+            GLint major, minor;
+            glGetIntegerv(GL_MAJOR_VERSION, &major);
+            glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+            INFO_LOG("Created OpenGL context " + std::to_string(major) +
+                "." + std::to_string(minor));
 
             if (glewInit() != GLEW_OK)
             {
