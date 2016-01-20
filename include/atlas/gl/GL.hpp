@@ -31,12 +31,7 @@
 #include "atlas/Atlas.hpp"
 #include "atlas/core/Platform.hpp"
 
-#if !defined(ATLAS_PLATFORM_APPLE)
 #include <GL/glew.h>
-#else
-#include <OpenGL/gl3.h>
-#include <OpenGL/gl3ext.h>
-#endif
 
 #ifdef USING_ATLAS_GL_NS
 #undef USING_ATLAS_GL_NS
