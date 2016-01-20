@@ -42,5 +42,12 @@ namespace atlas
                 ERROR_LOG("GL error: " + message);
             }
         }
+
+        void ErrorCheck::clearGLErrors()
+        {
+            GLenum err = GL_NO_ERROR;
+            while ((err = glGetError()) != GL_NO_ERROR)
+            { }
+        }
     }
 }

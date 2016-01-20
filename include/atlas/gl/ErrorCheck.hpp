@@ -44,6 +44,14 @@ namespace atlas
              * and prints them to the Log.
              */
             static void checkGLErrors();
+
+            /**
+             *	Loops through the OpenGL error queue and cleans it out.
+             *	
+             *	\warning
+             *	This function does not print errors! Use with care.
+             */
+            static void clearGLErrors();
         };
     }
 }
@@ -58,5 +66,7 @@ namespace atlas
 #else
 #define GL_ERROR_CHECK()
 #endif
+
+#define GL_CLEAR_ERRORS() atlas::gl::ErrorCheck::clearGLErrors()
 
 #endif
