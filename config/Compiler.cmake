@@ -40,7 +40,7 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
     # Clang requires an additional library to be linked to use C++11.
-    if (ATLAS_COMPILER_APPLE_CLANG)
+    if (ATLAS_COMPILER_CLANG)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
     endif()
 endif()
