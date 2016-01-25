@@ -1,9 +1,10 @@
-#ifndef ATLAS_INCLUDE_ATLAS_GL_QUADRICS_QUADRIC_HPP
-#define ATLAS_INCLUDE_ATLAS_GL_QUADRICS_QUADRIC_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_PRIMITIVE_HPP
+#define ATLAS_INCLUDE_ATLAS_PRIMITIVES_PRIMITIVE_HPP
 
 #pragma once
 
 #include "Primitives.hpp"
+#include "atlas/gl/GL.hpp"
 
 namespace atlas
 {
@@ -15,8 +16,8 @@ namespace atlas
             Primitive();
             virtual ~Primitive();
 
-            virtual void bindBuffers();
-            virtual void unBindBuffers();
+            virtual void createBuffers();
+            virtual void drawBuffers();
         };
     }
 }

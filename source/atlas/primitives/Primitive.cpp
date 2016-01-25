@@ -1,22 +1,19 @@
-#include "atlas/gl/quadrics/Quadric.hpp"
+#include "atlas/primitives/Primitive.hpp"
 
 namespace atlas
 {
-    namespace gl
+    namespace primitives
     {
-        namespace quadrics
-        {
-            Quadric::Quadric()
-            { }
+        Primitive::Primitive()
+        { }
 
-            Quadric::~Quadric()
-            { }
+        Primitive::~Primitive()
+        { }
 
-            void Quadric::bindBuffers()
-            { }
+        void Primitive::createBuffers()
+        { }
 
-            void Quadric::unBindBuffers()
-            { }
-        }
+        void Primitive::drawBuffers()
+        { }
     }
 }
