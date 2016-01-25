@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "atlas/gl/GL.hpp"
+#include <memory>
 
 #ifdef USING_ATLAS_PRIMITIVES_NS
 #undef USING_ATLAS_PRIMITIVES_NS
@@ -16,6 +16,7 @@ namespace atlas
     namespace primitives
     {
         class Primitive;
+        class Cube;
     }
 }
 
