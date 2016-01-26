@@ -17,9 +17,6 @@ namespace atlas
             Cube(Cube const& c);
             ~Cube();
 
-            void createBuffers() override;
-            void drawBuffers() override;
-
         private:
             struct CubeImpl;
             std::unique_ptr<CubeImpl> mImpl;
