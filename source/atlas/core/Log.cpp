@@ -32,7 +32,7 @@ namespace atlas
         static void _log(std::string const& message)
         {
             char buf[kMaxLogLength];
-            memcpy(buf, message.c_str(), kMaxLogLength);
+            memcpy(buf, message.c_str(), message.size() + 1);
 
 #ifdef ATLAS_PLATFORM_WINDOWS
             strncat_s(buf, "\n", 3);
