@@ -8,4 +8,5 @@ set(ATLAS_INCLUDE_MATH_LIST
     "${ATLAS_INCLUDE_MATH_ROOT}/Ray.hpp"
     "${ATLAS_INCLUDE_MATH_ROOT}/Solvers.hpp"
     "${ATLAS_INCLUDE_MATH_ROOT}/Vector.hpp"
+    "${ATLAS_INCLUDE_MATH_ROOT}/Coordinates.hpp"
     PARENT_SCOPE)
