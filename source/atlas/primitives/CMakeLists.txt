@@ -4,4 +4,7 @@ set(ATLAS_SOURCE_PRIMITIVES_LIST
     "${PRIMITIVES_SOURCE_ROOT}/Primitive.cpp"
     "${PRIMITIVES_SOURCE_ROOT}/Cube.cpp"
     "${PRIMITIVES_SOURCE_ROOT}/Sphere.cpp"
+    "${PRIMITIVES_SOURCE_ROOT}/Cone.cpp"
+    "${PRIMITIVES_SOURCE_ROOT}/Disk.cpp"
+    "${PRIMITIVES_SOURCE_ROOT}/OpenCylinder.cpp"
     PARENT_SCOPE)
