@@ -31,12 +31,12 @@ namespace atlas
                 USING_ATLAS_MATH_NS;
 
                 float theta = 0.0f, phi = 0.0f;
-                float phiDelta = glm::pi<float>() / subDivsY;
+                float phiDelta = glm::pi<float>() / (subDivsY + 1);
                 float thetaDelta = glm::two_pi<float>() / subDivsX;
 
                 vertices.push_back(Point(0, 0, radius));
 
-                for (int y = 0; y < subDivsY - 1; ++y)
+                for (int y = 0; y < subDivsY; ++y)
                 {
                     phi += phiDelta;
                     theta = 0.0f;
@@ -69,7 +69,7 @@ namespace atlas
                     indices.push_back(lowerLoop[(i + 1) % subDivsX]);
                 }
 
-                for (int y = 0; y < subDivsY - 2; ++y)
+                for (int y = 0; y < subDivsY - 1; ++y)
                 {
                     for (int i = 0; i < subDivsX; ++i)
                     {
