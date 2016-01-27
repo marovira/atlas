@@ -12,7 +12,7 @@ namespace atlas
         class Sphere : public Primitive
         {
         public:
-            Sphere(float radius = 1.0f, int subDivs = 20);
+            Sphere(float radius = 1.0f, int subDivsX = 20, int subDivsY = 20);
             Sphere(Sphere const& s);
             ~Sphere();
 

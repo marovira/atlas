@@ -10,9 +10,10 @@ namespace atlas
     {
         struct Sphere::SphereImpl
         {
-            SphereImpl(float r, int sd) :
+            SphereImpl(float r, int sdx, int sdy) :
                 radius(r),
-                subDivs(sd)
+                subDivsX(sdx),
+                subDivsY(sdy)
             { }
 
             SphereImpl(SphereImpl const& imp) = default;
@@ -30,17 +31,17 @@ namespace atlas
                 USING_ATLAS_MATH_NS;
 
                 float theta = 0.0f, phi = 0.0f;
-                float phiDelta = glm::pi<float>() / subDivs;
-                float thetaDelta = glm::two_pi<float>() / subDivs;
+                float phiDelta = glm::pi<float>() / subDivsY;
+                float thetaDelta = glm::two_pi<float>() / subDivsX;
 
                 vertices.push_back(Point(0, 0, radius));
 
-                for (int y = 0; y < subDivs - 1; ++y)
+                for (int y = 0; y < subDivsY - 1; ++y)
                 {
                     phi += phiDelta;
                     theta = 0.0f;
 
-                    for (int x = 0; x < subDivs; ++x)
+                    for (int x = 0; x < subDivsX; ++x)
                     {
                         theta = x * thetaDelta;
                         vertices.push_back(
@@ -53,32 +54,32 @@ namespace atlas
 
             void createIndices(std::vector<GLuint>& indices, int numVertices)
             {
-                std::vector<GLuint> upperLoop(subDivs, 0);
-                std::vector<GLuint> lowerLoop(subDivs, 0);
+                std::vector<GLuint> upperLoop(subDivsX, 0);
+                std::vector<GLuint> lowerLoop(subDivsX, 0);
 
-                for (int i = 0; i < subDivs; ++i)
+                for (int i = 0; i < subDivsX; ++i)
                 {
                     lowerLoop[i] = i + 1;
                 }
 
-                for (int i = 0; i < subDivs; ++i)
+                for (int i = 0; i < subDivsX; ++i)
                 {
                     indices.push_back(upperLoop[i]);
                     indices.push_back(lowerLoop[i]);
-                    indices.push_back(lowerLoop[(i + 1) % subDivs]);
+                    indices.push_back(lowerLoop[(i + 1) % subDivsX]);
                 }
 
-                for (int y = 0; y < subDivs - 2; ++y)
+                for (int y = 0; y < subDivsY - 2; ++y)
                 {
-                    for (int i = 0; i < subDivs; ++i)
+                    for (int i = 0; i < subDivsX; ++i)
                     {
-                        upperLoop[i] = (y * subDivs + 1) + i;
-                        lowerLoop[i] = (y * subDivs + 1) + subDivs + i;
+                        upperLoop[i] = (y * subDivsX + 1) + i;
+                        lowerLoop[i] = (y * subDivsX + 1) + subDivsX + i;
                     }
 
-                    for (int x = 0, i = 0; x < subDivs; ++x, ++i)
+                    for (int x = 0, i = 0; x < subDivsX; ++x, ++i)
                     {
-                        int j = (i + 1) % subDivs;
+                        int j = (i + 1) % subDivsX;
                         indices.push_back(upperLoop[i]);
                         indices.push_back(lowerLoop[i]);
                         indices.push_back(lowerLoop[j]);
@@ -89,26 +90,26 @@ namespace atlas
                     }
                 }
 
-                for (int i = 0; i < subDivs; ++i)
+                for (int i = 0; i < subDivsX; ++i)
                 {
                     lowerLoop[i] = numVertices - 1;
-                    upperLoop[i] = numVertices - 1 - subDivs + i;
+                    upperLoop[i] = numVertices - 1 - subDivsX + i;
                 }
 
-                for (int i = 0; i < subDivs; ++i)
+                for (int i = 0; i < subDivsX; ++i)
                 {
                     indices.push_back(lowerLoop[i]);
                     indices.push_back(upperLoop[i]);
-                    indices.push_back(upperLoop[(i + 1) % subDivs]);
+                    indices.push_back(upperLoop[(i + 1) % subDivsX]);
                 }
             }
 
             float radius;
-            int subDivs;
+            int subDivsX, subDivsY;
         };
 
-        Sphere::Sphere(float radius, int subDivs) :
-            mImpl(new SphereImpl(radius, subDivs)),
+        Sphere::Sphere(float radius, int subDivsX, int subDivsY) :
+            mImpl(new SphereImpl(radius, subDivsX, subDivsY)),
             Primitive()
         {
             USING_ATLAS_MATH_NS;
