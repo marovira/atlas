@@ -49,6 +49,8 @@ namespace atlas
     {
         class Shader;
         class Texture;
+        class Buffer;
+        class VertexArrayObject;
     }
 }
 
