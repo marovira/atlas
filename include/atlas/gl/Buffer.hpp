@@ -10,6 +10,8 @@
 
 #define BUFFER_OFFSET(offset) (void*)(offset)
 
+#define STRIDE(step, type) step * sizeof(type)
+
 namespace atlas
 {
     namespace gl
