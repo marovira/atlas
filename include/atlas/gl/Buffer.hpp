@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#define BUFFER_OFFSET(offset) (void*)(offset)
+
 namespace atlas
 {
     namespace gl
@@ -15,9 +17,12 @@ namespace atlas
         class Buffer
         {
         public:
+            Buffer();
             Buffer(GLenum target);
             Buffer(Buffer const& b);
             ~Buffer();
+
+            void genBuffer(GLenum target);
 
             void bindBuffer();
             void unBindBuffer();
@@ -35,6 +40,10 @@ namespace atlas
                 GLvoid* data);
             void* mapBuffer(GLenum access);
             GLboolean unMapBuffer();
+
+            void vertexAttribPointer(GLuint index, GLint size,
+                GLenum type, GLboolean normalized, GLsizei stride,
+                const GLvoid* pointer);
 
         private:
             struct BufferImpl;

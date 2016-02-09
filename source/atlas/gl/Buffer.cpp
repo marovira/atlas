@@ -27,6 +27,10 @@ namespace atlas
             GLuint handle;
         };
 
+        Buffer::Buffer() :
+            mImpl(new BufferImpl)
+        { }
+
         Buffer::Buffer(GLenum target) :
             mImpl(new BufferImpl)
         {
@@ -41,11 +45,20 @@ namespace atlas
         Buffer::~Buffer()
         {
             glDeleteBuffers(1, &mImpl->handle);
+            mImpl->handle = 0;
+            mImpl->target = 0;
+        }
+
+        void Buffer::genBuffer(GLenum target)
+        {
+            glGenBuffers(1, &mImpl->handle);
+            mImpl->target = target;
         }
 
         void Buffer::bindBuffer()
         {
             glBindBuffer(mImpl->target, mImpl->handle);
+            GL_ERROR_CHECK();
         }
 
         void Buffer::unBindBuffer()
@@ -106,6 +119,15 @@ namespace atlas
             }
 
             return ret;
+        }
+
+        void Buffer::vertexAttribPointer(GLuint index, GLint size,
+            GLenum type, GLboolean normalized, GLsizei stride,
+            const GLvoid* pointer)
+        {
+            glVertexAttribPointer(index, size, type, normalized, stride, 
+                pointer);
+            GL_ERROR_CHECK();
         }
     }
 }
