@@ -7,31 +7,24 @@
 #include "Buffer.hpp"
 
 #include <memory>
+#include <vector>
 
 namespace atlas
 {
     namespace gl
     {
-        class VertexArray
+        class VertexArrayObject
         {
         public:
-            VertexArray();
-            VertexArray(VertexArray const& vao);
-            ~VertexArray();
+            VertexArrayObject();
+            VertexArrayObject(VertexArrayObject const& vao);
+            ~VertexArrayObject();
 
             void bindVertexArray();
             void unBindVertexArray();
 
-            Buffer& addBuffer(GLenum target);
-            void deleteBufferAt(int index);
-
-            Buffer& operator[](int index);
-            Buffer operator[](int index) const;
-
-            std::vector<Buffer>::iterator begin();
-            std::vector<Buffer>::const_iterator begin() const;
-            std::vector<Buffer>::iterator end();
-            std::vector<Buffer>::const_iterator end() const;
+            void enableVertexAttribArray(GLuint index);
+            void disableVertexAttribArray(GLuint index);
 
         private:
             struct VertexArrayImpl;

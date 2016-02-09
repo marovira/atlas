@@ -1,12 +1,14 @@
 #include "atlas/gl/VertexArrayObject.hpp"
+#include "atlas/gl/ErrorCheck.hpp"
 
 #include <vector>
+#include <algorithm>
 
 namespace atlas
 {
     namespace gl
     {
-        struct VertexArray::VertexArrayImpl
+        struct VertexArrayObject::VertexArrayImpl
         {
             VertexArrayImpl() :
                 handle(0)
@@ -23,73 +25,54 @@ namespace atlas
             }
 
             GLuint handle;
-            std::vector<Buffer> buffers;
+            std::vector<GLuint> vertexArrays;
         };
 
-        VertexArray::VertexArray() :
+        VertexArrayObject::VertexArrayObject() :
             mImpl(new VertexArrayImpl)
         {
             glGenVertexArrays(1, &mImpl->handle);
         }
 
-        VertexArray::VertexArray(VertexArray const& vao) :
+        VertexArrayObject::VertexArrayObject(VertexArrayObject const& vao) :
             mImpl(vao.mImpl->clone())
         { }
 
-        VertexArray::~VertexArray()
+        VertexArrayObject::~VertexArrayObject()
         {
+            for (auto index : mImpl->vertexArrays)
+            {
+                glDisableVertexAttribArray(index);
+            }
+
             glDeleteVertexArrays(1, &mImpl->handle);
         }
 
-        void VertexArray::bindVertexArray()
+        void VertexArrayObject::bindVertexArray()
         {
             glBindVertexArray(mImpl->handle);
+            GL_ERROR_CHECK();
         }
 
-        void VertexArray::unBindVertexArray()
+        void VertexArrayObject::unBindVertexArray()
         {
             glBindVertexArray(0);
         }
 
-        Buffer& VertexArray::addBuffer(GLenum target)
+        void VertexArrayObject::enableVertexAttribArray(GLuint index)
         {
-            mImpl->buffers.push_back(Buffer(target));
-            return mImpl->buffers.back();
+            glEnableVertexAttribArray(index);
+            mImpl->vertexArrays.push_back(index);
+            GL_ERROR_CHECK();
         }
 
-        void VertexArray::deleteBufferAt(int index)
+        void VertexArrayObject::disableVertexAttribArray(GLuint index)
         {
-            mImpl->buffers.erase(mImpl->buffers.begin() + index);
-        }
-
-        Buffer& VertexArray::operator[](int index)
-        {
-            return mImpl->buffers[index];
-        }
-
-        Buffer VertexArray::operator[](int index) const
-        {
-            return mImpl->buffers[index];
-        }
-
-        std::vector<Buffer>::iterator VertexArray::begin()
-        {
-            return mImpl->buffers.begin();
-        }
-
-        std::vector<Buffer>::const_iterator VertexArray::begin() const
-        {
-            return mImpl->buffers.cbegin();
-        }
-
-        std::vector<Buffer>::iterator VertexArray::end()
-        {
-            return mImpl->buffers.end();
-        }
-
-        std::vector<Buffer>::const_iterator VertexArray::end() const
-        {
-            return mImpl->buffers.cend();
+            glDisableVertexAttribArray(index);
+            std::vector<GLuint>::iterator ind = std::find(
+                mImpl->vertexArrays.begin(), mImpl->vertexArrays.end(), index);
+            mImpl->vertexArrays.erase(ind);
+            GL_ERROR_CHECK();
         }
     }
 }
