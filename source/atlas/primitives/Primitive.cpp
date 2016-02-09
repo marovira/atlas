@@ -5,78 +5,63 @@ namespace atlas
     namespace primitives
     {
         Primitive::Primitive() :
-            mVao(0),
-            mVertexBuffer(0),
-            mNormalBuffer(0),
-            mIndexBuffer(0)
+            mVao(),
+            mDataBuffer(GL_ARRAY_BUFFER),
+            mIndexBuffer(GL_ELEMENT_ARRAY_BUFFER)
         { }
 
         Primitive::~Primitive()
-        {
-            glDeleteVertexArrays(1, &mVao);
-            glDeleteBuffers(1, &mVertexBuffer);
-            glDeleteBuffers(1, &mNormalBuffer);
-            glDeleteBuffers(1, &mIndexBuffer);
-        }
+        { }
 
         void Primitive::createBuffers()
         { 
             USING_ATLAS_MATH_NS;
 
-            glGenVertexArrays(1, &mVao);
-            glBindVertexArray(mVao);
+            // Compile all the data into a single vector.
+            std::vector<float> data;
 
-            glGenBuffers(1, &mVertexBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER,
-                mVertices.size() * sizeof(Vector),
-                mVertices.data(), GL_STATIC_DRAW);
+            // Interleave vector and normal data.
+            for (size_t i = 0; i < mVertices.size(); ++i)
+            {
+                data.push_back(mVertices[i].x);
+                data.push_back(mVertices[i].y);
+                data.push_back(mVertices[i].z);
 
-            glGenBuffers(1, &mNormalBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, mNormalBuffer);
-            glBufferData(GL_ARRAY_BUFFER,
-                mNormals.size() * sizeof(Normal),
-                mNormals.data(), GL_STATIC_DRAW);
+                data.push_back(mNormals[i].x);
+                data.push_back(mNormals[i].y);
+                data.push_back(mNormals[i].z);
+            }
 
-            glGenBuffers(1, &mIndexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                mIndices.size() * sizeof(GLuint),
+            mVao.bindVertexArray();
+
+            mDataBuffer.bindBuffer();
+            mDataBuffer.bufferData(data.size() * sizeof(float),
+                data.data(), GL_STATIC_DRAW);
+
+            // Verticis go in location 0.
+            mDataBuffer.vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+                STRIDE(6, float), BUFFER_OFFSET(0));
+
+            // Normals go in location 1.
+            mDataBuffer.vertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
+                STRIDE(6, float), BUFFER_OFFSET(3 * sizeof(float)));
+
+            mIndexBuffer.bindBuffer();
+            mIndexBuffer.bufferData(mIndices.size() * sizeof(GLuint),
                 mIndices.data(), GL_STATIC_DRAW);
-        }
 
-        void Primitive::bindBuffers()
-        {
-            glBindVertexArray(mVao);
-            
-            glEnableVertexAttribArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+            mVao.enableVertexAttribArray(0);
+            mVao.enableVertexAttribArray(1);
 
-            glEnableVertexAttribArray(1);
-            glBindBuffer(GL_ARRAY_BUFFER, mNormalBuffer);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-        }
-
-        void Primitive::drawBuffers()
-        {
-            glDrawElements(GL_TRIANGLES, (int)mIndices.size(),
-                GL_UNSIGNED_INT, (void*)0);
-        }
-
-        void Primitive::unBindBuffers()
-        {
-            glDisableVertexAttribArray(0);
-            glDisableVertexAttribArray(1);
+            mVao.unBindVertexArray();
         }
 
         void Primitive::drawPrimitive()
         {
-            bindBuffers();
-            drawBuffers();
-            unBindBuffers();
+            mVao.bindVertexArray();
+            glDrawElements(GL_TRIANGLES, (int)mIndices.size(),
+                GL_UNSIGNED_INT, (void*)0);
+            mVao.unBindVertexArray();
         }
     }
 }

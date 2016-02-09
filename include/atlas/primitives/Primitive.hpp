@@ -5,6 +5,8 @@
 
 #include "Primitives.hpp"
 #include "atlas/gl/GL.hpp"
+#include "atlas/gl/VertexArrayObject.hpp"
+#include "atlas/gl/Buffer.hpp"
 #include "atlas/math/Vector.hpp"
 
 #include <vector>
@@ -91,49 +93,22 @@ namespace atlas
 
         protected:
             /**
-             *	Performs the buffer binding operations prior to drawing. This
-             *	also sets up the layout locations for the shaders.
-             */
-            virtual void bindBuffers();
-
-            /**
-             * Renders the buffers to the screen. By default this uses
-             * 
-             * \code
-             * glDrawEleements(GL_TRIANGLES...)
-             * \endcode
-             */
-            virtual void drawBuffers();
-
-            /**
-             *	Disables the vertex attribute locations that were activated
-             *	when the buffers were bound.
-             */
-            virtual void unBindBuffers();
-
-            /**
              *	\var mVao
              *	The handle for the vertex array object (one per primitive).
              */
-            GLuint mVao;
+            atlas::gl::VertexArrayObject mVao;
 
             /**
              *	\var mVertexBuffer
              *	The handle for the vertex buffer (data comes from mVertices).
              */
-            GLuint mVertexBuffer;
-
-            /**
-             *	\var mNormalBuffer
-             *	The handle for the normal buffer (data comes from mNormals).
-             */
-            GLuint mNormalBuffer;
+            atlas::gl::Buffer mDataBuffer;
 
             /**
              *	\var mIndexBuffer
              *	The handle for the index buffer (data comes from mIndices).
              */
-            GLuint mIndexBuffer;
+            atlas::gl::Buffer mIndexBuffer;
 
             /**
              *	\var mVertices
