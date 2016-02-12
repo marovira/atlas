@@ -32,6 +32,20 @@ namespace atlas
                 sceneTicks.push_back(-1.0);
             }
 
+            double prepareSwappedScene(size_t sceneIndex)
+            {
+                sceneTicks[currentScene] = glfwGetTime();
+                currentScene = sceneIndex;
+
+                int width, height;
+                glfwGetFramebufferSize(currentWindow, &width, &height);
+                sceneList[sceneIndex]->screenResizeEvent(width, height);
+
+                return
+                    (core::areEqual<double>(-1.0, sceneTicks[currentScene])) ?
+                    0 : sceneTicks[currentScene];
+            }
+
             void getNextScene()
             {
                 if (sceneList.size() == 1)
@@ -39,12 +53,8 @@ namespace atlas
                     return;
                 }
 
-                sceneTicks[currentScene] = glfwGetTime();
-                currentScene = (currentScene + 1) % sceneList.size();
-
-                double newTime =
-                    (core::areEqual<double>(-1.0, sceneTicks[currentScene])) ?
-                    0 : sceneTicks[currentScene];
+                double newTime = 
+                    prepareSwappedScene((currentScene + 1) % sceneList.size());
                 glfwSetTime(newTime);
             }
 
@@ -55,12 +65,10 @@ namespace atlas
                     return;
                 }
 
-                sceneTicks[currentScene] = glfwGetTime();
-                currentScene = (currentScene - 1) % sceneList.size();
-
                 double newTime =
-                    (core::areEqual<double>(-1.0, sceneTicks[currentScene])) ?
-                    0 : sceneTicks[currentScene];
+                    prepareSwappedScene((currentScene - 1) % sceneList.size());
+                glfwSetTime(newTime);
+
                 glfwSetTime(newTime);
             }
 
@@ -255,9 +263,9 @@ namespace atlas
             glfwShowWindow(mImpl->currentWindow);
 
             int width, height;
-            size_t currentScene = mImpl->currentScene;
             glfwGetFramebufferSize(mImpl->currentWindow, &width, &height);
-            mImpl->sceneList[currentScene]->screenResizeEvent(width, height);
+            mImpl->sceneList[mImpl->currentScene]->screenResizeEvent(
+                width, height);
 
             glfwSetTime(0.0);
             double currentTime;
@@ -265,8 +273,8 @@ namespace atlas
             while (!glfwWindowShouldClose(mImpl->currentWindow))
             {
                 currentTime = glfwGetTime();
-                mImpl->sceneList[currentScene]->updateScene(currentTime);
-                mImpl->sceneList[currentScene]->renderScene();
+                mImpl->sceneList[mImpl->currentScene]->updateScene(currentTime);
+                mImpl->sceneList[mImpl->currentScene]->renderScene();
 
                 glfwSwapBuffers(mImpl->currentWindow);
                 glfwPollEvents();
