@@ -1,4 +1,4 @@
-# Atlas Framework v1.1.1
+# Atlas Framework v1.2
 
 ## What is Atlas?
 It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up things on their own machines. To this end, Atlas provides support for the following things:

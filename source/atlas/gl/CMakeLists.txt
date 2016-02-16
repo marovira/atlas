@@ -3,6 +3,8 @@ set(ATLAS_SOURCE_GL_ROOT "${ATLAS_SOURCE_ROOT}/gl")
 set(ATLAS_SOURCE_GL_LIST
     "${ATLAS_SOURCE_GL_ROOT}/ErrorCheck.cpp"
     "${ATLAS_SOURCE_GL_ROOT}/Shader.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/Buffer.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/VertexArrayObject.cpp"
     PARENT_SCOPE)
 
 if (ATLAS_INCLUDE_TEXTURE)

@@ -1,6 +1,7 @@
 #include "atlas/gl/Shader.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
+#include "atlas/core/Macros.hpp"
 
 #include <iostream>
 
@@ -59,17 +60,15 @@ namespace atlas
             {
                 if (shaderProgram == 0)
                 {
-                    ERROR_LOG(std::string("The shader program is null. ") +
-                        std::string("Have you called compileShaders?"));
                     return false;
                 }
 
+#ifdef ATLAS_DEBUG
                 if (!glIsProgram(shaderProgram))
                 {
-                    ERROR_LOG(std::string("The shader program is invalid. ") +
-                        std::string("Did your shader get deleted?"));
                     return false;
                 }
+#endif
 
                 return true;
             }
@@ -91,19 +90,19 @@ namespace atlas
             deleteShaders();
         }
 
-        void Shader::compileShaders(std::vector<ShaderInfo> const& shaders)
+        bool Shader::compileShaders(std::vector<ShaderInfo> const& shaders)
         {
             if (shaders.empty())
             {
                 WARN_LOG("Received empty shader list.");
-                return;
+                return false;
             }
 
             if (mImpl->shaderProgram)
             {
                 WARN_LOG(std::string("Cannot create a new shader program ") +
                     std::string("when one already exists."));
-                return;
+                return false;
             }
 
             mImpl->shaderProgram = glCreateProgram();
@@ -125,7 +124,7 @@ namespace atlas
                     glDeleteProgram(mImpl->shaderProgram);
                     mImpl->shaderProgram = 0;
 
-                    return;
+                    return false;
                 }
 
                 glShaderSource(handle, 1, &source, NULL);
@@ -147,20 +146,22 @@ namespace atlas
 
                     deleteShaders();
                     delete[] log;
-                    return;
+                    return false;
                 }
 
                 glAttachShader(mImpl->shaderProgram, handle);
                 mImpl->shaders.push_back(ShaderInfo(shader, handle));
             }
+
+            return true;
         }
 
-        void Shader::linkShaders()
+        bool Shader::linkShaders()
         {
             if (!mImpl->shaderProgram)
             {
                 ERROR_LOG("Cannot link with an empty program.");
-                return;
+                return false;
             }
 
             glLinkProgram(mImpl->shaderProgram);
@@ -179,8 +180,10 @@ namespace atlas
 
                 deleteShaders();
                 delete[] log;
-                return;
+                return false;
             }
+
+            return true;
         }
 
         void Shader::deleteShaders()
@@ -208,10 +211,6 @@ namespace atlas
                 glBindAttribLocation(mImpl->shaderProgram, location,
                     name.c_str());
             }
-            else
-            {
-                ERROR_LOG("Cannot bind attribute without a shader program.");
-            }
         }
 
         void Shader::enableShaders() const
@@ -219,10 +218,6 @@ namespace atlas
             if (mImpl->checkShaderProgram())
             {
                 glUseProgram(mImpl->shaderProgram);
-            }
-            else
-            {
-                ERROR_LOG("Cannot enable shaders without a shader program.");
             }
         }
 

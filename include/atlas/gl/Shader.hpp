@@ -144,10 +144,11 @@ namespace atlas
              * will create and compile the provided shaders on the first round,
              * and simply return if called again.
              * 
-             * @param[in] shaders The vector of ShaderInfo containing the 
+             * \param[in] shaders The vector of ShaderInfo containing the 
              * shaders to compile.
+             * \return True if the compilation was successful, false otherwise.
              */
-            void compileShaders(std::vector<ShaderInfo> const& shaders);
+            bool compileShaders(std::vector<ShaderInfo> const& shaders);
 
             /**
              *	As explained before, the linkage of shaders was separated to
@@ -156,8 +157,10 @@ namespace atlas
              *	to linkShaders. After this, the shaders are fully linked and
              *	ready to be used. If an error occurs, everything is destroyed
              *	and an error is written to the Log.
+             *	
+             *	\return Tre if the linking was successful, false otherwise.
              */
-            void linkShaders();
+            bool linkShaders();
 
             /**
              *	Deletes all the shaders stored by the class along with the
