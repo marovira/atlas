@@ -5,13 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Atlas
-<<<<<<< HEAD
-PROJECT_NUMBER         = 1.1.1
-||||||| merged common ancestors
-PROJECT_NUMBER         = 1.0
-=======
 PROJECT_NUMBER         = 1.2
->>>>>>> 795f0d80287bc55d4d23f928473b7349ce6c0963
 PROJECT_BRIEF          = "A simple, light-weight graphics framework."
 OUTPUT_DIRECTORY       = @ATLAS_DOC_ROOT@
 CREATE_SUBDIRS         = NO
