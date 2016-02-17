@@ -1,5 +1,6 @@
 #include "atlas/gl/VertexArrayObject.hpp"
 #include "atlas/gl/ErrorCheck.hpp"
+#include "atlas/core/Log.hpp"
 
 #include <vector>
 #include <algorithm>
@@ -61,6 +62,15 @@ namespace atlas
 
         void VertexArrayObject::enableVertexAttribArray(GLuint index)
         {
+            std::vector<GLuint>::iterator ind = std::find(
+                mImpl->vertexArrays.begin(), mImpl->vertexArrays.end(), index);
+            if (ind != mImpl->vertexArrays.end())
+            {
+                WARN_LOG("The vertex attribute array at index " +
+                    std::to_string(index) + " has already been bound");
+                return;
+            }
+
             glEnableVertexAttribArray(index);
             mImpl->vertexArrays.push_back(index);
             GL_ERROR_CHECK();
