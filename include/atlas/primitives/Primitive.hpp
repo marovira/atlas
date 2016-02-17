@@ -99,8 +99,9 @@ namespace atlas
             atlas::gl::VertexArrayObject mVao;
 
             /**
-             *	\var mVertexBuffer
-             *	The handle for the vertex buffer (data comes from mVertices).
+             *	\var mDataBuffer
+             *	The handle for the data buffer (data is interlaced from 
+             *  mVertices and mNormals).
              */
             atlas::gl::Buffer mDataBuffer;
 

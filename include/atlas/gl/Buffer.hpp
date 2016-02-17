@@ -140,8 +140,8 @@ namespace atlas
              *	
              *	\param[in] offset The offset into the buffer object's data 
              *	store where the replacement will begin, measured in bytes.
-             *	\param[in] The size in bytes of the data store region being
-             *	replaced.
+             *	\param[in] size The size in bytes of the data store region
+             *	being replaced.
              *	\param[in] data The pointer to the data that will
              *	be copied into the data store.
              */
@@ -187,6 +187,8 @@ namespace atlas
              *	data will be stored in the buffer object.
              *	\param[in] offset The offset into the buffer object's data
              *	store, measured in bytes.
+             *  \param[in] size The size in bytes of the data store region to
+             *  be replaced.
              *	\param[in] format THe format of the data in memory addressed
              *	by data.
              *	\param[in] type The type of the data in memory addressed by
@@ -210,8 +212,8 @@ namespace atlas
              *	\param[in] offset The offset into the buffer object's data
              *	store, measured in bytes.
              *	\param[in] size The size of the data being returned, in bytes.
-             *	\param[in] The pointer to the location where the buffer object
-             *	data is returned.
+             *	\param[in] data The pointer to the location where the buffer
+             *	object data is returned.
              */
             void getBufferSubData(GLintptr offset, GLsizeiptr size, 
                 GLvoid* data);

@@ -68,7 +68,7 @@ namespace atlas
              * 
              * \code{.cpp}
              * glBindVertexArray(0);
-             * \endocde
+             * \endcode
              */
             void unBindVertexArray();
 
