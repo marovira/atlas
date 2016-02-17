@@ -6,4 +6,5 @@ set(ATLAS_SOURCE_UTILS_LIST
     "${ATLAS_SOURCE_UTILS_ROOT}/Film.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/Geometry.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/Scene.cpp"
+    "${ATLAS_SOURCE_UTILS_ROOT}/FPSCounter.cpp"
     PARENT_SCOPE)
