@@ -2,6 +2,7 @@
  * \file Macros.hpp
  * \brief Defines some useful macros used throughout Atlas.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_MACROS_HPP
 #define ATLAS_INCLUDE_ATLAS_CORE_MACROS_HPP
 

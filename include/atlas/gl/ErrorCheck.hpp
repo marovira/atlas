@@ -1,3 +1,8 @@
+/**
+ *	\file ErrorCheck.hpp
+ *	\brief Defines the OpenGL error handling system.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_ERROR_CHECK_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_ERROR_CHECK_HPP
 
@@ -67,6 +72,13 @@ namespace atlas
 #define GL_ERROR_CHECK()
 #endif
 
+/**
+ *	\def GL_CLEAR_ERRORS()
+ *	Clears out the OpenGL error queue without printing them to the screen.
+ *	
+ *	\warning
+ *	This will not print errors!
+ */
 #define GL_CLEAR_ERRORS() atlas::gl::ErrorCheck::clearGLErrors()
 
 #endif

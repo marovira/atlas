@@ -1,3 +1,8 @@
+/**
+ *	\file Ray.hpp
+ *	\brief Defines a ray class.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_RAY_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_RAY_HPP
 

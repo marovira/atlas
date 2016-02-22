@@ -23,6 +23,7 @@
  * headers for OSX. Any attempt to use OpenGL 2 functions will result in
  * errors at compile time.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_GL_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_GL_HPP
 

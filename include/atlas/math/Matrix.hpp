@@ -11,6 +11,7 @@
  *	\endcode
  *	and all matrix operations will become available.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_MATRIX_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_MATRIX_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Sphere.hpp
+ *	\brief Defines a polygonal sphere.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_SPHERE_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_SPHERE_HPP
 

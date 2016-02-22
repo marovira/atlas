@@ -1,3 +1,8 @@
+/**
+ *	\file Shader.hpp
+ *	\brief Defines a wrapper for shader operations.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_SHADER_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_SHADER_HPP
 

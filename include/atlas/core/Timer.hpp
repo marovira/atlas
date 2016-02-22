@@ -1,3 +1,8 @@
+/**
+ *	\file Timer.hpp
+ *	\brief Defines the Timer class for timing events.
+ */
+
 #ifndef ATLAS_INCLUDE_ALTAS_CORE_TIMER_HPP
 #define ATLAS_INCLUDE_ALTAS_CORE_TIMER_HPP
 

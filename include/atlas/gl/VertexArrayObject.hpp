@@ -1,3 +1,8 @@
+/**
+ *	\file VertexArrayObject.hpp
+ *	\brief Defines a wrapper for OpenGL vertex array objects.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_VERTEX_ARRAY_OBJECT_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_VERTEX_ARRAY_OBJECT_HPP
 

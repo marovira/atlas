@@ -1,3 +1,8 @@
+/**
+ *	\file Buffer.hpp
+ *	\brief Defines a wrapper for OpenGL buffer objects.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_BUFFER_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_BUFFER_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Disk.hpp
+ *	\brief Defines a polygonal disk.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_DISK_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_DISK_HPP
 

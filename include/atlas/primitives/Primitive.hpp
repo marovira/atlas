@@ -1,3 +1,8 @@
+/**
+ *	\file Primitive.hpp
+ *	\brief Defines an interface for polygonal primitives.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_PRIMITIVE_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_PRIMITIVE_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Geometry.hpp
+ *	\brief Defines the main interface for Geometry classes.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_GEOMETRY_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_GEOMETRY_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Film.hpp
+ *	\brief Defines a simple array of pixels that represents an image.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_FILM_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_FILM_HPP
 
@@ -14,6 +19,10 @@ namespace atlas
 {
     namespace utils
     {
+        /**
+         *	\typedef FilmFrame
+         *	Defines the array of pixels that is used by the Film class.
+         */
         typedef std::vector<RGBColour> FilmFrame;
 
         /**

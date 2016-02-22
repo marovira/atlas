@@ -1,3 +1,8 @@
+/**
+ *	\file OpenCylinder.hpp
+ *	\brief Defines a polygonal cylinder.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_OPEN_CYLINDER_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_OPEN_CYLINDER_HPP
 

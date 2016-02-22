@@ -5,6 +5,7 @@
  *	This header defines the atlas namespace macros as well as the ones
  *	used for GLM and GLI. All module headers include this header.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_ATLAS_HPP
 #define ATLAS_INCLUDE_ATLAS_ATLAS_HPP
 

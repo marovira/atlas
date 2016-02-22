@@ -10,6 +10,7 @@
  * means a simple or elegant practice and should be handled with
  * the appropriate care and respect.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PLATFORM_HPP
 #define ATLAS_INCLUDE_ATLAS_PLATFORM_HPP
 

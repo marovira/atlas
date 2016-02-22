@@ -2,6 +2,7 @@
  *	\file RGBColour.hpp
  *	\brief Provides a typedef for colours and common functions.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_RGBCOLOUR_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_RGBCOLOUR_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Time.hpp
+ *	\brief Defines the timing storage system for animations.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_TIME_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_TIME_HPP
 

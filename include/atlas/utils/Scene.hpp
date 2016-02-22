@@ -1,3 +1,8 @@
+/**
+ *	\file Scene.hpp
+ *	\brief Defines the main interface for Scenes.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_SCENE_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_SCENE_HPP
 

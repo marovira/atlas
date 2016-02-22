@@ -6,6 +6,7 @@
  * within this module include this header. It also provides forward
  * declarations for all of its classes.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_UTILS_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_UTILS_HPP
 

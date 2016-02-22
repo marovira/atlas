@@ -35,6 +35,7 @@
  * As of the time of this writing, this code is still experimental as it 
  * hasn't been fully tested.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_SOLVERS_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_SOLVERS_HPP
 

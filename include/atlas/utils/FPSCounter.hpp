@@ -1,3 +1,8 @@
+/**
+ *	\file FPSCounter.hpp
+ *	\brief Defines an fps counter for animations.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_FPS_COUNTER_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_FPS_COUNTER_HPP
 

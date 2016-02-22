@@ -1,3 +1,8 @@
+/**
+ *	\file RandomGenerator.hpp
+ *	\brief Defines a simple, templated random number generator.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_RANDOM_GENERATOR_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_RANDOM_GENERATOR_HPP
 

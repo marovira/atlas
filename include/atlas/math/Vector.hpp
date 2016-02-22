@@ -17,6 +17,7 @@
  *	why they are typedefed differently is to provide syntax clarity as to what
  *	each structure is used for.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_VECTOR_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_VECTOR_HPP
 

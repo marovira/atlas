@@ -1,3 +1,8 @@
+/**
+ *	\file Cube.hpp
+ *	\brief Defines a polygonal cube.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_CUBE_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_CUBE_HPP
 

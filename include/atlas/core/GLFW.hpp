@@ -11,6 +11,7 @@
  * \endcode
  * to prevent errors when/if GLFW headers change.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_GLFW_HPP
 #define ATLAS_INCLUDE_ATLAS_CORE_GLFW_HPP
 

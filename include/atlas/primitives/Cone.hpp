@@ -1,3 +1,7 @@
+/**
+ *	\file Cone.hpp
+ *	\brief Defines a polygonal cone.
+ */
 #ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_CONE_HPP
 #define ATLAS_INCLUDE_ATLAS_PRIMITIVES_CONE_HPP
 

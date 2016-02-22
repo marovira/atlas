@@ -7,6 +7,7 @@
  * program size or some other reason) do not include the GLI headers directly.
  * This prevents any issues if/when they move their headers * .
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_GLI_HPP
 #define ATLAS_INCLUDE_ATLAS_CORE_GLI_HPP
 

@@ -1,3 +1,8 @@
+/**
+ *	\file Application.hpp
+ *	\brief Defines the Application class that handles windows and contexts.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_APPLICATION_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_APPLICATION_HPP
 

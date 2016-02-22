@@ -5,6 +5,7 @@
  *	This header defines the macro for using its namespaces. All headers
  *	within this module include this header.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_HPP
 

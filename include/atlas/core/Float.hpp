@@ -6,6 +6,7 @@
  * that the two floating point numbers are not equal in the mathematical sense.
  * Rather, they are sufficiently close to each other to be considered equal.
  */
+
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_FLOAT_HPP
 #define ATLAS_INCLUDE_ATLAS_CORE_FLOAT_HPP
 

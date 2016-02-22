@@ -1,3 +1,8 @@
+/**
+ *	\file Camera.hpp
+ *	\brief Defines a simple camera interface.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_CAMERA_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_CAMERA_HPP
 
