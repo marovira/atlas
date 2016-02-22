@@ -1,3 +1,8 @@
+/**
+ *	\file Log.hpp
+ *	\brief Defines the logging system.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_LOG_HPP
 #define ATLAS_INCLUDE_ATLAS_CORE_LOG_HPP
 
@@ -77,6 +82,18 @@ namespace atlas
              * @param[in] message The message to output.
              */
             static void log(SeverityLevel level, std::string const& message);
+
+            /**
+             *	Outputs the passed message in the format described above
+             *	using the give flag to stdout and the debug console (Windows
+             *	only). This function allows the user to pass in formatted
+             *	strings like \c printf.
+             *	
+             *	\param[in] level The severity flag for the output message.
+             *	\param[in] format The formatted string to output.
+             *	\param[in] ... The format specification.
+             */
+            static void log(SeverityLevel level, const char* format, ...);
         };
     }
 }
@@ -90,6 +107,15 @@ namespace atlas
         atlas::core::Log::log(level, message)
 
 /**
+ *	\def LOG_V(level, format, ...)
+ *	A shortcut to using the variadic log function without having to type in the 
+ *	full namespace path. This is used to construct the other macros. All
+ *	macros that employ the variadic log function are appended with \c _V.
+ */
+#define LOG_V(level, format, ...) \
+        atlas::core::Log::log(level, format, __VA_ARGS__)
+
+/**
  * \def DEBUG_LOG(message)
  * Outputs the given message with the "debug" flag enabled.
  * \note
@@ -99,8 +125,21 @@ namespace atlas
 #ifdef ATLAS_DEBUG
 #define DEBUG_LOG(message) \
         LOG(atlas::core::Log::SeverityLevel::DEBUG, message)
+
+/**
+ *	\def DEBUG_LOG_V(format, ...)
+ *	The variadic version of \c DEBUG_LOG. Outputs the given formatted string
+ *	with the "debug" flag enabled.
+ *	\note
+ *	This macro performs the specified operation in debug mode only. In 
+ *	release mode, this evaluates to nothing.
+ */
+#define DEBUG_LOG_V(format, ...) \
+        LOG_V(atlas::core::Log::SeverityLevel::DEBUG, format, __VA_ARGS__)
 #else
 #define DEBUG_LOG(message)
+
+#define DEBUG_LOG(format, ...)
 #endif
 
 /**
@@ -111,11 +150,27 @@ namespace atlas
         LOG(atlas::core::Log::SeverityLevel::INFO, message)
 
 /**
+ *	\def INFO_LOG_V(format, ...)
+ *	Variadic version of \c INFO_LOG. Outputs the given message with the 
+ *	"info" flag enabled.
+ */
+#define INFO_LOG_V(format, ...) \
+        LOG_V(atlas::core::Log::SeverityLevel::INFO, format, __VA_ARGS__)
+
+/**
  * \def WARN_LOG(message)
  * Outputs the given message with the "warning" flag enabled.
  */
 #define WARN_LOG(message) \
         LOG(atlas::core::Log::SeverityLevel::WARNING, message)
+
+/**
+ *	\def WARN_LOG_V(format, ...)
+ *	Variadic version of \c WANR_LOG. Outputs the given message with the
+ *	"warning" flag enabled.
+ */
+#define WARN_LOG_V(format, ...) \
+        LOG_V(atlas::core::Log::SeverityLevel::WARNING, format, __VA_ARGS__)
 
 /**
  * \def ERROR_LOG(message)
@@ -125,10 +180,26 @@ namespace atlas
         LOG(atlas::core::Log::SeverityLevel::ERR, message)
 
 /**
+ *	\def ERROR_LOG_V(format, ...)
+ *	Variadic version of \c ERROR_LOG. Outputs the given message with the
+ *	"error" flag enabled.
+ */
+#define ERROR_LOG_V(format, ...) \
+        LOG_V(atlas::core::Log::SeverityLevel::ERR, format, __VA_ARGS__)
+
+/**
  * \def CRITICAL_LOG(message)
  * Outputs the given message with the "critical" flag enabled.
  */
 #define CRITICAL_LOG(message) \
          LOG(atlas::core::Log::SeverityLevel::CRITICAL, message)
+
+/**
+ *	\def CRITICAL_LOG_V(format, ...)
+ *	Variadic version of \c CRITICAL_LOG. Outputs the given message with the
+ *	"critical flag enabled".
+ */
+#define CRITICAL_LOG_V(format, ...) \
+        LOG_V(atlas::core::Log::SeverityLevel::CRITICAL, format, __VA_ARGS__)
 
 #endif

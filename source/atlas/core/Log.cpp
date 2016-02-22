@@ -79,5 +79,16 @@ namespace atlas
             logMessage.append(message);
             _log(logMessage);
         }
+
+        void Log::log(SeverityLevel level, const char* format, ...)
+        {
+            char buffer[kMaxLogLength];
+            va_list args;
+            va_start(args, format);
+            vsprintf(buffer, format, args);
+            va_end(args);
+
+            log(level, std::string(buffer));
+        }
     }
 }
