@@ -96,6 +96,14 @@ namespace atlas
              */
             virtual void drawPrimitive();
 
+            virtual void updateBuffers();
+
+            std::vector<atlas::math::Point>& getVertices();
+
+            std::vector<atlas::math::Normal>& getNormals();
+
+            std::vector<GLuint>& getIndeces();
+
         protected:
             /**
              *	\var mVao
