@@ -10,4 +10,5 @@ set(ATLAS_INCLUDE_CORE_LIST
     "${ATLAS_INCLUDE_CORE_ROOT}/Macros.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Platform.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Timer.hpp"
+    "${ATLAS_INCLUDE_CORE_ROOT}/TinyObjLoader.hpp"
     PARENT_SCOPE)

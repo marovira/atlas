@@ -37,6 +37,7 @@ set(ATLAS_CONFIG_ROOT "${ATLAS_SOURCE_DIR}/config")
 set(ATLAS_GLM_ROOT "${ATLAS_SOURCE_DIR}/external/glm")
 set(ATLAS_GLI_ROOT "${ATLAS_SOURCE_DIR}/external/gli")
 set(ATLAS_GLFW_ROOT "${ATLAS_SOURCE_DIR}/external/glfw")
+set(ATLAS_OBJ_ROOT "${ATLAS_SOURCE_DIR}/external/tinyobjloader")
 
 #================================
 # Compilation flags.
@@ -77,6 +78,7 @@ include_directories(
     "${ATLAS_GLFW_ROOT}/include"
     ${ATLAS_GLM_ROOT}
     ${ATLAS_GLI_ROOT}
+    ${ATLAS_OBJ_ROOT}
     "${ATLAS_SOURCE_DIR}/include"
     )
 
@@ -102,6 +104,7 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
         ${GLEW_INCLUDE_DIRS} 
         ${ATLAS_GLM_ROOT}
         ${ATLAS_GLI_ROOT}
+        ${ATLAS_OBJ_ROOT}
         "${ATLAS_GLFW_ROOT}/include"
         PARENT_SCOPE)
 
