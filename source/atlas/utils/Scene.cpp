@@ -29,6 +29,12 @@ namespace atlas
             UNUSED(yPos);
         }
 
+        void Scene::mouseScrollEvent(double xOffset, double yOffset)
+        {
+            UNUSED(xOffset);
+            UNUSED(yOffset);
+        }
+
         void Scene::keyPressEvent(int key, int scancode, int action, int mods)
         {
             UNUSED(key);

@@ -91,7 +91,14 @@ namespace atlas
             double yPos)
         {
             UNUSED(window);
-            APPLICATION.getCurrentScene()->mouseMoveEvent(xPos, yPos);
+            APPLICATION.getCurrentScene()->mouseMoveEvent(xPos, yPos);         
+        }
+
+        static void mouseScrollCallback(GLFWwindow* window, double xOffset,
+            double yOffset)
+        {
+            UNUSED(window);
+            APPLICATION.getCurrentScene()->mouseScrollEvent(xOffset, yOffset);
         }
 
         static void keyPressCallback(GLFWwindow* window, int key,

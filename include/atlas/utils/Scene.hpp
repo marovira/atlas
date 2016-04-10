@@ -102,6 +102,14 @@ namespace atlas
             virtual void mouseMoveEvent(double xPos, double yPos);
 
             /**
+             * This is called by the Application after a mouse scroll 
+             * happens.
+             * \param[in] xOffset The horizontal offset of the mouse wheel.
+             * \param[in] yOffset The vertical offset of the mouse wheel.
+             */
+            virtual void mouseScrollEvent(double xOffset, double yOffset);
+
+            /**
              *	This is called by the Application when a key event occurs.
              *	
              *	\note
