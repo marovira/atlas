@@ -190,7 +190,8 @@ namespace atlas
         }
 
         void Application::createWindow(int width, int height,
-            std::string const& title)
+            std::string const& title, int contextVersionMajor, 
+            int contextVersionMinor)
         {
             if (mImpl->currentWindow != nullptr)
             {
@@ -198,8 +199,8 @@ namespace atlas
                 return;
             }
 
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, contextVersionMinor);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef ATLAS_PLATFORM_APPLE

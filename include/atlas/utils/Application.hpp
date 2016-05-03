@@ -101,8 +101,13 @@ namespace atlas
              *	@param[in] width The width of the new window.
              *	@param[in] height The height of the new window.
              *	@param[in] title The title of the new window.
+             *	\param[in] contextVersionMajor The OpenGL context major version
+             *	number to use. Defaults to 3.
+             *	\param[in] contextVersionMinor The OpenGL context minor version
+             *	number to use. Defaults to 3.
              */
-            void createWindow(int width, int height, std::string const& title);
+            void createWindow(int width, int height, std::string const& title,
+                int contextVersionMajor = 3, int contextVersionMinor = 3);
 
             /**
              *	Enters the application main loop and runs the scenes. Exits
