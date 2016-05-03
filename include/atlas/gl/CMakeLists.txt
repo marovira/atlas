@@ -7,7 +7,3 @@ set(ATLAS_INCLUDE_GL_LIST
     "${ATLAS_INCLUDE_GL_ROOT}/Buffer.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/VertexArrayObject.hpp"
     PARENT_SCOPE)
-
-if (ATLAS_INCLUDE_TEXTURE)
-    list(APPEND ATLAS_INCLUDE_GL_LIST "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp")
-endif()

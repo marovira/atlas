@@ -18,7 +18,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Setup the options
 option(ATLAS_BUILD_DOCS "Build the Atlas documentation" ON)
-option(ATLAS_INCLUDE_TEXTURE "Includes the Texture class (broken in labs)" OFF)
 
 #================================
 # Directory variables.
@@ -36,7 +35,6 @@ set(ATLAS_CONFIG_ROOT "${ATLAS_SOURCE_DIR}/config")
 
 # Now the external directories.
 set(ATLAS_GLM_ROOT "${ATLAS_SOURCE_DIR}/external/glm")
-set(ATLAS_GLI_ROOT "${ATLAS_SOURCE_DIR}/external/gli")
 set(ATLAS_GLFW_ROOT "${ATLAS_SOURCE_DIR}/external/glfw")
 set(ATLAS_OBJ_ROOT "${ATLAS_SOURCE_DIR}/external/tinyobjloader")
 
@@ -78,7 +76,6 @@ endif()
 include_directories(
     "${ATLAS_GLFW_ROOT}/include"
     ${ATLAS_GLM_ROOT}
-    ${ATLAS_GLI_ROOT}
     ${ATLAS_OBJ_ROOT}
     "${ATLAS_SOURCE_DIR}/include"
     )
@@ -104,7 +101,6 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
         "${ATLAS_SOURCE_DIR}/include"
         ${GLEW_INCLUDE_DIRS} 
         ${ATLAS_GLM_ROOT}
-        ${ATLAS_GLI_ROOT}
         ${ATLAS_OBJ_ROOT}
         "${ATLAS_GLFW_ROOT}/include"
         PARENT_SCOPE)
