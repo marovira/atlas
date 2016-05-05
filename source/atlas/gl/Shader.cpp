@@ -234,7 +234,7 @@ namespace atlas
             }
         }
 
-        bool Shader::reloadShaders(int idx = -1)
+        bool Shader::reloadShaders(int idx)
         {
             bool ret = true;
             ret = compileShaders(idx);
