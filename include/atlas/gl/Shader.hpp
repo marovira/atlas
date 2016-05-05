@@ -126,6 +126,16 @@ namespace atlas
             Shader();
 
             /**
+             * Constructs a shader with the specified shader files. Notice
+             * that this does not compile the shaders, it simply stores the
+             * information so it can be used later on.
+             * 
+             * \param[in] shaders The list containing the information for all
+             * the shaders.
+             */
+            Shader(std::vector<ShaderInfo> const& shaders);
+
+            /**
              *	Standard copy constructor.
              */
             Shader(Shader const& shader);
@@ -137,23 +147,41 @@ namespace atlas
             ~Shader();
 
             /**
+             * Sets the shader list that will be used to compile/link the 
+             * shaders into the shader program.
+             * 
+             * \param[in] shaders The list containing the information for all
+             * the shaders.
+             */
+            void setShaders(std::vector<ShaderInfo> const& shaders);
+
+            /**
+             * Returns the list of shaders so they can be modified. This allows
+             * on-the-fly addition or removal of shaders, as well as changing
+             * source files if required. If any changes are made to this list,
+             * then it should be followed by a call to reloadShaders() so the
+             * shaders can be updated.
+             */
+            std::vector<ShaderInfo>& getShaders() const;
+
+            /**
              * This function does two things: first it creates the 
              * shader program (if it hasn't already) and then it compiles
              * the shaders from source, checking each one for errors. If an
-             * error is encountered, everything is cleaned and the message
-             * is written to the Log.
+             * error is encountered, that particular shader is destroyed and 
+             * the process continues.
              * 
-             * \warning
-             * Currently, adding new shaders on the fly is not supported,
-             * as a result, if this function is called more than once, it
-             * will create and compile the provided shaders on the first round,
-             * and simply return if called again.
+             * The supplied index can be used to specify a particular shader
+             * to be re-compiled (or compiled as the case may be). If no
+             * arguments are given, it will compile all the shaders currently
+             * stored (passed by constructor or setShaders).
              * 
-             * \param[in] shaders The vector of ShaderInfo containing the 
-             * shaders to compile.
+             * \param[in] idx The index of the shader on the list to compile. 
+             * If none is provided or -1, then all shaders are compiled.
+             * 
              * \return True if the compilation was successful, false otherwise.
              */
-            bool compileShaders(std::vector<ShaderInfo> const& shaders);
+            bool compileShaders(int idx = -1);
 
             /**
              *	As explained before, the linkage of shaders was separated to
@@ -172,6 +200,22 @@ namespace atlas
              *	shader program. This is also called by the destructor.
              */
             void deleteShaders();
+
+            /**
+             * Combines calls to compileShaders and linkShaders into a single
+             * function. This can be used whenever the shaders have been 
+             * changed in some way. 
+             * 
+             * As with compileShaders, the index allows the compilation of a 
+             * specific shader, while no argument (or -1) compiles everything.
+             * 
+             * \param[in] idx The index of the shader on the list to compile.
+             * If none or -1 is provided, then all shaders are compiled.
+             * 
+             * \return True if the compilation/linking was successful, false
+             * otherwise.
+             */
+            bool reloadShaders(int idx = -1);
 
             /**
              *	Wraps around the glBindAttribLocation function. If the

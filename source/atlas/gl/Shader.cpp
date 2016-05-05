@@ -2,6 +2,7 @@
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
 #include "atlas/core/Macros.hpp"
+#include "atlas/core/Exception.hpp"
 
 #include <iostream>
 
@@ -35,8 +36,8 @@ namespace atlas
 #endif
                 if (!infile)
                 {
-                    ERROR_LOG("Cannot open file: " + filename);
-                    return NULL;
+                    throw core::RuntimeException("Could not open file: " 
+                        + filename);
                 }
 
                 fseek(infile, 0, SEEK_END);
@@ -55,6 +56,54 @@ namespace atlas
                 source[length] = '\0';
                 return const_cast<const GLchar*>(source);
             }
+
+            bool compileShader(ShaderInfo& shader)
+            {
+                if (shader.shaderHandle)
+                {
+                    glDeleteShader(shader.shaderHandle);
+                }
+
+                auto handle = glCreateShader(shader.shaderType);
+
+                const GLchar* source = readShaderSource(shader.shaderFile);
+                if (!source)
+                {
+                    ERROR_LOG_V("File: \"%s\" is empty or cannot be read.",
+                        shader.shaderFile.c_str());
+                    glDeleteShader(handle);
+
+                    return false;
+                }
+
+                glShaderSource(handle, 1, &source, NULL);
+                delete[] source;
+
+                glCompileShader(handle);
+
+                GLint compiled;
+                glGetShaderiv(handle, GL_COMPILE_STATUS, &compiled);
+                if (!compiled)
+                {
+                    GLsizei len;
+                    glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &len);
+
+                    GLchar* log = new GLchar[len + 1];
+                    glGetShaderInfoLog(handle, len, &len, log);
+
+                    ERROR_LOG_V(
+                        "In file \"%s\": shader compilation failed: %s.",
+                        shader.shaderFile.c_str(), log);
+
+                    glDeleteShader(handle);
+                    delete[] log;
+                    return false;
+                }
+
+                glAttachShader(shaderProgram, handle);
+                shader.shaderHandle = handle;
+            }
+
 
             bool checkShaderProgram() const
             {
@@ -81,6 +130,12 @@ namespace atlas
             mImpl(new GLShaderImpl)
         { }
 
+        Shader::Shader(std::vector<ShaderInfo> const& shaders) :
+            mImpl(new GLShaderImpl)
+        {
+            mImpl->shaders = shaders;
+        }
+
         Shader::Shader(Shader const& shader) :
             mImpl(shader.mImpl->clone())
         { }
@@ -90,67 +145,43 @@ namespace atlas
             deleteShaders();
         }
 
-        bool Shader::compileShaders(std::vector<ShaderInfo> const& shaders)
+        void Shader::setShaders(std::vector<ShaderInfo> const& shaders)
         {
-            if (shaders.empty())
+            mImpl->shaders = shaders;
+        }
+
+        std::vector<ShaderInfo>& Shader::getShaders() const
+        {
+            return mImpl->shaders;
+        }
+
+        bool Shader::compileShaders(int idx)
+        {
+            if (mImpl->shaders.empty())
             {
                 WARN_LOG("Received empty shader list.");
                 return false;
             }
 
-            if (mImpl->shaderProgram)
+            if (!mImpl->checkShaderProgram())
             {
-                WARN_LOG(std::string("Cannot create a new shader program ") +
-                    std::string("when one already exists."));
-                return false;
+                mImpl->shaderProgram = glCreateProgram();
             }
 
-            mImpl->shaderProgram = glCreateProgram();
-
-            for (auto shader : shaders)
+            bool ret = true;
+            if (idx == -1)
             {
-                auto handle = glCreateShader(shader.shaderType);
-
-                const GLchar* source = mImpl->readShaderSource(shader.shaderFile);
-                if (!source)
+                for (auto shader : mImpl->shaders)
                 {
-                    ERROR_LOG("Cannot compile empty shader.");
-                    for (auto& delShader : mImpl->shaders)
-                    {
-                        glDeleteShader(delShader.shaderHandle);
-                    }
-
-                    mImpl->shaders.clear();
-                    glDeleteProgram(mImpl->shaderProgram);
-                    mImpl->shaderProgram = 0;
-
-                    return false;
+                    ret = mImpl->compileShader(shader);
                 }
-
-                glShaderSource(handle, 1, &source, NULL);
-                delete[] source;
-
-                glCompileShader(handle);
-
-                GLint compiled;
-                glGetShaderiv(handle, GL_COMPILE_STATUS, &compiled);
-                if (!compiled)
+            }
+            else
+            {
+                if (0 <= idx && idx < mImpl->shaders.size())
                 {
-                    GLsizei len;
-                    glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &len);
-
-                    GLchar* log = new GLchar[len + 1];
-                    glGetShaderInfoLog(handle, len, &len, log);
-
-                    ERROR_LOG("Shader compilation failed: " + std::string(log));
-
-                    deleteShaders();
-                    delete[] log;
-                    return false;
+                    ret = mImpl->compileShader(mImpl->shaders[idx]);
                 }
-
-                glAttachShader(mImpl->shaderProgram, handle);
-                mImpl->shaders.push_back(ShaderInfo(shader, handle));
             }
 
             return true;
@@ -203,6 +234,14 @@ namespace atlas
             }
         }
 
+        bool Shader::reloadShaders(int idx = -1)
+        {
+            bool ret = true;
+            ret = compileShaders(idx);
+            ret = linkShaders();
+            return ret;
+        }
+
         void Shader::bindAttribute(GLuint location, 
             std::string const& name) const
         {
@@ -233,47 +272,36 @@ namespace atlas
 
         GLint Shader::getUniformVariable(std::string const& name) const
         {
+            GLint ret = -1;
             if (mImpl->checkShaderProgram())
             {
-                GLint ret = glGetUniformLocation(mImpl->shaderProgram, 
+                ret = glGetUniformLocation(mImpl->shaderProgram, 
                     name.c_str());
                 if (ret == -1)
                 {
                     ERROR_LOG(std::string("The uniform location \"") + name +
                         std::string("\" is invalid."));
                 }
-                return ret;
             }
-            else
-            {
-                ERROR_LOG(
-                    std::string("Cannot access uniform variables without ") +
-                    std::string("a shader program."));
-                return -1;
-            }
+
+            return ret;
         }
 
         GLint Shader::getAttributeVariable(std::string const& name) const
         {
+            GLint ret = -1;
             if (mImpl->checkShaderProgram())
             {
-                GLint ret = glGetAttribLocation(mImpl->shaderProgram,
+                ret = glGetAttribLocation(mImpl->shaderProgram,
                     name.c_str());
                 if (ret == -1)
                 {
                     ERROR_LOG(std::string("The attribute location \"") + name +
                         std::string("\" is invalid."));
                 }
-                
-                return ret;
             }
-            else
-            {
-                ERROR_LOG(
-                    std::string("Cannot access attribute location without ") +
-                    std::string("a shader program."));
-                return -1;
-            }
+
+            return ret;
         }
     }
 }
