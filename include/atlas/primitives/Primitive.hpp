@@ -35,7 +35,7 @@ namespace atlas
          *	In order to use this interface, simply subclass it and add the
          *	code to fill in the buffers inside the new constructor. The
          *	three protected functions are there if you require any specific
-         *	operations to occur when binding, unbidning, and drawing the 
+         *	operations to occur when drawing and updating the 
          *	buffers.
          *	
          *	It is important to note that this class does <b>not</b> handle
@@ -71,9 +71,13 @@ namespace atlas
             virtual ~Primitive();
 
             /**
-             *	This function creates the OpenGL buffers and binds their 
-             *	data using the provided vector, normal, and index arrays.
-             *	
+             *	This function creates the OpenGL buffers and binds the data
+             *	using the vertex, normal and index arrays. The data is
+             *	interleaved in the following pattern:
+             *	\verbatim
+             *	VVVNNN \endverbatim.
+             *  
+             *  This is done in an effort to minimize memory usage.
              *	\note
              *	This function does not populate the vertex, normal, and index
              *	arrays. Please do this inside the constructor for your derived
@@ -86,9 +90,9 @@ namespace atlas
              *	function calls (in this order):
              *	
              *	\code
-             *	bindBuffers();
-             *	drawBuffers();
-             *	unBindBuffers();
+             *	mVao.bindVertexArray();
+             *	glDrawElements(...);
+             *	mVao.unBindVertexArray();
              *	\endcode
              *	
              *	Please be aware of this order if you choose to override 
@@ -96,12 +100,36 @@ namespace atlas
              */
             virtual void drawPrimitive();
 
+            /**
+             * This updates the data in the OpenGL buffers to match what is
+             * currently in the vertex and normal arrays. This function 
+             * should be called every time that the data is updated so
+             * the buffers from OpenGL match.
+             */
             virtual void updateBuffers();
 
+            /**
+             * Returns a reference to the array that contains the vertex
+             * data.
+             * 
+             * \return A reference to the vertex array.
+             */
             std::vector<atlas::math::Point>& getVertices();
 
+            /**
+             * Returns a reference to the array that contains the normal
+             * data.
+             * 
+             * \return A reference to the normal array.
+             */
             std::vector<atlas::math::Normal>& getNormals();
 
+            /**
+             * Returns a reference to the array that contains the index
+             * data.
+             * 
+             * \return A reference to the index array.
+             */
             std::vector<GLuint>& getIndeces();
 
         protected:
