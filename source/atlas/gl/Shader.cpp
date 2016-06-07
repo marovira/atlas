@@ -102,6 +102,7 @@ namespace atlas
 
                 glAttachShader(shaderProgram, handle);
                 shader.shaderHandle = handle;
+                return true;
             }
 
 
