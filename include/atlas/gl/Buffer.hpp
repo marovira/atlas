@@ -9,7 +9,6 @@
 #pragma once
 
 #include "GL.hpp"
-#include "Buffer.hpp"
 
 #include <memory>
 
