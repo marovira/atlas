@@ -45,8 +45,8 @@ namespace atlas
              *	Initializes the struct with the type and file provided. Note
              *	that this initializes the handle to 0.
              *	
-             *	@param[in] type The shader type.
-             *	@param[in] name The string containing the shader source.
+             *	\param[in] type The shader type.
+             *	\param[in] name The string containing the shader source.
              */
             ShaderInfo(GLenum type, std::string const& name) :
                 shaderType(type),
@@ -59,9 +59,9 @@ namespace atlas
              *	the handle. Acts as a pseudo-copy constructor, where just the
              *	shader type and source are copied.
              *	
-             *	@param[in] shader The shader whose type and file will be 
+             *	\param[in] shader The shader whose type and file will be 
              *	copied
-             *	@param[in] handle The shader handle.
+             *	\param[in] handle The shader handle.
              */
             ShaderInfo(ShaderInfo const& shader, GLuint handle) :
                 shaderType(shader.shaderType),
@@ -226,8 +226,8 @@ namespace atlas
              *	This function does not check the OpenGL error queue for errors
              *	after attempting to bind the attribute location.
              *	
-             *	@param[in] location The attribute location.
-             *	@param[in] name The name of the attribute to bind.
+             *	\param[in] location The attribute location.
+             *	\param[in] name The name of the attribute to bind.
              */
             void bindAttribute(GLuint location, std::string const& name) const;
 
@@ -246,6 +246,7 @@ namespace atlas
 
             /**
              *	Returns the current shader program.
+             *	\return The shader program.
              */
             GLint getShaderProgram() const;
 
@@ -254,8 +255,8 @@ namespace atlas
              *	invalid or if the uniform location doesn't exist, the function
              *	returns -1 and outputs the error to the Log.
              *	
-             *	@param[in] name The name of the uniform variable.
-             *	@return The uniform location if it exists, -1 otherwise.
+             *	\param[in] name The name of the uniform variable.
+             *	\return The uniform location if it exists, -1 otherwise.
              */
             GLint getUniformVariable(std::string const& name) const;
 
@@ -264,10 +265,32 @@ namespace atlas
              *	is invalid or if the uniform location doesn't exist, the
              *	function returns -1 and outputs the error to the Log.
              *	
-             *	@param[in] name The name of the attribute variable.
-             *	@return The attribute location if it exists, -1 otherwise.
+             *	\param[in] name The name of the attribute variable.
+             *	\return The attribute location if it exists, -1 otherwise.
              */
             GLint getAttributeVariable(std::string const& name) const;
+
+            /**
+             * Retrieves the index of a specified uniform block. If the
+             * shader program is invalid or if the block doesn't exist, the
+             * function returns -1 and outputs the error to the Log.
+             * 
+             * \param[in] name The name of the uniform block.
+             * \return The uniform block index if it exists, -1 otherwise.
+             */
+            GLuint getUniformBlockIndex(std::string const& name) const;
+
+            /**
+             * Assign an active point to a uniform block. This function
+             * has an included error check.
+             * 
+             * \param[in] uniformBlockIndex The index of the active uniform
+             * block whose binding to assign.
+             * \param[in] uniformBlockBinding The binding point to which the
+             * block index will be bound.
+             */
+            void uniformBlockBinding(GLuint uniformBlockIndex,
+                GLuint uniformBlockBinding) const;
 
         private:
             struct GLShaderImpl;

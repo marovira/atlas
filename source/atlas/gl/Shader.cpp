@@ -3,6 +3,7 @@
 #include "atlas/core/Platform.hpp"
 #include "atlas/core/Macros.hpp"
 #include "atlas/core/Exception.hpp"
+#include "atlas/gl/ErrorCheck.hpp"
 
 #include <iostream>
 
@@ -303,6 +304,31 @@ namespace atlas
             }
 
             return ret;
+        }
+
+        GLuint Shader::getUniformBlockIndex(std::string const& name) const
+        {
+            GLuint ret = -1;
+            if (mImpl->checkShaderProgram())
+            {
+                ret = glGetUniformBlockIndex(mImpl->shaderProgram, 
+                    name.c_str());
+                if (ret == -1)
+                {
+                    ERROR_LOG_V("The block index %s is invalied.", 
+                        name.c_str());
+                }
+            }
+
+            return ret;
+        }
+
+        void Shader::uniformBlockBinding(GLuint uniformBlockIndex,
+            GLuint uniformBlockBinding) const
+        {
+            glUniformBlockBinding(mImpl->shaderProgram,
+                uniformBlockIndex, uniformBlockBinding);
+            GL_ERROR_CHECK();
         }
     }
 }
