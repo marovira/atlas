@@ -55,33 +55,33 @@ namespace atlas
             mImpl->target = target;
         }
 
-        void Buffer::bindBuffer()
+        void Buffer::bindBuffer() const
         {
             glBindBuffer(mImpl->target, mImpl->handle);
             GL_ERROR_CHECK();
         }
 
-        void Buffer::unBindBuffer()
+        void Buffer::unBindBuffer() const
         {
             glBindBuffer(mImpl->target, 0);
         }
 
         void Buffer::bufferData(GLsizeiptr size, const GLvoid* data,
-            GLenum range)
+            GLenum range) const
         {
             glBufferData(mImpl->target, size, data, range);
             GL_ERROR_CHECK();
         }
 
         void Buffer::bufferSubData(GLintptr offset, GLsizeiptr size,
-            const GLvoid* data)
+            const GLvoid* data) const
         {
             glBufferSubData(mImpl->target, offset, size, data);
             GL_ERROR_CHECK();
         }
 
         void Buffer::clearBufferData(GLenum internalFormat, GLenum format, 
-            GLenum type, const void* data)
+            GLenum type, const void* data) const
         {
             glClearBufferData(mImpl->target, internalFormat, format, 
                 type, data);
@@ -89,27 +89,28 @@ namespace atlas
         }
 
         void Buffer::clearBufferSubData(GLenum internalFormat, GLintptr offset,
-            GLintptr size, GLenum format, GLenum type, const void* data)
+            GLintptr size, GLenum format, GLenum type, const void* data) const
         {
             glClearBufferSubData(mImpl->target, internalFormat, offset, size,
                 format, type, data);
             GL_ERROR_CHECK();
         }
 
-        void Buffer::getBufferSubData(GLintptr offset, GLsizeiptr size, GLvoid* data)
+        void Buffer::getBufferSubData(GLintptr offset, GLsizeiptr size, 
+            GLvoid* data) const
         {
             glGetBufferSubData(mImpl->target, offset, size, data);
             GL_ERROR_CHECK();
         }
 
-        void* Buffer::mapBuffer(GLenum access)
+        void* Buffer::mapBuffer(GLenum access) const
         {
             void* ret = glMapBuffer(mImpl->target, access);
             GL_ERROR_CHECK();
             return ret;
         }
 
-        GLboolean Buffer::unMapBuffer()
+        GLboolean Buffer::unMapBuffer() const
         {
             GLboolean ret;
             if ((ret = glUnmapBuffer(mImpl->target)) != GL_TRUE)
@@ -123,10 +124,24 @@ namespace atlas
 
         void Buffer::vertexAttribPointer(GLuint index, GLint size,
             GLenum type, GLboolean normalized, GLsizei stride,
-            const GLvoid* pointer)
+            const GLvoid* pointer) const
         {
             glVertexAttribPointer(index, size, type, normalized, stride, 
                 pointer);
+            GL_ERROR_CHECK();
+        }
+
+        void Buffer::bindBufferRange(GLuint index, GLintptr offset, 
+            GLsizeiptr size) const
+        {
+            glBindBufferRange(mImpl->target, index, mImpl->handle, offset,
+                size);
+            GL_ERROR_CHECK();
+        }
+
+        void Buffer::bindBufferBase(GLuint index) const
+        {
+            glBindBufferBase(mImpl->target, index, mImpl->handle);
             GL_ERROR_CHECK();
         }
     }

@@ -101,13 +101,13 @@ namespace atlas
              *	Binds the buffer handle contained by the Buffer object to the
              *	target specified upon construction or \c getBuffer.
              */
-            void bindBuffer();
+            void bindBuffer() const;
 
             /**
              *	Unbinds the buffer handle contained by the Buffer object by
              *	binding a null (0) buffer to the specified target.
              */
-            void unBindBuffer();
+            void unBindBuffer() const;
 
             /**
              *	Creates a new data store for the currently bound buffer
@@ -129,7 +129,7 @@ namespace atlas
              *	\param[in] usage The usage pattern for the data store.
              */
             void bufferData(GLsizeiptr size, const GLvoid* data, 
-                GLenum usage);
+                GLenum usage) const;
 
             /**
              *	Redefines some (or all) of the data store for the currently
@@ -150,7 +150,7 @@ namespace atlas
              *	be copied into the data store.
              */
             void bufferSubData(GLintptr offset, GLsizeiptr size, 
-                const GLvoid* data);
+                const GLvoid* data) const;
 
             /**
              *	Fills a buffer object's data store with a fixed value. This
@@ -173,7 +173,7 @@ namespace atlas
              *	replicated in the buffer's data store.
              */
             void clearBufferData(GLenum internalFormat, GLenum format,
-                GLenum type, const void* data);
+                GLenum type, const void* data) const;
 
             /**
              *	Fill all or part of a buffer object's data store with a 
@@ -201,7 +201,8 @@ namespace atlas
              *	replicated in the buffer's data store.
              */
             void clearBufferSubData(GLenum internalFormat, GLintptr offset,
-                GLintptr size, GLenum format, GLenum type, const void* data);
+                GLintptr size, GLenum format, GLenum type, 
+                const void* data) const;
 
             /**
              *	Returns a subset of the buffer object's data store. This is
@@ -220,7 +221,7 @@ namespace atlas
              *	object data is returned.
              */
             void getBufferSubData(GLintptr offset, GLsizeiptr size, 
-                GLvoid* data);
+                GLvoid* data) const;
 
             /**
              *	Map all of a buffer object's data store into the client's
@@ -235,7 +236,7 @@ namespace atlas
              *	
              *	\param[in] access The access policy,.
              */
-            void* mapBuffer(GLenum access);
+            void* mapBuffer(GLenum access) const;
 
             /**
              *	Release the mapping of a buffer object's data store into the
@@ -248,7 +249,7 @@ namespace atlas
              *	where target is the one provided upon construction (or when
              *	the buffer was generated).
              */
-            GLboolean unMapBuffer();
+            GLboolean unMapBuffer() const;
 
             /**
              *	Define an array of generic vertex attribute data. This is
@@ -272,7 +273,33 @@ namespace atlas
              */
             void vertexAttribPointer(GLuint index, GLint size,
                 GLenum type, GLboolean normalized, GLsizei stride,
-                const GLvoid* pointer);
+                const GLvoid* pointer) const;
+
+            /**
+             * Bind a range within a buffer object to an indexed buffer 
+             * target. This is equivalent to
+             * 
+             * \code{.cpp}
+             * glBindBufferRange(index, offset, size);
+             * \endcode
+             * 
+             * \param[in] index The binding point within the array specified
+             * by the target of the Buffer.
+             * \param[in] offset The starting offset in machine units into the 
+             * Buffer object.
+             * \param[in] size The amount of data in machine units that can
+             * be read from the buffer object.
+             */
+            void bindBufferRange(GLuint index, GLintptr offset, 
+                GLsizeiptr size) const;
+
+            /**
+             * Bind a buffer object to an indexed buffer target.
+             * 
+             * \param[in] index The binding point within the array specified
+             * by the target of the Buffer.
+             */
+            void bindBufferBase(GLuint index) const;
 
         private:
             struct BufferImpl;
