@@ -11,4 +11,5 @@ set(ATLAS_INCLUDE_CORE_LIST
     "${ATLAS_INCLUDE_CORE_ROOT}/Timer.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/TinyObjLoader.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Exception.hpp"
+    "${ATLAS_INCLUDE_CORE_ROOT}/STBImage.hpp"
     PARENT_SCOPE)
