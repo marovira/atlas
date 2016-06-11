@@ -6,4 +6,5 @@ set(ATLAS_INCLUDE_GL_LIST
     "${ATLAS_INCLUDE_GL_ROOT}/Shader.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/Buffer.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/VertexArrayObject.hpp"
+    "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp"
     PARENT_SCOPE)
