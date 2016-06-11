@@ -63,6 +63,11 @@ namespace atlas
             }
 
         protected:
+            /**
+             * \var message
+             * Contains the message that is displayed whenever the exception
+             * is thrown.
+             */
             std::string message;
         };
 

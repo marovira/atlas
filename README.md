@@ -1,4 +1,4 @@
-# Atlas Framework v1.3
+# Atlas Framework v1.4
 
 ## What is Atlas?
 It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up things on their own machines. To this end, Atlas provides support for the following things:
@@ -23,7 +23,7 @@ Internally, Atlas ships with the following dependencies:
 
 * GLFW. Used for window and context creation.
 * GLM. Used for all math, vector, matrix, and quaternion operations.
-* GLI. Used for loading textures.
+* TinyObj. Used for loading object files.
 
 ## Quick Start with Atlas
 The easiest way to use Atlas is by using CMake. In your project's CMakeLists file, add the following lines:
