@@ -237,14 +237,17 @@ namespace atlas
 
             glfwSetKeyCallback(mImpl->currentWindow, 
                 keyPressCallback);
+            glfwSetMouseButtonCallback(mImpl->currentWindow, 
+                mousePressCallback);
+            glfwSetScrollCallback(mImpl->currentWindow,
+                mouseScrollCallback);
+            glfwSetCursorPosCallback(mImpl->currentWindow, 
+                mouseMoveCallback);
+
             glfwSetWindowSizeCallback(mImpl->currentWindow, 
                 windowSizeCallback);
             glfwSetFramebufferSizeCallback(mImpl->currentWindow,
                 frameBufferSizeCallback);
-            glfwSetMouseButtonCallback(mImpl->currentWindow, 
-                mousePressCallback);
-            glfwSetCursorPosCallback(mImpl->currentWindow, 
-                mouseMoveCallback);
             glfwSetWindowCloseCallback(mImpl->currentWindow, 
                 windowCloseCallback);
 
