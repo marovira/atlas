@@ -308,12 +308,12 @@ namespace atlas
 
         GLuint Shader::getUniformBlockIndex(std::string const& name) const
         {
-            GLuint ret = -1;
+            GLuint ret = GL_INVALID_INDEX;
             if (mImpl->checkShaderProgram())
             {
                 ret = glGetUniformBlockIndex(mImpl->shaderProgram, 
                     name.c_str());
-                if (ret == -1)
+                if (ret == GL_INVALID_INDEX)
                 {
                     ERROR_LOG_V("The block index %s is invalied.", 
                         name.c_str());
