@@ -27,10 +27,15 @@ namespace atlas
             UNUSED(t);
         }
 
-        void Geometry::renderGeometry(math::Matrix4 projection, 
-            math::Matrix4 view)
+        void Geometry::renderGeometry(math::Matrix4 const& projection, 
+            math::Matrix4 const& view)
         {
             UNUSED(projection);
+            UNUSED(view);
+        }
+
+        void Geometry::renderGeometry(math::Matrix4 const& view)
+        {
             UNUSED(view);
         }
 
@@ -47,6 +52,14 @@ namespace atlas
             UNUSED(ray);
             UNUSED(tMin);
             return false;
+        }
+
+        void Geometry::reloadShaders()
+        { }
+
+        void Geometry::updateProjection(math::Matrix4 const& projection)
+        {
+            UNUSED(projection);
         }
     }
 }
