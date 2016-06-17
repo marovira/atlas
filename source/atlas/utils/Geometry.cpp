@@ -55,7 +55,12 @@ namespace atlas
         }
 
         void Geometry::reloadShaders()
-        { }
+        {
+            for (auto& shader : mShaders)
+            {
+                shader->reloadShaders();
+            }
+        }
 
         void Geometry::updateProjection(math::Matrix4 const& projection)
         {
