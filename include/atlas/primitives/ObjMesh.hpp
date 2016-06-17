@@ -1,10 +1,10 @@
 /**
- * \file Mesh.hpp
- * \brief Defines a polygonal mesh.
+ * \file ObjMesh.hpp
+ * \brief Defines a polygonal mesh from an object file.
  */
 
-#ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_MESH_HPP
-#define ATLAS_INCLUDE_ATLAS_PRIMITIVES_MESH_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_PRIMITIVES_OBJ_MESH_HPP
+#define ATLAS_INCLUDE_ATLAS_PRIMITIVES_OBJ_MESH_HPP
 
 #pragma once
 
@@ -17,32 +17,32 @@ namespace atlas
     namespace primitives
     {
         /**
-         * \class Mesh
-         * \brief Generates a polygonal mesh.
+         * \class ObjMesh
+         * \brief Generates a polygonal mesh from an object file.
          * 
          * Creates a mesh that can be constructed from a file using 
          * loadFromFile. Alternatively the mesh can be manually constructed
          * by modifying the appropriate buffers using the appropriate functions
          * from the Primitive base class.
          */
-        class Mesh : public Primitive
+        class ObjMesh : public Primitive
         {
         public:
             /**
              * Empty constructor. Note that this does not initialize any 
              * data.
              */
-            Mesh();
+            ObjMesh();
 
             /**
              * Standard copy constructor.
              */
-            Mesh(Mesh const& m) = default;
+            ObjMesh(ObjMesh const& m) = default;
 
             /**
              * Standard destructor.
              */
-            ~Mesh();
+            ~ObjMesh();
 
             /**
              * Loads a mesh from the provided file. This automatically reads

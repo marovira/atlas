@@ -1,4 +1,4 @@
-#include "atlas/primitives/Mesh.hpp"
+#include "atlas/primitives/ObjMesh.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/TinyObjLoader.hpp"
 
@@ -7,13 +7,13 @@ namespace atlas
 {
     namespace primitives
     {
-        Mesh::Mesh()
+        ObjMesh::ObjMesh()
         { }
 
-        Mesh::~Mesh()
+        ObjMesh::~ObjMesh()
         { }
 
-        bool Mesh::loadFromFile(std::string const& filename)
+        bool ObjMesh::loadFromFile(std::string const& filename)
         {
             USING_ATLAS_MATH_NS;
 
@@ -55,31 +55,6 @@ namespace atlas
 
                 mNormals.push_back(normal);
             }
-
-            //size_t indexOffset = 0;
-            //for (size_t n = 0; n < shapes[0].mesh.num_vertices.size(); ++n)
-            //{
-            //    int ngon = shapes[0].mesh.num_vertices[n];
-            //    for (size_t f = 0; f < ngon; ++f)
-            //    {
-            //        unsigned int v = shapes[0].mesh.indices[indexOffset + f];
-            //        Vector vertex;
-            //        vertex.x = shapes[0].mesh.positions[3 * v + 0];
-            //        vertex.y = shapes[0].mesh.positions[3 * v + 1];
-            //        vertex.z = shapes[0].mesh.positions[3 * v + 2];
-
-            //        mVertices.push_back(vertex);
-
-            //        Normal normal;
-            //        normal.x = shapes[0].mesh.normals[3 * v + 0];
-            //        normal.y = shapes[0].mesh.normals[3 * v + 1];
-            //        normal.z = shapes[0].mesh.normals[3 * v + 2];
-
-            //        mNormals.push_back(normal);
-            //    }
-
-            //    indexOffset += ngon;
-            //}
 
             for (auto index : shapes[0].mesh.indices)
             {
