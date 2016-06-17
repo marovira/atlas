@@ -94,11 +94,17 @@ namespace atlas
              *	glDrawElements(...);
              *	mVao.unBindVertexArray();
              *	\endcode
-             *	
-             *	Please be aware of this order if you choose to override 
-             *	this function.
              */
             virtual void drawPrimitive();
+
+            /**
+             * Draws out the arrays using the specified mode. This allows
+             * for debugging specific things of the primitive, or simply
+             * rendering out the required parts.
+             * 
+             * \param[in] mode The mode in which the arrays will be rendered.
+             */
+            virtual void drawPrimitive(GLenum mode);
 
             /**
              * This updates the data in the OpenGL buffers to match what is

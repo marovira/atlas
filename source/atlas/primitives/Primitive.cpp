@@ -93,6 +93,14 @@ namespace atlas
             mVao.unBindVertexArray();
         }
 
+        void Primitive::drawPrimitive(GLenum mode)
+        {
+            mVao.bindVertexArray();
+            glDrawElements(mode, (int)mIndices.size(), GL_UNSIGNED_INT,
+                BUFFER_OFFSET(0));
+            mVao.unBindVertexArray();
+        }
+
         std::vector<atlas::math::Point>& Primitive::getVertices()
         {
             return mVertices;
