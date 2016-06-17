@@ -196,10 +196,11 @@ namespace atlas
             bool linkShaders();
 
             /**
-             *	Deletes all the shaders stored by the class along with the
-             *	shader program. This is also called by the destructor.
+             * Deletes the shader specified by the argument or all
+             * the shaders if -1 (or no argument) is provided. This is 
+             * also called by the destructor.
              */
-            void deleteShaders();
+            void deleteShaders(int idx = -1);
 
             /**
              * Combines calls to compileShaders and linkShaders into a single

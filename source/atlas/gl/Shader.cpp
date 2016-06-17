@@ -62,6 +62,7 @@ namespace atlas
             {
                 if (shader.shaderHandle)
                 {
+                    glDetachShader(shaderProgram, shader.shaderHandle);
                     glDeleteShader(shader.shaderHandle);
                 }
 
@@ -145,6 +146,14 @@ namespace atlas
         Shader::~Shader()
         {
             deleteShaders();
+
+            mImpl->shaders.clear();
+
+            if (mImpl->shaderProgram)
+            {
+                glDeleteProgram(mImpl->shaderProgram);
+                mImpl->shaderProgram = 0;
+            }
         }
 
         void Shader::setShaders(std::vector<ShaderInfo> const& shaders)
@@ -173,7 +182,7 @@ namespace atlas
             bool ret = true;
             if (idx == -1)
             {
-                for (auto shader : mImpl->shaders)
+                for (auto& shader : mImpl->shaders)
                 {
                     ret = mImpl->compileShader(shader);
                 }
@@ -186,7 +195,7 @@ namespace atlas
                 }
             }
 
-            return true;
+            return ret;
         }
 
         bool Shader::linkShaders()
@@ -201,10 +210,11 @@ namespace atlas
 
             GLint linked;
             glGetProgramiv(mImpl->shaderProgram, GL_LINK_STATUS, &linked);
+
             if (!linked)
             {
                 GLsizei len;
-                glGetShaderiv(mImpl->shaderProgram, GL_INFO_LOG_LENGTH, &len);
+                glGetProgramiv(mImpl->shaderProgram, GL_INFO_LOG_LENGTH, &len);
 
                 GLchar* log = new GLchar[len + 1];
                 glGetShaderInfoLog(mImpl->shaderProgram, len, &len, log);
@@ -219,21 +229,35 @@ namespace atlas
             return true;
         }
 
-        void Shader::deleteShaders()
+        void Shader::deleteShaders(int idx)
         {
-            for (auto& shader : mImpl->shaders)
+            if (idx == -1)
             {
-                glDetachShader(mImpl->shaderProgram, shader.shaderHandle);
-                glDeleteShader(shader.shaderHandle);
+                for (auto& shader : mImpl->shaders)
+                {
+                    if (shader.shaderHandle == 0)
+                    {
+                        continue;
+                    }
+
+                    glDetachShader(mImpl->shaderProgram, shader.shaderHandle);
+                    glDeleteShader(shader.shaderHandle);
+                }
+            }
+            else
+            {
+                if (0 <= idx && idx < mImpl->shaders.size())
+                {
+                    if (mImpl->shaders[idx].shaderHandle == 0)
+                    {
+                        return;
+                    }
+
+                    glDetachShader(mImpl->shaderProgram, mImpl->shaders[idx].shaderHandle);
+                    glDeleteShader(mImpl->shaders[idx].shaderHandle);
+                }
             }
 
-            mImpl->shaders.clear();
-
-            if (mImpl->shaderProgram)
-            {
-                glDeleteProgram(mImpl->shaderProgram);
-                mImpl->shaderProgram = 0;
-            }
         }
 
         bool Shader::reloadShaders(int idx)
