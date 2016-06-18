@@ -28,9 +28,12 @@ namespace atlas
 {
     namespace utils
     {
+        class Camera;
         class Film;
+        class FPSCounter;
         class Geometry;
         class Scene;
+
         struct Time;
     }
 }

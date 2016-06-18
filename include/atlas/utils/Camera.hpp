@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Utils.hpp"
 #include "atlas/math/Matrix.hpp"
 #include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
