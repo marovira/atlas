@@ -102,13 +102,11 @@ namespace atlas
 
             /**
              * This is called whenever the renderScene is called inside the
-             * Scene class. In this case, only the view matrix is passed in,
-             * so uniform blocks must be used to utilize this function 
-             * correctly.
+             * Scene class. This function assumes that uniform blocks 
+             * (or no matrices) are being used.
              * 
-             * \param[in] view The view matrix.
              */
-            virtual void renderGeometry(math::Matrix4 const& view);
+            virtual void renderGeometry();
 
             /**
              *	Called whenever the geometry needs to be transformed by a 
@@ -130,15 +128,6 @@ namespace atlas
              * Called whenever the geometry needs to reload its shaders.
              */
             virtual void reloadShaders();
-
-            /**
-             * This updates the projection matrix inside the uniform blocks
-             * of the shaders of the geometry. This can be used in tandem
-             * with the renderGeometry function that only takes the view
-             * matrix to prevent having to keep sending in the matrices as
-             * uniform variables.
-             */
-            virtual void updateProjection(math::Matrix4 const& projection);
 
         protected:
             /**
