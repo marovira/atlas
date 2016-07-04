@@ -28,7 +28,7 @@ namespace atlas
          * can be set once and the class will take care of deleting them
          * when the destructor is called.
          */
-        class VertexArrayObject
+        class VertexArrayObject : public Object
         {
         public:
             /**
@@ -106,6 +106,8 @@ namespace atlas
              * be disabled.
              */
             void disableVertexAttribArray(GLuint index);
+
+            GLuint getHandle() const override;
 
         private:
             struct VertexArrayImpl;

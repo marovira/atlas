@@ -144,5 +144,10 @@ namespace atlas
             glBindBufferBase(mImpl->target, index, mImpl->handle);
             GL_ERROR_CHECK();
         }
+
+        GLuint Buffer::getHandle() const
+        {
+            return mImpl->handle;
+        }
     }
 }

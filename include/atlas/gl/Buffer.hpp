@@ -37,7 +37,7 @@ namespace atlas
          *	OpenGL. It also provides automatic debugging for errors from
          *	OpenGL. 
          */
-        class Buffer
+        class Buffer : public Object
         {
         public:
             /**
@@ -300,6 +300,8 @@ namespace atlas
              * by the target of the Buffer.
              */
             void bindBufferBase(GLuint index) const;
+
+            GLuint getHandle() const override;
 
         private:
             struct BufferImpl;

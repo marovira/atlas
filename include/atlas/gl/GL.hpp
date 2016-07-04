@@ -48,6 +48,12 @@ namespace atlas
 {
     namespace gl
     {
+        class Object
+        {
+        public:
+            virtual GLuint getHandle() const = 0;
+        };
+
         class Shader;
         class Texture;
         class Buffer;

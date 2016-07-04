@@ -2,6 +2,7 @@
 #include "atlas/gl/ErrorCheck.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/STBImage.hpp"
+#include "atlas/gl/Buffer.hpp"
 
 namespace atlas
 {
@@ -68,6 +69,38 @@ namespace atlas
             GL_ERROR_CHECK();
         }
 
+        void Texture::texStorage1D(GLsizei levels, GLenum internalFormat,
+            GLsizei width)
+        {
+            glTexStorage1D(mImpl->target, levels, internalFormat, width);
+            GL_ERROR_CHECK();
+        }
 
+        void Texture::texStorage2D(GLsizei levels, GLenum internalFormat,
+            GLsizei width, GLsizei height)
+        {
+            glTexStorage2D(mImpl->target, levels, internalFormat, width,
+                height);
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texStorage3D(GLsizei levels, GLenum internalFormat,
+            GLsizei width, GLsizei height, GLsizei depth)
+        {
+            glTexStorage3D(mImpl->target, levels, internalFormat, width, 
+                height, depth);
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texBuffer(GLenum internalFormat, Buffer const& buffer)
+        {
+            glTexBuffer(mImpl->target, internalFormat, buffer.getHandle());
+            GL_ERROR_CHECK();
+        }
+
+        GLuint Texture::getHandle() const
+        {
+            return mImpl->handle;
+        }
     }
 }

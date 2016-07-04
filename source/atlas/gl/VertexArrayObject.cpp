@@ -84,5 +84,10 @@ namespace atlas
             mImpl->vertexArrays.erase(ind);
             GL_ERROR_CHECK();
         }
+
+        GLuint VertexArrayObject::getHandle() const
+        {
+            return mImpl->handle;
+        }
     }
 }

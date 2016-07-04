@@ -11,7 +11,7 @@ namespace atlas
 {
     namespace gl
     {
-        class Texture
+        class Texture : public Object
         {
         public:
             Texture();
@@ -23,6 +23,17 @@ namespace atlas
 
             void bindTexture();
             void unBindTexture();
+
+            void texStorage1D(GLsizei levels, GLenum internalFormat, 
+                GLsizei width);
+            void texStorage2D(GLsizei levels, GLenum internalFormat,
+                GLsizei width, GLsizei height);
+            void texStorage3D(GLsizei levels, GLenum internalFormat,
+                GLsizei width, GLsizei height, GLsizei depth);
+
+            void texBuffer(GLenum internalFormat, Buffer const& buffer);
+
+            GLuint getHandle() const override;
 
         private:
             struct TextureImpl;
