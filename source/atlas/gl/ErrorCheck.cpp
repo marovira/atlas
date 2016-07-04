@@ -54,6 +54,9 @@ namespace atlas
             GLenum severity, GLsizei length, const GLchar* message,
             const void* userParam)
         {
+            UNUSED(userParam);
+            UNUSED(length);
+
             std::string errorOrigin;
             switch (source)
             {
