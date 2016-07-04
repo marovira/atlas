@@ -46,7 +46,7 @@ namespace atlas
                 }
             }
 
-            void createIndices(std::vector<GLuint>& indices, int numVertices)
+            void createIndices(std::vector<GLuint>& indices)
             {
                 std::vector<GLuint> upperLoop(subDivsX, 0);
                 std::vector<GLuint> lowerLoop(subDivsY, 0);
@@ -86,7 +86,7 @@ namespace atlas
 
             mNormals = mVertices;
 
-            mImpl->createIndices(mIndices, (int)mVertices.size());
+            mImpl->createIndices(mIndices);
         }
 
         QuadMesh::QuadMesh(int width, int height, float cellWidth,
@@ -97,7 +97,7 @@ namespace atlas
 
             mNormals = mVertices;
 
-            mImpl->createIndices(mIndices, (int)mVertices.size());
+            mImpl->createIndices(mIndices);
         }
 
         QuadMesh::QuadMesh(QuadMesh const& m) :
