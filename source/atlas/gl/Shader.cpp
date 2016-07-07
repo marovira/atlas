@@ -217,7 +217,7 @@ namespace atlas
                 glGetProgramiv(mImpl->shaderProgram, GL_INFO_LOG_LENGTH, &len);
 
                 GLchar* log = new GLchar[len + 1];
-                glGetShaderInfoLog(mImpl->shaderProgram, len, &len, log);
+                glGetProgramInfoLog(mImpl->shaderProgram, len, &len, log);
 
                 ERROR_LOG("Shader linking failed: " + std::string(log));
 
