@@ -69,6 +69,13 @@ namespace atlas
             GL_ERROR_CHECK();
         }
 
+        void Texture::activeTexture(GLenum unit)
+        {
+            GLenum texture0 = GL_TEXTURE0;
+            glActiveTexture(unit + texture0);
+            GL_ERROR_CHECK();
+        }
+
         void Texture::texStorage1D(GLsizei levels, GLenum internalFormat,
             GLsizei width)
         {
@@ -95,6 +102,39 @@ namespace atlas
         void Texture::texBuffer(GLenum internalFormat, Buffer const& buffer)
         {
             glTexBuffer(mImpl->target, internalFormat, buffer.getHandle());
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texImage1D(GLint level, GLint internalFormat,
+            GLsizei width, GLint border, GLenum type, GLenum format, 
+            const GLvoid* data)
+        {
+            glTexImage1D(mImpl->target, level, internalFormat, width, border,
+                type, format, data);
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texImage2D(GLint level, GLint internalFormat, 
+            GLsizei width, GLsizei height, GLint border, GLenum format, 
+            GLenum type, const GLvoid* data)
+        {
+            glTexImage2D(mImpl->target, level, internalFormat, width, height,
+                border, format, type, data);
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texImage3D(GLint level, GLint internalFormat,
+            GLsizei width, GLsizei height, GLsizei depth, GLint border,
+            GLenum format, GLenum type, const GLvoid* data)
+        {
+            glTexImage3D(mImpl->target, level, internalFormat, width, height,
+                depth, border, format, type, data);
+            GL_ERROR_CHECK();
+        }
+
+        void Texture::texParameteri(GLenum pname, GLenum param)
+        {
+            glTexParameteri(mImpl->target, pname, param);
             GL_ERROR_CHECK();
         }
 

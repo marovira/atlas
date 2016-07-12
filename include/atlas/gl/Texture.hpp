@@ -24,6 +24,8 @@ namespace atlas
             void bindTexture();
             void unBindTexture();
 
+            void activeTexture(GLenum unit);
+
             void texStorage1D(GLsizei levels, GLenum internalFormat, 
                 GLsizei width);
             void texStorage2D(GLsizei levels, GLenum internalFormat,
@@ -32,6 +34,18 @@ namespace atlas
                 GLsizei width, GLsizei height, GLsizei depth);
 
             void texBuffer(GLenum internalFormat, Buffer const& buffer);
+
+            void texImage1D(GLint level, GLint internalFormat,
+                GLsizei width, GLint border, GLenum format, 
+                GLenum type, const GLvoid* data);
+            void texImage2D(GLint level, GLint internalFormat, 
+                GLsizei width, GLsizei height, GLint border, GLenum format,
+                GLenum type, const GLvoid* data);
+            void texImage3D(GLint level, GLint internalFormat, GLsizei width,
+                GLsizei height, GLsizei depth, GLint border, GLenum format,
+                GLenum type, const GLvoid* data);
+
+            void texParameteri(GLenum pname, GLenum param);
 
             GLuint getHandle() const override;
 
