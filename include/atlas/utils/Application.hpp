@@ -9,6 +9,8 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "atlas/gl/GL.hpp"
+#include "atlas/core/GLFW.hpp"
 
 #include <string>
 #include <memory>
@@ -163,6 +165,8 @@ namespace atlas
              *	@return The current scene.
              */
             Scene* getCurrentScene() const;
+
+            GLFWwindow* getCurrentWindow() const;
 
         private:
             struct ApplicationImpl;

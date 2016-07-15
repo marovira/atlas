@@ -2,8 +2,6 @@
 #include "atlas/utils/Scene.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
-#include "atlas/gl/GL.hpp"
-#include "atlas/core/GLFW.hpp"
 #include "atlas/core/Float.hpp"
 #include "atlas/gl/ErrorCheck.hpp"
 
@@ -335,6 +333,11 @@ namespace atlas
         Scene* Application::getCurrentScene() const
         {
             return mImpl->sceneList[mImpl->currentScene].get();
+        }
+
+        GLFWwindow* Application::getCurrentWindow() const
+        {
+            return mImpl->currentWindow;
         }
     }
 }
