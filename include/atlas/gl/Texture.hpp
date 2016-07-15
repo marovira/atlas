@@ -15,16 +15,16 @@ namespace atlas
         {
         public:
             Texture();
-            Texture(GLenum target);
+            Texture(GLenum target, GLenum unit = 0);
             Texture(Texture const& tex);
             ~Texture();
 
             void genTexture(GLenum target);
+            void setTextureUnit(GLenum unit);
 
             void bindTexture();
             void unBindTexture();
 
-            void activeTexture(GLenum unit);
 
             void texStorage1D(GLsizei levels, GLenum internalFormat, 
                 GLsizei width);

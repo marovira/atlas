@@ -12,7 +12,8 @@ namespace atlas
         {
             TextureImpl() :
                 target(0),
-                handle(0)
+                handle(0),
+                unit(0)
             { }
 
             TextureImpl(TextureImpl const& impl) = default;
@@ -26,6 +27,7 @@ namespace atlas
             }
 
             GLenum target;
+            GLenum unit;
             GLuint handle;
         };
 
@@ -33,11 +35,12 @@ namespace atlas
             mImpl(new TextureImpl)
         { }
 
-        Texture::Texture(GLenum target) :
+        Texture::Texture(GLenum target, GLenum unit) :
             mImpl(new TextureImpl)
         {
             glGenTextures(1, &mImpl->handle);
             mImpl->target = target;
+            mImpl->unit = unit;
         }
 
         Texture::Texture(Texture const& tex) :
@@ -57,22 +60,22 @@ namespace atlas
             mImpl->target = target;
         }
 
+        void Texture::setTextureUnit(GLenum unit)
+        {
+            mImpl->unit = unit;
+        }
+
         void Texture::bindTexture()
         {
+            glActiveTexture(GL_TEXTURE0 + mImpl->unit);
             glBindTexture(mImpl->target, mImpl->handle);
             GL_ERROR_CHECK();
         }
 
         void Texture::unBindTexture()
         {
+            glActiveTexture(GL_TEXTURE0 + mImpl->unit);
             glBindTexture(mImpl->target, 0);
-            GL_ERROR_CHECK();
-        }
-
-        void Texture::activeTexture(GLenum unit)
-        {
-            GLenum texture0 = GL_TEXTURE0;
-            glActiveTexture(unit + texture0);
             GL_ERROR_CHECK();
         }
 
