@@ -131,7 +131,7 @@ namespace atlas
             switch (severity)
             {
             case GL_DEBUG_SEVERITY_NOTIFICATION:
-                INFO_LOG("OpenGL notification: " + errorMessage);
+                //INFO_LOG("OpenGL notification: " + errorMessage);
                 break;
 
             case GL_DEBUG_SEVERITY_LOW:
