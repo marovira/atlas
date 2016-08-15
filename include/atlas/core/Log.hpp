@@ -139,7 +139,7 @@ namespace atlas
 #else
 #define DEBUG_LOG(message)
 
-#define DEBUG_LOG(format, ...)
+#define DEBUG_LOG_V(format, ...)
 #endif
 
 /**
