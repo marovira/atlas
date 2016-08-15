@@ -1,23 +1,29 @@
 # GLFW
 
+[![Build status](https://travis-ci.org/glfw/glfw.svg?branch=master)](https://travis-ci.org/glfw/glfw)
+[![Build status](https://ci.appveyor.com/api/projects/status/0kf0ct9831i5l6sp/branch/master?svg=true)](https://ci.appveyor.com/project/elmindreda/glfw)
+
 ## Introduction
 
-GLFW is a free, Open Source, multi-platform library for OpenGL and OpenGL ES
-application development.  It provides a simple, platform-independent API for
-creating windows and contexts, reading input, handling events, etc.
+GLFW is a free, Open Source, multi-platform library for OpenGL, OpenGL ES and
+Vulkan application development.  It provides a simple, platform-independent API
+for creating windows, contexts and surfaces, reading input, handling events, etc.
 
-Version 3.1.2 adds fixes for a large number of bugs that together affect all
-supported platforms, as well as dynamic loading work that simplifies compilation
-and linking.
+Version 3.2 adds support for Vulkan surface creation, window mode switching,
+window maximization, window input focus control, window size and aspect ratio
+limits, human-readable key names, window icons, joystick connection events,
+XInput and DirectInput joystick input, event waiting with timeout, 64-bit
+integer raw timer, context-less window creation, error-less contexts via
+`GL_KHR_no_error` (where available), run-time context creation API selection,
+Windows 8.1 per-monitor DPI and the CMake config-file package system, adds
+simpler build-time configuration, improved documentation and fixes for a large
+number of bugs that together affect all supported platforms.
 
 If you are new to GLFW, you may find the
-[introductory tutorial](http://www.glfw.org/docs/latest/quick.html) for GLFW
+[tutorial](http://www.glfw.org/docs/latest/quick.html) for GLFW
 3 useful.  If you have used GLFW 2 in the past, there is a
 [transition guide](http://www.glfw.org/docs/latest/moving.html) for moving to
 the GLFW 3 API.
-
-Note that a number of source files have been added or renamed in 3.1, which may
-require you to update any custom build files you have.
 
 
 ## Compiling GLFW
@@ -50,10 +56,13 @@ This will help both us and other people experiencing the same bug.
 
 ## Dependencies
 
-GLFW bundles a number of dependencies in the `deps/` directory.
+GLFW itself needs only the headers and libraries for your window system.  It
+does not need the headers for any context creation API (WGL, GLX, EGL, NSGL) or
+rendering API (OpenGL, OpenGL ES, Vulkan) to enable support for them.
 
- - [Khronos extension headers](https://www.opengl.org/registry/) for API
-   extension symbols used by GLFW
+The examples and test programs depend on a number of tiny libraries.  These are
+located in the `deps/` directory.
+
  - [getopt\_port](https://github.com/kimgr/getopt_port/) for examples
    with command-line options
  - [TinyCThread](https://github.com/tinycthread/tinycthread) for threaded
@@ -62,67 +71,82 @@ GLFW bundles a number of dependencies in the `deps/` directory.
    [glad](https://github.com/Dav1dde/glad) for examples using modern OpenGL
  - [linmath.h](https://github.com/datenwolf/linmath.h) for linear algebra in
    examples
+ - [Vulkan headers](https://www.khronos.org/registry/vulkan/) for Vulkan tests
+
+The Vulkan example additionally requires the Vulkan SDK to be installed, or it
+will not be included in the build.
+
+The documentation is generated with [Doxygen](http://doxygen.org/).  If CMake
+does not find Doxygen, the documentation will not be generated.
 
 
 ## Changelog
 
- - Made all client API functions dynamically loaded
- - Changed minimum required CMake version to 2.8.12
- - Replaced GLU with [linmath.h](https://github.com/datenwolf/linmath.h) in
-   example programs
- - Merged all cursor test programs into the `cursor` program
- - Removed all mention of GLU in examples, build files and package dependencies
- - Bugfix: Initialization failed on headless systems
- - Bugfix: The cached current context could get out of sync
- - Bugfix: `glfwIconifyWindow` did not restore the original video mode for full
-           screen windows created with `GLFW_AUTO_ICONIFY`
- - [Win32] Renamed hybrid GPU override compile-time option to
-           `_GLFW_USE_HYBRID_HPG` and added support for AMD PowerXpress systems
- - [Win32] Bugfix: `glfwGetVideoModes` included unusable modes on some systems
- - [Win32] Bugfix: `glfwWaitEvents` would return directly for focused windows in
-                   disabled cursor mode
- - [Cocoa] Bugfix: The cached `NSScreen` for a monitor could get out of sync
- - [Cocoa] Bugfix: The `GLFW_AUTO_ICONIFY` window hint was ignored
- - [Cocoa] Bugfix: Resizing a window to its minimum size would segfault
- - [Cocoa] Bugfix: Creating or showing a window would make its context current
- - [Cocoa] Bugfix: Joysticks connected after `glfwInit` were not detected
- - [Cocoa] Bugfix: Cursor creation failed unless a window had been created.
- - [Cocoa] Bugfix: Window refresh events were not generated by iconification or
-                   restoration
- - [Cocoa] Bugfix: The primary monitor would get reported as disconnected when
-                   entering full screen on a dual-GPU machine with automatic
-                   graphics switching
- - [Cocoa] Bugfix: The original video modes were not restored when the
-                   application was hidden
- - [X11] Bugfix: `glfwInit` would segfault on systems without RandR
- - [X11] Bugfix: The response to `_NET_WM_PING` was sent to the wrong window
- - [X11] Bugfix: Character input via XIM did not work in many cases
- - [X11] Bugfix: No fallback existed for missing `_NET_ACTIVE_WINDOW` support
- - [X11] Bugfix: Some significant window focus events were ignored
- - [X11] Bugfix: The `GLFW_AUTO_ICONIFY` window hint was ignored
- - [X11] Bugfix: The original video mode was not restored on iconification of
-                 full screen windows
- - [X11] Bugfix: `GLFW_ARROW_CURSOR` selected the wrong cursor image
- - [X11] Bugfix: The `GLFW_DECORATED` hint was not ignored for full screen
- - [X11] Bugfix: `glfwWaitEvents` did not handle `EINTR` for `select`
- - [X11] Bugfix: `glfwWaitEvents` could return when no events were available
- - [X11] Bugfix: `XkbGetKeyboard` fails on XWayland
- - [X11] Bugfix: Character input did not work correctly for non-UTF-8 locales
- - [X11] Bugfix: Long input sequences generated by IMEs were discarded
- - [WGL] Made all WGL functions dynamically loaded
- - [WGL] Removed `GLFW_USE_DWM_SWAP_INTERVAL` compile-time option
- - [WGL] Bugfix: Swap interval was ignored when DWM was enabled
- - [WGL] Bugfix: Failure to find a pixel format was reported incorrectly
- - [GLX] Added dependency on `libdl` on systems where it provides `dlopen`
- - [GLX] Made all GLX functions dynamically loaded
- - [GLX] Removed `_GLFW_HAS_GLXGETPROCADDRESS*` and `_GLFW_HAS_DLOPEN`
-         compile-time options
- - [GLX] Bugfix: Failure to find a `GLXFBConfig` was reported incorrectly
- - [EGL] Made all EGL functions dynamically loaded
- - [EGL] Bugfix: `glfwGetProcAddress` did not return the addresses of core
-                 functions
- - [EGL] Bugfix: Failure to find an `EGLConfig` was reported incorrectly
- - [NSGL] Bugfix: Failure to find a pixel format was reported incorrectly
+ - Added `glfwVulkanSupported`, `glfwGetRequiredInstanceExtensions`,
+   `glfwGetInstanceProcAddress`, `glfwGetPhysicalDevicePresentationSupport` and
+   `glfwCreateWindowSurface` for platform independent Vulkan support
+ - Added `glfwSetWindowMonitor` for switching between windowed and full screen
+   modes and updating the monitor and desired video mode of full screen windows
+ - Added `glfwMaximizeWindow` and `GLFW_MAXIMIZED` for window maximization
+ - Added `glfwFocusWindow` for giving windows input focus
+ - Added `glfwSetWindowSizeLimits` and `glfwSetWindowAspectRatio` for setting
+   absolute and relative window size limits
+ - Added `glfwGetKeyName` for querying the layout-specific name of printable
+   keys
+ - Added `glfwWaitEventsTimeout` for waiting for events for a set amount of time
+ - Added `glfwSetWindowIcon` for setting the icon of a window
+ - Added `glfwGetTimerValue` and `glfwGetTimerFrequency` for raw timer access
+ - Added `glfwSetJoystickCallback` and `GLFWjoystickfun` for joystick connection
+   and disconnection events
+ - Added `GLFW_NO_API` for creating window without contexts
+ - Added `GLFW_INCLUDE_VULKAN` for including the Vulkan header
+ - Added `GLFW_CONTEXT_CREATION_API`, `GLFW_NATIVE_CONTEXT_API` and
+   `GLFW_EGL_CONTEXT_API` for run-time context creation API selection
+ - Added `GLFW_CONTEXT_NO_ERROR` context hint for `GL_KHR_no_error` support
+ - Added `GLFW_TRUE` and `GLFW_FALSE` as client API independent boolean values
+ - Added icons to examples on Windows and OS X
+ - Relaxed rules for native access header macros
+ - Removed dependency on external OpenGL or OpenGL ES headers
+ - Removed `_GLFW_USE_OPENGL`, `_GLFW_USE_GLESV1`, `_GLFW_USE_GLESV2`,
+   `_GLFW_WGL`, `_GLFW_NSGL`, `_GLFW_GLX` and `_GLFW_EGL` configuration macros
+ - [Win32] Added support for Windows 8.1 per-monitor DPI
+ - [Win32] Replaced winmm with XInput and DirectInput for joystick input
+ - [Win32] Bugfix: Window creation would segfault if video mode setting required
+                   the system to be restarted
+ - [Win32] Bugfix: MinGW import library lacked the `lib` prefix
+ - [Win32] Bugfix: Monitor connection and disconnection events were not reported
+                   when no windows existed
+ - [Win32] Bugfix: Activating or deactivating displays in software did not
+                   trigger monitor callback
+ - [Win32] Bugfix: No monitors were listed on headless and VMware guest systems
+ - [Win32] Bugfix: Pressing Ctrl+Pause would report `GLFW_KEY_UNKNOWN`
+ - [Win32] Bugfix: Window size events would be reported in wrong order when
+                   restoring a full screen window
+ - [Cocoa] Made joystick polling more efficient
+ - [Cocoa] Removed support for OS X 10.6
+ - [Cocoa] Bugfix: Full screen windows on secondary monitors were mispositioned
+ - [Cocoa] Bugfix: Connecting a joystick that reports no name would segfault
+ - [Cocoa] Bugfix: Modifier flags cache was not updated when window became key
+ - [Cocoa] Bugfix: Dead key character composition did not work
+ - [Cocoa] Bugfix: The CGL context was not released until the autorelease pool
+                   was drained by another function
+ - [X11] Bugfix: Monitor connection and disconnection events were not reported
+ - [X11] Bugfix: Decoding of UTF-8 text from XIM could continue past the end
+ - [X11] Bugfix: An XKB structure was leaked during `glfwInit`
+ - [X11] Bugfix: XInput2 `XI_Motion` events interfered with the Steam overlay
+ - [POSIX] Bugfix: An unrelated TLS key could be deleted by `glfwTerminate`
+ - [Linux] Made joystick polling more efficient
+ - [WGL] Changed extension loading to only be performed once
+ - [WGL] Removed dependency on external WGL headers
+ - [GLX] Added `glfwGetGLXWindow` to query the `GLXWindow` of a window
+ - [GLX] Replaced legacy drawable with `GLXWindow`
+ - [GLX] Removed dependency on external GLX headers
+ - [GLX] Bugfix: NetBSD does not provide `libGL.so.1`
+ - [EGL] Added `_GLFW_USE_EGLPLATFORM_H` configuration macro for controlling
+         whether to use an existing `EGL/eglplatform.h` header
+ - [EGL] Added and documented test for if the context is current on the calling
+         thread during buffer swap
+ - [EGL] Removed dependency on external EGL headers
 
 
 ## Contact
@@ -132,7 +156,7 @@ can find the latest version of GLFW, as well as news, documentation and other
 information about the project.
 
 If you have questions related to the use of GLFW, we have a
-[support forum](https://sourceforge.net/p/glfw/discussion/247562/), and the IRC
+[support forum](http://discourse.glfw.org/), and the IRC
 channel `#glfw` on [Freenode](http://freenode.net/).
 
 If you have a bug to report, a patch to submit or a feature you'd like to
@@ -167,6 +191,8 @@ skills.
  - Olivier Delannoy
  - Paul R. Deppe
  - Michael Dickens
+ - Роман Донченко
+ - Mario Dorn
  - Jonathan Dummer
  - Ralph Eastwood
  - Siavash Eliasi
@@ -181,12 +207,14 @@ skills.
  - heromyth
  - Lucas Hinderberger
  - Paul Holden
+ - IntellectualKitty
  - Aaron Jacobs
  - Toni Jovanoski
  - Arseny Kapoulkine
  - Osman Keskin
  - Cameron King
  - Peter Knut
+ - Christoph Kubisch
  - Eric Larson
  - Robin Leffmann
  - Glenn Lewis
@@ -196,6 +224,7 @@ skills.
  - Martins Mozeiko
  - Tristam MacDonald
  - Hans Mackowiak
+ - Zbigniew Mandziejewicz
  - Kyle McDonald
  - David Medlock
  - Bryce Mehring
@@ -215,6 +244,7 @@ skills.
  - Peoro
  - Braden Pellett
  - Arturo J. Pérez
+ - Orson Peters
  - Emmanuel Gil Peyrot
  - Cyril Pichard
  - Pieroman
@@ -228,6 +258,7 @@ skills.
  - SephiRok
  - Steve Sexton
  - Systemcluster
+ - Yoshiki Shibukawa
  - Dmitri Shuralyov
  - Daniel Skorupski
  - Bradley Smith
@@ -239,13 +270,16 @@ skills.
  - TTK-Bandit
  - Sergey Tikhomirov
  - A. Tombs
+ - Ioannis Tsakpinis
  - Samuli Tuomola
  - urraka
  - Jari Vetoniemi
  - Ricardo Vieira
+ - Nicholas Vitovitch
  - Simon Voordouw
  - Torsten Walluhn
  - Patrick Walton
+ - Xo Wang
  - Jay Weisskopf
  - Frank Wille
  - yuriks
