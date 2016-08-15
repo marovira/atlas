@@ -352,7 +352,6 @@ namespace atlas
         {
             glUniformBlockBinding(mImpl->shaderProgram,
                 uniformBlockIndex, uniformBlockBinding);
-            GL_ERROR_CHECK();
         }
     }
 }

@@ -69,21 +69,18 @@ namespace atlas
         {
             glActiveTexture(GL_TEXTURE0 + mImpl->unit);
             glBindTexture(mImpl->target, mImpl->handle);
-            GL_ERROR_CHECK();
         }
 
         void Texture::unBindTexture()
         {
             glActiveTexture(GL_TEXTURE0 + mImpl->unit);
             glBindTexture(mImpl->target, 0);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texStorage1D(GLsizei levels, GLenum internalFormat,
             GLsizei width)
         {
             glTexStorage1D(mImpl->target, levels, internalFormat, width);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texStorage2D(GLsizei levels, GLenum internalFormat,
@@ -91,7 +88,6 @@ namespace atlas
         {
             glTexStorage2D(mImpl->target, levels, internalFormat, width,
                 height);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texStorage3D(GLsizei levels, GLenum internalFormat,
@@ -99,13 +95,11 @@ namespace atlas
         {
             glTexStorage3D(mImpl->target, levels, internalFormat, width, 
                 height, depth);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texBuffer(GLenum internalFormat, Buffer const& buffer)
         {
             glTexBuffer(mImpl->target, internalFormat, buffer.getHandle());
-            GL_ERROR_CHECK();
         }
 
         void Texture::texImage1D(GLint level, GLint internalFormat,
@@ -114,7 +108,6 @@ namespace atlas
         {
             glTexImage1D(mImpl->target, level, internalFormat, width, border,
                 type, format, data);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texImage2D(GLint level, GLint internalFormat, 
@@ -123,7 +116,6 @@ namespace atlas
         {
             glTexImage2D(mImpl->target, level, internalFormat, width, height,
                 border, format, type, data);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texImage3D(GLint level, GLint internalFormat,
@@ -132,13 +124,11 @@ namespace atlas
         {
             glTexImage3D(mImpl->target, level, internalFormat, width, height,
                 depth, border, format, type, data);
-            GL_ERROR_CHECK();
         }
 
         void Texture::texParameteri(GLenum pname, GLenum param)
         {
             glTexParameteri(mImpl->target, pname, param);
-            GL_ERROR_CHECK();
         }
 
         GLuint Texture::getHandle() const

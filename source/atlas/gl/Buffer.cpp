@@ -58,7 +58,6 @@ namespace atlas
         void Buffer::bindBuffer() const
         {
             glBindBuffer(mImpl->target, mImpl->handle);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::unBindBuffer() const
@@ -70,14 +69,12 @@ namespace atlas
             GLenum range) const
         {
             glBufferData(mImpl->target, size, data, range);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::bufferSubData(GLintptr offset, GLsizeiptr size,
             const GLvoid* data) const
         {
             glBufferSubData(mImpl->target, offset, size, data);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::clearBufferData(GLenum internalFormat, GLenum format, 
@@ -85,7 +82,6 @@ namespace atlas
         {
             glClearBufferData(mImpl->target, internalFormat, format, 
                 type, data);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::clearBufferSubData(GLenum internalFormat, GLintptr offset,
@@ -93,20 +89,18 @@ namespace atlas
         {
             glClearBufferSubData(mImpl->target, internalFormat, offset, size,
                 format, type, data);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::getBufferSubData(GLintptr offset, GLsizeiptr size, 
             GLvoid* data) const
         {
             glGetBufferSubData(mImpl->target, offset, size, data);
-            GL_ERROR_CHECK();
         }
 
         void* Buffer::mapBuffer(GLenum access) const
         {
             void* ret = glMapBuffer(mImpl->target, access);
-            GL_ERROR_CHECK();
+            
             return ret;
         }
 
@@ -128,7 +122,6 @@ namespace atlas
         {
             glVertexAttribPointer(index, size, type, normalized, stride, 
                 pointer);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::bindBufferRange(GLuint index, GLintptr offset, 
@@ -136,13 +129,11 @@ namespace atlas
         {
             glBindBufferRange(mImpl->target, index, mImpl->handle, offset,
                 size);
-            GL_ERROR_CHECK();
         }
 
         void Buffer::bindBufferBase(GLuint index) const
         {
             glBindBufferBase(mImpl->target, index, mImpl->handle);
-            GL_ERROR_CHECK();
         }
 
         GLuint Buffer::getHandle() const

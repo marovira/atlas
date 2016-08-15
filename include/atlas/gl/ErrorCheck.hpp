@@ -1,28 +1,11 @@
 /**
  *	\file ErrorCheck.hpp
- *	\brief Defines the OpenGL error handling system.
+ *	\brief Defines the OpenGL error callback and error handling system.
  *
- * Recall that OpenGL is essentially a state-machine. As a result,
- * whenever an error is triggered, the error flag is added to a queue,
- * which can then be checked until all the errors have been retrieved.
- * This class (and function) provide a mechanism for doing this 
- * automatically. Errors are retrieved from OpenGL and then 
- * printed out using the Log provided by Atlas. For convenience,
- * use the provided macro.
- * 
- * \note
- * Modern OpenGL (4.3 and above) provides a new mechanism for retrieving
- * errors using an error callback function. The reason why this isn't
- * used in Atlas is due to the platform support. Not all Linux 
- * and Apple machines have access to OpenGL 4.3 so this functionality
- * would be lost on them. At the same time, adding the code
- * necessary for the callback would just add extra over-head and hence
- * it is not implemented.
- * 
  * \warning
- * Atlas does <b> not </b> provide support for OpenGL 2. As such,
- * any errors generated from this API will not be parsed by this
- * function. Please use OpenGL 3 and above instead.
+ * Atlas assumes the existence of the OpenGL error callback function 
+ * (available in OpenGL 4.3+). All previous error checking have now been
+ * removed.
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_GL_ERROR_CHECK_HPP
@@ -33,48 +16,50 @@
 #include "atlas/core/Macros.hpp"
 #include "GL.hpp"
 
+#define ATLAS_GL_ERROR_SOURCE_API                   0x1
+#define ATLAS_GL_ERROR_SOURCE_WINDOW_SYSTEM         0x2
+#define ATLAS_GL_ERROR_SOURCE_SHADER_COMPILER       0x4
+#define ATLAS_GL_ERROR_SOURCE_THIRD_PARTY           0x8
+#define ATLAS_GL_ERROR_SOURCE_APPLICATION           0x10
+#define ATLAS_GL_ERROR_SOURCE_OTHER                 0x20
+#define ATLAS_GL_ERROR_SOURCE_ALL                   0x3F
+#define ATLAS_GL_ERROR_SOURCE_NONE                  0x0
+
+#define ATLAS_GL_ERROR_TYPE_ERROR                   0x1
+#define ATLAS_GL_ERROR_TYPE_DEPRECATED_BEHAVIOUR    0x2
+#define ATLAS_GL_ERROR_TYPE_UNDEFINED_BEHAVIOUR     0x4
+#define ATLAS_GL_ERROR_TYPE_PORTABILITY             0x8
+#define ATLAS_GL_ERROR_TYPE_PERFORMANCE             0x10
+#define ATLAS_GL_ERROR_TYPE_MARKER                  0x20
+#define ATLAS_GL_ERROR_TYPE_PUSH_GROUP              0x40
+#define ATLAS_GL_ERROR_TYPE_POP_GROUP               0x80
+#define ATLAS_GL_ERROR_TYPE_OTHER                   0x100
+#define ATLAS_GL_ERROR_TYPE_ALL                     0x1FF
+#define ATLAS_GL_ERROR_TYPE_NONE                    0x0
+
+#define ATLAS_GL_ERROR_SEVERITY_NOTIFICATION        0x1
+#define ATLAS_GL_ERROR_SEVERITY_LOW                 0x2
+#define ATLAS_GL_ERROR_SEVERITY_MEDIUM              0x4
+#define ATLAS_GL_ERROR_SEVERITY_HIGH                0x8
+#define ATLAS_GL_ERROR_SEVERITY_ALL                 0xF
+#define ATLAS_GL_ERROR_SEVERITY_NONE                0x0
+
 namespace atlas
 {
     namespace gl
     {
-        /**
-         * Loops through the OpenGL queue retrieving all of the errors
-         * and prints them to the Log.
-         */
-        void checkGLErrors();
+        void initializeGLError();
 
-        /**
-         *	Loops through the OpenGL error queue and cleans it out.
-         *	
-         *	\warning
-         *	This function does not print errors! Use with care.
-         */
-        void clearGLErrors();
+        void setGLErrorSources(GLuint sources);
+
+        void setGLErrorTypes(GLuint types);
+
+        void setGLErrorSeverity(GLuint severity);
 
         void APIENTRY openGLErrorCallback(GLenum source, GLenum type,
             GLuint id, GLenum severity, GLsizei length, const GLchar* message,
             const void* userParam);
     }
 }
-
-/**
- * \def GL_ERROR_CHECK()
- * Invokes the checkGLErrors function without having to explicity type
- * all of the namespaces.
- */
-#ifdef ATLAS_DEBUG
-#define GL_ERROR_CHECK() atlas::gl::checkGLErrors()
-#else
-#define GL_ERROR_CHECK()
-#endif
-
-/**
- *	\def GL_CLEAR_ERRORS()
- *	Clears out the OpenGL error queue without printing them to the screen.
- *	
- *	\warning
- *	This will not print errors!
- */
-#define GL_CLEAR_ERRORS() atlas::gl::clearGLErrors()
 
 #endif

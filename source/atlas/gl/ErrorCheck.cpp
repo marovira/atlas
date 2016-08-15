@@ -6,123 +6,224 @@ namespace atlas
 {
     namespace gl
     {
-        void checkGLErrors()
+        class DebugCallbackSettings
         {
-            GLenum err = GL_NO_ERROR;
-            while ((err = glGetError()) != GL_NO_ERROR)
-            {
-                std::string message;
-                switch (err)
-                {
-                case GL_INVALID_ENUM:
-                    message = "(1280) Invalid enum";
-                    break;
-
-                case GL_INVALID_VALUE:
-                    message = "(1281) Invalid value";
-                    break;
-
-                case GL_INVALID_OPERATION:
-                    message = "(1282) Invalid operation";
-                    break;
-
-                case GL_OUT_OF_MEMORY:
-                    message = "(1285) Out of memory";
-                    break;
-
-                case GL_INVALID_FRAMEBUFFER_OPERATION:
-                    message = "(1286) Invalid framebuffer operation";
-                    break;
-
-                default:
-                    message = "(0) No error.";
-                    break;
-                }
-
-                ERROR_LOG("GL error: " + message);
-            }
-        }
-
-        void clearGLErrors()
-        {
-            GLenum err = GL_NO_ERROR;
-            while ((err = glGetError()) != GL_NO_ERROR)
+            DebugCallbackSettings() :
+                errorSources(ATLAS_GL_ERROR_SOURCE_ALL),
+                errorTypes(ATLAS_GL_ERROR_TYPE_ALL),
+                errorSeverity(ATLAS_GL_ERROR_SEVERITY_ALL)
             { }
+
+            ~DebugCallbackSettings()
+            { }
+
+            DebugCallbackSettings(DebugCallbackSettings&) = delete;
+            void operator=(DebugCallbackSettings&) = delete;
+
+        public:
+            static DebugCallbackSettings& getInstance()
+            {
+                static DebugCallbackSettings instance;
+                return instance;
+            }
+
+            GLuint errorSources;
+            GLuint errorTypes;
+            GLuint errorSeverity;
+        };
+
+        void initializeGLError()
+        {
+#ifdef ATLAS_DEBUG
+            if (glDebugMessageCallback)
+            {
+                INFO_LOG("OpenGL debug callback available.");
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+                glDebugMessageCallback(openGLErrorCallback, nullptr);
+                GLuint unusedIds = 0;
+                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE,
+                    GL_DONT_CARE, 0, &unusedIds, true);
+            }
+            else
+            {
+                INFO_LOG("OpenGL debug callback is not available.");
+            }
+#else
+            INFO_LOG("OpenGL debug callback only available in debug builds.");
+#endif
+            DebugCallbackSettings::getInstance();
         }
 
-        void openGLErrorCallback(GLenum source, GLenum type, GLuint id,
+        void setGLErrorSources(GLuint sources)
+        {
+            DebugCallbackSettings::getInstance().errorSources = sources;
+        }
+
+        void setGLErrorTypes(GLuint types)
+        {
+            DebugCallbackSettings::getInstance().errorTypes = types;
+        }
+
+        void setGLErrorSeverity(GLuint severity)
+        {
+
+            DebugCallbackSettings::getInstance().errorSeverity = severity;
+        }
+
+        void APIENTRY openGLErrorCallback(GLenum source, GLenum type, GLuint id,
             GLenum severity, GLsizei length, const GLchar* message,
             const void* userParam)
         {
             UNUSED(userParam);
             UNUSED(length);
 
+            DebugCallbackSettings& settings = 
+                DebugCallbackSettings::getInstance();
+
             std::string errorOrigin;
             switch (source)
             {
             case GL_DEBUG_SOURCE_API:
-                errorOrigin = "OpenGL API";
-                break;
+                if (settings.errorSources & ATLAS_GL_ERROR_SOURCE_API)
+                {
+                    errorOrigin = "OpenGL API";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-                errorOrigin = "window system";
-                break;
+                if (settings.errorSources & ATLAS_GL_ERROR_SOURCE_WINDOW_SYSTEM)
+                {
+                    errorOrigin = "window system";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_SOURCE_SHADER_COMPILER:
-                errorOrigin = "shader compiler";
-                break;
+                if (settings.errorSources &
+                    ATLAS_GL_ERROR_SOURCE_SHADER_COMPILER)
+                {
+                    errorOrigin = "shader compiler";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_SOURCE_THIRD_PARTY:
-                errorOrigin = "third party";
-                break;
+                if (settings.errorSources & ATLAS_GL_ERROR_SOURCE_THIRD_PARTY)
+                {
+                    errorOrigin = "third party";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_SOURCE_APPLICATION:
-                errorOrigin = "user of application";
-                break;
+                if (settings.errorSources & ATLAS_GL_ERROR_SOURCE_APPLICATION)
+                {
+                    errorOrigin = "user of application";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_SOURCE_OTHER:
-                errorOrigin = "other";
-                break;
+                if (settings.errorSources & ATLAS_GL_ERROR_SOURCE_OTHER)
+                {
+                    errorOrigin = "other";
+                    break;
+                }
+
+                return;
             }
 
             std::string errorType;
             switch (type)
             {
             case GL_DEBUG_TYPE_ERROR:
-                errorType = "error";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_ERROR)
+                {
+                    errorType = "error";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-                errorType = "deprecated behaviour";
-                break;
+                if (settings.errorTypes &
+                    ATLAS_GL_ERROR_TYPE_DEPRECATED_BEHAVIOUR)
+                {
+                    errorType = "deprecated behaviour";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-                errorType = "undefined behaviour";
-                break;
+                if (settings.errorTypes &
+                    ATLAS_GL_ERROR_TYPE_UNDEFINED_BEHAVIOUR)
+                {
+                    errorType = "undefined behaviour";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_PORTABILITY:
-                errorType = "portability";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_PORTABILITY)
+                {
+                    errorType = "portability";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_PERFORMANCE:
-                errorType = "performance";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_PERFORMANCE)
+                {
+                    errorType = "performance";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_MARKER:
-                errorType = "marker";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_MARKER)
+                {
+                    errorType = "marker";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_PUSH_GROUP:
-                errorType = "push group";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_PUSH_GROUP)
+                {
+                    errorType = "push group";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_POP_GROUP:
-                errorType = "pop group";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_POP_GROUP)
+                {
+                    errorType = "pop group";
+                    break;
+                }
+
+                return;
 
             case GL_DEBUG_TYPE_OTHER:
-                errorType = "other";
-                break;
+                if (settings.errorTypes & ATLAS_GL_ERROR_TYPE_OTHER)
+                {
+                    errorType = "other";
+                    break;
+                }
+
+                return;
             }
 
             std::string errorMessage = "[" + errorType + "] : [" +
@@ -131,19 +232,38 @@ namespace atlas
             switch (severity)
             {
             case GL_DEBUG_SEVERITY_NOTIFICATION:
-                //INFO_LOG("OpenGL notification: " + errorMessage);
+                if (settings.errorSeverity &
+                    ATLAS_GL_ERROR_SEVERITY_NOTIFICATION)
+                {
+                    GLuint test = settings.errorSeverity & ATLAS_GL_ERROR_SEVERITY_NOTIFICATION;
+                    INFO_LOG("OpenGL notification: " + errorMessage);
+                }
+
                 break;
 
             case GL_DEBUG_SEVERITY_LOW:
-                WARN_LOG("OpenGL warning: " + errorMessage);
+                if (settings.errorSeverity &
+                    ATLAS_GL_ERROR_SEVERITY_LOW)
+                {
+                    WARN_LOG("OpenGL warning: " + errorMessage);
+                }
+
                 break;
 
             case GL_DEBUG_SEVERITY_MEDIUM:
-                ERROR_LOG("OpenGL error: " + errorMessage);
+                if (settings.errorSeverity & ATLAS_GL_ERROR_SEVERITY_MEDIUM)
+                {
+                    ERROR_LOG("OpenGL error: " + errorMessage);
+                }
+
                 break;
 
             case GL_DEBUG_SEVERITY_HIGH:
-                CRITICAL_LOG("OpenGL critical error: " + errorMessage);
+                if (settings.errorSeverity & ATLAS_GL_ERROR_SEVERITY_HIGH)
+                {
+                    CRITICAL_LOG("OpenGL critical error: " + errorMessage);
+                }
+
                 break;
             }
         }

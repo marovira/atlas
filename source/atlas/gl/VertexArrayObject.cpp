@@ -52,7 +52,6 @@ namespace atlas
         void VertexArrayObject::bindVertexArray()
         {
             glBindVertexArray(mImpl->handle);
-            GL_ERROR_CHECK();
         }
 
         void VertexArrayObject::unBindVertexArray()
@@ -73,7 +72,6 @@ namespace atlas
 
             glEnableVertexAttribArray(index);
             mImpl->vertexArrays.push_back(index);
-            GL_ERROR_CHECK();
         }
 
         void VertexArrayObject::disableVertexAttribArray(GLuint index)
@@ -82,7 +80,6 @@ namespace atlas
             std::vector<GLuint>::iterator ind = std::find(
                 mImpl->vertexArrays.begin(), mImpl->vertexArrays.end(), index);
             mImpl->vertexArrays.erase(ind);
-            GL_ERROR_CHECK();
         }
 
         GLuint VertexArrayObject::getHandle() const
