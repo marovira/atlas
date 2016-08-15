@@ -32,7 +32,7 @@
 #include "atlas/Atlas.hpp"
 #include "atlas/core/Platform.hpp"
 
-#include <GL/glew.h>
+#include <GL/gl3w.h>
 
 #ifdef USING_ATLAS_GL_NS
 #undef USING_ATLAS_GL_NS

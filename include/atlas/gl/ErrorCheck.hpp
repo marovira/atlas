@@ -51,7 +51,7 @@ namespace atlas
          */
         void clearGLErrors();
 
-        void GLAPIENTRY openGLErrorCallback(GLenum source, GLenum type,
+        void APIENTRY openGLErrorCallback(GLenum source, GLenum type,
             GLuint id, GLenum severity, GLsizei length, const GLchar* message,
             const void* userParam);
     }
