@@ -426,7 +426,7 @@ int _glfwPlatformInit(void)
 
     _glfwInitEGL();
     _glfwInitTimerWin32();
-    //_glfwInitJoysticksWin32();
+    _glfwInitJoysticksWin32();
 
     return GLFW_TRUE;
 }
