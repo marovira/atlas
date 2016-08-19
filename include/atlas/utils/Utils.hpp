@@ -33,6 +33,7 @@ namespace atlas
         class FPSCounter;
         class Geometry;
         class Scene;
+        class WindowSettings;
 
         struct Time;
     }

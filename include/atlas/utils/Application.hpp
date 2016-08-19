@@ -97,6 +97,8 @@ namespace atlas
              */
             static Application& getInstance();
 
+            void createWindow(WindowSettings const& settings);
+
             /**
              *	Creates a new window with rendering context.
              *	

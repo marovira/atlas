@@ -1,5 +1,6 @@
 #include "atlas/utils/Application.hpp"
 #include "atlas/utils/Scene.hpp"
+#include "atlas/utils/WindowSettings.hpp"
 #include "atlas/core/Log.hpp"
 #include "atlas/core/Platform.hpp"
 #include "atlas/core/Float.hpp"
@@ -11,7 +12,6 @@ namespace atlas
 {
     namespace utils
     {
-
         typedef std::unique_ptr<Scene> ScenePointer;
 
         struct Application::ApplicationImpl
@@ -187,31 +187,33 @@ namespace atlas
             return instance;
         }
 
-        void Application::createWindow(int width, int height,
-            std::string const& title, int contextVersionMajor, 
-            int contextVersionMinor)
+        void Application::createWindow(WindowSettings const& settings)
         {
             if (mImpl->currentWindow != nullptr)
             {
-                ERROR_LOG("Multiple windows are currently not supported.");
+                ERROR_LOG("Multiple windows are not suppored.");
                 return;
             }
 
+            auto context = settings.getContextVersion();
 
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, contextVersionMajor);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, contextVersionMinor);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, std::get<0>(context));
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, std::get<1>(context));
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 
+                settings.debugContextEnabled());
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                settings.forwardCompatEnabled());
 
-#ifdef ATLAS_DEBUG
-            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-#endif
+            glfwWindowHint(GLFW_MAXIMIZED, settings.isMaximized());
 
-#ifdef ATLAS_PLATFORM_APPLE
-            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+            GLFWmonitor* monitor = (settings.isFullscreen()) ?
+                glfwGetPrimaryMonitor() : NULL;
 
-            mImpl->currentWindow = glfwCreateWindow(width, height, 
-                title.c_str(), NULL, NULL);
+            auto size = settings.getWindowSize();
+            mImpl->currentWindow = glfwCreateWindow(std::get<0>(size),
+                std::get<1>(size), settings.getTitle().c_str(), monitor, NULL);
+
             if (!mImpl->currentWindow)
             {
                 glfwTerminate();
@@ -229,10 +231,10 @@ namespace atlas
                 exit(EXIT_FAILURE);
             }
 
-            if (!gl3wIsSupported(contextVersionMajor, contextVersionMinor))
+            if (!gl3wIsSupported(std::get<0>(context), std::get<1>(context)))
             {
                 CRITICAL_LOG_V("OpenGL %d.%d is not supported.",
-                    contextVersionMajor, contextVersionMinor);
+                    std::get<0>(context), std::get<1>(context));
                 glfwDestroyWindow(mImpl->currentWindow);
                 glfwTerminate();
                 exit(EXIT_FAILURE);
@@ -263,6 +265,14 @@ namespace atlas
 
             gl::initializeGLError();
 
+        }
+
+        void Application::createWindow(int width, int height,
+            std::string const& title, int contextVersionMajor, 
+            int contextVersionMinor)
+        {
+            createWindow(WindowSettings(title, width, height, 
+                contextVersionMajor, contextVersionMinor));
         }
 
         void Application::runApplication()
