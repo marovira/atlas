@@ -107,6 +107,8 @@ namespace atlas
              */
             void disableVertexAttribArray(GLuint index);
 
+            bool isVertexAttribArrayEnabled(GLuint index);
+
             GLuint getHandle() const override;
 
         private:

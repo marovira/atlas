@@ -82,6 +82,18 @@ namespace atlas
             mImpl->vertexArrays.erase(ind);
         }
 
+        bool VertexArrayObject::isVertexAttribArrayEnabled(GLuint index)
+        {
+            std::vector<GLuint>::iterator ind = std::find(
+                mImpl->vertexArrays.begin(), mImpl->vertexArrays.end(), index);
+            if (ind != mImpl->vertexArrays.end())
+            {
+                return true;
+            }
+            
+            return false;
+        }
+
         GLuint VertexArrayObject::getHandle() const
         {
             return mImpl->handle;
