@@ -2,6 +2,7 @@
 #include "atlas/math/Math.hpp"
 #include "atlas/core/Macros.hpp"
 #include "atlas/gl/GL.hpp"
+#include "atlas/utils/Application.hpp"
 
 namespace atlas
 {
@@ -68,6 +69,12 @@ namespace atlas
         bool Scene::sceneEnded()
         {
             return true;
+        }
+
+        void Scene::setCursorEnabled(bool enabled)
+        {
+            int en = (enabled) ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
+            glfwSetInputMode(APPLICATION.getCurrentWindow(), GLFW_CURSOR, en);
         }
     }
 }

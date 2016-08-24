@@ -164,6 +164,8 @@ namespace atlas
             virtual bool sceneEnded();
 
         protected:
+            void setCursorEnabled(bool enabled);
+
             /**
              * \var mProjection
              * The projection matrix for the Scene. This should be updated
