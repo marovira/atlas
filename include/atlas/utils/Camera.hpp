@@ -93,7 +93,7 @@ namespace atlas
              *	\param[in] movement The type of movement to perform.
              */
             virtual void mouseDown(math::Point2 const& point, 
-                CameraMovements movement);
+                CameraMovements movement = CameraMovements::IDLE);
 
             /**
              *	This is called when the mouse has been pressed and is being
@@ -103,13 +103,24 @@ namespace atlas
              *	
              *	\param[in] point The current mouse position.
              */
-            virtual void mouseDrag(math::Point2 const& point);
+            virtual void mouseMove(math::Point2 const& point);
 
             /**
              *	Called when the mouse button is lifted. This generally 
              *	ends the motion and resets the camera state back to idle.
              */
             virtual void mouseUp();
+
+            virtual void mouseScroll(atlas::math::Point2 const& offset);
+
+            virtual void keyDown(int key);
+
+            virtual void keyUp(int key);
+
+
+            virtual void updateCamera(atlas::utils::Time const& time);
+
+            virtual void updateCameraBounds(atlas::math::Point2 const& size);
 
             /**
              *	Resets the camera to its initial state.
@@ -124,6 +135,8 @@ namespace atlas
              *	\return The matrix containing all camera transforms.
              */
             virtual math::Matrix4 getCameraMatrix();
+
+            virtual float getCameraFOV();
         };
     }
 }
