@@ -1,7 +1,7 @@
 #include "atlas/gl/Texture.hpp"
 #include "atlas/gl/ErrorCheck.hpp"
 #include "atlas/core/Log.hpp"
-#include "atlas/core/STBImage.hpp"
+#include "atlas/core/STB.hpp"
 #include "atlas/gl/Buffer.hpp"
 
 namespace atlas
