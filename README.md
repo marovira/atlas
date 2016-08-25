@@ -1,29 +1,41 @@
-# Atlas Framework v1.4
+# Atlas Framework 2.0
 
 ## What is Atlas?
-It is a simple, light-weight graphics framework designed to support all types of OpenGL applications. Atlas is designed to be a teaching, prototyping, and research framework that allows users to quickly focus on solving graphics problems without having to worry about the details of how to set up things on their own machines. To this end, Atlas provides support for the following things:
+It is a simple, light-weight graphics framework designed to support all types of
+OpenGL applications. Atlas is designed to be a teaching, prototyping, and
+research framework that allows users to quickly focus on solving graphics 
+problems without having to worry about the details of how to set up things on 
+their own machines.
 
-* Cross-platform creation of windows and OpenGL contexts.
-* Full vector, matrix, and quaternion library with support for all common graphics operations.
-* Templated floating point comparison operators.
-* Templated solvers for equations up to degree 4.
-* Simple cross-platform logging system.
-* Macros for identifying platforms as well as convenience operations such as unused parameters and debug code.
-* A random number generator based on the new C++11 random library.
-* Wrappers for shaders and textures.
-* and more...
+## Internal Structre
+Atlas is divided into a series of submodules. Below is a brief description of
+each one. For full details, please see the documentation found 
+[here](https://marovira.github.io/atlas/).
+
+* ``core``: is the only independent module of Atlas, and contains a variety of
+  features such as: float comparisons, useful constants, platform identifying
+  macros, exception classes, timing system, header wrappers for external
+  libraries.
+* ``gl``: contains all the wrappers for OpenGL objects. These are: vertex array
+  objects, buffer objects, textures, shaders, and an error callback.
+* ``math``: contains typedefs for typically used types, along with polynomial
+  solvers, coordinate switching functions, and a random number generator.
+* ``primitives``: contains primitive objects that can be used for rendering. In
+  essence this offers a replacement for many of the glu primitives. It also has
+  class for loading object files.
+* ``utils``: contains a variety of utilities, including the Application class,
+  which the core of any Atlas application, Geometries, amongst others.
 
 ## Dependencies
-For the most part, Atlas is a self-contained library. It does have two dependencies that are **not** included with Atlas. These are:
+Atlas is a completely self-contained library that only requires CMake to build.
+Internally, Atlas uses the following libraries:
 
-* GLEW. Used only in Linux and Windows. This is required for Atlas.
-* CMake. Cross-platform build system employed by Atlas. This is required for all platforms.
-
-Internally, Atlas ships with the following dependencies:
-
-* GLFW. Used for window and context creation.
-* GLM. Used for all math, vector, matrix, and quaternion operations.
-* TinyObj. Used for loading object files.
+* GLFW: Used for window and context creation.
+* GL3W: Used to load OpenGL core profile functions.
+* GLM: Used for all math, vector, matrix, and quaternion operations.
+* TinyObj: Used for loading object files.
+* STB Image: used to load image files for textures.
+* ImGUI: Used to create simple GUIs.
 
 ## Quick Start with Atlas
 The easiest way to use Atlas is by using CMake. In your project's CMakeLists file, add the following lines:
@@ -51,19 +63,6 @@ the following compilers are supported:
 * LLVM Clang 3.3+
 * Apple Clang 4.0+
 * Intel C++ Composer XE 2013+ (experimental)
-
-## Future Plans, Features, etc.
-The following are a few minor features that are planned for Atlas and that will be slowly added (in no particular order):
-
-* Increased support for texture files. In particular, expansion to PPM, BMP, and PNG is planned.
-* Wrapper for OpenGL framebuffer objects.
-* Support for logging to a file.
-* more to come...
-
-The following major features are planned for Atlas:
-
-* Support for multiple rendering contexts (may be coming soon!).
-* Support for multi-threaded applications (tricky to implement).
 
 ## Contributing to Atlas.
 At this point in time, you can support Atlas in one of two ways:

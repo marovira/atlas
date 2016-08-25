@@ -3,6 +3,7 @@
 #include "atlas/core/Macros.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/utils/Application.hpp"
+#include "atlas/core/GLM.hpp"
 
 namespace atlas
 {

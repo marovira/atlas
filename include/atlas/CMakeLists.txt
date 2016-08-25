@@ -1,5 +1,6 @@
 set(ATLAS_INCLUDE_ROOT_LIST
     "${ATLAS_INCLUDE_ROOT}/Atlas.hpp")
+configure_file("${ATLAS_INCLUDE_ROOT}/Atlas.hpp.in" ${ATLAS_INCLUDE_ROOT_LIST})
 
 # Traverse the lower include directories.
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/core")

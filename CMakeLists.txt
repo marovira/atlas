@@ -6,8 +6,8 @@ project(atlas)
 cmake_minimum_required(VERSION 3.0)
 
 # Now setup the version data.
-set(ATLAS_VERSION_MAJOR "1")
-set(ATLAS_VERSION_MINOR "4")
+set(ATLAS_VERSION_MAJOR "2")
+set(ATLAS_VERSION_MINOR "0")
 set(ATLAS_VERSION_PATCH "0")
 set(ATLAS_VERSION_EXTRA "")
 set(ATLAS_VERSION "${ATLAS_VERSION_MAJOR}.${ATLAS_VERSION_MINOR}")
