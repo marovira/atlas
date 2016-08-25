@@ -62,10 +62,11 @@ endif()
 #================================
 # Add subdirectories.
 #================================
-# Prevent GLFW from building examples and tests.
 add_subdirectory("${ATLAS_GLFW_ROOT}")
 add_subdirectory("${ATLAS_IMGUI_ROOT}")
 add_subdirectory("${ATLAS_GL3W_ROOT}")
+add_subdirectory("${ATLAS_STB_ROOT}")
+add_subdirectory("${ATLAS_OBJ_ROOT}")
 
 # Now add the Atlas source and include directories.
 add_subdirectory("${ATLAS_INCLUDE_ROOT}")
@@ -81,9 +82,9 @@ endif()
 include_directories(
     "${ATLAS_GLFW_ROOT}/include"
     ${ATLAS_GLM_ROOT}
-    ${ATLAS_OBJ_ROOT}
-    ${ATLAS_STB_ROOT}
-    ${ATLAS_IMGUI_ROOT}
+    "${ATLAS_OBJ_ROOT}/include"
+    "${ATLAS_STB_ROOT}/include"
+    "${ATLAS_IMGUI_ROOT}/include"
     "${ATLAS_GL3W_ROOT}/include"
     "${ATLAS_SOURCE_DIR}/include"
     )
@@ -97,7 +98,7 @@ include("${ATLAS_CONFIG_ROOT}/SourceGroups.cmake")
 # Build the library.
 #================================
 add_library(atlas ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
-target_link_libraries(atlas glfw ${GLFW_LIBRARIES} imgui gl3w)
+target_link_libraries(atlas glfw ${GLFW_LIBRARIES} imgui gl3w stb tinyobjloader)
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
 #================================
@@ -121,7 +122,8 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
         glfw
         imgui
         gl3w
+        stb
+        tinyobjloader
         ${GLFW_LIBRARIES}
-        #${GLEW_LIBRARIES}
         PARENT_SCOPE)
 endif()
