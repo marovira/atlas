@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Primitive.hpp"
+#include "atlas/math/Vector.hpp"
 
 #include <string>
 
@@ -16,45 +17,23 @@ namespace atlas
 {
     namespace primitives
     {
-        /**
-         * \class ObjMesh
-         * \brief Generates a polygonal mesh from an object file.
-         * 
-         * Creates a mesh that can be constructed from a file using 
-         * loadFromFile. Alternatively the mesh can be manually constructed
-         * by modifying the appropriate buffers using the appropriate functions
-         * from the Primitive base class.
-         */
-        class ObjMesh : public Primitive
+        class ObjMesh
         {
         public:
-            /**
-             * Empty constructor. Note that this does not initialize any 
-             * data.
-             */
             ObjMesh();
+            ObjMesh(ObjMesh const& m);
 
-            /**
-             * Standard copy constructor.
-             */
-            ObjMesh(ObjMesh const& m) = default;
-
-            /**
-             * Standard destructor.
-             */
             ~ObjMesh();
 
-            /**
-             * Loads a mesh from the provided file. This automatically reads
-             * in the obj file as well as populates the vertex, normal, and
-             * index arrays.
-             * 
-             * \param[in] filename The name of the file containing the mesh.
-             * 
-             * \return True if the file was successfully loaded, false 
-             * otherwise.
-             */
-            bool loadFromFile(std::string const& filename);
+            bool loadFromFile(std::string const& file, 
+                std::string const& mtl = "", bool triangulate = true);
+            //bool loadTextures(std::string const& path, int textureUnit);
+            //void setUniformLocations(std::vector<std::string> const& locs);
+            void drawMesh();
+
+        private:
+            struct ObjMeshImpl;
+            std::unique_ptr<ObjMeshImpl> mImpl;
         };
     }
 }
