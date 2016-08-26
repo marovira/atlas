@@ -107,12 +107,11 @@ set_target_properties(atlas PROPERTIES FOLDER "atlas")
 # Make the include directories and libraries visible to other projects.
 if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
     set(ATLAS_INCLUDE_DIRS 
-        "${ATLAS_SOURCE_DIR}/include"
-        ${GLEW_INCLUDE_DIRS} 
         ${ATLAS_GLM_ROOT}
-        ${ATLAS_OBJ_ROOT}
-        ${ATLAS_STB_ROOT}
-        ${ATLAS_IMGUI_ROOT}
+        "${ATLAS_SOURCE_DIR}/include"
+        "${ATLAS_OBJ_ROOT}/include"
+        "${ATLAS_STB_ROOT}/include"
+        "${ATLAS_IMGUI_ROOT}/include"
         "${ATLAS_GLFW_ROOT}/include"
         "${ATLAS_GL3W_ROOT}/include"
         PARENT_SCOPE)
