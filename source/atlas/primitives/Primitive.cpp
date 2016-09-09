@@ -40,11 +40,11 @@ namespace atlas
 
             // Vertices go in location 0.
             mDataBuffer.vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-                STRIDE(6, float), BUFFER_OFFSET(0));
+                STRIDE(6, float), BUFFER_OFFSET(0, float));
 
             // Normals go in location 1.
             mDataBuffer.vertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
-                STRIDE(6, float), BUFFER_OFFSET(3 * sizeof(float)));
+                STRIDE(6, float), BUFFER_OFFSET(3, float));
 
             mIndexBuffer.bindBuffer();
             mIndexBuffer.bufferData(mIndices.size() * sizeof(GLuint),
@@ -97,7 +97,7 @@ namespace atlas
         {
             mVao.bindVertexArray();
             glDrawElements(mode, (int)mIndices.size(), GL_UNSIGNED_INT,
-                BUFFER_OFFSET(0));
+                BUFFER_OFFSET(0, GLuint));
             mVao.unBindVertexArray();
         }
 
