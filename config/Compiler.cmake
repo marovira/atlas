@@ -35,6 +35,7 @@ if (ATLAS_COMPILER_MSVC)
         -D_CRT_SECURE_NO_WARNINGS
         )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEUBG} /Zl")
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
