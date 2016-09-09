@@ -16,7 +16,7 @@
  *	\def BUFFER_OFFSET(offset)
  *	Used to provide the offset pointer for vertex attribute data.
  */
-#define BUFFER_OFFSET(offset) (void*)(offset)
+#define BUFFER_OFFSET(offset, type) (void*)(offset * sizeof(type))
 
 /**
  *	\def STRIDE(step, type)
@@ -24,6 +24,12 @@
  *	attribute data.
  */
 #define STRIDE(step, type) step * sizeof(type)
+
+/**
+ * \def SIZE(num, type)
+ * Returns the size of the specified number of elements of the given type.
+ */
+#define SIZE(num, type) num * sizeof(type)
 
 namespace atlas
 {
