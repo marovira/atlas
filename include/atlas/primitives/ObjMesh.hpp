@@ -9,7 +9,8 @@
 #pragma once
 
 #include "Primitive.hpp"
-#include "atlas/math/Vector.hpp"
+
+#include "atlas/gl/Shader.hpp"
 
 #include <string>
 
@@ -27,8 +28,9 @@ namespace atlas
 
             bool loadFromFile(std::string const& file, 
                 std::string const& mtl = "", bool triangulate = true);
+            void setMaterialBufferLocation(GLuint index = 1);
+
             //bool loadTextures(std::string const& path, int textureUnit);
-            //void setUniformLocations(std::vector<std::string> const& locs);
             void drawMesh();
 
         private:

@@ -8,10 +8,12 @@
 #include <set>
 #include <tuple>
 
+
 namespace atlas
 {
     namespace primitives
     {
+
         struct Face
         {
             Face() :
@@ -62,8 +64,17 @@ namespace atlas
         {
             ObjMeshImpl() :
                 dataBuffer(GL_ARRAY_BUFFER),
-                indexBuffer(GL_ELEMENT_ARRAY_BUFFER)
-            { }
+                indexBuffer(GL_ELEMENT_ARRAY_BUFFER),
+                materialBuffer(GL_UNIFORM_BUFFER)
+            {
+                
+                materialBuffer.bindBuffer();
+                materialBuffer.bufferData(
+                    SIZE(5, atlas::math::Vector4) + SIZE(3, float) + 
+                    SIZE(1, int),
+                    nullptr, GL_STATIC_DRAW);
+                materialBuffer.unBindBuffer();
+            }
 
             ObjMeshImpl(ObjMeshImpl const& impl) = default;
 
@@ -75,6 +86,7 @@ namespace atlas
             gl::VertexArrayObject vao;
             gl::Buffer dataBuffer;
             gl::Buffer indexBuffer;
+            gl::Buffer materialBuffer;
 
             MeshData meshData;
             GLuint stride;
@@ -261,10 +273,19 @@ namespace atlas
             return true;
         }
 
+        void ObjMesh::setMaterialBufferLocation(GLuint index)
+        {
+            mImpl->materialBuffer.bindBufferRange(index, 0,
+                STRIDE(18, float) + STRIDE(1, int));
+        }
+        
         void ObjMesh::drawMesh()
         {
+            USING_ATLAS_MATH_NS;
+
             mImpl->vao.bindVertexArray();
             mImpl->dataBuffer.bindBuffer();
+            mImpl->materialBuffer.bindBuffer();
 
             GLuint dataOffset = 0;
             GLuint indexOffset = 0;
@@ -273,13 +294,13 @@ namespace atlas
             {
                 mImpl->dataBuffer.vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
                     STRIDE(mImpl->stride, float),
-                    BUFFER_OFFSET(shape.dataStart * sizeof(float)));
+                    BUFFER_OFFSET(shape.dataStart, float));
 
                 if (mImpl->meshData.hasNormals)
                 {
                     mImpl->dataBuffer.vertexAttribPointer(1, 3, GL_FLOAT,
                         GL_FALSE, STRIDE(mImpl->stride, float),
-                        BUFFER_OFFSET((shape.dataStart + 3) * sizeof(float)));
+                        BUFFER_OFFSET((shape.dataStart + 3), float));
                 }
 
                 if (mImpl->meshData.hasTexCoords)
@@ -287,21 +308,64 @@ namespace atlas
                     GLuint offset = (mImpl->meshData.hasNormals) ? 6 : 3;
                     mImpl->dataBuffer.vertexAttribPointer(2, 2, GL_FLOAT,
                         GL_FALSE, STRIDE(mImpl->stride, float),
-                        BUFFER_OFFSET(
-                        (shape.dataStart + offset) * sizeof(float)));
+                        BUFFER_OFFSET((shape.dataStart + offset), float));
                 }
 
+                int currentId = -1;
                 for (auto face : shape.faces)
                 {
-                    tinyobj::material_t material =
-                        mImpl->meshData.materials[face.materialId];
+                    if (face.materialId != currentId)
+                    {
+                        currentId = face.materialId;
+                        tinyobj::material_t material =
+                            mImpl->meshData.materials[face.materialId];
+
+                        Vector4 mat;
+                        mat = Vector4(material.ambient[0], material.ambient[1],
+                            material.ambient[2], 0.0f);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(0, Vector4),
+                            SIZE(1, Vector4), &mat[0]);
+
+                        mat = Vector4(material.diffuse[0], material.diffuse[1],
+                            material.diffuse[2], 0.0f);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(1, Vector4),
+                            SIZE(1, Vector4), &mat[0]);
+
+                        mat = Vector4(material.specular[0], material.specular[1],
+                            material.specular[2], 0.0f);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(2, Vector4),
+                            SIZE(1, Vector4), &mat[0]);
+
+                        mat = Vector4(material.transmittance[0], 
+                            material.transmittance[1], 
+                            material.transmittance[2], 0.0f);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(3, Vector4),
+                            SIZE(1, Vector4), &mat[0]);
+
+                        mat = Vector4(material.emission[0], material.emission[1],
+                            material.emission[2], 0.0f);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(4, Vector4),
+                            SIZE(1, Vector4), &mat[0]);
+
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4),
+                            SIZE(1, float), &material.shininess);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                            STRIDE(1, float),
+                            SIZE(1, float), &material.ior);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                            STRIDE(2, float), 
+                            SIZE(1, float), &material.dissolve);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                            STRIDE(3, float), SIZE(1, int), &material.illum);
+                    }
 
                     glDrawElements(GL_TRIANGLES, face.size, GL_UNSIGNED_INT,
-                        BUFFER_OFFSET(face.start * sizeof(GLuint)));
+                        BUFFER_OFFSET(face.start, GLuint));
                 }
 
             }
 
+            mImpl->materialBuffer.unBindBuffer();
             mImpl->dataBuffer.unBindBuffer();
             mImpl->vao.unBindVertexArray();
         }
