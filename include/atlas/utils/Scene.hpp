@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "Time.hpp"
+#include "atlas/core/Time.hpp"
 #include "atlas/math/Matrix.hpp"
 
 namespace atlas
@@ -184,7 +184,7 @@ namespace atlas
              *	\var mTime
              *	The Time data for the Scene.
              */
-            utils::Time mTime;
+            atlas::core::Time<> mTime;
         };
     }
 }

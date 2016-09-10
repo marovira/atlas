@@ -1,5 +1,6 @@
 #include "atlas/utils/Camera.hpp"
 #include "atlas/core/Macros.hpp"
+#include "atlas/core/Time.hpp"
 
 namespace atlas
 {
@@ -41,7 +42,7 @@ namespace atlas
             UNUSED(key);
         }
 
-        void Camera::updateCamera(atlas::utils::Time const& time)
+        void Camera::updateCamera(atlas::core::Time<> const& time)
         {
             UNUSED(time);
         }

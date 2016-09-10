@@ -7,6 +7,7 @@
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/ImGUI.hpp"
 #include "atlas/core/GLFW.hpp"
+#include "atlas/core/Core.hpp"
 
 #define GUI atlas::utils::Gui::getInstance()
 
@@ -63,7 +64,7 @@ namespace atlas
             void mouseScroll(double xOffset, double yOffset);
             void keyPress(int key, int scancode, int action, int mods);
             void screenResize(int width, int height);
-            void update(Time const& t);
+            void update(atlas::core::Time<> const& t);
 
             void newFrame();
             void setFontScale(float scale = 1.0f);

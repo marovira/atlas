@@ -27,8 +27,11 @@ namespace atlas
 {
     namespace core
     {
-        template <class GenType>
+        template <class GenType = float>
         class Timer;
+
+        template <typename GenType = float>
+        class Time;
     }
 }
 

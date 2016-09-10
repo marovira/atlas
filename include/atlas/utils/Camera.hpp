@@ -12,6 +12,7 @@
 #include "atlas/math/Matrix.hpp"
 #include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
+#include "atlas/core/Core.hpp"
 
 namespace atlas
 {
@@ -118,7 +119,7 @@ namespace atlas
             virtual void keyUp(int key);
 
 
-            virtual void updateCamera(atlas::utils::Time const& time);
+            virtual void updateCamera(atlas::core::Time<> const& time);
 
             virtual void updateCameraBounds(atlas::math::Point2 const& size);
 

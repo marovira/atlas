@@ -34,8 +34,6 @@ namespace atlas
         class Geometry;
         class Scene;
         class WindowSettings;
-
-        struct Time;
     }
 }
 

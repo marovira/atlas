@@ -1,5 +1,6 @@
 #include "atlas/utils/FPSCounter.hpp"
 #include "atlas/core/Float.hpp"
+#include "atlas/core/Time.hpp"
 
 namespace atlas
 {
@@ -52,7 +53,7 @@ namespace atlas
             mImpl->tick = 1.0f / fps;
         }
 
-        bool FPSCounter::isFPS(Time& t) const
+        bool FPSCounter::isFPS(atlas::core::Time<>& t) const
         {
             USING_ATLAS_CORE_NS;
             if (geq(t.currentTime - mImpl->lastTime, mImpl->tick))

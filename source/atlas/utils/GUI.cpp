@@ -1,6 +1,6 @@
 #include "atlas/utils/GUI.hpp"
 #include "atlas/gl/GL.hpp"
-#include "atlas/utils/Time.hpp"
+#include "atlas/core/Time.hpp"
 #include "atlas/utils/Application.hpp"
 #include "atlas/core/Platform.hpp"
 #include "atlas/core/Macros.hpp"
@@ -278,7 +278,7 @@ namespace atlas
                 h > 0 ? ((float)height / h) : 0);
         }
 
-        void Gui::update(Time const& t)
+        void Gui::update(atlas::core::Time<> const& t)
         {
             ImGuiIO& io = ImGui::GetIO();
             io.DeltaTime = (t.deltaTime > 0.0f) ? t.deltaTime : 1.0f / 60.0f;

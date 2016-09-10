@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "Time.hpp"
+#include "atlas/core/Time.hpp"
 #include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
 #include "atlas/math/Matrix.hpp"
@@ -86,7 +86,7 @@ namespace atlas
              *	
              *	\param[in] t The time struct containing all timing information.
              */
-            virtual void updateGeometry(Time const& t);
+            virtual void updateGeometry(atlas::core::Time<> const& t);
 
             /**
              *	This is called whenever the renderScene is called inside the

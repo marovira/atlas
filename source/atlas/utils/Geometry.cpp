@@ -22,7 +22,7 @@ namespace atlas
         Geometry::~Geometry()
         { }
 
-        void Geometry::updateGeometry(Time const& t)
+        void Geometry::updateGeometry(atlas::core::Time<> const& t)
         {
             UNUSED(t);
         }

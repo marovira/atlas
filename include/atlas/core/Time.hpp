@@ -3,16 +3,16 @@
  *	\brief Defines the timing storage system for animations.
  */
 
-#ifndef ATLAS_INCLUDE_ATLAS_UTILS_TIME_HPP
-#define ATLAS_INCLUDE_ATLAS_UTILS_TIME_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_CORE_TIME_HPP
+#define ATLAS_INCLUDE_ATLAS_CORE_TIME_HPP
 
 #pragma once
 
-#include "Utils.hpp"
+#include "Core.hpp"
 
 namespace atlas
 {
-    namespace utils
+    namespace core
     {
         /**
          *	\class Time
@@ -29,15 +29,17 @@ namespace atlas
          *	\note
          *	The time units used in Atlas (and the ones in GLFW) are seconds.
          */
-        struct Time
+        template <typename GenType>
+        class Time
         {
+        public:
             /**
              * Standard constructor. Initializes everything to 0.
              */
             Time() :
-                totalTime(0.0f),
-                deltaTime(0.0f),
-                currentTime(0.0f)
+                totalTime(GenType(0.0)),
+                deltaTime(GenType(0.0)),
+                currentTime(GenType(0.0))
             { }
 
             /**
@@ -56,19 +58,19 @@ namespace atlas
              * The total time that the containg object (generally a Scene) has
              * been running.
              */
-            float totalTime;
+            GenType totalTime;
 
             /**
              *	\var deltaTime
              *	The difference between the current tick and the last one.
              */
-            float deltaTime;
+            GenType deltaTime;
 
             /**
              *	\var currentTime
              *	The current tick.
              */
-            float currentTime;
+            GenType currentTime;
         };
     }
 }

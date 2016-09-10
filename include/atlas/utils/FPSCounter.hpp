@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "Time.hpp"
+#include "atlas/core/Core.hpp"
 
 #include <memory>
 
@@ -67,7 +67,7 @@ namespace atlas
              * \return True if the next frame should be executed, 
              * false otherwise.
              */
-            bool isFPS(Time& t) const;
+            bool isFPS(atlas::core::Time<>& t) const;
 
         private:
             struct FPSCounterImpl;
