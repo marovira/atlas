@@ -235,7 +235,6 @@ namespace atlas
                 if (settings.errorSeverity &
                     ATLAS_GL_ERROR_SEVERITY_NOTIFICATION)
                 {
-                    GLuint test = settings.errorSeverity & ATLAS_GL_ERROR_SEVERITY_NOTIFICATION;
                     INFO_LOG("OpenGL notification: " + errorMessage);
                 }
 
