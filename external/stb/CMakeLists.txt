@@ -17,5 +17,11 @@ source_group("include\\stb" FILES ${STB_INCLUDE_LIST})
 source_group("source" FILES)
 source_group("source\\stb" FILES ${STB_SOURCE_LIST})
 
+if (MSVC)
+    add_definitions(
+        -wd4244 # conversion results in possible loss of data.
+        )
+endif()
+
 add_library(stb ${STB_SOURCE_LIST} ${STB_INCLUDE_LIST})
 set_target_properties(stb PROPERTIES FOLDER "stb")
