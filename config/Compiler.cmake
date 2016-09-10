@@ -25,13 +25,7 @@ endif()
 # Now setup the flags depending on the compiler we're using.
 if (ATLAS_COMPILER_MSVC)
     add_definitions(
-        -wd4714 # force inline not inlined.
-        -wd4510 # default constructor could not be generated.
-        -wd4512 # assignment operator could not be generated.
-        -wd4610 # nonstandard extension used.
-        -wd4316 # object allocated on the heap may not be aligned 16.
         -wd4201 # nonstandard extension used: nameless struct/union.
-        -wd4310 # cast truncates constant value.
         -D_CRT_SECURE_NO_WARNINGS
         )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
