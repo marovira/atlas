@@ -10,8 +10,7 @@
 #pragma once
 
 #include "Graph.hpp"
-
-#include "atlas/core/Time.hpp"
+#include "atlas/core/Core.hpp"
 
 #include <vector>
 #include <memory>
