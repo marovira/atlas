@@ -11,8 +11,6 @@
 
 #pragma once
 
-#include "atlas/Atlas.hpp"
-
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
