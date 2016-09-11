@@ -10,10 +10,9 @@
 
 #include "Utils.hpp"
 #include "atlas/core/Time.hpp"
-#include "atlas/math/Vector.hpp"
 #include "atlas/math/Ray.hpp"
-#include "atlas/math/Matrix.hpp"
 #include "atlas/gl/Shader.hpp"
+#include "atlas/math/Math.hpp"
 
 #include <vector>
 #include <map>

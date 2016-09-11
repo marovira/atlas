@@ -1,6 +1,6 @@
 /**
  * \file Utils.hpp
- * \brief Main header for Utils module.
+ * \brief Main header for utils module.
  * 
  * This header defines the macro for using its namespace. All headers
  * within this module include this header. It also provides forward
@@ -12,24 +12,11 @@
 
 #pragma once
 
-#include "atlas/Atlas.hpp"
-
-#ifdef USING_ATLAS_UTILS_NS
-#undef USING_ATLAS_UTILS_NS
-#endif
-
-/**
- *	\def USING_ATLAS_UTILS_NS
- *	Shortened version for using the utils namespace.
- */
-#define USING_ATLAS_UTILS_NS using namespace atlas::utils
-
 namespace atlas
 {
     namespace utils
     {
         class Camera;
-        class Film;
         class FPSCounter;
         class Geometry;
         class Scene;

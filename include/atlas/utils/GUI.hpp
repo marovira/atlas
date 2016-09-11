@@ -8,11 +8,9 @@
 
 #pragma once
 
-#include "Utils.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/ImGUI.hpp"
 #include "atlas/core/GLFW.hpp"
-#include "atlas/core/Core.hpp"
 
 #define GUI atlas::utils::Gui::getInstance()
 

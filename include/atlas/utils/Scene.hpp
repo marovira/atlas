@@ -10,7 +10,7 @@
 
 #include "Utils.hpp"
 #include "atlas/core/Time.hpp"
-#include "atlas/math/Matrix.hpp"
+#include "atlas/math/Math.hpp"
 
 namespace atlas
 {
@@ -171,14 +171,14 @@ namespace atlas
              * The projection matrix for the Scene. This should be updated
              * inside screenResizeEvent.
              */
-            math::Matrix4 mProjection;
+            atlas::math::Matrix4 mProjection;
 
             /**
              *	\var mView
              *	The view matrix for the Scene. This can be paired with the
              *	Camera class to provide a better viewing of objects.
              */
-            math::Matrix4 mView;
+            atlas::math::Matrix4 mView;
 
             /**
              *	\var mTime

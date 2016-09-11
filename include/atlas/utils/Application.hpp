@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "Utils.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/GLFW.hpp"
 
