@@ -30,7 +30,6 @@
 #pragma once
 
 #include "atlas/Atlas.hpp"
-#include "atlas/core/Platform.hpp"
 
 #include <GL/gl3w.h>
 

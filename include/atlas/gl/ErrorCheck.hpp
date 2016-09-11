@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include "atlas/core/Macros.hpp"
 #include "GL.hpp"
 
 #define ATLAS_GL_ERROR_SOURCE_API                   0x1
