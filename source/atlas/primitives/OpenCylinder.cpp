@@ -27,8 +27,6 @@ namespace atlas
 
             void createVertices(std::vector<atlas::math::Point>& vertices)
             {
-                USING_ATLAS_MATH_NS;
-
                 float theta = 0.0f, z = height;
                 float thetaDelta = glm::two_pi<float>() / subDivsX;
                 float zDelta = height / subDivsY;
@@ -42,7 +40,8 @@ namespace atlas
                     {
                         theta = x * thetaDelta;
                         vertices.push_back(
-                            cylindricalToCartesian(Point(radius, theta, z)));
+                            math::cylindricalToCartesian(
+                                math::Point(radius, theta, z)));
                     }
                 }
             }
@@ -50,10 +49,8 @@ namespace atlas
             void createNormals(std::vector<atlas::math::Normal>& normals,
                 std::vector<atlas::math::Point> const& vertices)
             {
-                USING_ATLAS_MATH_NS;
-
                 float zDelta = height / subDivsY;
-                Point centre(0, 0, height);
+                math::Point centre(0, 0, height);
 
                 int i = 0;
                 for (int y = 0; y < subDivsY; ++y)

@@ -106,8 +106,6 @@ namespace atlas
         bool ObjMesh::loadFromFile(std::string const& file, 
             std::string const& mtl, bool triangulate)
         {
-            USING_ATLAS_MATH_NS;
-
             tinyobj::attrib_t attrib;
             std::vector<tinyobj::shape_t> shapes;
             std::vector<tinyobj::material_t> materials;
@@ -129,9 +127,9 @@ namespace atlas
 
 
             std::vector<GLuint> indices;
-            std::vector<Point> vertices;
-            std::vector<Normal> normals;
-            std::vector<Point2> texCoords;
+            std::vector<math::Point> vertices;
+            std::vector<math::Normal> normals;
+            std::vector<math::Point2> texCoords;
 
             size_t totalDataCount = 0;
             for (size_t s = 0; s < shapes.size(); ++s)
@@ -160,7 +158,7 @@ namespace atlas
                         tinyobj::index_t index =
                             shapes[s].mesh.indices[indexOffset + v];;
 
-                        Point vertex;
+                        math::Point vertex;
                         vertex.x = attrib.vertices[3 * index.vertex_index + 0];
                         vertex.y = attrib.vertices[3 * index.vertex_index + 1];
                         vertex.z = attrib.vertices[3 * index.vertex_index + 2];
@@ -170,7 +168,7 @@ namespace atlas
 
                         if (!attrib.normals.empty())
                         {
-                            Normal normal;
+                            math::Normal normal;
                             normal.x = attrib.normals[3 * index.normal_index + 0];
                             normal.y = attrib.normals[3 * index.normal_index + 1];
                             normal.z = attrib.normals[3 * index.normal_index + 2];
@@ -180,7 +178,7 @@ namespace atlas
 
                         if (!attrib.texcoords.empty())
                         {
-                            Point2 tex;
+                            math::Point2 tex;
                             tex.x = attrib.texcoords[2 * index.texcoord_index + 0];
                             tex.y = attrib.texcoords[2 * index.texcoord_index + 1];
                             texCoords.push_back(tex);
@@ -281,8 +279,6 @@ namespace atlas
         
         void ObjMesh::drawMesh()
         {
-            USING_ATLAS_MATH_NS;
-
             mImpl->vao.bindVertexArray();
             mImpl->dataBuffer.bindBuffer();
             mImpl->materialBuffer.bindBuffer();
@@ -320,42 +316,42 @@ namespace atlas
                         tinyobj::material_t material =
                             mImpl->meshData.materials[face.materialId];
 
-                        Vector4 mat;
-                        mat = Vector4(material.ambient[0], material.ambient[1],
+                        math::Vector4 mat;
+                        mat = math::Vector4(material.ambient[0], material.ambient[1],
                             material.ambient[2], 0.0f);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(0, Vector4),
-                            SIZE(1, Vector4), &mat[0]);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(0, math::Vector4),
+                            SIZE(1, math::Vector4), &mat[0]);
 
-                        mat = Vector4(material.diffuse[0], material.diffuse[1],
+                        mat = math::Vector4(material.diffuse[0], material.diffuse[1],
                             material.diffuse[2], 0.0f);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(1, Vector4),
-                            SIZE(1, Vector4), &mat[0]);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(1, math::Vector4),
+                            SIZE(1, math::Vector4), &mat[0]);
 
-                        mat = Vector4(material.specular[0], material.specular[1],
+                        mat = math::Vector4(material.specular[0], material.specular[1],
                             material.specular[2], 0.0f);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(2, Vector4),
-                            SIZE(1, Vector4), &mat[0]);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(2, math::Vector4),
+                            SIZE(1, math::Vector4), &mat[0]);
 
-                        mat = Vector4(material.transmittance[0], 
+                        mat = math::Vector4(material.transmittance[0], 
                             material.transmittance[1], 
                             material.transmittance[2], 0.0f);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(3, Vector4),
-                            SIZE(1, Vector4), &mat[0]);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(3, math::Vector4),
+                            SIZE(1, math::Vector4), &mat[0]);
 
-                        mat = Vector4(material.emission[0], material.emission[1],
+                        mat = math::Vector4(material.emission[0], material.emission[1],
                             material.emission[2], 0.0f);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(4, Vector4),
-                            SIZE(1, Vector4), &mat[0]);
+                        mImpl->materialBuffer.bufferSubData(STRIDE(4, math::Vector4),
+                            SIZE(1, math::Vector4), &mat[0]);
 
-                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4),
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, math::Vector4),
                             SIZE(1, float), &material.shininess);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, math::Vector4) +
                             STRIDE(1, float),
                             SIZE(1, float), &material.ior);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, math::Vector4) +
                             STRIDE(2, float), 
                             SIZE(1, float), &material.dissolve);
-                        mImpl->materialBuffer.bufferSubData(STRIDE(5, Vector4) +
+                        mImpl->materialBuffer.bufferSubData(STRIDE(5, math::Vector4) +
                             STRIDE(3, float), SIZE(1, int), &material.illum);
                     }
 

@@ -15,8 +15,6 @@ namespace atlas
 
         void Primitive::createBuffers()
         { 
-            USING_ATLAS_MATH_NS;
-
             // Compile all the data into a single vector.
             std::vector<float> data;
 
@@ -58,8 +56,6 @@ namespace atlas
 
         void Primitive::updateBuffers()
         {
-            USING_ATLAS_MATH_NS;
-
             // Compile all the data into a single vector.
             std::vector<float> data;
 

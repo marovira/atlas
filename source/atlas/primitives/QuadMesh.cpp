@@ -1,6 +1,5 @@
 #include "atlas/primitives/QuadMesh.hpp"
 
-#include "atlas/math/Vector.hpp"
 #include <vector>
 
 namespace atlas
@@ -28,7 +27,6 @@ namespace atlas
 
             void createVertices(std::vector<atlas::math::Point>& vertices)
             {
-                USING_ATLAS_MATH_NS;
 
                 float totalWidth = cellWidth * subDivsX;
                 float totalHeight = cellWidth * subDivsY;
@@ -40,7 +38,7 @@ namespace atlas
                 {
                     for (int j = 0; j < subDivsX; ++j)
                     {
-                        vertices.push_back(Vector(minW + cellWidth * j,
+                        vertices.push_back(math::Vector(minW + cellWidth * j,
                             maxH - cellWidth * i, 0.0f));
                     }
                 }

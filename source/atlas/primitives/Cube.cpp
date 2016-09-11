@@ -1,6 +1,5 @@
 #include "atlas/primitives/Cube.hpp"
 
-#include "atlas/math/Vector.hpp"
 #include <vector>
 
 namespace atlas
@@ -27,13 +26,11 @@ namespace atlas
 
             void createVertices(std::vector<atlas::math::Point>& vertices)
             {
-                USING_ATLAS_MATH_NS;
-
                 float halfWidth = width / 2.0f,
                     halfHeight = height / 2.0f,
                     halfDepth = depth / 2.0f;
 
-                vertices = std::vector<Point>
+                vertices = std::vector<math::Point>
                 {
                     // Top face.
                     {  halfWidth, halfHeight, -halfDepth },
@@ -76,7 +73,8 @@ namespace atlas
             void createNormals(std::vector<atlas::math::Normal>& normals,
                 std::vector<atlas::math::Point> const& vertices)
             {
-                USING_ATLAS_MATH_NS;
+                using atlas::math::Normal;
+                using atlas::math::Vector;
 
                 std::vector<Normal> normalList;
                 for (size_t i = 0; i < vertices.size(); i += 4)

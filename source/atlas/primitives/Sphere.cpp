@@ -1,7 +1,6 @@
 #include "atlas/primitives/Sphere.hpp"
-
-#include "atlas/math/Vector.hpp"
 #include "atlas/math/Coordinates.hpp"
+
 #include <vector>
 
 namespace atlas
@@ -28,13 +27,11 @@ namespace atlas
 
             void createVertices(std::vector<atlas::math::Point>& vertices)
             {
-                USING_ATLAS_MATH_NS;
-
                 float theta = 0.0f, phi = 0.0f;
                 float phiDelta = glm::pi<float>() / (subDivsY + 1);
                 float thetaDelta = glm::two_pi<float>() / subDivsX;
 
-                vertices.push_back(Point(0, 0, radius));
+                vertices.push_back(math::Point(0, 0, radius));
 
                 for (int y = 0; y < subDivsY; ++y)
                 {
@@ -45,11 +42,12 @@ namespace atlas
                     {
                         theta = x * thetaDelta;
                         vertices.push_back(
-                            sphericalToCartesian(Point(radius, theta, phi)));
+                            math::sphericalToCartesian(
+                                math::Point(radius, theta, phi)));
                     }
                 }
 
-                vertices.push_back(Point(0, 0, -radius));
+                vertices.push_back(math::Point(0, 0, -radius));
             }
 
             void createIndices(std::vector<GLuint>& indices, int numVertices)
@@ -112,12 +110,8 @@ namespace atlas
             mImpl(new SphereImpl(radius, subDivsX, subDivsY)),
             Primitive()
         {
-            USING_ATLAS_MATH_NS;
-
             mImpl->createVertices(mVertices);
-
             mNormals = mVertices;
-
             mImpl->createIndices(mIndices, (int)mVertices.size());
 
         }

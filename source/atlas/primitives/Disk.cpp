@@ -25,26 +25,26 @@ namespace atlas
 
             void createVertices(std::vector<atlas::math::Point>& vertices)
             {
-                USING_ATLAS_MATH_NS;
-
                 float theta = 0.0f;
                 float thetaDelta = glm::two_pi<float>() / subDivs;
 
-                vertices.push_back(Point(0));
+                vertices.push_back(math::Point(0));
 
                 for (int x = 0; x < subDivs; ++x)
                 {
                     theta = x * thetaDelta;
                     vertices.push_back(
-                        cylindricalToCartesian(Point(radius, theta, 0)));
+                        math::cylindricalToCartesian(
+                            math::Point(radius, theta, 0)));
                 }
 
-                vertices.push_back(Point(0));
+                vertices.push_back(math::Point(0));
                 for (int x = 0; x < subDivs; ++x)
                 {
                     theta = x * thetaDelta;
                     vertices.push_back(
-                        cylindricalToCartesian(Point(radius, theta, 0)));
+                        math::cylindricalToCartesian(
+                            math::Point(radius, theta, 0)));
                 }
 
             }
