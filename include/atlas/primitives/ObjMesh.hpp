@@ -10,8 +10,6 @@
 
 #include "Primitive.hpp"
 
-#include "atlas/gl/Shader.hpp"
-
 #include <string>
 
 namespace atlas
@@ -30,7 +28,6 @@ namespace atlas
                 std::string const& mtl = "", bool triangulate = true);
             void setMaterialBufferLocation(GLuint index = 1);
 
-            //bool loadTextures(std::string const& path, int textureUnit);
             void drawMesh();
 
         private:

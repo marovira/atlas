@@ -12,7 +12,7 @@
 #include "atlas/gl/GL.hpp"
 #include "atlas/gl/VertexArrayObject.hpp"
 #include "atlas/gl/Buffer.hpp"
-#include "atlas/math/Vector.hpp"
+#include "atlas/math/Math.hpp"
 
 #include <vector>
 
