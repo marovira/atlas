@@ -27,7 +27,7 @@ namespace atlas
 {
     namespace graph
     {
-
+        class Node;
     }
 }
 
