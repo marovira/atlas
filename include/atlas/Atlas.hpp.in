@@ -29,10 +29,6 @@
  */
 #define ATLAS_VERSION_PATCH @ATLAS_VERSION_PATCH@
 
-/**
- * \def USING_ATLAS_NS
- * Shortened version for using the atlas namespace.
- */
-#define USING_ATLAS_NS using namespace atlas
+#define ATLAS_VERSION_STRING "@ATLAS_VERSION_MAJOR@.@ATLAS_VERSION_MINOR@.@ATLAS_VERSION_PATCH@"
 
 #endif
