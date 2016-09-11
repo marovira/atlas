@@ -41,11 +41,11 @@
 
 #pragma once
 
-#include "atlas/math/Math.hpp"
+#include "Math.h"
 #include "atlas/core/Float.hpp"
-#include "atlas/core/Constants.hpp"
 
 #include <vector>
+#include <cmath>
 
 namespace atlas
 {
@@ -64,7 +64,7 @@ namespace atlas
         int solveQuadric(std::vector<GenType>& coeffs,
             std::vector<GenType>& roots)
         {
-            USING_ATLAS_CORE_NS;
+            using atlas::core::isZero;
 
             // Quadratic: x^2 + px + q = 0
             GenType p, q, D;
@@ -80,7 +80,7 @@ namespace atlas
             }
             else if (D > GenType(0.0))
             {
-                GenType sqrtD = sqrt(D);
+                GenType sqrtD = glm::sqrt(D);
                 roots[0] = sqrtD - p;
                 roots[1] = -sqrtD - p;
                 return 2;
@@ -103,8 +103,7 @@ namespace atlas
         int solveCubic(std::vector<GenType>& coeffs, 
             std::vector<GenType>& roots)
         {
-            USING_ATLAS_CORE_NS;
-            USING_GLM_NS;
+            using atlas::core::isZero;
 
             int num;
             GenType sub;
@@ -141,7 +140,7 @@ namespace atlas
                 else
                 {
                     // Multiplicity 2 and 1.
-                    GenType u = cbrt(-q);
+                    GenType u = std::cbrt(-q);
                     roots[0] = 2 * u;
                     roots[1] = -u;
                     num = 2;
@@ -151,22 +150,22 @@ namespace atlas
             {
                 // Multiplicity 1 all.
                 GenType phi = GenType(1.0) / GenType(3.0) *
-                    acos(-q / sqrt(-cbP));
-                GenType t = 2 * sqrt(-p);
+                    glm::acos(-q / glm::sqrt(-cbP));
+                GenType t = 2 * glm::sqrt(-p);
 
-                roots[0] = t * cos(phi);
-                roots[1] = -t * cos(phi + pi<GenType>() /
+                roots[0] = t * glm::cos(phi);
+                roots[1] = -t * glm::cos(phi + glm::pi<GenType>() /
                     GenType(3));
-                roots[2] = -t * cos(phi - pi<GenType>() /
+                roots[2] = -t * glm::cos(phi - glm::pi<GenType>() /
                     GenType(3));
                 num = 3;
             }
             else
             {
                 // One real solution.
-                GenType sqrtD = sqrt(D);
-                GenType u = cbrt(sqrtD - q);
-                GenType v = -cbrt(sqrtD + q);
+                GenType sqrtD = glm::sqrt(D);
+                GenType u = std::cbrt(sqrtD - q);
+                GenType v = -std::cbrt(sqrtD + q);
 
                 roots[0] = u + v;
                 num = 1;
@@ -196,7 +195,7 @@ namespace atlas
         int solveQuartic(std::vector<GenType>& coeffs,
             std::vector<GenType>& roots)
         {
-            USING_ATLAS_CORE_NS;
+            using atlas::core::isZero;
 
             std::vector<GenType> c(4);
             GenType z, u, v, sub;
@@ -255,7 +254,7 @@ namespace atlas
                 }
                 else if (u > 0)
                 {
-                    u = sqrt(u);
+                    u = glm::sqrt(u);
                 }
                 else
                 {
@@ -268,7 +267,7 @@ namespace atlas
                 }
                 else if (v > 0)
                 {
-                    v = sqrt(v);
+                    v = glm::sqrt(v);
                 }
                 else
                 {

@@ -28,7 +28,7 @@ namespace atlas
          *	
          *	@tparam GenType The precision for the generator.
          */
-        template <typename GenType = float>
+        template <typename GenType>
         class RandomGenerator
         {
         public:

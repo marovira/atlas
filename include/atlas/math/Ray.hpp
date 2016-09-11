@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Math.hpp"
-#include "Vector.hpp"
 
 namespace atlas
 {

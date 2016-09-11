@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Math.hpp"
-#include "Vector.hpp"
 #include "atlas/core/Float.hpp"
 
 namespace atlas
