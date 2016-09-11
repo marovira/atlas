@@ -12,29 +12,28 @@
 
 #include <memory>
 
-/**
- *	\def BUFFER_OFFSET(offset)
- *	Used to provide the offset pointer for vertex attribute data.
- */
-#define BUFFER_OFFSET(offset, type) (void*)(offset * sizeof(type))
-
-/**
- *	\def STRIDE(step, type)
- *	Used to specify the step (or stride) between elements in the vertex
- *	attribute data.
- */
-#define STRIDE(step, type) step * sizeof(type)
-
-/**
- * \def SIZE(num, type)
- * Returns the size of the specified number of elements of the given type.
- */
-#define SIZE(num, type) num * sizeof(type)
-
 namespace atlas
 {
     namespace gl
     {
+        template <typename GenType>
+        constexpr void* bufferOffset(std::size_t offset)
+        {
+            return (void*)(offset * sizeof(GenType));
+        }
+
+        template <typename GenType>
+        constexpr std::size_t stride(std::size_t step)
+        {
+            return step * sizeof(GenType);
+        }
+
+        template <typename GenType>
+        constexpr std::size_t size(std::size_t num)
+        {
+            return stride(num);
+        }
+
         /**
          *	\class Buffer
          *	\brief Wrapper for OpenGL buffer objects.
