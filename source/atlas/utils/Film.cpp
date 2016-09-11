@@ -1,6 +1,7 @@
 #include "atlas/utils/Film.hpp"
 #include "atlas/core/Float.hpp"
 #include "atlas/core/Log.hpp"
+#include "atlas/core/Core.hpp"
 
 #include <iostream>
 #include <fstream>
