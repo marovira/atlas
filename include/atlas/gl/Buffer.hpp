@@ -65,16 +65,9 @@ namespace atlas
              */
             Buffer(GLenum target);
 
-            /**
-             *	Standard copy constructor.
-             *	
-             *	\note
-             *	This constructor only copies the <b>buffer handle</b>. It does 
-             *	not create a copy of the existing buffer.
-             *	
-             *	\param[in] b The buffer to copy from.
-             */
-            Buffer(Buffer const& b);
+            Buffer(Buffer&& rhs);
+
+            Buffer& operator=(Buffer&& rhs);
 
             /**
              *	Destructor.

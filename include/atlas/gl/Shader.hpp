@@ -135,10 +135,9 @@ namespace atlas
              */
             Shader(std::vector<ShaderInfo> const& shaders);
 
-            /**
-             *	Standard copy constructor.
-             */
-            Shader(Shader const& shader);
+            Shader(Shader&& rhs);
+
+            Shader& operator=(Shader&& rhs);
 
             /**
              *	Destructor. Notice that this will destroy not just the shaders,
@@ -294,8 +293,8 @@ namespace atlas
                 GLuint uniformBlockBinding) const;
 
         private:
-            struct GLShaderImpl;
-            std::unique_ptr<GLShaderImpl> mImpl;
+            struct ShaderImpl;
+            std::unique_ptr<ShaderImpl> mImpl;
         };
     }
 }

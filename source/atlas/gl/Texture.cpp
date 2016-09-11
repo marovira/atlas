@@ -17,14 +17,7 @@ namespace atlas
             { }
 
             TextureImpl(TextureImpl const& impl) = default;
-
-            ~TextureImpl()
-            { }
-
-            TextureImpl* clone()
-            {
-                return new TextureImpl(*this);
-            }
+            ~TextureImpl() = default;
 
             GLenum target;
             GLenum unit;
@@ -32,20 +25,34 @@ namespace atlas
         };
 
         Texture::Texture() :
-            mImpl(new TextureImpl)
+            mImpl(std::make_unique<TextureImpl>())
         { }
 
         Texture::Texture(GLenum target, GLenum unit) :
-            mImpl(new TextureImpl)
+            mImpl(std::make_unique<TextureImpl>())
         {
             glGenTextures(1, &mImpl->handle);
             mImpl->target = target;
             mImpl->unit = unit;
         }
 
-        Texture::Texture(Texture const& tex) :
-            mImpl(tex.mImpl->clone())
-        { }
+        Texture::Texture(Texture&& rhs) :
+            mImpl(std::make_unique<TextureImpl>(*rhs.mImpl))
+        {
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->target = 0;
+            rhs.mImpl->unit = 0;
+        }
+
+        Texture& Texture::operator=(Texture&& rhs)
+        {
+            *mImpl = *rhs.mImpl;
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->target = 0;
+            rhs.mImpl->unit = 0;
+
+            return *this;
+        }
 
         Texture::~Texture()
         {

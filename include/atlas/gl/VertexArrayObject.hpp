@@ -41,15 +41,7 @@ namespace atlas
              */
             VertexArrayObject();
 
-            /**
-             * Copy constructor.
-             * 
-             * \note
-             * The constructor only copies the handle along with the list
-             * of vertex attribute array entires. It <b>does not</b> create a 
-             * new vao from the old one.
-             */
-            VertexArrayObject(VertexArrayObject const& vao);
+            VertexArrayObject(VertexArrayObject&& rhs);
 
             /**
              * Destructor. This will destroy the vao object along with the
@@ -57,6 +49,8 @@ namespace atlas
              * disabled.
              */
             ~VertexArrayObject();
+
+            VertexArrayObject& operator=(VertexArrayObject&& rhs);
 
             /**
              * Binds the vao. This is equivalent to 

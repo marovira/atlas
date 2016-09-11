@@ -16,28 +16,35 @@ namespace atlas
             { }
 
             VertexArrayImpl(VertexArrayImpl const& impl) = default;
+            ~VertexArrayImpl() = default;
 
-            ~VertexArrayImpl()
-            { }
-
-            VertexArrayImpl* clone()
-            {
-                return new VertexArrayImpl(*this);
-            }
 
             GLuint handle;
             std::vector<GLuint> vertexArrays;
         };
 
         VertexArrayObject::VertexArrayObject() :
-            mImpl(new VertexArrayImpl)
+            mImpl(std::make_unique<VertexArrayImpl>())
         {
             glGenVertexArrays(1, &mImpl->handle);
         }
 
-        VertexArrayObject::VertexArrayObject(VertexArrayObject const& vao) :
-            mImpl(vao.mImpl->clone())
-        { }
+        VertexArrayObject::VertexArrayObject(VertexArrayObject&& rhs) :
+            mImpl(std::make_unique<VertexArrayImpl>(*rhs.mImpl))
+        {
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->vertexArrays.clear();
+        }
+
+        VertexArrayObject& VertexArrayObject::operator=(
+            VertexArrayObject&& rhs)
+        {
+            *mImpl = *rhs.mImpl;
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->vertexArrays.clear();
+
+            return *this;
+        }
 
         VertexArrayObject::~VertexArrayObject()
         {

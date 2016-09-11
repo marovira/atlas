@@ -23,8 +23,10 @@ namespace atlas
         public:
             Texture();
             Texture(GLenum target, GLenum unit = 0);
-            Texture(Texture const& tex);
+            Texture(Texture&& rhs);
             ~Texture();
+
+            Texture& operator=(Texture&& rhs);
 
             void genTexture(GLenum target);
             void setTextureUnit(GLenum unit);

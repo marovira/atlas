@@ -11,21 +11,14 @@ namespace atlas
 {
     namespace gl
     {
-        struct Shader::GLShaderImpl
+        struct Shader::ShaderImpl
         {
-            GLShaderImpl() :
+            ShaderImpl() :
                 shaderProgram(0)
             { }
 
-            GLShaderImpl(GLShaderImpl const& impl) = default;
-
-            ~GLShaderImpl()
-            { }
-
-            GLShaderImpl* clone() const
-            {
-                return new GLShaderImpl(*this);
-            }
+            ShaderImpl(ShaderImpl const& impl) = default;
+            ~ShaderImpl() = default;
 
             const GLchar* readShaderSource(std::string const& filename)
             {
@@ -130,18 +123,30 @@ namespace atlas
         };
 
         Shader::Shader() :
-            mImpl(new GLShaderImpl)
+            mImpl(std::make_unique<ShaderImpl>())
         { }
 
         Shader::Shader(std::vector<ShaderInfo> const& shaders) :
-            mImpl(new GLShaderImpl)
+            mImpl(std::make_unique<ShaderImpl>())
         {
             mImpl->shaders = shaders;
         }
 
-        Shader::Shader(Shader const& shader) :
-            mImpl(shader.mImpl->clone())
-        { }
+        Shader::Shader(Shader&& rhs) :
+            mImpl(std::make_unique<ShaderImpl>(*rhs.mImpl))
+        {
+            rhs.mImpl->shaderProgram = 0;
+            rhs.mImpl->shaders.clear();
+        }
+
+        Shader& Shader::operator=(Shader&& rhs)
+        {
+            *mImpl = *rhs.mImpl;
+            rhs.mImpl->shaderProgram = 0;
+            rhs.mImpl->shaders.clear();
+
+            return *this;
+        }
 
         Shader::~Shader()
         {

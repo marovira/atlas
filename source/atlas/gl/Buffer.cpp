@@ -14,33 +14,38 @@ namespace atlas
             { }
 
             BufferImpl(BufferImpl const& impl) = default;
-
-            BufferImpl* clone()
-            {
-                return new BufferImpl(*this);
-            }
-
-            ~BufferImpl()
-            { }
+            ~BufferImpl() = default;
 
             GLenum target;
             GLuint handle;
         };
 
         Buffer::Buffer() :
-            mImpl(new BufferImpl)
+            mImpl(std::make_unique<BufferImpl>())
         { }
 
         Buffer::Buffer(GLenum target) :
-            mImpl(new BufferImpl)
+            mImpl(std::make_unique<BufferImpl>())
         {
             glGenBuffers(1, &mImpl->handle);
             mImpl->target = target;
         }
 
-        Buffer::Buffer(Buffer const& b) :
-            mImpl(b.mImpl->clone())
-        { }
+        Buffer::Buffer(Buffer&& rhs) :
+            mImpl(std::make_unique<BufferImpl>(*rhs.mImpl))
+        {
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->target = 0;
+        }
+
+        Buffer& Buffer::operator=(Buffer&& rhs)
+        {
+            *mImpl = *rhs.mImpl;
+            rhs.mImpl->handle = 0;
+            rhs.mImpl->target = 0;
+
+            return *this;
+        }
 
         Buffer::~Buffer()
         {
