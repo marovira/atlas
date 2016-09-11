@@ -1,15 +1,11 @@
 /**
- * \file STBImage.hpp
- * \brief A header wrapper for the stb_image header.
+ * \file STB.hpp
+ * \brief A header wrapper for the stb library.
  * \note Use
  * \code
- * #include <atlas/core/STBImage.hpp>
+ * #include <atlas/core/STB.hpp>
  * \endcode
- * instead of using
- * \code
- * #include <stb/stb_image.h>
- * \endcode
- * to prevent errors when/if the header changes.
+ * to use the STB libraries.
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_STB_IMAGE_HPP

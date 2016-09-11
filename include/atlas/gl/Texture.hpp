@@ -1,3 +1,10 @@
+/**
+ * \file Texture.hpp
+ * \brief Defines a wrapper for OpenGL texture objects.
+ *
+ *
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GL_TEXTURE_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_TEXTURE_HPP
 

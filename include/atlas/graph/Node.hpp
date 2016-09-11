@@ -1,3 +1,9 @@
+/**
+ * \file Node.hpp
+ * \brief Defines a node class for a scene graph.
+ *
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_GRAPH_NODE_HPP
 #define ATLAS_INCLUDE_ATLAS_GRAPH_NODE_HPP
 

@@ -1,3 +1,8 @@
+/**
+ * \file WindowSettings.hpp
+ * \brief Defines settings for windows.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_WINDOW_SETTINGS_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_WINDOW_SETTINGS_HPP
 

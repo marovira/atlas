@@ -1,3 +1,8 @@
+/**
+ * \file GUI.hpp
+ * \brief Defines functions for ImGUI.
+ */
+
 #ifndef ATLAS_INCLUDE_ATLAS_UTILS_GUI_HPP
 #define ATLAS_INCLUDE_ATLAS_UTILS_GUI_HPP
 
