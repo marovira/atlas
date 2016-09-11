@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "atlas/core/Core.hpp"
 
 #include <memory>
 

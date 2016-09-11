@@ -55,8 +55,7 @@ namespace atlas
 
         bool FPSCounter::isFPS(atlas::core::Time<>& t) const
         {
-            USING_ATLAS_CORE_NS;
-            if (geq(t.currentTime - mImpl->lastTime, mImpl->tick))
+            if (core::geq(t.currentTime - mImpl->lastTime, mImpl->tick))
             {
                 mImpl->lastTime += mImpl->tick;
                 t.deltaTime = mImpl->tick;

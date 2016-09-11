@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "atlas/core/Core.hpp"
 #include "atlas/math/Math.hpp"
 
 namespace atlas
