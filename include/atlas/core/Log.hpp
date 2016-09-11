@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "Core.hpp"
 #include "Macros.hpp"
 
 #include <string>

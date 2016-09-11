@@ -27,9 +27,12 @@ namespace atlas
 {
     namespace core
     {
+        class Exception;
+        class RuntimeException;
+        class LogicException;
+
         template <class GenType = float>
         class Timer;
-
         template <typename GenType = float>
         class Time;
     }

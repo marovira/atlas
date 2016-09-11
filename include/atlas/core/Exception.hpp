@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Core.hpp"
 #include "Log.hpp"
 
 #include <stdexcept>

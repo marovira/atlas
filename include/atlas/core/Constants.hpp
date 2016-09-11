@@ -9,9 +9,6 @@
 
 #pragma once
 
-#include "Core.hpp"
-
-#include <glm/gtc/constants.hpp>
 #include <limits>
 
 namespace atlas
