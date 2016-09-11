@@ -29,8 +29,6 @@
 
 #pragma once
 
-#include "atlas/Atlas.hpp"
-
 #include <GL/gl3w.h>
 
 #ifdef USING_ATLAS_GL_NS
