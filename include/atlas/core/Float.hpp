@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include "Core.hpp"
 #include "Constants.hpp"
 
 namespace atlas

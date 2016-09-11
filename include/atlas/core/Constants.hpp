@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "Core.hpp"
-
 #include <limits>
 
 namespace atlas
