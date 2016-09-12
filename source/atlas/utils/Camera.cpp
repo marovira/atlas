@@ -6,7 +6,11 @@ namespace atlas
 {
     namespace utils
     {
-        Camera::Camera()
+        Camera::Camera() :
+            mEye(0),
+            mLookAt(0),
+            mUp(0, 1, 0),
+            mFov(45.0f)
         { }
 
         Camera::~Camera()
@@ -53,17 +57,17 @@ namespace atlas
         void Camera::resetCamera()
         { }
 
-        math::Matrix4 Camera::getCameraMatrix()
+        math::Matrix4 Camera::getCameraMatrix() const
         {
             return math::Matrix4();
         }
 
-        atlas::math::Point Camera::getCameraPosition()
+        atlas::math::Point Camera::getCameraPosition() const
         {
             return math::Point();
         }
 
-        float Camera::getCameraFOV()
+        float Camera::getCameraFOV() const
         {
             return 45.0f;
         }
