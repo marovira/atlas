@@ -13,6 +13,13 @@
 #pragma once
 
 #include "Constants.hpp"
+#include "Platform.hpp"
+
+#ifdef ATLAS_PLATFORM_APPLE
+#include <cmath>
+#include <cstdlib>
+#include <cstdint>
+#endif
 
 namespace atlas
 {
