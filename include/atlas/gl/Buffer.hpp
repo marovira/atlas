@@ -31,7 +31,7 @@ namespace atlas
         template <typename GenType>
         constexpr std::size_t size(std::size_t num)
         {
-            return stride(num);
+            return stride<GenType>(num);
         }
 
         /**
