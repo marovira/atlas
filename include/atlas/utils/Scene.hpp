@@ -135,6 +135,10 @@ namespace atlas
              */
             virtual void screenResizeEvent(int width, int height);
 
+            virtual void onSceneEnter();
+
+            virtual void onSceneExit();
+
             /**
              *	This is called for every pass of the main loop. All that is
              *	given here is the current tick. It is the Scene's responsibility

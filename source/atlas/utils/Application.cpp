@@ -322,12 +322,16 @@ namespace atlas
 
         void Application::nextScene()
         {
+            mImpl->sceneList[mImpl->currentScene]->onSceneExit();
             mImpl->getNextScene();
+            mImpl->sceneList[mImpl->currentScene]->onSceneEnter();
         }
 
         void Application::previousScene()
         {
+            mImpl->sceneList[mImpl->currentScene]->onSceneExit();
             mImpl->getPreviousScene();
+            mImpl->sceneList[mImpl->currentScene]->onSceneEnter();
         }
 
         Scene* Application::getCurrentScene() const

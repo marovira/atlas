@@ -54,6 +54,12 @@ namespace atlas
                 (double)width / height, 1.0, 1000.0);
         }
 
+        void Scene::onSceneEnter()
+        { }
+
+        void Scene::onSceneExit()
+        { }
+
         void Scene::updateScene(double time)
         {
             UNUSED(time);
