@@ -9,16 +9,6 @@ namespace atlas
         Geometry::Geometry()
         { }
         
-        Geometry::Geometry(Geometry const& geom) :
-            mUniforms(geom.mUniforms),
-            mModel(geom.mModel)
-        {
-            for (auto& shader : geom.mShaders)
-            {
-                mShaders.emplace_back(ShaderPointer(new gl::Shader(*shader)));
-            }
-        }
-
         Geometry::~Geometry()
         { }
 

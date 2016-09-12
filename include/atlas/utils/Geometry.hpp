@@ -68,11 +68,6 @@ namespace atlas
             Geometry();
 
             /**
-             *	Standard copy constructor.
-             */
-            Geometry(Geometry const& geom);
-
-            /**
              *	Standard virtual destructor.
              */
             virtual ~Geometry();
