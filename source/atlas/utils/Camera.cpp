@@ -12,11 +12,9 @@ namespace atlas
         Camera::~Camera()
         { }
 
-        void Camera::mouseDown(math::Point2 const& point, 
-            CameraMovements movement)
+        void Camera::mouseDown(math::Point2 const& point)
         {
             UNUSED(point);
-            UNUSED(movement);
         }
 
         void Camera::mouseMove(math::Point2 const& point)
@@ -58,6 +56,11 @@ namespace atlas
         math::Matrix4 Camera::getCameraMatrix()
         {
             return math::Matrix4();
+        }
+
+        atlas::math::Point Camera::getCameraPosition()
+        {
+            return math::Point();
         }
 
         float Camera::getCameraFOV()

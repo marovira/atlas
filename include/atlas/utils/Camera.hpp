@@ -59,31 +59,6 @@ namespace atlas
             virtual ~Camera();
 
             /**
-             *	\enum CameraMovements
-             *	Provides a set of motions that most cameras should provide.
-             *	
-             *	\var IDLE
-             *	The camera is at rest. There is no motion happening (default 
-             *	state).
-             *	\var TUMBLE
-             *	This rotates the camera around a fixed point (similar to an
-             *	arcball).
-             *	\var TRACK
-             *	Moves the camera within its viewing plane without changing
-             *	the viewing angle (also known as panning).
-             *	\var DOLLY
-             *	Not to be confused with zooming, this moves the camera 
-             *	closer or further away from its viewing point.
-             */
-            enum class CameraMovements
-            {
-                IDLE = 0,
-                TUMBLE,
-                TRACK,
-                DOLLY
-            };
-
-            /**
              *	This function is called whenever the mouse is pressed and it
              *	generally stores the mouse point so it can be used later on
              *	to compute the movement to perform when the mouse is dragged.
@@ -91,8 +66,7 @@ namespace atlas
              *	\param[in] point The current mouse position.
              *	\param[in] movement The type of movement to perform.
              */
-            virtual void mouseDown(math::Point2 const& point, 
-                CameraMovements movement = CameraMovements::IDLE);
+            virtual void mouseDown(math::Point2 const& point);
 
             /**
              *	This is called when the mouse has been pressed and is being
@@ -116,7 +90,6 @@ namespace atlas
 
             virtual void keyUp(int key);
 
-
             virtual void updateCamera(atlas::core::Time<> const& time);
 
             virtual void updateCameraBounds(atlas::math::Point2 const& size);
@@ -134,6 +107,8 @@ namespace atlas
              *	\return The matrix containing all camera transforms.
              */
             virtual math::Matrix4 getCameraMatrix();
+
+            virtual atlas::math::Point getCameraPosition();
 
             virtual float getCameraFOV();
         };
