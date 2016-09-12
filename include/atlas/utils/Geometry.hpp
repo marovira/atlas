@@ -136,17 +136,10 @@ namespace atlas
             virtual bool intersectRay(math::Ray const& ray, float& tMin);
 
             /**
-             *	\typedef ShaderPointer
-             *	In order to facilitate adding shaders to the shader list,
-             *	this typedef is provided for unique pointers of Shader objects.
-             */
-            typedef std::unique_ptr<gl::Shader> ShaderPointer;
-
-            /**
              *	\var mShaders
              *	The list of shaders for the specific object.
              */
-            std::vector<ShaderPointer> mShaders;
+            std::vector<atlas::gl::Shader> mShaders;
 
             /**
              *	\typedef UniformKey

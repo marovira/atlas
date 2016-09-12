@@ -46,7 +46,7 @@ namespace atlas
         {
             for (auto& shader : mShaders)
             {
-                shader->reloadShaders();
+                shader.reloadShaders();
             }
         }
     }
