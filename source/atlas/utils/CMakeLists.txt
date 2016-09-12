@@ -8,5 +8,4 @@ set(ATLAS_SOURCE_UTILS_LIST
     "${ATLAS_SOURCE_UTILS_ROOT}/FPSCounter.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/GUI.cpp"
     "${ATLAS_SOURCE_UTILS_ROOT}/WindowSettings.cpp"
-    "${ATLAS_SOURCE_UTILS_ROOT}/ObjLoader.cpp"
     PARENT_SCOPE)
