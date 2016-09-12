@@ -179,7 +179,7 @@ namespace atlas
 
         Gui::Gui()
         {
-            mData.window = APPLICATION.getCurrentWindow();
+            mData.window = Application::getInstance().getCurrentWindow();
 
             ImGuiIO& io = ImGui::GetIO();
             io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;

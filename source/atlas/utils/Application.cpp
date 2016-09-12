@@ -12,8 +12,6 @@ namespace atlas
 {
     namespace utils
     {
-        typedef std::unique_ptr<Scene> ScenePointer;
-
         struct Application::ApplicationImpl
         {
             ApplicationImpl() :
@@ -23,9 +21,9 @@ namespace atlas
             ~ApplicationImpl()
             { }
 
-            void insertScene(Scene* scene)
+            void insertScene(ScenePointer scene)
             {
-                sceneList.push_back(ScenePointer(scene));
+                sceneList.push_back(std::move(scene));
                 currentScene = sceneList.size() - 1;
                 sceneTicks.push_back(-1.0);
             }
@@ -81,22 +79,24 @@ namespace atlas
         {
             double x, y;
             glfwGetCursorPos(window, &x, &y);
-            APPLICATION.getCurrentScene()->mousePressEvent(button, action,
-                mods, x, y);
+            Application::getInstance().getCurrentScene()->mousePressEvent(
+                button, action, mods, x, y);
         }
 
         static void mouseMoveCallback(GLFWwindow* window, double xPos,
             double yPos)
         {
             UNUSED(window);
-            APPLICATION.getCurrentScene()->mouseMoveEvent(xPos, yPos);         
+            Application::getInstance().getCurrentScene()->mouseMoveEvent(
+                xPos, yPos);
         }
 
         static void mouseScrollCallback(GLFWwindow* window, double xOffset,
             double yOffset)
         {
             UNUSED(window);
-            APPLICATION.getCurrentScene()->mouseScrollEvent(xOffset, yOffset);
+            Application::getInstance().getCurrentScene()->mouseScrollEvent(
+                xOffset, yOffset);
         }
 
         static void keyPressCallback(GLFWwindow* window, int key,
@@ -108,17 +108,17 @@ namespace atlas
             }
             else if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
             {
-                APPLICATION.nextScene();
+                Application::getInstance().nextScene();
             }
             else if (key == GLFW_KEY_TAB && action == GLFW_PRESS &&
                 mods == GLFW_KEY_LEFT_SHIFT)
             {
-                APPLICATION.previousScene();
+                Application::getInstance().previousScene();
             }
             else
             {
-                APPLICATION.getCurrentScene()->keyPressEvent(key, scancode, 
-                    action, mods);
+                Application::getInstance().getCurrentScene()->keyPressEvent(
+                    key, scancode, action, mods);
             }
         }
 
@@ -138,7 +138,7 @@ namespace atlas
             width = (width < 1) ? 1 : width;
             height = (height < 1) ? 1 : height;
 
-            APPLICATION.getCurrentScene()->screenResizeEvent(width, height);
+            Application::getInstance().getCurrentScene()->screenResizeEvent(width, height);
         }
 
         static void errorCallback(int error, const char* message)
@@ -148,7 +148,7 @@ namespace atlas
 
         static void windowCloseCallback(GLFWwindow* window)
         {
-            if (APPLICATION.getCurrentScene()->sceneEnded())
+            if (Application::getInstance().getCurrentScene()->sceneEnded())
             {
                 glfwSetWindowShouldClose(window, GL_TRUE);
             }
@@ -299,6 +299,8 @@ namespace atlas
             glfwSetTime(0.0);
             double currentTime;
 
+            mImpl->sceneList[mImpl->currentScene]->onSceneEnter();
+
             while (!glfwWindowShouldClose(mImpl->currentWindow))
             {
                 currentTime = glfwGetTime();
@@ -308,6 +310,8 @@ namespace atlas
                 glfwSwapBuffers(mImpl->currentWindow);
                 glfwPollEvents();
             }
+
+            mImpl->sceneList[mImpl->currentScene]->onSceneExit();
         }
 
         void Application::getCursorPosition(double* x, double *y)
@@ -315,9 +319,9 @@ namespace atlas
             glfwGetCursorPos(mImpl->currentWindow, x, y);
         }
 
-        void Application::addScene(Scene* scene)
+        void Application::addScene(ScenePointer scene)
         {
-            mImpl->insertScene(scene);
+            mImpl->insertScene(std::move(scene));
         }
 
         void Application::nextScene()

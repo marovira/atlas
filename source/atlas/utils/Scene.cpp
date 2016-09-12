@@ -81,7 +81,8 @@ namespace atlas
         void Scene::setCursorEnabled(bool enabled)
         {
             int en = (enabled) ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
-            glfwSetInputMode(APPLICATION.getCurrentWindow(), GLFW_CURSOR, en);
+            glfwSetInputMode(Application::getInstance().getCurrentWindow(),
+                GLFW_CURSOR, en);
         }
     }
 }

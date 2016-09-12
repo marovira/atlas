@@ -15,16 +15,12 @@
 #include <string>
 #include <memory>
 
-/**
- *	\def APPLICATION
- *	A shortcut for getting the current application instance.
- */
-#define APPLICATION atlas::utils::Application::getInstance()
-
 namespace atlas
 {
     namespace utils
     {
+        using ScenePointer = std::unique_ptr<Scene>;
+
         /**
          *	\class Application
          *	\brief Defines a class that wraps all of the GLFW windowing system.
@@ -135,7 +131,7 @@ namespace atlas
              *	
              *	@param[in] scene The scene to add.
              */
-            void addScene(Scene* scene);
+            void addScene(ScenePointer scene);
 
             /**
              *	Moves to the next scene in the queue. If there is only 
