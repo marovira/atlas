@@ -131,77 +131,83 @@ namespace atlas
             std::string parseErrorLog(ShaderUnit const& unit, 
                 std::string const& log)
             {
-                // TODO: If an include file has an error, then the error also
-                // percolates down to the root file. This means that the error
-                // log actually returns multiple instances of the %d(%d)
-                // pattern. This needs to be addressed so that each instance
-                // is changed with the filename.
-
-                std::smatch match;
-                std::regex pattern("\\d*\\(\\d*\\)");
-
-                // We are only interested in the first match.
-                std::regex_search(log, match, pattern);
-
-                if (match.size() != 1)
+                // We first check if the log is empty. If it is, return.
+                if (log.empty())
                 {
-                    // We cannot do any parsing on this, so we just return the
-                    // string as is and emit a message to the log.
-                    WARN_LOG("The current implementation of OpenGL has a " +
-                        std::string("different syntax for GLSL error logs. ") +
-                        std::string("The log is printed as is"));
-
-                    return log;
+                    return std::string();
                 }
 
-                std::string info = match[0];
-                std::string error = match.suffix();
+                std::stringstream logStream(log);
+                std::stringstream outLog;
+                std::string line;
 
-                // Now extract the numbers by locating ().
-                std::size_t start = info.find("(");
-                std::size_t end = info.find(")");
-                std::size_t delta = end - start;
-
-                // Grab the numbers.
-                int fileNum = std::stoi(info.substr(0, start));
-                int lineNum = std::stoi(info.substr(start + 1, delta));
-
-                std::stringstream errorStream;
-
-                // Now assemble the include hierarchy for the file.
-                int parent = unit.includedFiles[fileNum].parent;
-                std::vector<int> hierarchy;
-                hierarchy.push_back(fileNum);
-                while (parent != -1)
+                while (std::getline(logStream, line, '\n'))
                 {
-                    hierarchy.push_back(parent);
-                    parent = unit.includedFiles[parent].parent;
+                    std::smatch match;
+                    std::regex pattern("\\d*\\(\\d*\\)");
+
+                    // We are only interested in the first match.
+                    std::regex_search(line, match, pattern);
+
+                    if (match.size() != 1)
+                    {
+                        // We cannot do any parsing on this, so we just return 
+                        // the string as is and emit a message to the log.
+                        WARN_LOG("The current implementation of OpenGL has a" +
+                            std::string(" different syntax for GLSL error ") +
+                            std::string("logs. The log is printed as is"));
+
+                        return log;
+                    }
+
+                    std::string info = match[0];
+                    std::string error = match.suffix();
+                    error = error.substr(1, error.size() - 1);
+
+                    // Now extract the numbers by locating ().
+                    std::size_t start = info.find("(");
+                    std::size_t end = info.find(")");
+                    std::size_t delta = end - start;
+
+                    // Grab the numbers.
+                    int fileNum = std::stoi(info.substr(0, start));
+                    int lineNum = std::stoi(info.substr(start + 1, delta));
+
+                    // Now assemble the include hierarchy for the file.
+                    int parent = unit.includedFiles[fileNum].parent;
+                    std::vector<int> hierarchy;
+                    hierarchy.push_back(fileNum);
+                    while (parent != -1)
+                    {
+                        hierarchy.push_back(parent);
+                        parent = unit.includedFiles[parent].parent;
+                    }
+
+                    //Check if the hierarchy has size 1. If it does, then
+                    // the error was generated in the top file, and we just
+                    // need to print out the error.
+                    if (hierarchy.size() == 1)
+                    {
+                        outLog << "In file " +
+                            unit.includedFiles[hierarchy[0]].name + "(" +
+                            std::to_string(lineNum) + ")" + error + "\n";
+                        continue;
+                    }
+
+                    // Otherwise, we have to generate the include hierarchy
+                    // messages. To do this, we traverse the list in reverse.
+                    for (auto i = hierarchy.size() - 1; i > 0; --i)
+                    {
+                        outLog << "In file included from " +
+                            unit.includedFiles[hierarchy[i]].name + ":\n";
+                    }
+
+                    // Now print the actual error message.
+                    outLog << unit.includedFiles[hierarchy[0]].name +
+                        "(" + std::to_string(lineNum) + ")" + error + "\n";
                 }
 
-                // Check if hierarchy has size 1. If it does, then the error
-                // was generated in the top file, and we just need to print out
-                // the error.
-                if (hierarchy.size() == 1)
-                {
-                    errorStream << "In file " +
-                        unit.includedFiles[hierarchy[0]].name +
-                        "(" + std::to_string(lineNum) + "): " + error;
-                    return errorStream.str();
-                }
-
-                // Otherwise, we have to generate the include hierarchy
-                // messages. To do this, we traverse the list in reverse.
-                for (auto i = hierarchy.size() - 1; i > 0; --i)
-                {
-                    errorStream << "In file included from " +
-                        unit.includedFiles[hierarchy[i]].name + ":\n";
-                }
-
-                // Now print the actual error message
-                errorStream << unit.includedFiles[hierarchy[0]].name +
-                    "(" + std::to_string(lineNum) + "):" + error;
-
-                return errorStream.str();
+                return outLog.str();
             }
 
             bool compileShader(ShaderUnit& unit)
