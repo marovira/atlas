@@ -6,6 +6,18 @@
 #include "atlas/gl/ErrorCheck.hpp"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include <set>
+
+#if defined(ATLAS_PLATFORM_WINDOWS)
+#define stat _stat
+#define stat_t struct _stat
+#else
+#define stat_t struct stat
+#endif
+
 
 namespace atlas
 {
@@ -14,65 +26,203 @@ namespace atlas
         struct Shader::ShaderImpl
         {
             ShaderImpl() :
-                shaderProgram(0)
+                shaderProgram(0),
+                isHotReloadAvailable(true)
             { }
 
             ShaderImpl(ShaderImpl const& impl) = default;
             ~ShaderImpl() = default;
 
-            const GLchar* readShaderSource(std::string const& filename)
+            time_t getFileTimeStamp(std::string const& filename)
             {
-                FILE* infile;
-#if defined(ATLAS_PLATFORM_WINDOWS)
-                fopen_s(&infile, filename.c_str(), "rb");
-#else
-                infile = fopen(filename.c_str(), "rb");
-#endif
-                if (!infile)
+                // Check to see if hot reloading is available. If it isn't, 
+                // then don't bother with getting the timestamp.
+                if (!isHotReloadAvailable)
                 {
-                    throw core::RuntimeException("Could not open file: " 
-                        + filename);
+                    return time_t();
                 }
 
-                fseek(infile, 0, SEEK_END);
-                int length = ftell(infile);
-                fseek(infile, 0, SEEK_SET);
-
-                if (length == 0)
+                stat_t buffer;
+                auto result = stat(filename.c_str(), &buffer);
+                if (result != 0)
                 {
-                    fclose(infile);
-                    return nullptr;
+                    // We couldn't obtain the information for the file, so 
+                    // disable hot reloading.
+                    isHotReloadAvailable = false;
+                    WARN_LOG("Could not obtain file timestamp. Hot reloading" +
+                        std::string(" will be disabled"));
+                    return time_t();
                 }
 
-                GLchar* source = new GLchar[length + 1];
-                fread(source, 1, length, infile);
-                fclose(infile);
-                source[length] = '\0';
-                return const_cast<const GLchar*>(source);
+                return buffer.st_mtime;
             }
 
-            bool compileShader(ShaderInfo& shader)
+            std::string readShaderSource(std::string const& filename, ShaderUnit& unit)
             {
-                if (shader.shaderHandle)
+                std::ifstream inFile(filename);
+                std::stringstream outString;
+
+                if (!inFile)
                 {
-                    glDetachShader(shaderProgram, shader.shaderHandle);
-                    glDeleteShader(shader.shaderHandle);
+                    throw core::RuntimeException("Could not open file: " +
+                        filename);
                 }
 
-                auto handle = glCreateShader(shader.shaderType);
+                // Check to see if this is the first time that we are adding
+                // something. If it is, then we add the root file (this is to 
+                // help us build a hierarchy of includes).
+                if (unit.includedFiles.empty())
+                {
+                    auto timestamp = getFileTimeStamp(filename);
+                    unit.includedFiles.push_back({ filename, 0 , timestamp });
+                }
 
-                const GLchar* source = readShaderSource(shader.shaderFile);
-                if (!source)
+                int fileNum = (int)unit.includedFiles.size() - 1;
+                int lineNum = 1;
+                std::string line;
+                while (std::getline(inFile, line))
+                {
+                    // Check to see if the line is a #version. If it is, then 
+                    // we must skip it while increasing the line counter.
+                    if (line.find("#version") != std::string::npos)
+                    {
+                        outString << line + "\n";
+                        lineNum++;
+                        continue;
+                    }
+
+                    // Check to see if the line is an #include
+                    if (line.find("#include") != std::string::npos)
+                    {
+                        // We have an include, so extract the path of the 
+                        // included file.
+                        const std::string includeStr = "#include ";
+                        std::size_t pathSize = 
+                            line.size() - includeStr.size() - 2;
+                        std::string path = 
+                            line.substr(includeStr.size() + 1, pathSize);
+
+                        std::string absolutePath = includeDir + path;
+
+                        // Add the file to the list of includes.
+                        auto timestamp = getFileTimeStamp(absolutePath);
+                        ShaderFile f = { absolutePath, fileNum, timestamp };
+                        unit.includedFiles.push_back(f);
+
+                        // Now recurse on the included file.
+                        auto parsedFile = readShaderSource(absolutePath, unit);
+
+                        // Now insert it.
+                        outString << parsedFile;
+                        continue;
+                    }
+
+                    // Create the #line directive.
+                    std::string lineInfo = "#line " + std::to_string(lineNum) +
+                        " " + std::to_string(fileNum) + "\n";
+                    outString << lineInfo;
+                    outString << line + "\n";
+                    lineNum++;
+                }
+
+                return outString.str();
+            }
+
+            std::string parseErrorLog(ShaderUnit const& unit, 
+                std::string const& log)
+            {
+                std::smatch match;
+                std::regex pattern("\\d\\(\\d\\)");
+
+                // We are only interested in the first match.
+                std::regex_search(log, match, pattern);
+
+                if (match.size() != 1)
+                {
+                    // We cannot do any parsing on this, so we just return the
+                    // string as is and emit a message to the log.
+                    WARN_LOG("The current implementation of OpenGL has a " +
+                        std::string("different syntax for GLSL error logs. ") +
+                        std::string("The log is printed as is"));
+
+                    return log;
+                }
+
+                std::string info = match[0];
+                std::string error = match.suffix();
+
+                // Now extract the numbers by locating ().
+                std::size_t start = info.find("(");
+                std::size_t end = info.find(")");
+                std::size_t delta = end - start;
+
+                // Grab the numbers.
+                int fileNum = std::stoi(info.substr(0, start));
+                int lineNum = std::stoi(info.substr(start + 1, delta));
+
+                std::stringstream errorStream;
+
+                // Now assemble the include hierarchy for the file.
+                int parent = unit.includedFiles[fileNum].parent;
+                std::vector<int> hierarchy;
+                hierarchy.push_back(fileNum);
+                while (parent != 0)
+                {
+                    hierarchy.push_back(parent);
+                    parent = unit.includedFiles[parent].parent;
+                }
+
+                // Check if hierarchy has size 1. If it does, then the error
+                // was generated in the top file, and we just need to print out
+                // the error.
+                if (hierarchy.size() == 1)
+                {
+                    errorStream << "In file " +
+                        unit.includedFiles[hierarchy[0]].name +
+                        "(" + std::to_string(lineNum) + "): " + error;
+                    return errorStream.str();
+                }
+
+                // Otherwise, we have to generate the include hierarchy
+                // messages. To do this, we traverse the list in reverse.
+                for (auto i = hierarchy.size() - 1; i > 0; --i)
+                {
+                    errorStream << "In file included from " +
+                        unit.includedFiles[hierarchy[i]].name + ":\n";
+                }
+
+                // Now print the actual error message
+                errorStream << unit.includedFiles[hierarchy[0]].name +
+                    "(" + std::to_string(lineNum) + "):" + error;
+
+                return errorStream.str();
+            }
+
+            bool compileShader(ShaderUnit& unit)
+            {
+                if (unit.handle)
+                {
+                    glDetachShader(shaderProgram, unit.handle);
+                    glDeleteShader(unit.handle);
+                }
+
+                auto handle = glCreateShader(unit.type);
+                auto sourceStr = readShaderSource(unit.filename, unit);
+
+                if (sourceStr.empty())
                 {
                     ERROR_LOG_V("File: \"%s\" is empty or cannot be read.",
-                        shader.shaderFile.c_str());
+                        unit.filename.c_str());
                     glDeleteShader(handle);
 
                     return false;
                 }
 
+                auto source = static_cast<const GLchar*>(sourceStr.c_str());
+
+
                 glShaderSource(handle, 1, &source, NULL);
-                delete[] source;
+                source = nullptr;
 
                 glCompileShader(handle);
 
@@ -86,9 +236,9 @@ namespace atlas
                     GLchar* log = new GLchar[len + 1];
                     glGetShaderInfoLog(handle, len, &len, log);
 
-                    ERROR_LOG_V(
-                        "In file \"%s\": shader compilation failed: %s.",
-                        shader.shaderFile.c_str(), log);
+                    auto message = parseErrorLog(unit, std::string(log));
+
+                    ERROR_LOG(message);
 
                     glDeleteShader(handle);
                     delete[] log;
@@ -96,7 +246,7 @@ namespace atlas
                 }
 
                 glAttachShader(shaderProgram, handle);
-                shader.shaderHandle = handle;
+                unit.handle = handle;
                 return true;
             }
 
@@ -119,31 +269,33 @@ namespace atlas
             }
 
             GLint shaderProgram;
-            std::vector<ShaderInfo> shaders;
+            std::vector<ShaderUnit> shaderUnits;
+            bool isHotReloadAvailable;
+            std::string includeDir;
         };
 
         Shader::Shader() :
             mImpl(std::make_unique<ShaderImpl>())
         { }
 
-        Shader::Shader(std::vector<ShaderInfo> const& shaders) :
+        Shader::Shader(std::vector<ShaderUnit> const& shaderUnits) :
             mImpl(std::make_unique<ShaderImpl>())
         {
-            mImpl->shaders = shaders;
+            mImpl->shaderUnits = shaderUnits;
         }
 
         Shader::Shader(Shader&& rhs) :
             mImpl(std::make_unique<ShaderImpl>(*rhs.mImpl))
         {
             rhs.mImpl->shaderProgram = 0;
-            rhs.mImpl->shaders.clear();
+            rhs.mImpl->shaderUnits.clear();
         }
 
         Shader& Shader::operator=(Shader&& rhs)
         {
             *mImpl = *rhs.mImpl;
             rhs.mImpl->shaderProgram = 0;
-            rhs.mImpl->shaders.clear();
+            rhs.mImpl->shaderUnits.clear();
 
             return *this;
         }
@@ -152,7 +304,7 @@ namespace atlas
         {
             deleteShaders();
 
-            mImpl->shaders.clear();
+            mImpl->shaderUnits.clear();
 
             if (mImpl->shaderProgram)
             {
@@ -161,19 +313,24 @@ namespace atlas
             }
         }
 
-        void Shader::setShaders(std::vector<ShaderInfo> const& shaders)
+        void Shader::setShaders(std::vector<ShaderUnit> const& shaders)
         {
-            mImpl->shaders = shaders;
+            mImpl->shaderUnits = shaders;
+        }
+        
+        void Shader::setShaderIncludeDir(std::string const& dir)
+        {
+            mImpl->includeDir = dir;
         }
 
-        std::vector<ShaderInfo>& Shader::getShaders() const
+        std::vector<ShaderUnit>& Shader::getShaders() const
         {
-            return mImpl->shaders;
+            return mImpl->shaderUnits;
         }
 
         bool Shader::compileShaders(int idx)
         {
-            if (mImpl->shaders.empty())
+            if (mImpl->shaderUnits.empty())
             {
                 WARN_LOG("Received empty shader list.");
                 return false;
@@ -184,23 +341,34 @@ namespace atlas
                 mImpl->shaderProgram = glCreateProgram();
             }
 
-            bool ret = true;
             if (idx == -1)
             {
-                for (auto& shader : mImpl->shaders)
+                for (auto& shader : mImpl->shaderUnits)
                 {
-                    ret = mImpl->compileShader(shader);
+                    if (!mImpl->compileShader(shader))
+                    {
+                        // Shader compilation failed, so set the program to 0,
+                        // and return false.
+                        glDeleteProgram(mImpl->shaderProgram);
+                        mImpl->shaderProgram = 0;
+                        return false;
+                    }
                 }
             }
             else
             {
-                if (0 <= idx && idx < mImpl->shaders.size())
+                if (0 <= idx && idx < mImpl->shaderUnits.size())
                 {
-                    ret = mImpl->compileShader(mImpl->shaders[idx]);
+                    if (!mImpl->compileShader(mImpl->shaderUnits[idx]))
+                    {
+                        glDeleteProgram(mImpl->shaderProgram);
+                        mImpl->shaderProgram = 0;
+                        return false;
+                    }
                 }
             }
 
-            return ret;
+            return true;
         }
 
         bool Shader::linkShaders()
@@ -238,28 +406,29 @@ namespace atlas
         {
             if (idx == -1)
             {
-                for (auto& shader : mImpl->shaders)
+                for (auto& shader : mImpl->shaderUnits)
                 {
-                    if (shader.shaderHandle == 0)
+                    if (shader.handle == 0)
                     {
                         continue;
                     }
 
-                    glDetachShader(mImpl->shaderProgram, shader.shaderHandle);
-                    glDeleteShader(shader.shaderHandle);
+                    glDetachShader(mImpl->shaderProgram, shader.handle);
+                    glDeleteShader(shader.handle);
                 }
             }
             else
             {
-                if (0 <= idx && idx < mImpl->shaders.size())
+                if (0 <= idx && idx < mImpl->shaderUnits.size())
                 {
-                    if (mImpl->shaders[idx].shaderHandle == 0)
+                    if (mImpl->shaderUnits[idx].handle == 0)
                     {
                         return;
                     }
 
-                    glDetachShader(mImpl->shaderProgram, mImpl->shaders[idx].shaderHandle);
-                    glDeleteShader(mImpl->shaders[idx].shaderHandle);
+                    glDetachShader(mImpl->shaderProgram, 
+                        mImpl->shaderUnits[idx].handle);
+                    glDeleteShader(mImpl->shaderUnits[idx].handle);
                 }
             }
 
@@ -271,6 +440,61 @@ namespace atlas
             ret = compileShaders(idx);
             ret = linkShaders();
             return ret;
+        }
+
+        void Shader::hotReloadShaders()
+        {
+            // Check if hot reloading is available.
+            if (!mImpl->isHotReloadAvailable)
+            {
+                return;
+            }
+
+            int i = 0;
+            std::vector<int> changedShaders;
+            for (auto& unit : mImpl->shaderUnits)
+            {
+                // Now check every single included file. If the timestamps
+                // are different, then queue it to be reloaded.
+                for (auto& file : unit.includedFiles)
+                {
+                    time_t stamp = mImpl->getFileTimeStamp(file.name);
+
+                    double secs = std::difftime(stamp, file.timeStamp);
+                    if (secs > 0)
+                    {
+                        // Add the unit to the queue and update the timestamp
+                        // on the file.
+                        file.timeStamp = stamp;
+                        changedShaders.push_back(i);
+                    }
+                    ++i;
+                }
+            }
+
+            // If there's nothing to reload, return.
+            if (changedShaders.empty())
+            {
+                return;
+            }
+
+            // Before we do anything else, cull the list of shaders to
+            // ensure that we don't reload the same thing multiple times.
+            std::set<int> set;
+            for (auto& idx : changedShaders)
+            {
+                set.insert(idx);
+            }
+
+
+            changedShaders.assign(set.begin(), set.end());
+
+            // Now loop through the units that need to be recompiled and
+            // reload them.
+            for (auto& idx : changedShaders)
+            {
+                reloadShaders(idx);
+            }
         }
 
         void Shader::bindAttribute(GLuint location, 
@@ -299,6 +523,11 @@ namespace atlas
         GLint Shader::getShaderProgram() const
         {
             return mImpl->shaderProgram;
+        }
+
+        bool Shader::shaderProgramValid() const
+        {
+            return mImpl->checkShaderProgram();
         }
 
         GLint Shader::getUniformVariable(std::string const& name) const
