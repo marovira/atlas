@@ -32,7 +32,7 @@ if (ATLAS_COMPILER_MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zl")
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++14")
 
     # Clang requires an additional library to be linked to use C++11.
     if (ATLAS_COMPILER_CLANG)
