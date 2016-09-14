@@ -51,6 +51,8 @@ namespace atlas
             virtual GLuint getHandle() const = 0;
         };
 
+        struct ShaderUnit;
+
         class Shader;
         class Texture;
         class Buffer;
