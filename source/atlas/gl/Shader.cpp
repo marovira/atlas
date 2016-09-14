@@ -74,7 +74,7 @@ namespace atlas
                 if (unit.includedFiles.empty())
                 {
                     auto timestamp = getFileTimeStamp(filename);
-                    unit.includedFiles.push_back({ filename, 0 , timestamp });
+                    unit.includedFiles.push_back({ filename, -1 , timestamp });
                 }
 
                 int fileNum = (int)unit.includedFiles.size() - 1;
@@ -131,8 +131,14 @@ namespace atlas
             std::string parseErrorLog(ShaderUnit const& unit, 
                 std::string const& log)
             {
+                // TODO: If an include file has an error, then the error also
+                // percolates down to the root file. This means that the error
+                // log actually returns multiple instances of the %d(%d)
+                // pattern. This needs to be addressed so that each instance
+                // is changed with the filename.
+
                 std::smatch match;
-                std::regex pattern("\\d\\(\\d\\)");
+                std::regex pattern("\\d*\\(\\d*\\)");
 
                 // We are only interested in the first match.
                 std::regex_search(log, match, pattern);
@@ -166,7 +172,7 @@ namespace atlas
                 int parent = unit.includedFiles[fileNum].parent;
                 std::vector<int> hierarchy;
                 hierarchy.push_back(fileNum);
-                while (parent != 0)
+                while (parent != -1)
                 {
                     hierarchy.push_back(parent);
                     parent = unit.includedFiles[parent].parent;
@@ -468,8 +474,9 @@ namespace atlas
                         file.timeStamp = stamp;
                         changedShaders.push_back(i);
                     }
-                    ++i;
                 }
+
+                ++i;
             }
 
             // If there's nothing to reload, return.
