@@ -38,11 +38,10 @@ namespace atlas
     * to invoke the log function directly, it is more convenient to use the
     * provided macros.
     * 
-    
     */
-        class Log
+
+        namespace Log
         {
-        public:
             /**
              * \enum SeverityLevel
              * Provides the different types of flags that the logger supports.
@@ -93,7 +92,7 @@ namespace atlas
              *	\param[in] ... The format specification.
              */
             static void log(SeverityLevel level, const char* format, ...);
-        };
+        }
     }
 }
 

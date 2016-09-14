@@ -28,7 +28,7 @@ namespace atlas
         /**
          * Returns the "infinity" (maximum value) that the specified data type
          * can represent.
-         * @tparam The numerical data type         * .
+         * @tparam The numerical data type.
          */
         template <typename GenType = float>
         inline GenType infinity()

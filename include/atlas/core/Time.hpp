@@ -1,6 +1,6 @@
 /**
  *	\file Time.hpp
- *	\brief Defines the timing storage system for animations.
+ *	\brief Defines the timing storage system.
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_TIME_HPP
@@ -18,7 +18,7 @@ namespace atlas
          *	\class Time
          *	\brief Stores all timing data required for animation driven Scenes.
          *	
-         *	This struct holds the following information:
+         *	This class holds the following information:
          *	\li The total time the scene has been running,
          *	\li the time delta between the last tick and the current tick,
          *	\li and the current tick.
@@ -26,8 +26,8 @@ namespace atlas
          *	This should provide all of the necessary information for most
          *	animation algorithms.
          *	
-         *	\note
-         *	The time units used in Atlas (and the ones in GLFW) are seconds.
+         *	@tparam GenType The precision for the time units.
+         *	
          */
         template <typename GenType>
         class Time
@@ -40,17 +40,6 @@ namespace atlas
                 totalTime(GenType(0.0)),
                 deltaTime(GenType(0.0)),
                 currentTime(GenType(0.0))
-            { }
-
-            /**
-             * Defualt copy constructor.
-             */
-            Time(Time const& t) = default;
-
-            /**
-             * Default destructor.
-            */
-            ~Time()
             { }
 
             /**
