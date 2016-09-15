@@ -3,7 +3,6 @@
 #include "atlas/core/Macros.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/utils/Application.hpp"
-#include "atlas/core/GLM.hpp"
 
 namespace atlas
 {
@@ -47,10 +46,8 @@ namespace atlas
 
         void Scene::screenResizeEvent(int width, int height)
         {
-            USING_GLM_NS;
-
             glViewport(0, 0, width, height);
-            mProjection = perspective(radians(45.0),
+            mProjection = glm::perspective(glm::radians(45.0),
                 (double)width / height, 1.0, 1000.0);
         }
 
