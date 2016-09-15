@@ -1,3 +1,7 @@
+/**
+ *	\file ShaderUnit.hpp
+ *	\brief Defines the files and units used for shaders.
+ */
 #ifndef ATLAS_INCLUDE_ATLAS_GL_SHADER_UNIT_HPP
 #define ATLAS_INCLUDE_ATLAS_GL_SHADER_UNIT_HPP
 
