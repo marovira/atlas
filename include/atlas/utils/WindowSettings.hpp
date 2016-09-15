@@ -9,6 +9,9 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "atlas/core/Platform.hpp"
+#include "atlas/core/Macros.hpp"
+#include "atlas/Atlas.hpp"
 
 #include <string>
 #include <tuple>
@@ -17,37 +20,57 @@ namespace atlas
 {
     namespace utils
     {
-        class WindowSettings
+        struct WindowSettings
         {
-        public:
-            WindowSettings();
+            WindowSettings() :
+                title("Made with Atlas Framework" + 
+                    std::string(ATLAS_VERSION_STRING)),
+                windowSize(std::make_tuple(1080, 720)),
+                contextVersion(std::make_tuple(3, 3)),
+                isFullscreen(false),
+                isMaximized(false)
+            {
+#ifdef ATLAS_DEBUG
+                isDebugContext = true;
+#else
+                isDebugContext = false;
+#endif
+
+#ifdef ATLAS_PLATFORM_APPLE
+                isForwardCompat = true;
+#else
+                isForwardCompat = false;
+#endif
+            }
+
             WindowSettings(std::string const& title, int width, int height,
-                int major, int minor);
-            ~WindowSettings();
+                int major, int minor) :
+                title(title),
+                windowSize(std::make_tuple(width, height)),
+                contextVersion(std::make_tuple(major, minor)),
+                isFullscreen(false),
+                isMaximized(false)
+            {
+#ifdef ATLAS_DEBUG
+                isDebugContext = true;
+#else
+                isDebugContext = false;
+#endif
 
-            void setTitle(std::string const& title);
-            void setWindowSize(int width, int height);
-            void setContextVersion(int major, int minor);
-            void setFullscreen(bool fullscreen);
-            void setMaximized(bool maximized);
-            void setForwardCompat(bool compat);
-            void setDebugContext(bool debug);
+#ifdef ATLAS_PLATFORM_APPLE
+                isForwardCompat = true;
+#else
+                isForwardCompat = false;
+#endif
+            }
 
-            std::string getTitle() const;
-            std::tuple<int, int> getWindowSize() const;
-            std::tuple<int, int> getContextVersion() const;
-            int isFullscreen() const;
-            int isMaximized() const;
-            int forwardCompatEnabled() const;
-            int debugContextEnabled() const;
-
-        private:
-            std::string mTitle;
-            int mWidth, mHeight;
-            int mMajor, mMinor;
-            bool mIsFullscreen, mIsMaximized;
-            bool mIsForwardCompat;
-            bool mIsDebugContext;
+            std::string title;
+            std::tuple<int, int> windowSize;
+            std::tuple<int, int> contextVersion;
+            bool isFullscreen;
+            bool isMaximized;
+            bool isForwardCompat;
+            bool isDebugContext;
         };
     }
 }

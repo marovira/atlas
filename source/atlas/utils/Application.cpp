@@ -195,24 +195,24 @@ namespace atlas
                 return;
             }
 
-            auto context = settings.getContextVersion();
+            auto context = settings.contextVersion;
 
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, std::get<0>(context));
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, std::get<1>(context));
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 
-                settings.debugContextEnabled());
+                settings.isDebugContext);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
-                settings.forwardCompatEnabled());
+                settings.isForwardCompat);
 
-            glfwWindowHint(GLFW_MAXIMIZED, settings.isMaximized());
+            glfwWindowHint(GLFW_MAXIMIZED, settings.isMaximized);
 
-            GLFWmonitor* monitor = (settings.isFullscreen()) ?
+            GLFWmonitor* monitor = (settings.isFullscreen) ?
                 glfwGetPrimaryMonitor() : NULL;
 
-            auto size = settings.getWindowSize();
+            auto size = settings.windowSize;
             mImpl->currentWindow = glfwCreateWindow(std::get<0>(size),
-                std::get<1>(size), settings.getTitle().c_str(), monitor, NULL);
+                std::get<1>(size), settings.title.c_str(), monitor, NULL);
 
             if (!mImpl->currentWindow)
             {
