@@ -46,17 +46,20 @@ namespace atlas
             { }
 
             /**
-             * \var name The name of the file.
+             * \var name 
+             * The name of the file.
              */
             std::string name;
 
             /**
-             * \var parent The index of the file that includes this one.
+             * \var parent 
+             * The index of the file that includes this one.
              */
             int parent;
 
             /**
-             * \var timeStamp The timestamp of the file.
+             * \var timeStamp 
+             * The timestamp of the file.
              */
             time_t timeStamp;
         };
@@ -89,22 +92,26 @@ namespace atlas
             { }
 
             /**
-             * \var filename The name of the shader file.
+             * \var filename 
+             * The name of the shader file.
              */
             std::string filename;
 
             /**
-             * \var type The type of shader.
+             * \var type 
+             * The type of shader.
              */
             GLenum type;
 
             /**
-             * \var handle The shader handle.
+             * \var handle 
+             * The shader handle.
              */
             GLuint handle;
 
             /**
-             * \var includedFiles The list of files this shader includes.
+             * \var includedFiles 
+             * The list of files this shader includes.
              */
             std::vector<ShaderFile> includedFiles;
         };

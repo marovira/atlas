@@ -41,7 +41,7 @@ namespace atlas
              * In order to prevent vaos from being accidentally deleted,
              * only move semantics are enabled.
              * 
-             * \param[in] The vao to move.
+             * \param[in] rhs The vao to move.
              */
             VertexArrayObject(VertexArrayObject&& rhs);
 

@@ -24,7 +24,7 @@ namespace atlas
          *	\brief Offers an encapsulation for shader programs.
          *	
          *	This class is designed to both simplify and extend the interactions
-         *	with GLSL. The class extends GLSL by adding the #include directive
+         *	with GLSL. The class extends GLSL by adding the include directive
          *	to shader code, allowing the sharing of files between shaders (and
          *	even C++ code). It also allows live reloading of shaders whenever
          *	they are edited, allowing for a faster development cycle.
@@ -47,13 +47,13 @@ namespace atlas
              * any OpenGL objects. It merey stores the supplied list for later
              * use.
              * 
-             * \param[in] shaders The list containing the information for all
-             * the shaders.
+             * \param[in] shaderUnits The list containing the information for
+             * all the shaders.
              */
             Shader(std::vector<ShaderUnit> const& shaderUnits);
 
             /**
-             * Move constructor. In order to prevent shaders being accidentaly
+             * Move constructor. In order to prevent shaders being accidentally
              * deleted by copying, only move semantics are offered. It is
              * worth noting that the shader that is left behind after the move
              * has a null program as well as no unit data.

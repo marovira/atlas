@@ -136,8 +136,8 @@ namespace atlas
             /**
              * Attach a buffer object's data store to a buffer texture object.
              * 
-             * \param[in] Specifies the interal format of the data in the store
-             * belonging to buffer.
+             * \param[in] internalFormat Specifies the internal format of the 
+             * data in the store belonging to buffer.
              * \param[in] buffer Specifies the buffer object whose storage to
              * attach to the active buffer texture.
              * 
