@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <cstdarg>
 
 static const int kMaxLogLength = 16 * 1024;
 static const std::vector<std::string> kLevelStrings =
