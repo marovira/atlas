@@ -104,15 +104,14 @@ INPUT                  = @ATLAS_INCLUDE_ROOT@ \
                          @ATLAS_SOURCE_ROOT@ \
                          @ATLAS_SOURCE_DIR@/README.md
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.cpp \
-                         *.h \
+FILE_PATTERNS          = *.h \
                          *.hpp \
                          *.md 
 RECURSIVE              = YES
 EXCLUDE                = external/
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_SYMBOLS        = *Impl
+EXCLUDE_SYMBOLS        = *Impl \
+                          ATLAS_GL_ERROR_*
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 FILTER_SOURCE_FILES    = NO
