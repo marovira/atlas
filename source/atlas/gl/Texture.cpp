@@ -12,8 +12,8 @@ namespace atlas
         {
             TextureImpl() :
                 target(0),
-                handle(0),
-                unit(0)
+                unit(0),
+                handle(0)
             { }
 
             TextureImpl(TextureImpl const& impl) = default;
