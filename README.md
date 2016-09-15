@@ -20,9 +20,6 @@ each one. For full details, please see the documentation found
   objects, buffer objects, textures, shaders, and an error callback.
 * ``math``: contains typedefs for typically used types, along with polynomial
   solvers, coordinate switching functions, and a random number generator.
-* ``primitives``: contains primitive objects that can be used for rendering. In
-  essence this offers a replacement for many of the glu primitives. It also has
-  class for loading object files.
 * ``utils``: contains a variety of utilities, including the Application class,
   which the core of any Atlas application, Geometries, amongst others.
 
