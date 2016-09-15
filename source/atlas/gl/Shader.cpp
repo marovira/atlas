@@ -449,12 +449,12 @@ namespace atlas
             return ret;
         }
 
-        void Shader::hotReloadShaders()
+        bool Shader::hotReloadShaders()
         {
             // Check if hot reloading is available.
             if (!mImpl->isHotReloadAvailable)
             {
-                return;
+                return false;
             }
 
             int i = 0;
@@ -483,7 +483,7 @@ namespace atlas
             // If there's nothing to reload, return.
             if (changedShaders.empty())
             {
-                return;
+                return false;
             }
 
             // Before we do anything else, cull the list of shaders to
@@ -499,10 +499,13 @@ namespace atlas
 
             // Now loop through the units that need to be recompiled and
             // reload them.
+            bool ret = true;
             for (auto& idx : changedShaders)
             {
-                reloadShaders(idx);
+                ret = reloadShaders(idx);
             }
+
+            return ret;
         }
 
         void Shader::bindAttribute(GLuint location, 

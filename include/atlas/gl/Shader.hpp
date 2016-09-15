@@ -174,12 +174,14 @@ namespace atlas
              * (or any dependencies of that file) has been modified, then the
              * shader will be recompiled and re-linked.
              * 
+             * \return True if the shaders were reloaded, false otherwise.
+             * 
              * \warning
              * The timestamps are retrieved using the stat function. If the
              * timestamps cannot be retrieved, then this function will
              * be disabled and will do nothing.
              */
-            void hotReloadShaders();
+            bool hotReloadShaders();
 
             /**
              *	Wraps around the glBindAttribLocation function. If the
