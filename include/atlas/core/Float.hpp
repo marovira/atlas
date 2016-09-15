@@ -17,7 +17,7 @@
 
 // This file generates an error when compiled in Apple due to the usage of
 // std::abs. This can be solved by adding the files included below.
-#ifdef ATLAS_PLATFORM_APPLE
+#if defined(ATLAS_PLATFORM_APPLE) || defined(ATLAS_PLATFORM_LINUX)
 #include <cmath>
 #include <cstdlib>
 #include <cstdint>
