@@ -135,8 +135,18 @@ namespace atlas
              */
             virtual void screenResizeEvent(int width, int height);
 
+            /**
+             * This is called before a scene enters the active window. Any
+             * global OpenGL states that your scene requires should be 
+             * activated in here in order to prevent state leakage.
+             */
             virtual void onSceneEnter();
 
+            /**
+             * This is called after a scene exits the active window. Any
+             * global OpenGL states that you activatd in onSceneEnter should
+             * be disabled here.
+             */
             virtual void onSceneExit();
 
             /**
@@ -168,6 +178,11 @@ namespace atlas
             virtual bool sceneEnded();
 
         protected:
+            /**
+             * Sets whether the cursor should be visible for the scene.
+             * 
+             * \param[in] enabled Whether the cursor is enabled or not.
+             */
             void setCursorEnabled(bool enabled);
 
             /**

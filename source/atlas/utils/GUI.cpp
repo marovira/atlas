@@ -17,7 +17,7 @@ namespace atlas
     {
         void renderDrawLists(ImDrawData* drawData)
         {
-            GuiData& data = GUI.getData();
+            GuiData& data = Gui::getInstance().getData();
 
             ImGuiIO& io = ImGui::GetIO();
             int fb_width = 
@@ -169,12 +169,12 @@ namespace atlas
 
         void setClipboardText(const char* text)
         {
-            glfwSetClipboardString(GUI.getData().window, text);
+            glfwSetClipboardString(Gui::getInstance().getData().window, text);
         }
 
         const char* getClipboardText()
         {
-            return glfwGetClipboardString(GUI.getData().window);
+            return glfwGetClipboardString(Gui::getInstance().getData().window);
         }
 
         Gui::Gui()
@@ -294,12 +294,6 @@ namespace atlas
             io.MouseWheel = mData.mouseWheel;
 
             ImGui::NewFrame();
-        }
-
-        void Gui::setFontScale(float scale)
-        {
-            ImGuiIO& io = ImGui::GetIO();
-            io.FontGlobalScale = scale;
         }
 
         GuiData& Gui::getData()

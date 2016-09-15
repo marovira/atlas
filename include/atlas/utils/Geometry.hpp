@@ -63,12 +63,12 @@ namespace atlas
         {
         public:
             /**
-             *	Standard empty constructor.
+             *	Empty constructor.
              */
             Geometry();
 
             /**
-             *	Standard virtual destructor.
+             *	Virtual destructor.
              */
             virtual ~Geometry();
 

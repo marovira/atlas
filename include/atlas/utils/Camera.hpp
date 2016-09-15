@@ -44,17 +44,17 @@ namespace atlas
         {
         public:
             /**
-             *	Standard empty constructor.
+             *	Empty constructor.
              */
             Camera();
 
             /**
-             *	Standard default copy constructor.
+             *	Default copy constructor.
              */
             Camera(Camera const& camera) = default;
 
             /**
-             *	Standard virtual destructor.
+             *	Virtual destructor.
              */
             virtual ~Camera();
 
@@ -64,7 +64,6 @@ namespace atlas
              *	to compute the movement to perform when the mouse is dragged.
              *	
              *	\param[in] point The current mouse position.
-             *	\param[in] movement The type of movement to perform.
              */
             virtual void mouseDown(atlas::math::Point2 const& point);
 
@@ -84,14 +83,42 @@ namespace atlas
              */
             virtual void mouseUp();
 
+            /**
+             * Called when the mouse wheel is moved. The two coordinates of
+             * the passed point correspond to the two axis offsets.
+             * 
+             * \param[in] offset The scrolled offset.
+             */
             virtual void mouseScroll(atlas::math::Point2 const& offset);
 
+            /**
+             * Called when a key is pressed.
+             * 
+             * \param[in] key The key id that was pressed.
+             */
             virtual void keyDown(int key);
 
+            /**
+             * Called when a key is released.
+             * 
+             * \param[in] key The id of the released key.
+             */
             virtual void keyUp(int key);
 
+            /**
+             * Called whenever the camera needs to be updated in relation
+             * to the current time.
+             * 
+             * \param[in] time The current time of the scene.
+             */
             virtual void updateCamera(atlas::core::Time<> const& time);
 
+            /**
+             * Called whenever the screen size is changed so the camera bounds
+             * can be updated as well.
+             * 
+             * \param[in] size The new window size.
+             */
             virtual void updateCameraBounds(atlas::math::Point2 const& size);
 
             /**
@@ -108,14 +135,43 @@ namespace atlas
              */
             virtual math::Matrix4 getCameraMatrix() const;
 
+            /**
+             * Returns the current position of the camera (the eye value).
+             * 
+             * \return The camera position.
+             */
             virtual atlas::math::Point getCameraPosition() const;
 
+            /**
+             * Returns the field of view of the camera.
+             * 
+             * \return The camera FOV.
+             */
             virtual float getCameraFOV() const;
 
         protected:
+            /**
+             * \var mEye
+             * The eye of the camera.
+             */
             atlas::math::Point mEye;
+
+            /**
+             * \var mLookAt
+             * The direction the camera is looking at.
+             */
             atlas::math::Point mLookAt;
+
+            /**
+             * \var mUp
+             * The up vector.
+             */
             atlas::math::Vector mUp;
+
+            /**
+             * \var mFov
+             * The fov of the camera.
+             */
             float mFov;
         };
     }

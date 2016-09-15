@@ -19,6 +19,10 @@ namespace atlas
 {
     namespace utils
     {
+        /**
+         * \typedef ScenePointer
+         * An alias for a unique pointer of Scene.
+         */
         using ScenePointer = std::unique_ptr<Scene>;
 
         /**
@@ -89,18 +93,23 @@ namespace atlas
         public:
             /**
              *	Returns the instance of the application.
-             *	@return The application instance.
+             *	\return The application instance.
              */
             static Application& getInstance();
 
+            /**
+             * Creates a new window with the specified settings.
+             * 
+             * \param[in] settings The window settings to use.
+             */
             void createWindow(WindowSettings const& settings);
 
             /**
              *	Creates a new window with rendering context.
              *	
-             *	@param[in] width The width of the new window.
-             *	@param[in] height The height of the new window.
-             *	@param[in] title The title of the new window.
+             *	\param[in] width The width of the new window.
+             *	\param[in] height The height of the new window.
+             *	\param[in] title The title of the new window.
              *	\param[in] contextVersionMajor The OpenGL context major version
              *	number to use. Defaults to 3.
              *	\param[in] contextVersionMinor The OpenGL context minor version
@@ -119,8 +128,8 @@ namespace atlas
              *	Returns the current position of the cursor in screen
              *	coordinates.
              *	
-             *	@param[out] x The x position of the cursor.
-             *	@param[out] y The y position of the cursor.
+             *	\param[out] x The x position of the cursor.
+             *	\param[out] y The y position of the cursor.
              */
             void getCursorPosition(double* x, double *y);
 
@@ -129,7 +138,7 @@ namespace atlas
              *	takes ownership of the scene, it will also be in charge 
              *	of deleting it.
              *	
-             *	@param[in] scene The scene to add.
+             *	\param[in] scene The scene to add.
              */
             void addScene(ScenePointer scene);
 
@@ -160,10 +169,15 @@ namespace atlas
             /**
              *	Returns the scene that is currently being played.
              *	
-             *	@return The current scene.
+             *	\return The current scene.
              */
             Scene* getCurrentScene() const;
 
+            /**
+             * Returns the current window.
+             * 
+             * \return The current window.
+             */
             GLFWwindow* getCurrentWindow() const;
 
         private:
