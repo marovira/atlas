@@ -54,7 +54,7 @@ namespace atlas
              * non-critical errors that the system can still recover from.
              * \var CRITICAL
              * Generates the "critical" flag in the log message. This is used in Atlas
-             * for critical errors that usuallly result in the program exiting
+             * for critical errors that usually result in the program exiting
              * immediately.
              */
             enum class SeverityLevel : int
@@ -74,7 +74,7 @@ namespace atlas
              * @param[in] level The severity flag for the output message.
              * @param[in] message The message to output.
              */
-            static void log(SeverityLevel level, std::string const& message);
+            void log(SeverityLevel level, std::string const& message);
 
             /**
              *	Outputs the passed message in the format described above
@@ -86,7 +86,7 @@ namespace atlas
              *	\param[in] format The formatted string to output.
              *	\param[in] ... The format specification.
              */
-            static void log(SeverityLevel level, const char* format, ...);
+            void log(SeverityLevel level, const char* format, ...);
         }
     }
 }

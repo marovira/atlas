@@ -29,66 +29,69 @@ namespace atlas
 {
     namespace core
     {
-        static void _log(std::string const& message)
+        namespace Log
         {
-            char buf[kMaxLogLength];
-            memcpy(buf, message.c_str(), message.size() + 1);
+            static void _log(std::string const& message)
+            {
+                char buf[kMaxLogLength];
+                memcpy(buf, message.c_str(), message.size() + 1);
 
 #ifdef ATLAS_PLATFORM_WINDOWS
-            strncat_s(buf, "\n", 3);
+                strncat_s(buf, "\n", 3);
 
-            WCHAR wszBuf[kMaxLogLength] = { 0 };
-            MultiByteToWideChar(CP_UTF8, 0, buf, -1, wszBuf, sizeof(wszBuf));
-            OutputDebugStringW(wszBuf);
-            WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, buf, sizeof(buf),
-                nullptr, FALSE);
-            printf("%s", buf);
-            fflush(stdout);
+                WCHAR wszBuf[kMaxLogLength] = { 0 };
+                MultiByteToWideChar(CP_UTF8, 0, buf, -1, wszBuf, sizeof(wszBuf));
+                OutputDebugStringW(wszBuf);
+                WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, buf, sizeof(buf),
+                    nullptr, FALSE);
+                printf("%s", buf);
+                fflush(stdout);
 #else
-            strncat(buf, "\n", 3);
+                strncat(buf, "\n", 3);
 
-            fprintf(stdout, "%s", buf);
-            fflush(stdout);
+                fprintf(stdout, "%s", buf);
+                fflush(stdout);
 #endif
-        }
+            }
 
-        static std::string getTimeStamp()
-        {
-            auto now = std::chrono::system_clock::now();
-            auto nowTime = std::chrono::system_clock::to_time_t(now);
+            static std::string getTimeStamp()
+            {
+                auto now = std::chrono::system_clock::now();
+                auto nowTime = std::chrono::system_clock::to_time_t(now);
 
-            std::stringstream stream;
-            stream << std::put_time(std::localtime(&nowTime), "%T");
-            return stream.str();
-        }
+                std::stringstream stream;
+                stream << std::put_time(std::localtime(&nowTime), "%T");
+                return stream.str();
+            }
 
-        void Log::log(SeverityLevel level, std::string const& message)
-        {
-            std::string logMessage = "";
+            void log(SeverityLevel level, std::string const& message)
+            {
+                std::string logMessage = "";
 
-            // Get the current time stamp
-            logMessage.append(getTimeStamp());
-            logMessage.append("    ");
+                // Get the current time stamp
+                logMessage.append(getTimeStamp());
+                logMessage.append("    ");
 
-            std::string sevLevel = "[";
-            int levelNum = static_cast<int>(level);
-            sevLevel.append(kLevelStrings[levelNum]);
-            sevLevel.append("] : ");
+                std::string sevLevel = "[";
+                int levelNum = static_cast<int>(level);
+                sevLevel.append(kLevelStrings[levelNum]);
+                sevLevel.append("] : ");
 
-            logMessage.append(sevLevel);
-            logMessage.append(message);
-            _log(logMessage);
-        }
+                logMessage.append(sevLevel);
+                logMessage.append(message);
+                _log(logMessage);
+            }
 
-        void Log::log(SeverityLevel level, const char* format, ...)
-        {
-            char buffer[kMaxLogLength];
-            va_list args;
-            va_start(args, format);
-            vsprintf(buffer, format, args);
-            va_end(args);
+            void log(SeverityLevel level, const char* format, ...)
+            {
+                char buffer[kMaxLogLength];
+                va_list args;
+                va_start(args, format);
+                vsprintf(buffer, format, args);
+                va_end(args);
 
-            log(level, std::string(buffer));
+                log(level, std::string(buffer));
+            }
         }
     }
 }
