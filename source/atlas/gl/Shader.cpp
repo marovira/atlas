@@ -335,11 +335,6 @@ namespace atlas
             mImpl->includeDir = dir;
         }
 
-        std::vector<ShaderUnit>& Shader::getShaders() const
-        {
-            return mImpl->shaderUnits;
-        }
-
         bool Shader::compileShaders(int idx)
         {
             if (mImpl->shaderUnits.empty())

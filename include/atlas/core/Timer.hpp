@@ -26,7 +26,7 @@ namespace atlas
          * the time that passes from the time it is created (or reset), to the
          * time the elapsed function is called.
          * 
-         * @tparam The precision of the timer.
+         * \tparam The precision of the timer.
          */
         template <class GenType>
         class Timer

@@ -1,6 +1,6 @@
 /**
  *	\file Shader.hpp
- *	\brief Defines a wrapper for shader operations.
+ *	\brief Defines a wrapper for shader programs.
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_GL_SHADER_HPP
@@ -21,27 +21,17 @@ namespace atlas
     {
         /**
          *	\class Shader
-         *	\brief Offers an encapsulation for all shader operations.
+         *	\brief Offers an encapsulation for shader programs.
          *	
-         *	This class allows the user to simply specify the shader types
-         *	and source files to be created and the class handles the rest.
-         *	Unlike other examples, the compilation and linkage of the shaders
-         *	was separated to help isolate errors. While this introduces a small
-         *	overhead with an extra function call, it is deemed worth it when
-         *	trying to isolate where the shader errors are coming from.
+         *	This class is designed to both simplify and extend the interactions
+         *	with GLSL. The class extends GLSL by adding the #include directive
+         *	to shader code, allowing the sharing of files between shaders (and
+         *	even C++ code). It also allows live reloading of shaders whenever
+         *	they are edited, allowing for a faster development cycle.
          *	
-         *	Aside from encapsulating the shader creation and linking, this 
-         *	class also handles the shader program, which is created when the
-         *	shaders are compiled.
-         *	
-         *	Once all the shaders are compiled and linked, it is possible to
-         *	individually delete shaders if they are not needed anymore, or 
-         *	delete all of them at once. Upon destruction, this class will
-         *	automatically delete all the shaders, along with the shader
-         *	program.
-         *	
-         *	This class also provides wrappers for typical shader operations, 
-         *	such as accessing uniforms, attributes, or binding attributes.
+         *	In addition, it also provides wrappers for typical shader 
+         *	operations, such as accessing uniforms, attributes, or 
+         *	binding attributes.
          */
         class Shader
         {
@@ -52,22 +42,39 @@ namespace atlas
             Shader();
 
             /**
-             * Constructs a shader with the specified shader files. Notice
-             * that this does not compile the shaders, it simply stores the
-             * information so it can be used later on.
+             * Sets the files that will be used later for compilation/linking
+             * and for execution. This function does not initialize or create
+             * any OpenGL objects. It merey stores the supplied list for later
+             * use.
              * 
              * \param[in] shaders The list containing the information for all
              * the shaders.
              */
             Shader(std::vector<ShaderUnit> const& shaderUnits);
 
+            /**
+             * Move constructor. In order to prevent shaders being accidentaly
+             * deleted by copying, only move semantics are offered. It is
+             * worth noting that the shader that is left behind after the move
+             * has a null program as well as no unit data.
+             * 
+             * \param[in] rhs The shader to move.
+             */
             Shader(Shader&& rhs);
 
+            /**
+             * Move assignment operator. 
+             * 
+             * \param[in] rhs The shader to move.
+             * 
+             * \return The moved shader.
+             */
             Shader& operator=(Shader&& rhs);
 
             /**
-             *	Destructor. Notice that this will destroy not just the shaders,
-             *	but the shader program as well.
+             * The destructor does two things: first it detaches and deletes
+             * all of the shader units, and then proceeds to delete the
+             * shader program itself.
              */
             ~Shader();
 
@@ -80,16 +87,24 @@ namespace atlas
              */
             void setShaders(std::vector<ShaderUnit> const& shaders);
 
-            void setShaderIncludeDir(std::string const& dir);
-
             /**
-             * Returns the list of shaders so they can be modified. This allows
-             * on-the-fly addition or removal of shaders, as well as changing
-             * source files if required. If any changes are made to this list,
-             * then it should be followed by a call to reloadShaders() so the
-             * shaders can be updated.
+             * This is used to specify where the preprocessing system will look
+             * for include files. 
+             * 
+             * \warning
+             * Currently, relative paths of the form 
+             * \verbatim
+             #include "../foo.glsl"
+             * \endverbatim
+             * are not supported. All that the preprocessor does when an 
+             * include is encountered is to paste the provided path in front
+             * of the path for the included file. This does imply that this
+             * \verbatim
+             #include "include/foo/foo.glsl"
+             * \endverbatim
+             * is supported.
              */
-            std::vector<ShaderUnit>& getShaders() const;
+            void setShaderIncludeDir(std::string const& dir);
 
             /**
              * This function does two things: first it creates the 
@@ -102,6 +117,15 @@ namespace atlas
              * to be re-compiled (or compiled as the case may be). If no
              * arguments are given, it will compile all the shaders currently
              * stored (passed by constructor or setShaders).
+             * 
+             * As part of the compilation process, this function will expand 
+             * any include directives that are used in the program. If an error
+             * occurs, the output will be printed to the log.
+             * 
+             * It is worth noting that if a shader fails to compile, the
+             * program will not be destroyed and set to 0. It is important
+             * to check whether or not the compilation failed to avoid
+             * unnecessary error messages.
              * 
              * \param[in] idx The index of the shader on the list to compile. 
              * If none is provided or -1, then all shaders are compiled.
@@ -118,7 +142,7 @@ namespace atlas
              *	ready to be used. If an error occurs, everything is destroyed
              *	and an error is written to the Log.
              *	
-             *	\return Tre if the linking was successful, false otherwise.
+             *	\return True if the linking was successful, false otherwise.
              */
             bool linkShaders();
 
@@ -145,16 +169,22 @@ namespace atlas
              */
             bool reloadShaders(int idx = -1);
 
+            /**
+             * This will check the timestamp of the shaders. If a shader file
+             * (or any dependencies of that file) has been modified, then the
+             * shader will be recompiled and re-linked.
+             * 
+             * \warning
+             * The timestamps are retrieved using the stat function. If the
+             * timestamps cannot be retrieved, then this function will
+             * be disabled and will do nothing.
+             */
             void hotReloadShaders();
 
             /**
              *	Wraps around the glBindAttribLocation function. If the
              *	shader program hasn't been created, or it is invalid, the
              *	function writes an error to the Log and returns.
-             *	
-             *	\warning
-             *	This function does not check the OpenGL error queue for errors
-             *	after attempting to bind the attribute location.
              *	
              *	\param[in] location The attribute location.
              *	\param[in] name The name of the attribute to bind.
@@ -169,8 +199,7 @@ namespace atlas
             void enableShaders() const;
 
             /**
-             *	Equivalent to glUseProgram(0). This deactivates the current
-             *	shader program.
+             *	This deactivates the current shader program.
              */
             void disableShaders() const;
 
@@ -180,6 +209,13 @@ namespace atlas
              */
             GLint getShaderProgram() const;
 
+            /**
+             * Checks to see if the current shader program is valid. This 
+             * can be invoked each frame to ensure that rendering will
+             * actually happen and prevent unnecessary errors.
+             * 
+             * \return True if the current program is valid, false otherwise.
+             */
             bool shaderProgramValid() const;
 
             /**
@@ -188,6 +224,7 @@ namespace atlas
              *	returns -1 and outputs the error to the Log.
              *	
              *	\param[in] name The name of the uniform variable.
+             *	
              *	\return The uniform location if it exists, -1 otherwise.
              */
             GLint getUniformVariable(std::string const& name) const;

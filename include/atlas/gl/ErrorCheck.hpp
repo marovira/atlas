@@ -4,8 +4,7 @@
  *
  * \warning
  * Atlas assumes the existence of the OpenGL error callback function 
- * (available in OpenGL 4.3+). All previous error checking have now been
- * removed.
+ * (available in OpenGL 4.3+).
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_GL_ERROR_CHECK_HPP
@@ -47,14 +46,49 @@ namespace atlas
 {
     namespace gl
     {
+        /**
+         * Registers the OpenGL error callback (provided that it is available).
+         * If it isn't (or this is not a debug build), an error is printed to 
+         * the log.
+         */
         void initializeGLError();
 
+        /**
+         * Sets which error sources are allowed to print messages using the 
+         * specified bit mask.
+         * 
+         * \param[in] sources The error sources that can print messages.
+         */
         void setGLErrorSources(GLuint sources);
 
+        /**
+         * Sets which types of error are allowed to pring messages using the
+         * specified bit mask.
+         * 
+         * \param[in] types The error types that can print messages.
+         */
         void setGLErrorTypes(GLuint types);
 
+        /**
+         * Sets which severtiy levels are allowed to print messages using the
+         * specified bit mask.
+         * 
+         * \param[in] severity The severity level that can print messages.
+         */
         void setGLErrorSeverity(GLuint severity);
 
+        /**
+         * The error callback function for OpenGL.
+         * 
+         * \param[in] source The source of the error message.
+         * \param[in] type The type of error message.
+         * \param[in] id The error message id.
+         * \param[in] severity The error message severity.
+         * \param[in] length The length of the error message string.
+         * \param[in] message The error message.
+         * \param[in] userParam Holds no meaning to OpenGL and isn't used in
+         * Atlas.
+         */
         void APIENTRY openGLErrorCallback(GLenum source, GLenum type,
             GLuint id, GLenum severity, GLsizei length, const GLchar* message,
             const void* userParam);

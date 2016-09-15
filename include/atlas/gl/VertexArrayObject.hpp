@@ -32,15 +32,17 @@ namespace atlas
         {
         public:
             /**
-             * Empty constructor. This generates the vao object and is
-             * equivalent to 
-             * 
-             * \code{.cpp}
-             * glGenVertexArrays(1, &handle);
-             * \endcode
+             * Empty constructor. This generates the vao object.
              */
             VertexArrayObject();
 
+            /**
+             * Move constructor. 
+             * In order to prevent vaos from being accidentally deleted,
+             * only move semantics are enabled.
+             * 
+             * \param[in] The vao to move.
+             */
             VertexArrayObject(VertexArrayObject&& rhs);
 
             /**
@@ -50,33 +52,25 @@ namespace atlas
              */
             ~VertexArrayObject();
 
+            /**
+             * Move assignment operator.
+             * 
+             * \param[in] rhs The vao to move.
+             */
             VertexArrayObject& operator=(VertexArrayObject&& rhs);
 
             /**
-             * Binds the vao. This is equivalent to 
-             * 
-             * \code{.cpp}
-             * glBindVertexArray(handle);
-             * \endcode
+             * Binds the vao. 
              */
             void bindVertexArray();
 
             /**
-             * Unbinds the vao. This is equivalent to
-             * 
-             * \code{.cpp}
-             * glBindVertexArray(0);
-             * \endcode
+             * Unbinds the vao by binding a null (0) object instead.
              */
             void unBindVertexArray();
 
             /**
-             * Enables vertex attribute array specified by index. This is
-             * equivalent to
-             * 
-             * \code{.cpp}
-             * glEnableVertexAttribArray(index);
-             * \endcode
+             * Enables vertex attribute array specified by index.
              * 
              * In addition, the index is stored in an array so it can be
              * automatically disabled when the vao is destroyed.
@@ -87,22 +81,30 @@ namespace atlas
             void enableVertexAttribArray(GLuint index);
 
             /**
-             * Disables vertex attribute array specified by index. This is
-             * equivalent to
-             * 
-             * \code{.cpp}
-             * glDisableVertexAttribArray(index);
-             * \endcode
-             * 
-             * This also removes the index from the array.
+             * Disables vertex attribute array specified by index. This also
+             * removes the index from the list of active attributes.
              * 
              * \param[in] index The index of the generic vertex attribute to
              * be disabled.
              */
             void disableVertexAttribArray(GLuint index);
 
+            /**
+             * Checks whether the specified vertex attribute array is enabled
+             * or not. 
+             * 
+             * \param[in] index The index of the generic vertex attribute to
+             * be checked.
+             * 
+             * \return True if the index is active, false otherwise.
+             */
             bool isVertexAttribArrayEnabled(GLuint index);
 
+            /**
+             * Returns the handle for the vao.
+             * 
+             * \return The vao handle.
+             */
             GLuint getHandle() const override;
 
         private:

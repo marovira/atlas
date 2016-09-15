@@ -26,7 +26,7 @@ namespace atlas
          *	This should provide all of the necessary information for most
          *	animation algorithms.
          *	
-         *	@tparam GenType The precision for the time units.
+         *	\tparam GenType The precision for the time units.
          *	
          */
         template <typename GenType>

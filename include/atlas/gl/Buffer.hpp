@@ -16,18 +16,46 @@ namespace atlas
 {
     namespace gl
     {
+        /**
+         * Computes a pointer offset into a buffer that holds data of the 
+         * specified type.
+         * 
+         * \tparam GenType The data type that is contained in the buffer.
+         * \param[in] offset The offset into the buffer.
+         * 
+         * \return A pointer into the buffer that is offset by the provided 
+         * amount.
+         */
         template <typename GenType>
         constexpr void* bufferOffset(std::size_t offset)
         {
             return (void*)(offset * sizeof(GenType));
         }
 
+        /**
+         * Computes the stride that separates one object from another in a 
+         * buffer that holds data of the specified type.
+         * 
+         * \tparam GenType The data type that is contained in the buffer.
+         * \param[in] step The distance between objects.
+         * 
+         * \return The distance (in bytes) between objects.
+         */
         template <typename GenType>
         constexpr std::size_t stride(std::size_t step)
         {
             return step * sizeof(GenType);
         }
 
+        /**
+         * 
+         * Computes the size of the specified number of objects.
+         * 
+         * \tparam GenType The data type for which we are computing the size.
+         * \param[in] num The number of elements.
+         * 
+         * \return THe size (in bytes) of the elements.
+         */
         template <typename GenType>
         constexpr std::size_t size(std::size_t num)
         {
@@ -36,59 +64,55 @@ namespace atlas
 
         /**
          *	\class Buffer
-         *	\brief Wrapper for OpenGL buffer objects.
+         *	\brief A container for OpenGL buffer objects.
          *	
-         *	This class wraps around the most common buffer operations in
-         *	OpenGL. It also provides automatic debugging for errors from
-         *	OpenGL. 
+         *	This class encapsulates the handle for the buffer object, 
+         *	thereby providing simplified access to the most common buffer
+         *	functions.
          */
         class Buffer : public Object
         {
         public:
             /**
-             * Standard empty constructor. Note that this does not
-             * call \c glGenBuffer.
+             * Standard empty constructor. Note that this does not generate a
+             * buffer.
              */
             Buffer();
 
             /**
-             *	This constructor creates a buffer with the specified target.
-             *	It is equivalent to 
-
-             *	\code{.cpp}
-             *	glGenBuffers(1, &handle);
-             *	\endcode
+             *	Creates a buffer with the specified target.
              *	
              *	\param[in] target The type of buffer. This is used in the rest
              *	of the functions.
              */
             Buffer(GLenum target);
 
+            /**
+             * Move constructor. 
+             * In order to prevent buffers from being accidentally deleted, 
+             * only move semantics are enabled.
+             * 
+             * \param[in] rhs The buffer to move.
+             */
             Buffer(Buffer&& rhs);
 
+            /**
+             * Move assignment operator.
+             * 
+             * \param[in] rhs The buffer to move.
+             * 
+             * \return The moved buffer.
+             */
             Buffer& operator=(Buffer&& rhs);
 
             /**
-             *	Destructor.
-             *	
-             *	\note
-             *	The destructor calls 
-             *	\code{.cpp}
-             *	glDeleteBuffers(1, &handle);
-             *	\endcode
-             *	
-             *	and sets the handle and target to 0. Please be aware of this
-             *	fact when copying buffers.
+             *	This destroys the buffer handle that was created and sets
+             *	the handle back to 0.
              */
             ~Buffer();
 
             /**
-             *	Used in tandem with the \c Buffer() constructor. It is 
-             *	equivalent to 
-             *	
-             *	\code{.cpp}
-             *	glGenBuffers(1, &handle);
-             *	\endcode
+             *	Used in tandem with the \c Buffer() constructor. 
              *	
              *	\param[in] target The type of buffer. This is used in the rest
              *	of the functions.
@@ -97,7 +121,7 @@ namespace atlas
 
             /**
              *	Binds the buffer handle contained by the Buffer object to the
-             *	target specified upon construction or \c getBuffer.
+             *	target specified upon construction or \c genBuffer.
              */
             void bindBuffer() const;
 
@@ -109,15 +133,7 @@ namespace atlas
 
             /**
              *	Creates a new data store for the currently bound buffer
-             *	object and populates it with the provided data. This is
-             *	equivalent to 
-             *	
-             *	\code{.cpp}
-             *	glBufferData(target, size, data, range);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or
-             *	when the buffer was generated).
+             *	object and populates it with the provided data.
              *	
              *	\param[in] size The size in bytes of the buffer object's new
              *	data store.
@@ -131,14 +147,7 @@ namespace atlas
 
             /**
              *	Redefines some (or all) of the data store for the currently
-             *	bound buffer object. This is equivalent to
-             *	
-             *	\code{.cpp}
-             *	glBufferSubData(target, offset, size, data);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
+             *	bound buffer object.
              *	
              *	\param[in] offset The offset into the buffer object's data 
              *	store where the replacement will begin, measured in bytes.
@@ -151,15 +160,7 @@ namespace atlas
                 const GLvoid* data) const;
 
             /**
-             *	Fills a buffer object's data store with a fixed value. This
-             *	is equivalent to
-             *	
-             *	\code{.cpp}
-             *	glClearBufferData(target, internalFormat, format, type, data);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
+             *	Fills a buffer object's data store with a fixed value.
              *	
              *	\param[in] internalFormat The internal format with which the
              *	data will be stored in the buffer object.
@@ -175,15 +176,7 @@ namespace atlas
 
             /**
              *	Fill all or part of a buffer object's data store with a 
-             *	fixed value. This is equivalent to
-             *	
-             *	\code{.cpp}
-             *	glClearBufferSubData(target, internalFormat, offset, 
-             *	size, format, type, data);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
+             *	fixed value.
              *	
              *	\param[in] internalFormat The internal format with which the
              *	data will be stored in the buffer object.
@@ -203,15 +196,8 @@ namespace atlas
                 const void* data) const;
 
             /**
-             *	Returns a subset of the buffer object's data store. This is
-             *	equivalent to
+             *	Returns a subset of the buffer object's data store.
              *	
-             *	\code{.cpp}
-             *	glGetBufferSubData(target, offset, size, data);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
              *	\param[in] offset The offset into the buffer object's data
              *	store, measured in bytes.
              *	\param[in] size The size of the data being returned, in bytes.
@@ -223,14 +209,7 @@ namespace atlas
 
             /**
              *	Map all of a buffer object's data store into the client's
-             *	address space. THis is equivalent to
-             *	
-             *	\code{.cpp}
-             *	glMapBuffer(target, access);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
+             *	address space.
              *	
              *	\param[in] access The access policy,.
              */
@@ -238,25 +217,12 @@ namespace atlas
 
             /**
              *	Release the mapping of a buffer object's data store into the
-             *	client's address space. This is equivalent to
-             *	
-             *	\code{.cpp}
-             *	glUnmapBuffer(target);
-             *	\endcode
-             *	
-             *	where target is the one provided upon construction (or when
-             *	the buffer was generated).
+             *	client's address space.
              */
             GLboolean unMapBuffer() const;
 
             /**
-             *	Define an array of generic vertex attribute data. This is
-             *	equivalent to
-             *	
-             *	\code{.cpp}
-             *	glVertexAttribPointer(index, size, type, normalized, stride,
-             *	pointer);
-             *	\endcode
+             *	Define an array of generic vertex attribute data.
              *	
              *	\param[in] index The index of the generic vertex attribute.
              *	\param[in] size The number of components per generic vertex
@@ -275,11 +241,7 @@ namespace atlas
 
             /**
              * Bind a range within a buffer object to an indexed buffer 
-             * target. This is equivalent to
-             * 
-             * \code{.cpp}
-             * glBindBufferRange(index, offset, size);
-             * \endcode
+             * target.
              * 
              * \param[in] index The binding point within the array specified
              * by the target of the Buffer.
@@ -299,6 +261,11 @@ namespace atlas
              */
             void bindBufferBase(GLuint index) const;
 
+            /**
+             * Returns the buffer handle.
+             * 
+             * \return The buffer handle.
+             */
             GLuint getHandle() const override;
 
         private:

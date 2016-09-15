@@ -1,6 +1,25 @@
 /**
  *	\file Log.hpp
- *	\brief Defines the logging system.
+ * \brief Provides a simple, cross-platform way of producing output for
+ * logging and debugging purposes.
+ * 
+ * The output is directed to stdout (in the case of Linux and OSX) and to 
+ * both stdout and the debug console for Windows (provided the console 
+ * exists). The log output is formatted as follows:
+ * \verbatim
+ 12:12:12    [flag] : <message> \endverbatim
+ * The timestamp is generated using the STD <tt> \<chrono\> </tt> library.
+ * The flag can be one of the following:
+ * \li debug
+ * \li info
+ * \li log
+ * \li error
+ * \li critical
+ *
+ * These are chosen depending on the macro that is used. While it is possible
+ * to invoke the log function directly, it is more convenient to use the
+ * provided macros.
+ * 
  */
 
 #ifndef ATLAS_INCLUDE_ATLAS_CORE_LOG_HPP
@@ -16,30 +35,6 @@ namespace atlas
 {
     namespace core
     {
-    /**
-    * \class Log
-    * \brief Provides a simple, cross-platform way of producing output for
-    * logging and debugging purposes.
-    * 
-    * The output is directed to stdout (in the case of Linux and OSX) and to 
-    * both stdout and the debug console for Windows (provided the console 
-    * exists). The log output is formatted as follows:
-    * \verbatim
-    12:12:12    [flag] : <message> \endverbatim
-    * The timestamp is generated using the STD <tt> \<chrono\> </tt> library.
-    * The flag can be one of the following:
-    * \li debug
-    * \li info
-    * \li log
-    * \li error
-    * \li critical
-    *
-    * These are chosen depending on the macro that is used. While it is possible
-    * to invoke the log function directly, it is more convenient to use the
-    * provided macros.
-    * 
-    */
-
         namespace Log
         {
             /**
