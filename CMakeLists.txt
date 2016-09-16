@@ -98,7 +98,8 @@ include("${ATLAS_CONFIG_ROOT}/SourceGroups.cmake")
 # Build the library.
 #================================
 add_library(atlas ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
-target_link_libraries(atlas glfw ${GLFW_LIBRARIES} imgui gl3w stb tinyobjloader)
+target_link_libraries(atlas glfw ${GLFW_LIBRARIES} imgui gl3w stb tinyobjloader 
+    ${OPENGL_gl_LIBRARY})
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
 #================================
@@ -124,5 +125,6 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
         stb
         tinyobjloader
         ${GLFW_LIBRARIES}
+        ${OPENGL_gl_LIBRARY}
         PARENT_SCOPE)
 endif()
