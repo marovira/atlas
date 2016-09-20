@@ -148,31 +148,6 @@ namespace atlas
              * \return The camera FOV.
              */
             virtual float getCameraFOV() const;
-
-        protected:
-            /**
-             * \var mEye
-             * The eye of the camera.
-             */
-            atlas::math::Point mEye;
-
-            /**
-             * \var mLookAt
-             * The direction the camera is looking at.
-             */
-            atlas::math::Point mLookAt;
-
-            /**
-             * \var mUp
-             * The up vector.
-             */
-            atlas::math::Vector mUp;
-
-            /**
-             * \var mFov
-             * The fov of the camera.
-             */
-            float mFov;
         };
     }
 }
