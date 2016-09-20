@@ -6,11 +6,7 @@ namespace atlas
 {
     namespace utils
     {
-        Camera::Camera() :
-            mEye(0),
-            mLookAt(0),
-            mUp(0, 1, 0),
-            mFov(45.0f)
+        Camera::Camera() 
         { }
 
         Camera::~Camera()
