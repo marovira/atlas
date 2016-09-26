@@ -35,8 +35,7 @@ namespace atlas
             /**
              * Constructs the timer and initializes it to 0.
              */
-            Timer() :
-                mBegin(Second(0))
+            Timer()
             { }
 
             /**
@@ -53,7 +52,7 @@ namespace atlas
              */
             inline void reset()
             {
-                mBegin = Second(0);
+                mBegin = std::chrono::time_point<Clock>();
             }
 
             /**
@@ -68,7 +67,7 @@ namespace atlas
 
         private:
             typedef std::chrono::high_resolution_clock Clock;
-            typedef std::chrono::duration<GenType, std::ratio<1>> Second;
+            typedef std::chrono::duration<GenType> Second;
             std::chrono::time_point<Clock> mBegin;
         };
     }
