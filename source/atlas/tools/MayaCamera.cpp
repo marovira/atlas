@@ -103,7 +103,7 @@ namespace atlas
                     glm::translate(glm::mat4(1.0f), mImpl->azimuthTarget) *
                     glm::rotate(glm::mat4(1.0f), glm::radians(delta.x),
                         glm::vec3(0, 1, 0)) *
-                    glm::translate(glm::mat4(1.0f), -target);
+                    glm::translate(glm::mat4(1.0f), -mImpl->azimuthTarget);
 
                 auto elevation =
                     glm::translate(glm::mat4(1.0f), target) *
