@@ -218,6 +218,11 @@ namespace atlas
                     glDeleteShader(unit.handle);
                 }
 
+                if (unit.isSourceString)
+                {
+                    createTempFile(unit);
+                }
+
                 auto handle = glCreateShader(unit.type);
                 auto sourceStr = readShaderSource(unit.filename, unit);
 
@@ -262,6 +267,68 @@ namespace atlas
                 return true;
             }
 
+            void createTempFile(ShaderUnit& unit)
+            {
+                // First, we need to find the file extension that we are going
+                // to sue.
+                std::string extension;
+                switch (unit.type)
+                {
+                case GL_VERTEX_SHADER:
+                    extension = ".vs.glsl";
+                    break;
+
+                case GL_FRAGMENT_SHADER:
+                    extension = ".fs.glsl";
+                    break;
+
+                case GL_TESS_CONTROL_SHADER:
+                    extension = ".tcs.glsl";
+                    break;
+
+                case GL_TESS_EVALUATION_SHADER:
+                    extension = ".tes.glsl";
+                    break;
+
+                case GL_GEOMETRY_SHADER:
+                    extension = ".gs.glsl";
+                    break;
+
+                case GL_COMPUTE_SHADER:
+                    extension = ".cs.glsl";
+                    break;
+
+                default:
+                    break;
+                }
+
+                // Next we need to figure out the name of the temp file.
+                std::string name = "tmp";
+                int num = 0;
+                while (true)
+                {
+                    std:: ifstream file(name + std::to_string(num) + extension);
+                    if (!file)
+                    {
+                        break;
+                    }
+                    num++;
+                }
+
+                // Now create the file and dump the contents of the source
+                // string to it.
+                std::fstream file(name + std::to_string(num) + extension,
+                    std::fstream::out);
+                file << unit.filename;
+                file.close();
+
+                // Now save the name of the temp file as the actual filename.
+                unit.filename = name + std::to_string(num) + extension;
+
+                // Store the name of the created file so we can delete it 
+                // when we exit the program.
+                tmpFiles.push_back(unit.filename);
+            }
 
             bool checkShaderProgram() const
             {
@@ -282,6 +349,7 @@ namespace atlas
 
             GLint shaderProgram;
             std::vector<ShaderUnit> shaderUnits;
+            std::vector<std::string> tmpFiles;
             bool isHotReloadAvailable;
             std::string includeDir;
         };
@@ -322,6 +390,11 @@ namespace atlas
             {
                 glDeleteProgram(mImpl->shaderProgram);
                 mImpl->shaderProgram = 0;
+            }
+
+            for (auto& file : mImpl->tmpFiles)
+            {
+                std::remove(file.c_str());
             }
         }
 

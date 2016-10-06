@@ -83,7 +83,8 @@ namespace atlas
              */
             ShaderUnit() :
                 type(0),
-                handle(0)
+                handle(0),
+                isSourceString(false)
             { }
 
             /**
@@ -92,7 +93,16 @@ namespace atlas
             ShaderUnit(std::string const& file, GLenum t) :
                 filename(file),
                 type(t),
-                handle(0)
+                handle(0),
+                isSourceString(false)
+            { }
+
+            ShaderUnit(std::string const& source, GLenum t, 
+                bool sourceString) :
+                filename(source),
+                type(t),
+                handle(0),
+                isSourceString(sourceString)
             { }
 
             /**
@@ -118,6 +128,8 @@ namespace atlas
              * The list of files this shader includes.
              */
             std::vector<ShaderFile> includedFiles;
+
+            bool isSourceString;
         };
     }
 }
