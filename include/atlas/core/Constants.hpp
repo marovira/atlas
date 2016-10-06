@@ -20,9 +20,15 @@ namespace atlas
          * @tparam The numerical data type.
          */
         template <typename GenType = float>
-        inline GenType epsilon()
+        constexpr GenType epsilon()
         {
             return std::numeric_limits<GenType>::epsilon();
+        }
+
+        template <typename GenType = float>
+        constexpr GenType negInfinity()
+        {
+            return std::numeric_limits<GenType>::lowest();
         }
 
         /**
@@ -31,7 +37,7 @@ namespace atlas
          * @tparam The numerical data type.
          */
         template <typename GenType = float>
-        inline GenType infinity()
+        constexpr GenType infinity()
         {
             return std::numeric_limits<GenType>::max();
         }
