@@ -25,21 +25,25 @@ namespace atlas
             return std::numeric_limits<GenType>::epsilon();
         }
 
-        template <typename GenType = float>
-        constexpr GenType negInfinity()
-        {
-            return std::numeric_limits<GenType>::lowest();
-        }
-
         /**
          * Returns the "infinity" (maximum value) that the specified data type
          * can represent.
          * @tparam The numerical data type.
          */
         template <typename GenType = float>
-        constexpr GenType infinity()
+        constexpr typename std::enable_if<
+            std::numeric_limits<GenType>::has_infinity, GenType>::type
+        infinity()
         {
-            return std::numeric_limits<GenType>::max();
+            return std::numeric_limits<GenType>::infinity();
+        }
+
+        template <typename GenType = float>
+        constexpr typename std::enable_if<
+            std::numeric_limits<GenType>::has_infinity, GenType>::type
+            negInfinity()
+        {
+            return GenType(-1) * infinity<GenType>();
         }
     }
 }
