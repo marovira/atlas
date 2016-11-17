@@ -27,6 +27,17 @@ namespace atlas
         }
 
         /**
+         * Returns NaN for that data type.
+         */
+        template <typename GenType = float>
+        constexpr typename std::enable_if<
+            std::numeric_limits<GenType>::has_quiet_NaN, GenType>::type
+        NaN()
+        {
+            return std::numeric_limits<GenType>::quiet_NaN();
+        }
+
+        /**
          * Returns the value of positive infinity.
          * \note
          * This function is disabled for types that do not have a
