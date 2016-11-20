@@ -52,6 +52,7 @@ namespace atlas
         class Texture;
         class Buffer;
         class VertexArrayObject;
+        class Mesh;
     }
 }
 
