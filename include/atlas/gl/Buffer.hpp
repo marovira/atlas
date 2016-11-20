@@ -42,9 +42,9 @@ namespace atlas
          * \return The distance (in bytes) between objects.
          */
         template <typename GenType>
-        constexpr std::size_t stride(std::size_t step)
+        constexpr GLsizei stride(std::size_t step)
         {
-            return step * sizeof(GenType);
+            return (GLsizei)(step * sizeof(GenType));
         }
 
         /**
