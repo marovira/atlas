@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <memory>
+
 namespace atlas
 {
     namespace utils
@@ -21,6 +23,17 @@ namespace atlas
         class Geometry;
         class Scene;
         struct WindowSettings;
+
+        class BBox;
+        
+        template <class Type, class BVType>
+        class BVNode;
+
+        template <class Type, class BVType>
+        class BVH;
+
+        template <class Type, class BVType>
+        using BVNodePtr = std::shared_ptr<BVNode<Type, BVType>>;
     }
 }
 
