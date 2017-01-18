@@ -18,6 +18,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Setup the options
 option(ATLAS_BUILD_DOCS "Build the Atlas documentation" ON)
+option(ATLAS_INCLUDE_TBB "Include Intel Thread Building Blocks library" OFF)
 
 #================================
 # Directory variables.
@@ -89,6 +90,11 @@ include_directories(
     "${ATLAS_SOURCE_DIR}/include"
     )
 
+if (ATLAS_INCLUDE_TBB AND TBB_FOUND)
+    include_directories(
+        ${TBB_INCLUDE_DIRS})
+endif()
+
 #================================
 # Source groups.
 #================================
@@ -100,6 +106,9 @@ include("${ATLAS_CONFIG_ROOT}/SourceGroups.cmake")
 add_library(atlas ${ATLAS_SOURCE_LIST} ${ATLAS_INCLUDE_LIST})
 target_link_libraries(atlas glfw ${GLFW_LIBRARIES} imgui gl3w stb tinyobjloader 
     ${OPENGL_gl_LIBRARY})
+if (ATLAS_INCLUDE_TBB AND TBB_FOUND)
+    target_link_libraries(atlas tbb)
+endif()
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
 #================================
@@ -127,4 +136,8 @@ if (NOT ${CMAKE_PROJECT_NAME} STREQUAL atlas)
         ${GLFW_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         PARENT_SCOPE)
+    if (ATLAS_INCLUDE_TBB AND TBB_FOUND)
+        list(APPEND ATLAS_LIBRARIES tbb)
+        list(APPEND ATLAS_INCLUDE_DIRS ${TBB_INCLUDE_DIRS})
+    endif()
 endif()
