@@ -23,11 +23,6 @@ namespace atlas
         class Timer;
         template <typename GenType = float>
         class Time;
-
-        template <typename GenType>
-        class Queue;
-
-        class ThreadPool;
     }
 }
 
