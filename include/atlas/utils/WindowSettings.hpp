@@ -104,7 +104,7 @@ namespace atlas
              * \var contextVersion
              * The OpenGL context version.
              */
-            std::tuple<int, int> contextVersion;
+            ContextVersion contextVersion;
 
             /**
              * \var isFullscreen

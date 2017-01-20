@@ -20,12 +20,6 @@ namespace atlas
     namespace utils
     {
         /**
-         * \typedef ScenePointer
-         * An alias for a unique pointer of Scene.
-         */
-        using ScenePointer = std::unique_ptr<Scene>;
-
-        /**
          *	\class Application
          *	\brief Defines a class that wraps all of the GLFW windowing system.
          *	

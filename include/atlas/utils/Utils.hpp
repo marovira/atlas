@@ -13,6 +13,7 @@
 #pragma once
 
 #include <memory>
+#include <tuple>
 
 namespace atlas
 {
@@ -23,6 +24,19 @@ namespace atlas
         class Geometry;
         class Scene;
         struct WindowSettings;
+
+        /**
+         * \typedef ScenePointer
+         * An alias for a unique pointer of Scene.
+         */
+        using ScenePointer = std::unique_ptr<Scene>;
+
+        /**
+         * \typedef ContextVersion
+         * An alias for a tuple of integers that represent the GL context
+         * version.
+         */
+        using ContextVersion = std::tuple<int, int>;
 
         class BBox;
         
