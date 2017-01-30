@@ -136,7 +136,7 @@ namespace atlas
 
             if (mShowGrid)
             {
-                mGrid.renderGeometry();
+                mGrid.renderGeometry(mProjection, mView);
             }
 
             ImGui::SetNextWindowSize(ImVec2(400, 200), ImGuiSetCond_FirstUseEver);

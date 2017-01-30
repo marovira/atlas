@@ -22,7 +22,8 @@ namespace atlas
         public:
             Grid();
 
-            void renderGeometry() override;
+            void renderGeometry(atlas::math::Matrix4 const& projection,
+                atlas::math::Matrix4 const& view) override;
 
         private:
             atlas::gl::VertexArrayObject mVao;

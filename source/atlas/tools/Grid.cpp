@@ -10,12 +10,8 @@ namespace atlas
 
 layout (location = 0) in vec3 vPosition;
 
-layout (std140, binding = 0) uniform Matrices
-{
-    mat4 projection;
-    mat4 view;
-};
-
+uniform mat4 projection;
+uniform mat4 view;
 uniform mat4 model;
 
 void main()
@@ -72,7 +68,13 @@ void main()
                 gl::bufferOffset<float>(0));
             mVao.enableVertexAttribArray(0);
 
-            auto var = mShaders[0].getUniformVariable("model");
+            auto var = mShaders[0].getUniformVariable("projection");
+            mUniforms.insert(UniformKey("projection", var));
+            
+            var = mShaders[0].getUniformVariable("view");
+            mUniforms.insert(UniformKey("view", var));
+
+            var = mShaders[0].getUniformVariable("model");
             mUniforms.insert(UniformKey("model", var));
 
             var = mShaders[0].getUniformVariable("colour");
@@ -83,7 +85,8 @@ void main()
             mShaders[0].disableShaders();
         }
 
-        void Grid::renderGeometry()
+        void Grid::renderGeometry(math::Matrix4 const& projection, 
+            math::Matrix4 const& view)
         {
             if (!mShaders[0].shaderProgramValid())
             {
@@ -93,6 +96,10 @@ void main()
             mShaders[0].enableShaders();
             mVao.bindVertexArray();
 
+
+            glUniformMatrix4fv(mUniforms["projection"], 1, GL_FALSE,
+                &projection[0][0]);
+            glUniformMatrix4fv(mUniforms["view"], 1, GL_FALSE, &view[0][0]);
             glUniformMatrix4fv(mUniforms["model"], 1, GL_FALSE, &mModel[0][0]);
 
             glUniform4f(mUniforms["colour"], 0, 0, 0, 1);
