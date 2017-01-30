@@ -216,6 +216,19 @@ namespace atlas
             void* mapBuffer(GLenum access) const;
 
             /**
+             * Map all or part of a buffer object's data store to the client's
+             * address space.
+             * 
+             * \param[in] offset Specifies the starting offset within the buffer
+             * of the range to be mapped.
+             * \param[in] length Specifies the length of the range to be mapped.
+             * \param[in] access Specifies the combination of access flags 
+             * indicating the desired access to the mapped range.
+             */
+            void* mapBufferRange(GLintptr offset, GLsizeiptr length,
+                GLbitfield access) const;
+
+            /**
              *	Release the mapping of a buffer object's data store into the
              *	client's address space.
              */

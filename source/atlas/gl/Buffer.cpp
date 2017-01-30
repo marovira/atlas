@@ -109,6 +109,14 @@ namespace atlas
             return ret;
         }
 
+        void* Buffer::mapBufferRange(GLintptr offset, GLsizeiptr length,
+            GLbitfield access) const
+        {
+            void* ret = glMapBufferRange(mImpl->target, offset, length, access);
+            
+            return ret;
+        }
+
         GLboolean Buffer::unMapBuffer() const
         {
             GLboolean ret;
