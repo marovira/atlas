@@ -144,7 +144,7 @@ namespace atlas
                 while (std::getline(logStream, line, '\n'))
                 {
                     std::smatch match;
-                    std::regex pattern("\\d*\\(\\d*\\)");
+                    std::regex pattern("\\d+\\(\\d*\\)");
 
                     // We are only interested in the first match.
                     std::regex_search(line, match, pattern);
