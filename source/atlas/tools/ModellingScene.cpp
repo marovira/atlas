@@ -1,7 +1,7 @@
 #include "atlas/tools/ModellingScene.hpp"
 
-#include <atlas/gl/GL.hpp>
-#include <atlas/utils/GUI.hpp>
+#include "atlas/gl/GL.hpp"
+#include "atlas/utils/GUI.hpp"
 
 namespace atlas
 {

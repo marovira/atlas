@@ -6,5 +6,4 @@ set(ATLAS_SOURCE_GL_LIST
     "${ATLAS_SOURCE_GL_ROOT}/Buffer.cpp"
     "${ATLAS_SOURCE_GL_ROOT}/VertexArrayObject.cpp"
     "${ATLAS_SOURCE_GL_ROOT}/Texture.cpp"
-    "${ATLAS_SOURCE_GL_ROOT}/Mesh.cpp"
     PARENT_SCOPE)
