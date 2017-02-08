@@ -22,9 +22,10 @@ namespace atlas
             Mesh& operator=(Mesh&& rhs);
             ~Mesh();
 
-            static Mesh& fromTriangleSoup(
+            static void fromTriangleSoup(
                 std::vector<atlas::math::Point> const& vertices,
                 std::vector<GLuint> const& indices,
+                Mesh& mesh,
                 std::vector<atlas::math::Normal> const& normals = {},
                 std::vector<atlas::math::Point2> const& uvs = {});
 
