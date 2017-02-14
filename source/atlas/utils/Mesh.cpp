@@ -127,7 +127,7 @@ namespace atlas
                 }
 
                 // Check if this vertex already exists.
-                if (uniqueVertices.find(v) != uniqueVertices.end())
+                if (uniqueVertices.find(v) == uniqueVertices.end())
                 {
                     // It doesn't, so increase the count and insert.
                     mesh.indices().push_back(current);
