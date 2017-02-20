@@ -195,11 +195,15 @@ namespace atlas
             }
 
             mImpl->vao.bindVertexArray();
+            for (auto& idx : arrays)
+            {
+                mImpl->vao.enableVertexAttribArray(idx);
+            }
+
             mImpl->vertexBuffer.bindBuffer();
             mImpl->vertexBuffer.vertexAttribPointer(arrays[0],
                 3, GL_FLOAT, GL_FALSE, gl::stride<math::Point>(0),
                 gl::bufferOffset<math::Point>(0));
-            mImpl->vao.enableVertexAttribArray(arrays[0]);
 
             if (mImpl->hasNormals && arrays.size() < 2)
             {
@@ -212,7 +216,6 @@ namespace atlas
             mImpl->normalBuffer.vertexAttribPointer(arrays[1],
                 3, GL_FLOAT, GL_FALSE, gl::stride<math::Normal>(0),
                 gl::bufferOffset<math::Normal>(0));
-            mImpl->vao.enableVertexAttribArray(arrays[1]);
 
             if (mImpl->hasTextures && arrays.size() < 3)
             {
@@ -225,7 +228,6 @@ namespace atlas
             mImpl->textureBuffer.vertexAttribPointer(arrays[2],
                 2, GL_FLOAT, GL_FALSE, gl::stride<math::Point2>(0),
                 gl::bufferOffset<math::Point2>(0));
-            mImpl->vao.enableVertexAttribArray(arrays[2]);
 
             mImpl->textureBuffer.unBindBuffer();
             mImpl->vao.unBindVertexArray();
@@ -269,7 +271,8 @@ namespace atlas
             if (mImpl->hasNormals)
             {
                 mImpl->normalBuffer.bindBuffer();
-                mImpl->normalBuffer.bufferData(mNormals.size(),
+                mImpl->normalBuffer.bufferData(
+                    gl::size<math::Normal>(mNormals.size()),
                     mNormals.data(), GL_DYNAMIC_DRAW);
                 mImpl->normalBuffer.unBindBuffer();
             }
@@ -294,6 +297,7 @@ namespace atlas
             mImpl->indexBuffer.bufferData(gl::size<GLuint>(mIndices.size()),
                 mIndices.data(), GL_DYNAMIC_DRAW);
             mImpl->indexBuffer.unBindBuffer();
+            mImpl->numIndices = (GLuint)mIndices.size();
         }
 
         void Mesh::renderMesh()
@@ -304,9 +308,11 @@ namespace atlas
             }
 
             mImpl->vao.bindVertexArray();
+            mImpl->indexBuffer.bindBuffer();
             glDrawElements(GL_TRIANGLES, mImpl->numIndices,
                 GL_UNSIGNED_INT, gl::bufferOffset<GLuint>(0));
             mImpl->vao.unBindVertexArray();
+            mImpl->indexBuffer.unBindBuffer();
         }
     }
 }
