@@ -110,6 +110,7 @@ namespace atlas
             }
 
             std::unordered_set<MeshVertex, MeshVertexHasher> uniqueVertices;
+            std::vector<std::size_t> normalCount;
             GLuint current = 0;
             for (auto& idx : indices)
             {
@@ -132,6 +133,7 @@ namespace atlas
                     // It doesn't, so increase the count and insert.
                     mesh.indices().push_back(current);
                     mesh.vertices().push_back(v.vertex);
+                    normalCount.push_back(1);
 
                     if (hasNormals)
                     {
@@ -152,6 +154,12 @@ namespace atlas
                     // We have already seen this vertex, so grab it's index.
                     auto uniqueV = *uniqueVertices.find(v);
                     mesh.indices().push_back(uniqueV.index);
+
+                    normalCount[uniqueV.index]++;
+                    auto k = normalCount[uniqueV.index];
+                    auto mK = mesh.normals()[uniqueV.index];
+                    mK = mK + ((v.normal - mK) / (float)k);
+                    mesh.normals()[uniqueV.index] = mK;
                 }
             }
 
