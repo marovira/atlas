@@ -20,7 +20,7 @@ std::vector<std::string>
 {
     "debug",
     "info",
-    "log",
+    "warning",
     "error",
     "critical"
 };
