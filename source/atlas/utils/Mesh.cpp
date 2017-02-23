@@ -227,8 +227,9 @@ namespace atlas
 
             if (mImpl->hasTextures && arrays.size() < 3)
             {
-                WARN_LOG("No index for texture coordinates vertex attribute \
-                    array provided. Texture coordinates will not be bound.");
+                WARN_LOG(std::string("No index for texture coordinates ") + 
+                    "vertex attribute array provided. Texture coordinates will" +
+                    " not be bound.");
                 return;
             }
 
@@ -264,8 +265,8 @@ namespace atlas
 
             if (mImpl->hasTextures && mVertices.size() != mUvs.size())
             {
-                WARN_LOG("Number of texture coordinates and vertices don't \
-                        match.");
+                WARN_LOG(std::string("Number of texture coordinates and ") + 
+                    "vertices don't  match.");
                 mImpl->isValid = false;
                 return;
             }
