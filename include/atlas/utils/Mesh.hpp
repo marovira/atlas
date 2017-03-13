@@ -43,6 +43,8 @@ namespace atlas
 
             void renderMesh();
 
+            void saveToFile(std::string const& filename);
+
         private:
             struct MeshImpl;
             std::unique_ptr<MeshImpl> mImpl;

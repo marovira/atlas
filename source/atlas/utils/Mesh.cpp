@@ -5,6 +5,7 @@
 
 #include <unordered_set>
 #include <functional>
+#include <fstream>
 
 namespace atlas
 {
@@ -322,6 +323,60 @@ namespace atlas
                 GL_UNSIGNED_INT, gl::bufferOffset<GLuint>(0));
             mImpl->vao.unBindVertexArray();
             mImpl->indexBuffer.unBindBuffer();
+        }
+
+        void Mesh::saveToFile(std::string const& filename)
+        {
+            std::fstream file(filename, std::fstream::out);
+
+            file << "# number of vertices: " << mVertices.size() << "\n";
+
+            for (std::size_t i = 0; i < mVertices.size(); ++i)
+            {
+                auto v = mVertices[i];
+                file << "v " << v.x << " " << v.y << " " << v.z << "\n";
+
+                if (!mNormals.empty())
+                {
+                    auto n = mNormals[i];
+                    file << "vn " << n.x << " " << n.y << " " << n.z << "\n";
+                }
+
+                if (!mUvs.empty())
+                {
+                    auto uv = mUvs[i];
+                    file << "vt " << uv.x << " " << uv.y << "\n";
+                }
+            }
+
+            for (std::size_t i = 0; i < mIndices.size(); ++i)
+            {
+                std::string start = "f ";
+                auto idx = mIndices[i];
+
+                if (mUvs.empty() && mNormals.empty())
+                {
+                    // We only have vertices.
+                    file << start << idx << "\n";
+                }
+                else if (!mUvs.empty() && mNormals.empty())
+                {
+                    // We have textures but not normals.
+                    file << start << idx << "/" << idx << "\n";
+                }
+                else if (mUvs.empty() && !mNormals.empty())
+                {
+                    // We have normals but not textures.
+                    file << start << idx << "//" << idx << "\n";
+                }
+                else
+                {
+                    // We have normals and textures.
+                    file << start << idx << "/" << idx << "/" << idx << "\n";
+                }
+            }
+
+            file.close();
         }
     }
 }
