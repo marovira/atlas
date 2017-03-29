@@ -37,16 +37,43 @@ namespace atlas
          *  The result of this evaluation is the value returned by the 
          *  function.
          *  
-         *  @tparam The floating point data type to use.
-         *  @param[in] a The first number to compare.
-         *  @param[in] b The second number to compare.
-         *  @return The result of evaluating the expression shown above.
+         *  \tparam GenType The floating point data type to use.
+         *  \param[in] a The first number to compare.
+         *  \param[in] b The second number to compare.
+         *  \return The result of evaluating the expression shown above.
          */
         template <typename GenType = float>
         inline bool areEqual(GenType a, GenType b)
         {
             const GenType scale = (std::abs(a) + std::abs(b)) / GenType(2.0);
             return (std::abs(a - b) <= epsilon<GenType>() * scale);
+        }
+
+        /**
+         * \typedef EpsilonFn
+         * Function pointer for custom epsilon values.
+         * 
+         * \tparam GenType The floating point data type to use.
+         */
+        template <typename GenType = float>
+        using EpsilonFn = GenType(*)();
+
+        /**
+         * This function is identical to areEqual. The difference is that it
+         * uses the provided epsilon function as opposed to the standard 
+         * (machine) epsilon. The formula for comparison is the same.
+         * 
+         * \tparam GenType The floating point data type to use.
+         * \tparam epsilon The epsilon function pointer.
+         * \param[in] a The first number to compare.
+         * \param[in] b The second number to compare.
+         * \return The comparison result.
+         */
+        template <typename GenType = float, EpsilonFn<GenType> eps>
+        inline bool areEqual(GenType a, GenType b)
+        {
+            const GenType scale = (std::abs(a) + std::abs(b)) / GenType(2.0);
+            return (std::abs(a - b) <= eps() * scale);
         }
 
         /**
@@ -63,6 +90,12 @@ namespace atlas
             return areEqual<GenType>(a, GenType(0.0));
         }
 
+        template <typename GenType = float, EpsilonFn<GenType> eps>
+        inline bool isZero(GenType a)
+        {
+            return areEqual<GenType, eps>(a, GenType(0.0));
+        }
+
         /**
          * Compares the given floating point number to 1. This is implemented
          * by using <tt>areEqual(a, 1)</tt>.
@@ -75,6 +108,12 @@ namespace atlas
         inline bool isOne(GenType a)
         {
             return areEqual<GenType>(a, GenType(1.0));
+        }
+
+        template <typename GenType = float, EpsilonFn<GenType> eps>
+        inline bool isOne(GenType a)
+        {
+            return areEqual<GenType, eps>(a, GenType(1.0));
         }
 
         /**
@@ -92,6 +131,12 @@ namespace atlas
             return (a > b) || areEqual<GenType>(a, b);
         }
 
+        template <typename GenType = float, EpsilonFn<GenType> eps>
+        inline bool geq(GenType a, GenType b)
+        {
+            return (a > b) || areEqual<GenType, eps>(a, b);
+        }
+
         /**
          * Tests whether \f$ a \leq b \f$. This is equivalent to evaluating:
          * <tt> (a < b) || areEqual(a, b) </tt>
@@ -105,6 +150,12 @@ namespace atlas
         inline bool leq(GenType a, GenType b)
         {
             return (a < b) || areEqual<GenType>(a, b);
+        }
+
+        template <typename GenType = float, EpsilonFn<GenType> eps>
+        inline bool leq(GenType a, GenType b)
+        {
+            return (a < b) || areEqual<GenType, eps>(a, b);
         }
     }
 }
