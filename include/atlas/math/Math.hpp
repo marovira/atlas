@@ -15,6 +15,7 @@
 #define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
+#include <glm/gtx/projection.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
