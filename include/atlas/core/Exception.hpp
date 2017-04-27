@@ -130,6 +130,7 @@ namespace atlas
          */
         class LogicException : public Exception
         {
+        public:
             /**
              * Standard constructor with char array.
              * 
