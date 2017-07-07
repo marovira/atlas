@@ -68,6 +68,24 @@ namespace atlas
             Geometry();
 
             /**
+             * Move constructor. Since none of the objects that are associated
+             * with a Geometry can be copied (shaders, buffers, etc.) it requires
+             * move semantics in order to be moved from function to function.
+             * 
+             * \param[in] g The geometry to move.
+             */
+            Geometry(Geometry&& g) = default;
+
+            /**
+             * Move assignment operator.
+             * 
+             * \param[in] rhs The geometry to move.
+             * 
+             * \return The moved geometry.
+             */
+            Geometry& operator=(Geometry&& rhs) = default;
+
+            /**
              *	Virtual destructor.
              */
             virtual ~Geometry();
