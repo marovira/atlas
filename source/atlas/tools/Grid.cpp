@@ -107,7 +107,7 @@ void main()
             glDrawArrays(GL_LINES, n, 4);
 
             glPointSize(5.0f);
-            float rgb = (127.0f / 255.0f);
+            float rgb = (64.0f / 255.0f);
             glUniform4f(mUniforms["colour"], rgb, rgb, rgb, 1);
             glDrawArrays(GL_LINES, 0, (int)mNumIndices);
 
