@@ -4,12 +4,11 @@
 
 # First identify the compiler we're using.
 if (MSVC)
-    if ((MSVC_VERSION EQUAL 1800) OR
-        (MSVC_VERSION EQUAL 1900))
+    if ((MSVC_VERSION VERSION_GREATER 1800))
         set(ATLAS_COMPILER_MSVC 1)
         message(STATUS "Using MSVC ${MSVC_VERSION}...")
     else()
-        message(FATAL_ERROR "Atlas requires Visual Studio 12 or 14 to run.")
+        message(FATAL_ERROR "Atlas requires at least Visual Studio 12 to run.")
     endif()
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
         set(ATLAS_COMPILER_CLANG 1)
