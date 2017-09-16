@@ -1,61 +1,20 @@
 #include "atlas/utils/Mesh.hpp"
-#include "atlas/gl/Buffer.hpp"
-#include "atlas/gl/VertexArrayObject.hpp"
 #include "atlas/core/Log.hpp"
 
 #include <unordered_set>
 #include <functional>
 #include <fstream>
+#include <unordered_map>
+#include <numeric>
 
 namespace atlas
 {
     namespace utils
     {
-        struct Mesh::MeshImpl
-        {
-            MeshImpl() :
-                vertexBuffer(GL_ARRAY_BUFFER),
-                normalBuffer(GL_ARRAY_BUFFER),
-                textureBuffer(GL_ARRAY_BUFFER),
-                indexBuffer(GL_ELEMENT_ARRAY_BUFFER),
-                isValid(false)
-            { }
-
-            MeshImpl(MeshImpl&& impl) = default;
-            ~MeshImpl() = default;
-
-            MeshImpl& operator=(MeshImpl&& rhs) = default;
-
-            gl::Buffer vertexBuffer;
-            gl::Buffer normalBuffer;
-            gl::Buffer textureBuffer;
-            gl::Buffer indexBuffer;
-            gl::VertexArrayObject vao;
-            
-            GLuint numIndices;
-            bool isValid;
-            bool hasNormals;
-            bool hasTextures;
-        };
-
-        Mesh::Mesh() :
-            mImpl(std::make_unique<MeshImpl>())
+        Mesh::Mesh()
         { }
 
-        Mesh::Mesh(Mesh&& rhs) :
-            mImpl(std::make_unique<MeshImpl>(std::move(*rhs.mImpl)))
-        { }
-
-        Mesh& Mesh::operator=(Mesh&& rhs)
-        {
-            *mImpl = std::move(*rhs.mImpl);
-            return *this;
-        }
-
-        Mesh::~Mesh()
-        { }
-
-        void Mesh::fromTriangleSoup(
+        bool Mesh::fromTriangleSoup(
             std::vector<atlas::math::Point> const& vertices,
             std::vector<GLuint> const& indices,
             Mesh& mesh,
@@ -100,14 +59,14 @@ namespace atlas
             if (hasNormals && vertices.size() != normals.size())
             {
                 WARN_LOG("Number of normals and vertices doesn't match.");
-                return;
+                return false;
             }
 
             if (hasTextures && vertices.size() != uvs.size())
             {
                 WARN_LOG("Number of texture coordinates and vertices doesn't\
                          match.");
-                return;
+                return false;
             }
 
             std::unordered_set<MeshVertex, MeshVertexHasher> uniqueVertices;
@@ -143,7 +102,7 @@ namespace atlas
 
                     if (hasTextures)
                     {
-                        mesh.uvs().push_back(v.uv);
+                        mesh.texCoords().push_back(v.uv);
                     }
 
                     v.index = current;
@@ -156,17 +115,173 @@ namespace atlas
                     auto uniqueV = *uniqueVertices.find(v);
                     mesh.indices().push_back(uniqueV.index);
 
-                    normalCount[uniqueV.index]++;
-                    auto k = normalCount[uniqueV.index];
-                    auto mK = mesh.normals()[uniqueV.index];
-                    mK = mK + ((v.normal - mK) / (float)k);
-                    mesh.normals()[uniqueV.index] = mK;
+                    if (hasNormals)
+                    {
+                        normalCount[uniqueV.index]++;
+                        auto k = normalCount[uniqueV.index];
+                        auto mK = mesh.normals()[uniqueV.index];
+                        mK = mK + ((v.normal - mK) / (float)k);
+                        mesh.normals()[uniqueV.index] = mK;
+                    }
                 }
             }
 
-            // Tell the mesh to update itself to reflect the new data.
-            mesh.updateMesh();
-            mesh.updateIndices();
+            return true;
+        }
+
+        bool Mesh::fromFile(std::string const& filename, Mesh& mesh, 
+            std::string const& mtl, bool triangulate)
+        {
+            tinyobj::attrib_t attrib;
+            std::vector<tinyobj::shape_t> shapes;
+            std::vector<tinyobj::material_t> materials;
+
+            std::string errorString;
+
+            bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials,
+                &errorString, filename.c_str(), mtl.c_str(), triangulate);
+
+            if (!errorString.empty())
+            {
+                ERROR_LOG(errorString);
+            }
+
+            if (!ret)
+            {
+                return false;
+            }
+
+            using std::size_t;
+
+            std::vector<math::Point> vertices;
+            std::vector<math::Normal> normals;
+            std::vector<math::Point2> texCoord;
+            std::vector<GLuint> indices;
+
+            for (auto& shape : shapes)
+            {
+                for (auto& index : shape.mesh.indices)
+                {
+                    vertices.emplace_back(
+                        attrib.vertices[3 * index.vertex_index + 0],
+                        attrib.vertices[3 * index.vertex_index + 1],
+                        attrib.vertices[3 * index.vertex_index + 2]
+                    );
+
+                    if (!attrib.normals.empty())
+                    {
+                        normals.emplace_back(
+                            attrib.normals[3 * index.normal_index + 0],
+                            attrib.normals[3 * index.normal_index + 1],
+                            attrib.normals[3 * index.normal_index + 2]
+                        );
+                    }
+
+                    if (!attrib.texcoords.empty())
+                    {
+                        texCoord.emplace_back(
+                            attrib.texcoords[2 * index.texcoord_index + 0],
+                            attrib.texcoords[2 * index.texcoord_index + 1]
+                        );
+                    }
+
+                }
+            }
+
+            indices.resize(vertices.size());
+            std::iota(indices.begin(), indices.end(), 0);
+
+            return fromTriangleSoup(vertices, indices, mesh, normals, texCoord);
+
+
+            //size_t totalDataCount = 0;
+            //for (size_t s = 0; s < shapes.size(); ++s)
+            //{
+            //    size_t indexOffset = 0;
+            //    size_t numVertices = 0, numNormals = 0, numTex = 0,
+            //        numIndices = 0;
+
+            //    std::vector<GLuint> tmpIndices;
+            //    std::vector<Face> faces;
+            //    for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size();
+            //        ++f)
+            //    {
+            //        size_t fv = shapes[s].mesh.num_face_vertices[f];
+
+
+            //        Face face{ indices.size() + tmpIndices.size(),
+            //        fv, shapes[s].mesh.material_ids[f] };
+            //        face.materialId = (face.materialId == -1) ? 
+            //            0 : face.materialId;
+            //        faces.push_back(face);
+
+            //        for (size_t v = 0; v < fv; ++v)
+            //        {
+            //            tinyobj::index_t index =
+            //                shapes[s].mesh.indices[indexOffset + v];
+
+            //            math::Point vertex;
+            //            vertex.x = attrib.vertices[3 * index.vertex_index + 0];
+            //            vertex.y = attrib.vertices[3 * index.vertex_index + 1];
+            //            vertex.z = attrib.vertices[3 * index.vertex_index + 2];
+
+            //            vertices.push_back(vertex);
+            //            numVertices += 3;
+
+            //            if (!attrib.normals.empty())
+            //            {
+            //                math::Normal nml;
+            //                nml.x = attrib.normals[3 * index.normal_index + 0];
+            //                nml.y = attrib.normals[3 * index.normal_index + 1];
+            //                nml.z = attrib.normals[3 * index.normal_index + 2];
+            //                normals.push_back(nml);
+            //                numNormals += 3;
+            //            }
+
+            //            if (!attrib.texcoords.empty())
+            //            {
+            //                math::Point2 t;
+            //                t.x = attrib.texcoords[2 * index.texcoord_index + 0];
+            //                t.y = attrib.texcoords[2 * index.texcoord_index + 1];
+            //                texCoords.push_back(t);
+            //                numTex += 2;
+            //            }
+
+            //            tmpIndices.push_back((GLuint)tmpIndices.size());
+            //            numIndices++;
+            //        }
+
+            //        indexOffset += fv;
+            //    }
+
+            //    std::vector<Face> uniqueFaces;
+            //    Face firstFace = faces[0];
+            //    for (size_t i = 1; i < faces.size(); ++i)
+            //    {
+            //        if (faces[i].materialId == firstFace.materialId)
+            //        {
+            //            firstFace.size += faces[i].size;
+            //        }
+            //        else
+            //        {
+            //            uniqueFaces.push_back(firstFace);
+            //            firstFace = faces[i];
+            //        }
+
+            //    }
+
+            //    uniqueFaces.push_back(firstFace);
+
+            //    Shape shape{ totalDataCount, uniqueFaces };
+            //    mesh.shapes().push_back(shape);
+            //    mesh.indices().insert(mesh.indices().end(),
+            //        tmpIndices.begin(), tmpIndices.end());
+            //    totalDataCount += numVertices + numNormals + numTex;
+            //}
+
+            //mesh.vertices() = vertices;
+            //mesh.normals() = normals;
+            //mesh.texCoords() = texCoords;
         }
 
         std::vector<atlas::math::Point>& Mesh::vertices()
@@ -179,9 +294,9 @@ namespace atlas
             return mNormals;
         }
 
-        std::vector<atlas::math::Point2>& Mesh::uvs()
+        std::vector<atlas::math::Point2>& Mesh::texCoords()
         {
-            return mUvs;
+            return mTexCoords;
         }
 
         std::vector<GLuint>& Mesh::indices()
@@ -189,140 +304,14 @@ namespace atlas
             return mIndices;
         }
 
-        bool Mesh::isValid() const
+        std::vector<Shape>& Mesh::shapes()
         {
-            return mImpl->isValid;
+            return mShapes;
         }
 
-        void Mesh::setVertexAttribArrays(std::vector<GLuint> const& arrays)
+        std::vector<tinyobj::material_t>& Mesh::materials()
         {
-            if (arrays.size() < 1)
-            {
-                WARN_LOG("No indices provided for vertex attribute arrays.");
-                mImpl->isValid = false;
-                return;
-            }
-
-            mImpl->vao.bindVertexArray();
-            for (auto& idx : arrays)
-            {
-                mImpl->vao.enableVertexAttribArray(idx);
-            }
-
-            mImpl->vertexBuffer.bindBuffer();
-            mImpl->vertexBuffer.vertexAttribPointer(arrays[0],
-                3, GL_FLOAT, GL_FALSE, gl::stride<math::Point>(0),
-                gl::bufferOffset<math::Point>(0));
-
-            if (mImpl->hasNormals && arrays.size() < 2)
-            {
-                WARN_LOG(std::string("No index for normal vertex attribute") +
-                    " array provided. Normals will not be bound.");
-                return;
-            }
-
-            mImpl->normalBuffer.bindBuffer();
-            mImpl->normalBuffer.vertexAttribPointer(arrays[1],
-                3, GL_FLOAT, GL_FALSE, gl::stride<math::Normal>(0),
-                gl::bufferOffset<math::Normal>(0));
-
-            if (mImpl->hasTextures && arrays.size() < 3)
-            {
-                WARN_LOG(std::string("No index for texture coordinates ") + 
-                    "vertex attribute array provided. Texture coordinates will" +
-                    " not be bound.");
-                return;
-            }
-
-            mImpl->textureBuffer.bindBuffer();
-            mImpl->textureBuffer.vertexAttribPointer(arrays[2],
-                2, GL_FLOAT, GL_FALSE, gl::stride<math::Point2>(0),
-                gl::bufferOffset<math::Point2>(0));
-
-            mImpl->textureBuffer.unBindBuffer();
-            mImpl->vao.unBindVertexArray();
-        }
-
-        void Mesh::updateMesh()
-        {
-            if (mVertices.empty())
-            {
-                WARN_LOG("Attempting to create a mesh with no vertices.");
-                mImpl->isValid = false;
-                return;
-            }
-
-            // Now check if we have normals or texture coordinates.
-            mImpl->hasNormals = !mNormals.empty();
-            mImpl->hasTextures= !mUvs.empty();
-
-            // Now check if all the arrays have the same size.
-            if (mImpl->hasNormals && mVertices.size() != mNormals.size())
-            {
-                WARN_LOG("Number of normals and vertices don't match.");
-                mImpl->isValid = false;
-                return;
-            }
-
-            if (mImpl->hasTextures && mVertices.size() != mUvs.size())
-            {
-                WARN_LOG(std::string("Number of texture coordinates and ") + 
-                    "vertices don't  match.");
-                mImpl->isValid = false;
-                return;
-            }
-
-            mImpl->vertexBuffer.bindBuffer();
-            mImpl->vertexBuffer.bufferData(
-                gl::size<math::Point>(mVertices.size()), mVertices.data(),
-                GL_DYNAMIC_DRAW);
-            mImpl->vertexBuffer.unBindBuffer();
-
-            if (mImpl->hasNormals)
-            {
-                mImpl->normalBuffer.bindBuffer();
-                mImpl->normalBuffer.bufferData(
-                    gl::size<math::Normal>(mNormals.size()),
-                    mNormals.data(), GL_DYNAMIC_DRAW);
-                mImpl->normalBuffer.unBindBuffer();
-            }
-
-            if (mImpl->hasTextures)
-            {
-                mImpl->textureBuffer.bindBuffer();
-                mImpl->textureBuffer.bufferData(
-                    gl::size<math::Point2>(mUvs.size()), mUvs.data(),
-                    GL_DYNAMIC_DRAW);
-                mImpl->textureBuffer.unMapBuffer();
-            }
-
-            // At this point everything is bound and ready to go, so the mesh
-            // is valid.
-            mImpl->isValid = true;
-        }
-
-        void Mesh::updateIndices()
-        {
-            mImpl->indexBuffer.bindBuffer();
-            mImpl->indexBuffer.bufferData(gl::size<GLuint>(mIndices.size()),
-                mIndices.data(), GL_DYNAMIC_DRAW);
-            mImpl->indexBuffer.unBindBuffer();
-            mImpl->numIndices = (GLuint)mIndices.size();
-        }
-
-        void Mesh::renderMesh()
-        {
-            if (!mImpl->isValid)
-            {
-                return;
-            }
-
-            mImpl->vao.bindVertexArray();
-            mImpl->indexBuffer.bindBuffer();
-            glDrawElements(GL_TRIANGLES, mImpl->numIndices,
-                GL_UNSIGNED_INT, gl::bufferOffset<GLuint>(0));
-            mImpl->vao.unBindVertexArray();
-            mImpl->indexBuffer.unBindBuffer();
+            return mMaterials;
         }
 
         void Mesh::saveToFile(std::string const& filename)
@@ -342,9 +331,9 @@ namespace atlas
                     file << "vn " << n.x << " " << n.y << " " << n.z << "\n";
                 }
 
-                if (!mUvs.empty())
+                if (!mTexCoords.empty())
                 {
-                    auto uv = mUvs[i];
+                    auto uv = mTexCoords[i];
                     file << "vt " << uv.x << " " << uv.y << "\n";
                 }
             }
@@ -354,17 +343,17 @@ namespace atlas
                 std::string start = "f ";
                 auto idx = mIndices[i];
 
-                if (mUvs.empty() && mNormals.empty())
+                if (mTexCoords.empty() && mNormals.empty())
                 {
                     // We only have vertices.
                     file << start << idx << "\n";
                 }
-                else if (!mUvs.empty() && mNormals.empty())
+                else if (!mTexCoords.empty() && mNormals.empty())
                 {
                     // We have textures but not normals.
                     file << start << idx << "/" << idx << "\n";
                 }
-                else if (mUvs.empty() && !mNormals.empty())
+                else if (mTexCoords.empty() && !mNormals.empty())
                 {
                     // We have normals but not textures.
                     file << start << idx << "//" << idx << "\n";
