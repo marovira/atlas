@@ -27,6 +27,9 @@ namespace atlas
         void Geometry::renderGeometry()
         { }
 
+        void Geometry::drawGui()
+        { }
+
         void Geometry::transformGeometry(math::Matrix4 const& t)
         {
             UNUSED(t);

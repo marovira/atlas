@@ -121,6 +121,13 @@ namespace atlas
             virtual void renderGeometry();
 
             /**
+             * This function can be used to draw any GUI related elements for
+             * your geometry, such as rendering modes or other features. Make
+             * sure that you call ImGui::Render() after you use this function.
+             */
+            virtual void drawGui();
+
+            /**
              *	Called whenever the geometry needs to be transformed by a 
              *	specific matrix. This should then be multiplied into the
              *	model matrix in some way.
