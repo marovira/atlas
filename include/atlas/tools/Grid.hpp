@@ -17,11 +17,28 @@ namespace atlas
 {
     namespace tools
     {
+        /**
+         * \class Grid
+         * \brief A simple reference grid used for modelling and animation
+         * projects. Please be advised that the rendering code for this
+         * class assumes an OpenGL version of 4.3 or above.
+         */
         class Grid final : public utils::Geometry
         {
         public:
+            /**
+             * Empty constructor.
+             */
             Grid();
 
+            /**
+             * The grid class provides its own rendering code and its own 
+             * shaders. All that is required are the projection and view
+             * matrices.
+             * 
+             * \param[in] projection The projection matrix of the scene.
+             * \param[in] view The view matrix of the scene.
+             */
             void renderGeometry(atlas::math::Matrix4 const& projection,
                 atlas::math::Matrix4 const& view) override;
 
