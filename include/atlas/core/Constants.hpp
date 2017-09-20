@@ -11,6 +11,14 @@
 
 #include <limits>
 
+#if defined(max)
+#undef max
+#endif
+
+#if defined(min)
+#undef min
+#endif
+
 namespace atlas
 {
     namespace core
