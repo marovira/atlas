@@ -88,7 +88,7 @@ namespace atlas
         template <typename GenType>
         constexpr GenType max()
         {
-            retun std::numeric_limits<GenType>::max();
+            return std::numeric_limits<GenType>::max();
         }
 
         /**
