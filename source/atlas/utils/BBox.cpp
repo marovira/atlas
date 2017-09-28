@@ -1,5 +1,6 @@
 #include "atlas/utils/BBox.hpp"
 
+#include "atlas/math/Ray.hpp"
 #include "atlas/core/Constants.hpp"
 #include "atlas/core/Float.hpp"
 
@@ -58,6 +59,41 @@ namespace atlas
         {
             pMin -= delta;
             pMax += delta;
+        }
+
+        bool BBox::intersect(atlas::math::Ray const& ray, float& hit0,
+            float& hit1)
+        {
+            using atlas::core::infinity;
+            float t0 = 0.0f, t1 = infinity();
+            for (int i = 0; i < 3; ++i)
+            {
+                float invRayDir = 1.0f / ray.d[i];
+                float tNear = (pMin[i] - ray.o[i]) * invRayDir;
+                float tFar = (pMax[i] - ray.o[i]) * invRayDir;
+
+                if (tNear > tFar)
+                {
+                    std::swap(tNear, tFar);
+                }
+
+                t0 = (tNear > t0) ? tNear : t0;
+                t1 = (tFar < t1) ? tFar : t1;
+
+                if (t0 > t1)
+                {
+                    return false;
+                }
+            }
+
+            hit0 = t0, hit1 = t1;
+            return true;
+        }
+
+        bool BBox::intersect(atlas::math::Ray const& ray)
+        {
+            float t1, t2;
+            return intersect(ray, t1, t2);
         }
 
         BBox join(BBox const& b1, BBox const& b2)

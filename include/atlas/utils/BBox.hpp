@@ -22,6 +22,9 @@ namespace atlas
             bool overlaps(BBox const& b) const;
             bool inside(atlas::math::Point const& p) const;
             void expand(float delta);
+            bool intersect(atlas::math::Ray const& ray, float& hit0, 
+                float& hit1);
+            bool intersect(atlas::math::Ray const& ray);
 
             friend BBox join(BBox const& b1, BBox const& b2);
 
