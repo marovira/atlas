@@ -154,6 +154,11 @@ namespace atlas
             return mImpl->position;
         }
 
+        void MayaCamera::setCameraPosition(atlas::math::Point const& pos)
+        {
+            mImpl->position = pos;
+        }
+
         atlas::math::Matrix4 MayaCamera::getCameraMatrix() const
         {
             return mImpl->computeViewMatrix();

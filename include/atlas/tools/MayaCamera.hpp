@@ -41,6 +41,7 @@ namespace atlas
             void setMovement(MayaMovements movement);
 
             atlas::math::Point getCameraPosition() const override;
+            void setCameraPosition(atlas::math::Point const& pos) override;
             atlas::math::Matrix4 getCameraMatrix() const override;
             float getCameraFOV() const override;
 
