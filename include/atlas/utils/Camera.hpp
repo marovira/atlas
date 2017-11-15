@@ -143,6 +143,13 @@ namespace atlas
             virtual atlas::math::Point getCameraPosition() const;
 
             /**
+             * Sets the current position of the camera (the eye value).
+             * 
+             * \param[in] pos The new camera position.
+             */
+            virtual void setCameraPosition(atlas::math::Point const& pos);
+
+            /**
              * Returns the field of view of the camera.
              * 
              * \return The camera FOV.

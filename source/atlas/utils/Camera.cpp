@@ -63,6 +63,11 @@ namespace atlas
             return math::Point();
         }
 
+        void Camera::setCameraPosition(atlas::math::Point const& pos)
+        {
+            UNUSED(pos);
+        }
+
         float Camera::getCameraFOV() const
         {
             return 45.0f;
