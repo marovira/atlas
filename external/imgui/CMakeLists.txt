@@ -9,7 +9,8 @@ include_directories("${IMGUI_SOURCE_DIR}/include/imgui")
 
 set(IMGUI_SOURCE_LIST
     "${IMGUI_SOURCE_DIR}/source/imgui/imgui.cpp"
-    "${IMGUI_SOURCE_DIR}/source/imgui/imgui_draw.cpp")
+    "${IMGUI_SOURCE_DIR}/source/imgui/imgui_draw.cpp"
+    "${IMGUI_SOURCE_DIR}/source/imgui/imgui_demo.cpp")
 set(IMGUI_INCLUDE_LIST
     "${IMGUI_SOURCE_DIR}/include/imgui/imgui.h"
     "${IMGUI_SOURCE_DIR}/include/imgui/imgui_internal.h"
