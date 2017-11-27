@@ -6,6 +6,10 @@
 #ifndef ATLAS_INCLUDE_ATLAS_MATH_RANDOM_GENERATOR_HPP
 #define ATLAS_INCLUDE_ATLAS_MATH_RANDOM_GENERATOR_HPP
 
+#if defined(max)
+#undef max
+#endif
+
 #include "Math.hpp"
 
 #include <random>
