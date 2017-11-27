@@ -57,7 +57,7 @@ namespace atlas
          * \return THe size (in bytes) of the elements.
          */
         template <typename GenType>
-        constexpr std::size_t size(std::size_t num)
+        constexpr GLsizei size(std::size_t num)
         {
             return stride<GenType>(num);
         }
