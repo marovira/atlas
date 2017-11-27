@@ -8,4 +8,5 @@ set(ATLAS_INCLUDE_GL_LIST
     "${ATLAS_INCLUDE_GL_ROOT}/VertexArrayObject.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/ShaderUnit.hpp"
+    "${ATLAS_INCLUDE_GL_ROOT}/FrameBuffer.hpp"
     PARENT_SCOPE)
