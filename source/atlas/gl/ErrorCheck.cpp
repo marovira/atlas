@@ -1,6 +1,11 @@
 #include "atlas/gl/ErrorCheck.hpp"
 #include "atlas/gl/GL.hpp"
 #include "atlas/core/Log.hpp"
+#include "atlas/core/Platform.hpp"
+
+#if defined(ATLAS_PLATFORM_WINDOWS) && defined(ATLAS_DEBUG)
+#include <intrin.h>
+#endif
 
 namespace atlas
 {
@@ -262,6 +267,9 @@ namespace atlas
                 {
                     CRITICAL_LOG("OpenGL critical error: " + errorMessage);
                 }
+#if defined(ATLAS_DEBUG) && defined(ATLAS_PLATFORM_WINDOWS)
+                __debugbreak();
+#endif
 
                 break;
             }
