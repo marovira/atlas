@@ -7,4 +7,5 @@ set(ATLAS_SOURCE_GL_LIST
     "${ATLAS_SOURCE_GL_ROOT}/VertexArrayObject.cpp"
     "${ATLAS_SOURCE_GL_ROOT}/Texture.cpp"
     "${ATLAS_SOURCE_GL_ROOT}/FrameBuffer.cpp"
+    "${ATLAS_SOURCE_GL_ROOT}/RenderBuffer.cpp"
     PARENT_SCOPE)

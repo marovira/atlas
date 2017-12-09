@@ -9,4 +9,5 @@ set(ATLAS_INCLUDE_GL_LIST
     "${ATLAS_INCLUDE_GL_ROOT}/Texture.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/ShaderUnit.hpp"
     "${ATLAS_INCLUDE_GL_ROOT}/FrameBuffer.hpp"
+    "${ATLAS_INCLUDE_GL_ROOT}/RenderBuffer.hpp"
     PARENT_SCOPE)
