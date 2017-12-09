@@ -63,5 +63,23 @@ namespace atlas
         {
             glGetRenderbufferParameteriv(GL_FRAMEBUFFER, param, value);
         }
+
+        void FrameBuffer::texture2D(GLenum attachment, GLenum textarget,
+            GLuint texture, GLint level)
+        {
+            glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, textarget, 
+                texture, level);
+        }
+
+        GLuint FrameBuffer::getHandle() const
+        {
+            return mImpl->handle;
+        }
+
+        bool FrameBuffer::checkStatus() const
+        {
+            return (glCheckFramebufferStatus(GL_FRAMEBUFFER) ==
+                GL_FRAMEBUFFER_COMPLETE);
+        }
     }
 }

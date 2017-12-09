@@ -36,6 +36,13 @@ namespace atlas
 
             void getParameter(GLenum param, GLint* value);
 
+            void texture2D(GLenum attachment, GLenum textarget, 
+                GLuint texture, GLint level);
+
+            bool checkStatus() const;
+
+            GLuint getHandle() const override;
+
         private:
             struct FrameBufferImpl;
             std::unique_ptr<FrameBufferImpl> mImpl;
