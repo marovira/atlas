@@ -108,7 +108,7 @@ namespace atlas
 
             /**
              * \var isFullscreen
-             * Whether the window is fullscren or not.
+             * Whether the window is fullscreen or not.
              */
             bool isFullscreen;
 
@@ -119,6 +119,12 @@ namespace atlas
             bool isMaximized;
 
             /**
+             * \var isResizeable;
+             * Whether the window can be resized or not.
+             */
+            bool isResizeable;
+
+            /**
              * \var isForwardCompat
              * Whether the OpenGL context created is forward compatible or not.
              */
@@ -126,7 +132,7 @@ namespace atlas
 
             /**
              * \var isDebugContext
-             * Whether the OpenGL context creatd is a debug context.
+             * Whether the OpenGL context created is a debug context.
              */
             bool isDebugContext;
         };
