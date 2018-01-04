@@ -3,7 +3,7 @@
 #================================
 
 # First identify the compiler we're using.
-if (MSVC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     if ((MSVC_VERSION VERSION_GREATER 1800))
         set(ATLAS_COMPILER_MSVC 1)
         message(STATUS "Using MSVC ${MSVC_VERSION}...")
@@ -29,6 +29,16 @@ if (ATLAS_COMPILER_MSVC)
         )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
+elseif(ATLAS_COMPILER_INTEL)
+    message(STATUS "Here")
+    if(WIN32)
+        message(STATUS "Over here")
+        add_definitions(
+            /Qdiag-disable:82,3346,3280,1879
+            )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
+    endif()
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++14")
