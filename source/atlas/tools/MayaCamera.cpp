@@ -96,7 +96,6 @@ namespace atlas
                 // Compute the full frame.
                 auto view = glm::normalize(mImpl->position - mImpl->target);
                 auto right = glm::normalize(glm::cross(mImpl->up, view));
-                auto up = glm::cross(view, right);
 
                 auto target = math::Vector(0, 0, 0);
                 auto azimuth =
