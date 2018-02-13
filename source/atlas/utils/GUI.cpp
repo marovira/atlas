@@ -167,14 +167,14 @@ namespace atlas
             glViewport(last_viewport[0], last_viewport[1], (GLsizei)last_viewport[2], (GLsizei)last_viewport[3]);
         }
 
-        void setClipboardText(const char* text)
+        void setClipboardText(void* userData, const char* text)
         {
-            glfwSetClipboardString(Gui::getInstance().getData().window, text);
+            glfwSetClipboardString((GLFWwindow*)userData, text);
         }
 
-        const char* getClipboardText()
+        const char* getClipboardText(void* userData)
         {
-            return glfwGetClipboardString(Gui::getInstance().getData().window);
+            return glfwGetClipboardString((GLFWwindow*)userData);
         }
 
         Gui::Gui()
