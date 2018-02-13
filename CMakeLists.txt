@@ -3,7 +3,8 @@
 #================================
 project(atlas)
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
+cmake_policy(SET CMP0054 NEW)
 
 # Now setup the version data.
 set(ATLAS_VERSION_MAJOR "2")
