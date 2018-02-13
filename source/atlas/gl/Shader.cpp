@@ -437,7 +437,7 @@ namespace atlas
             }
             else
             {
-                if (0 <= idx && idx < mImpl->shaderUnits.size())
+                if (0 <= idx && idx < (int)mImpl->shaderUnits.size())
                 {
                     if (!mImpl->compileShader(mImpl->shaderUnits[idx]))
                     {
@@ -499,7 +499,7 @@ namespace atlas
             }
             else
             {
-                if (0 <= idx && idx < mImpl->shaderUnits.size())
+                if (0 <= idx && idx < (int)mImpl->shaderUnits.size())
                 {
                     if (mImpl->shaderUnits[idx].handle == 0)
                     {
