@@ -30,11 +30,9 @@ if (ATLAS_COMPILER_MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
 elseif(ATLAS_COMPILER_INTEL)
-    message(STATUS "Here")
     if(WIN32)
-        message(STATUS "Over here")
         add_definitions(
-            /Qdiag-disable:82,3346,3280,1879
+            /Qdiag-disable:82,3346,3280,1879,2557
             )
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
