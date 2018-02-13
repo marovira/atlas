@@ -1,6 +1,9 @@
 // ImGui Allegro 5 bindings
 // In this binding, ImTextureID is used to store a 'ALLEGRO_BITMAP*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
+// TODO:
+// - Clipboard is not supported.
+
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
 // If you use this binding you'll need to call 4 functions: ImGui_ImplXXXX_Init(), ImGui_ImplXXXX_NewFrame(), ImGui::Render() and ImGui_ImplXXXX_Shutdown().
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
@@ -46,8 +49,8 @@ void ImGui_ImplA5_RenderDrawLists(ImDrawData* draw_data)
 
         // FIXME-OPT: Unfortunately Allegro doesn't support 32-bits packed colors so we have to convert them to 4 floats
         static ImVector<ImDrawVertAllegro> vertices;
-        vertices.resize(cmd_list->VtxBuffer.size());
-        for (int i = 0; i < cmd_list->VtxBuffer.size(); ++i)
+        vertices.resize(cmd_list->VtxBuffer.Size);
+        for (int i = 0; i < cmd_list->VtxBuffer.Size; ++i)
         {
             const ImDrawVert &dv = cmd_list->VtxBuffer[i];
             ImDrawVertAllegro v;
@@ -61,12 +64,12 @@ void ImGui_ImplA5_RenderDrawLists(ImDrawData* draw_data)
         // FIXME-OPT: Unfortunately Allegro doesn't support 16-bit indices
         // You can also use '#define ImDrawIdx unsigned int' in imconfig.h and request ImGui to output 32-bit indices
         static ImVector<int> indices;
-        indices.resize(cmd_list->IdxBuffer.size());
-        for (int i = 0; i < cmd_list->IdxBuffer.size(); ++i)
+        indices.resize(cmd_list->IdxBuffer.Size);
+        for (int i = 0; i < cmd_list->IdxBuffer.Size; ++i)
             indices[i] = (int)cmd_list->IdxBuffer.Data[i];
 
         int idx_offset = 0;
-        for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.size(); cmd_i++)
+        for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
         {
             const ImDrawCmd* pcmd = &cmd_list->CmdBuffer[cmd_i];
             if (pcmd->UserCallback)
@@ -201,6 +204,10 @@ void ImGui_ImplA5_Shutdown()
     ImGui::Shutdown();
 }
 
+// You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+// - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+// - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+// Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 bool ImGui_ImplA5_ProcessEvent(ALLEGRO_EVENT *ev)
 {
     ImGuiIO &io = ImGui::GetIO();
@@ -223,7 +230,6 @@ bool ImGui_ImplA5_ProcessEvent(ALLEGRO_EVENT *ev)
     }
     return false;
 }
-
 
 void ImGui_ImplA5_NewFrame()
 {
@@ -259,7 +265,7 @@ void ImGui_ImplA5_NewFrame()
     }
     else
     {
-        io.MousePos = ImVec2(-1, -1);
+        io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
     }
 
     al_get_mouse_state(&mouse);
@@ -287,6 +293,6 @@ void ImGui_ImplA5_NewFrame()
         al_set_system_mouse_cursor(g_Display, cursor_id);
     }
 
-    // Start the frame
+    // Start the frame. This call will update the io.WantCaptureMouse, io.WantCaptureKeyboard flag that you can use to dispatch inputs (or not) to your application.
     ImGui::NewFrame();
 }

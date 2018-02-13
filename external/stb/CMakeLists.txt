@@ -8,9 +8,13 @@ set(STB_BINARY_DIR "${PROJECT_BINARY_DIR}")
 include_directories("${STB_SOURCE_DIR}/include/stb")
 
 set(STB_SOURCE_LIST
-    "${STB_SOURCE_DIR}/source/stb/stb_image.cpp")
+    "${STB_SOURCE_DIR}/source/stb/stb_image.cpp"
+    "${STB_SOURCE_DIR}/source/stb/stb_image_resize.cpp"
+    "${STB_SOURCE_DIR}/source/stb/stb_image_write.cpp")
 set(STB_INCLUDE_LIST
-    "${STB_SOURCE_DIR}/include/stb/stb_image.h")
+    "${STB_SOURCE_DIR}/include/stb/stb_image.h"
+    "${STB_SOURCE_DIR}/include/stb/stb_image_resize.h"
+    "${STB_SOURCE_DIR}/include/stb/stb_image_write.h")
 
 source_group("include" FILES)
 source_group("include\\stb" FILES ${STB_INCLUDE_LIST})

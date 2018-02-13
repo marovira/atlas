@@ -27,7 +27,7 @@ static char*        g_ClipboardText = NULL;
 static bool         g_osdKeyboardEnabled = false;
 
 // use this setting to scale the interface - e.g. on device you could use 2 or 3 scale factor
-static ImVec2       g_scale = ImVec2(1.0f,1.0f);
+static ImVec2       g_RenderScale = ImVec2(1.0f,1.0f);
 
 // This is the main rendering function that you have to implement and provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO structure)
 void ImGui_Marmalade_RenderDrawLists(ImDrawData* draw_data)
@@ -40,18 +40,17 @@ void ImGui_Marmalade_RenderDrawLists(ImDrawData* draw_data)
     for(int n = 0; n < draw_data->CmdListsCount; n++)
     {
         const ImDrawList* cmd_list = draw_data->CmdLists[n];
-        const unsigned char* vtx_buffer = (const unsigned char*)&cmd_list->VtxBuffer.front();
-        const ImDrawIdx* idx_buffer = &cmd_list->IdxBuffer.front();
-        int nVert = cmd_list->VtxBuffer.size();
+        const ImDrawIdx* idx_buffer = cmd_list->IdxBuffer.Data;
+        const int nVert = cmd_list->VtxBuffer.Size;
         CIwFVec2* pVertStream = IW_GX_ALLOC(CIwFVec2, nVert);
         CIwFVec2* pUVStream = IW_GX_ALLOC(CIwFVec2, nVert);
         CIwColour* pColStream = IW_GX_ALLOC(CIwColour, nVert);
 
         for( int i=0; i < nVert; i++ )
         {
-            // TODO: optimize multiplication on gpu using vertex shader
-            pVertStream[i].x = cmd_list->VtxBuffer[i].pos.x * g_scale.x;
-            pVertStream[i].y = cmd_list->VtxBuffer[i].pos.y * g_scale.y;
+            // TODO: optimize multiplication on gpu using vertex shader/projection matrix.
+            pVertStream[i].x = cmd_list->VtxBuffer[i].pos.x * g_RenderScale.x;
+            pVertStream[i].y = cmd_list->VtxBuffer[i].pos.y * g_RenderScale.y;
             pUVStream[i].x = cmd_list->VtxBuffer[i].uv.x;
             pUVStream[i].y = cmd_list->VtxBuffer[i].uv.y;
             pColStream[i] = cmd_list->VtxBuffer[i].col;
@@ -62,12 +61,12 @@ void ImGui_Marmalade_RenderDrawLists(ImDrawData* draw_data)
         IwGxSetColStream(pColStream, nVert);
         IwGxSetNormStream(0);
 
-        for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.size(); cmd_i++)
+        for (int cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
         {
             const ImDrawCmd* pcmd = &cmd_list->CmdBuffer[cmd_i];
             if (pcmd->UserCallback)
             {
-                pcmd->UserCallback(cmd_list,pcmd);
+                pcmd->UserCallback(cmd_list, pcmd);
             }
             else
             {
@@ -90,28 +89,24 @@ void ImGui_Marmalade_RenderDrawLists(ImDrawData* draw_data)
     // TODO: restore modified state (i.e. mvp matrix)
 }
 
-static const char* ImGui_Marmalade_GetClipboardText()
+static const char* ImGui_Marmalade_GetClipboardText(void* /*user_data*/)
 {
-    if (s3eClipboardAvailable())
+    if (!s3eClipboardAvailable())
+        return NULL;
+
+    if (int size = s3eClipboardGetText(NULL, 0))
     {
-        int size = s3eClipboardGetText(NULL, 0);
-        if (size > 0)
-        {
-            if (g_ClipboardText)
-            {
-                delete[] g_ClipboardText;
-                g_ClipboardText = NULL;
-            }
-            g_ClipboardText = new char[size];
-            g_ClipboardText[0] = '\0';
-            s3eClipboardGetText(g_ClipboardText, size);
-        }
+        if (g_ClipboardText)
+            delete[] g_ClipboardText;
+        g_ClipboardText = new char[size];
+        g_ClipboardText[0] = '\0';
+        s3eClipboardGetText(g_ClipboardText, size);
     }
 
     return g_ClipboardText;
 }
 
-static void ImGui_Marmalade_SetClipboardText(const char* text)
+static void ImGui_Marmalade_SetClipboardText(void* /*user_data*/, const char* text)
 {
     if (s3eClipboardAvailable())
         s3eClipboardSetText(text);
@@ -292,7 +287,7 @@ void ImGui_Marmalade_NewFrame()
     // TODO: Hide OS mouse cursor if ImGui is drawing it
     // s3ePointerSetInt(S3E_POINTER_HIDE_CURSOR,(io.MouseDrawCursor ? 0 : 1));
 
-    // Start the frame
+    // Start the frame. This call will update the io.WantCaptureMouse, io.WantCaptureKeyboard flag that you can use to dispatch inputs (or not) to your application.
     ImGui::NewFrame();
 
      // Show/hide OSD keyboard
