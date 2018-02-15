@@ -338,30 +338,39 @@ namespace atlas
                 }
             }
 
-            for (std::size_t i = 0; i < mIndices.size(); ++i)
+            for (std::size_t i = 0; i < mIndices.size(); i += 3)
             {
                 std::string start = "f ";
-                auto idx = mIndices[i];
+                auto idx1 = mIndices[i + 0] + 1;
+                auto idx2 = mIndices[i + 1] + 1;
+                auto idx3 = mIndices[i + 2] + 1;
+
 
                 if (mTexCoords.empty() && mNormals.empty())
                 {
                     // We only have vertices.
-                    file << start << idx << "\n";
+                    file << start << idx1 << " " << idx2 << " " << idx3 << "\n";
                 }
                 else if (!mTexCoords.empty() && mNormals.empty())
                 {
                     // We have textures but not normals.
-                    file << start << idx << "/" << idx << "\n";
+                    file << start << idx1 << "/" << idx1 << " ";
+                    file << idx2 << "/" << idx2 << " ";
+                    file << idx3 << "/" << idx3 << "\n";
                 }
                 else if (mTexCoords.empty() && !mNormals.empty())
                 {
                     // We have normals but not textures.
-                    file << start << idx << "//" << idx << "\n";
+                    file << start << idx1 << "//" << idx1 << " ";
+                    file << idx2 << "//" << idx2 << " ";
+                    file << idx3 << "//" << idx3 << "\n";
                 }
                 else
                 {
                     // We have normals and textures.
-                    file << start << idx << "/" << idx << "/" << idx << "\n";
+                    file << start << idx1 << "/" << idx1 << "/" << idx1 << " ";
+                    file << idx2 << "/" << idx2 << "/" << idx2 << " ";
+                    file << idx3 << "/" << idx3 << "/" << idx3 << "\n";
                 }
             }
 
