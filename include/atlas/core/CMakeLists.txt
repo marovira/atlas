@@ -16,4 +16,5 @@ set(ATLAS_INCLUDE_CORE_LIST
     "${ATLAS_INCLUDE_CORE_ROOT}/Time.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Enum.hpp"
     "${ATLAS_INCLUDE_CORE_ROOT}/Numeric.hpp"
+    "${ATLAS_INCLUDE_CORE_ROOT}/Assert.hpp"
     PARENT_SCOPE)
