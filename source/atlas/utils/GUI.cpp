@@ -248,7 +248,8 @@ namespace atlas
         void Gui::mouseScroll(double xPos, double yPos)
         {
             UNUSED(xPos);
-            mData.mouseWheel += (float)yPos;
+            ImGuiIO& io = ImGui::GetIO();
+            io.MouseWheel += (float)yPos;
         }
 
         void Gui::keyPress(int key, int scancode, int action, int mods)
@@ -288,10 +289,6 @@ namespace atlas
         {
             if (!mData.fontTexture)
                 createDeviceObjects();
-
-            ImGuiIO& io = ImGui::GetIO();
-
-            io.MouseWheel = mData.mouseWheel;
 
             ImGui::NewFrame();
         }
