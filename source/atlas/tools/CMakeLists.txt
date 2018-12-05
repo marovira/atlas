@@ -1,7 +1,0 @@
-set(ATLAS_SOURCE_TOOLS_ROOT "${ATLAS_SOURCE_ROOT}/tools")
-
-set(ATLAS_SOURCE_TOOLS_LIST
-    "${ATLAS_SOURCE_TOOLS_ROOT}/ModellingScene.cpp"
-    "${ATLAS_SOURCE_TOOLS_ROOT}/MayaCamera.cpp"
-    "${ATLAS_SOURCE_TOOLS_ROOT}/Grid.cpp"
-    PARENT_SCOPE)
