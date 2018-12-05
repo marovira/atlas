@@ -1,9 +1,0 @@
-set(ATLAS_INCLUDE_MATH_ROOT "${ATLAS_INCLUDE_ROOT}/math")
-
-set(ATLAS_INCLUDE_MATH_LIST
-    "${ATLAS_INCLUDE_MATH_ROOT}/Math.hpp"
-    "${ATLAS_INCLUDE_MATH_ROOT}/RandomGenerator.hpp"
-    "${ATLAS_INCLUDE_MATH_ROOT}/Ray.hpp"
-    "${ATLAS_INCLUDE_MATH_ROOT}/Solvers.hpp"
-    "${ATLAS_INCLUDE_MATH_ROOT}/Coordinates.hpp"
-    PARENT_SCOPE)
