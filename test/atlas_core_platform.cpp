@@ -1,9 +1,7 @@
 #include <atlas/core/Platform.hpp>
-#include <atlas/Atlas.hpp>
 
 #include <catch2/catch.hpp>
 
-#include <type_traits>
 #include <string>
 
 template <atlas::core::Platform P>
