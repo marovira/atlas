@@ -2,17 +2,14 @@
 
 #include <type_traits>
 
-namespace atlas
+namespace atlas::core
 {
-    namespace core
+    template <typename T,
+    typename = std::enable_if<std::is_enum<T>::value>>
+    constexpr typename std::underlying_type<T>::type
+        enumToUnderlyingType(T value)
     {
-        template <typename T,
-        typename = std::enable_if<std::is_enum<T>::value>>
-        constexpr typename std::underlying_type<T>::type
-            enumToUnderlyingType(T value)
-        {
-            using underType = typename std::underlying_type<T>::type;
-            return static_cast<underType>(value);
-        }
+        using underType = typename std::underlying_type<T>::type;
+        return static_cast<underType>(value);
     }
 }
