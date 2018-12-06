@@ -1,0 +1,3 @@
+set(ATLAS_INCLUDE_CORE_LIST
+    "${ATLAS_INCLUDE_ROOT}/core/Platform.hpp"
+    PARENT_SCOPE)

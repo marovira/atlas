@@ -1,0 +1,14 @@
+#pragma once
+
+#include <string_view>
+
+namespace atlas
+{
+    static constexpr auto AtlasVersionMajor{ @ATLAS_VERSION_MAJOR@ };
+
+    static constexpr auto AtlasVersionMinor{ @ATLAS_VERSION_MINOR@ };
+
+    static constexpr auto AtlasVersionPatch{ @ATLAS_VERSION_PATCH@ };
+
+    static constexpr std::string_view AtlasVersionString{ "@ATLAS_VERSION_MAJOR@.@ATLAS_VERSION_MINOR@.@ATLAS_VERSION_PATCH@" };
+}
