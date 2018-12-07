@@ -41,10 +41,17 @@ add_subdirectory("${ATLAS_INCLUDE_ROOT}")
 include("${ATLAS_SOURCE_DIR}/config/SourceGroups.cmake")
 
 #================================
+# Find Packages.
+#================================
+find_package(fmt REQUIRED)
+
+#================================
 # Core Module.
 #================================
 add_library(atlas-core INTERFACE)
 target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-core INTERFACE fmt::fmt)
+add_library(atlas::core ALIAS atlas-core)
 
 #================================
 # Build the tests.
