@@ -5,4 +5,5 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_core_float.cpp"
     "${ATLAS_TEST_ROOT}/atlas_core_functional.cpp"
     "${ATLAS_TEST_ROOT}/atlas_core_timer.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_math_coordinates.cpp"
     PARENT_SCOPE)

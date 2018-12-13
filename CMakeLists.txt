@@ -44,6 +44,15 @@ include("${ATLAS_SOURCE_DIR}/config/SourceGroups.cmake")
 # Find Packages.
 #================================
 find_package(fmt REQUIRED)
+find_package(glm REQUIRED)
+
+#================================
+# Set compiler flags.
+#================================
+if (MSVC)
+    set(ATLAS_COMPILER_FLAGS /W4 /WX)
+    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
+endif()
 
 #================================
 # Core Module.
@@ -51,7 +60,21 @@ find_package(fmt REQUIRED)
 add_library(atlas-core INTERFACE)
 target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-core INTERFACE fmt::fmt)
+target_compile_features(atlas-core INTERFACE cxx_std_17)
+target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
 add_library(atlas::core ALIAS atlas-core)
+
+#================================
+# Math Module.
+#================================
+add_library(atlas-math INTERFACE)
+target_include_directories(atlas-math INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-math INTERFACE glm atlas-core)
+target_compile_features(atlas-core INTERFACE cxx_std_17)
+target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
+add_library(atlas::math ALIAS atlas-math)
 
 #================================
 # Build the tests.
@@ -61,8 +84,7 @@ if (ATLAS_BUILD_TESTS)
 
     add_subdirectory("${ATLAS_TEST_ROOT}")
     add_executable(atlas-test ${ATLAS_TEST_LIST})
-    target_link_libraries(atlas-test atlas-core Catch2::Catch2)
-    target_compile_features(atlas-test PRIVATE cxx_std_17)
+    target_link_libraries(atlas-test atlas-core atlas-math Catch2::Catch2)
 
     include(CTest)
     include(Catch)
