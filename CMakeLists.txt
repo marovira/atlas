@@ -84,13 +84,13 @@ add_library(atlas::math ALIAS atlas-math)
 #================================
 # GLEX module.
 #================================
-add_library(atlas-glex INTERFACE)
-target_include_directories(atlas-glex INTERFACE "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-glex INTERFACE OpenGL::GL gl3w glfw)
-target_compile_features(atlas-glex INTERFACE cxx_std_17)
-target_compile_options(atlas-glex INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-glex INTERFACE "${ATLAS_DEBUG_FLAGS}")
-add_library(atlas::glex ALIAS atlas-glex)
+add_library(atlas-glx INTERFACE)
+target_include_directories(atlas-glx INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-glx INTERFACE OpenGL::GL gl3w glfw)
+target_compile_features(atlas-glx INTERFACE cxx_std_17)
+target_compile_options(atlas-glx INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-glx INTERFACE "${ATLAS_DEBUG_FLAGS}")
+add_library(atlas::glx ALIAS atlas-glx)
 
 #================================
 # Build the tests.
@@ -103,7 +103,7 @@ if (ATLAS_BUILD_TESTS)
     target_link_libraries(atlas-test 
         atlas-core 
         atlas-math 
-        atlas-glex 
+        atlas-glx 
         Catch2::Catch2)
 
     include(CTest)
