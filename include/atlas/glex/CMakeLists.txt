@@ -1,0 +1,3 @@
+set(ATLAS_SOURCE_GLEX_LIST
+    "${ATLAS_SOURCE_ROOT}/glex/GL.hpp"
+    PARENT_SCOPE)

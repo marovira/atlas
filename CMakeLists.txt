@@ -28,12 +28,14 @@ set(ATLAS_VERSION_FULL
 set(ATLAS_SOURCE_DIR "${PROJECT_SOURCE_DIR}")
 set(ATLAS_BINARY_DIR "${PROJECT_BINARY_DIR}")
 set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
+set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
 set(ATLAS_TEST_ROOT "${ATLAS_SOURCE_DIR}/test")
 
 #================================
 # Add subdirectories.
 #================================
 add_subdirectory("${ATLAS_INCLUDE_ROOT}")
+add_subdirectory("${ATLAS_SOURCE_ROOT}")
 
 #================================
 # Source groups.
@@ -45,6 +47,9 @@ include("${ATLAS_SOURCE_DIR}/config/SourceGroups.cmake")
 #================================
 find_package(fmt REQUIRED)
 find_package(glm REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(gl3w REQUIRED)
+find_package(glfw3 REQUIRED)
 
 #================================
 # Set compiler flags.
@@ -71,10 +76,21 @@ add_library(atlas::core ALIAS atlas-core)
 add_library(atlas-math INTERFACE)
 target_include_directories(atlas-math INTERFACE "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-math INTERFACE glm atlas-core)
-target_compile_features(atlas-core INTERFACE cxx_std_17)
-target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
+target_compile_features(atlas-math INTERFACE cxx_std_17)
+target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
 add_library(atlas::math ALIAS atlas-math)
+
+#================================
+# GLEX module.
+#================================
+add_library(atlas-glex INTERFACE)
+target_include_directories(atlas-glex INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-glex INTERFACE OpenGL::GL gl3w glfw)
+target_compile_features(atlas-glex INTERFACE cxx_std_17)
+target_compile_options(atlas-glex INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-glex INTERFACE "${ATLAS_DEBUG_FLAGS}")
+add_library(atlas::glex ALIAS atlas-glex)
 
 #================================
 # Build the tests.
@@ -84,7 +100,11 @@ if (ATLAS_BUILD_TESTS)
 
     add_subdirectory("${ATLAS_TEST_ROOT}")
     add_executable(atlas-test ${ATLAS_TEST_LIST})
-    target_link_libraries(atlas-test atlas-core atlas-math Catch2::Catch2)
+    target_link_libraries(atlas-test 
+        atlas-core 
+        atlas-math 
+        atlas-glex 
+        Catch2::Catch2)
 
     include(CTest)
     include(Catch)

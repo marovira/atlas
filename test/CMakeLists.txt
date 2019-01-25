@@ -7,4 +7,5 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_core_timer.cpp"
     "${ATLAS_TEST_ROOT}/atlas_math_coordinates.cpp"
     "${ATLAS_TEST_ROOT}/atlas_math_ray.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_glex_gl.cpp"
     PARENT_SCOPE)
