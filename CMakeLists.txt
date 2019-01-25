@@ -2,7 +2,7 @@
 # Project setup.
 #================================
 cmake_minimum_required(VERSION 3.10)
-project(atlas VERSION 3.0.0 LANGUAGES CXX)
+project(atlas VERSION 3.0.0 LANGUAGES CXX C)
 
 if (APPLE)
     message(ERROR "Support for Apple has been deprecated")
@@ -80,6 +80,16 @@ target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
 add_library(atlas::math ALIAS atlas-math)
+
+#================================
+# GL module.
+#================================
+add_library(atlas-gl ${ATLAS_INCLUDE_GL_GROUP} ${ATLAS_SOURCE_GL_GROUP})
+target_include_directories(atlas-gl PUBLIC "${ATLAS_INCLUDE_ROOT}/atlas/gl")
+target_link_libraries(atlas-gl PRIVATE OpenGL::GL)
+target_compile_features(atlas-gl PUBLIC cxx_std_17)
+target_compile_options(atlas-gl PUBLIC "${ATLAS_COMPILER_FLAGS}")
+add_library(atlas::gl ALIAS atlas-gl)
 
 #================================
 # GLEX module.
