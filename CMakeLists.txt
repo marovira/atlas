@@ -48,7 +48,6 @@ include("${ATLAS_SOURCE_DIR}/config/SourceGroups.cmake")
 find_package(fmt REQUIRED)
 find_package(glm REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(gl3w REQUIRED)
 find_package(glfw3 REQUIRED)
 
 #================================
@@ -85,10 +84,13 @@ add_library(atlas::math ALIAS atlas-math)
 # GL module.
 #================================
 add_library(atlas-gl ${ATLAS_INCLUDE_GL_GROUP} ${ATLAS_SOURCE_GL_GROUP})
-target_include_directories(atlas-gl PUBLIC "${ATLAS_INCLUDE_ROOT}/atlas/gl")
-target_link_libraries(atlas-gl PRIVATE OpenGL::GL)
+target_include_directories(atlas-gl PUBLIC "${ATLAS_INCLUDE_ROOT}/gl")
+target_link_libraries(atlas-gl PUBLIC OpenGL::GL)
 target_compile_features(atlas-gl PUBLIC cxx_std_17)
 target_compile_options(atlas-gl PUBLIC "${ATLAS_COMPILER_FLAGS}")
+if (MSVC)
+    target_compile_options(atlas-gl PRIVATE -wd4152)
+endif()
 add_library(atlas::gl ALIAS atlas-gl)
 
 #================================
@@ -96,7 +98,7 @@ add_library(atlas::gl ALIAS atlas-gl)
 #================================
 add_library(atlas-glx INTERFACE)
 target_include_directories(atlas-glx INTERFACE "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-glx INTERFACE OpenGL::GL gl3w glfw)
+target_link_libraries(atlas-glx INTERFACE atlas-gl)
 target_compile_features(atlas-glx INTERFACE cxx_std_17)
 target_compile_options(atlas-glx INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-glx INTERFACE "${ATLAS_DEBUG_FLAGS}")
@@ -113,7 +115,8 @@ if (ATLAS_BUILD_TESTS)
     target_link_libraries(atlas-test 
         atlas-core 
         atlas-math 
-        atlas-glx 
+        atlas-gl
+        glfw
         Catch2::Catch2)
 
     include(CTest)
