@@ -12,14 +12,14 @@ namespace atlas::glx
     {
         ShaderFile() = default;
 
-        std::string filePath;
-        std::string fileContents;
+        std::string             filePath;
+        std::string             fileContents;
         std::vector<ShaderFile> includedFiles;
-        std::uint16_t hash;
+        std::uint16_t           hash;
     };
 
-    ShaderFile loadFile(std::string const& filename);
+    ShaderFile  loadFile(std::string const& filename);
     std::string assembleShader(ShaderFile const& shader);
-    GLuint compileShader(std::string const& shaderFile);
+    GLuint      compileShader(std::string const& shaderFile);
 
 } // namespace atlas::glx
