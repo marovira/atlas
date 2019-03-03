@@ -7,18 +7,18 @@
 #include <atlas/core/Platform.hpp>
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
-#pragma warning(push)
-#pragma warning(disable: 4201)
+#    pragma warning(push)
+#    pragma warning(disable : 4201)
 #endif
 
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/projection.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/matrix_inverse.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace atlas::math
 {
@@ -47,8 +47,8 @@ namespace atlas::math
     using Matrix4 = glm::mat4;
 
     using Quaternion = glm::quat;
-}
+} // namespace atlas::math
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
