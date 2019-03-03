@@ -35,6 +35,7 @@ AlignConsecutiveDeclarations: true
 AlignEscapedNewlines: true
 AlignOperands: true
 AllowShortFunctionsOnASingleLine: Empty
+AlwaysBreakTemplateDeclarations: Yes
 
 # Brace Settings
 BreakBeforeBraces: Allman
