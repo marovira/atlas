@@ -85,7 +85,7 @@ add_library(atlas::math ALIAS atlas-math)
 #================================
 add_library(atlas-gl ${ATLAS_INCLUDE_GL_GROUP} ${ATLAS_SOURCE_GL_GROUP})
 target_include_directories(atlas-gl PUBLIC "${ATLAS_INCLUDE_ROOT}/gl")
-target_link_libraries(atlas-gl PUBLIC OpenGL::GL)
+target_link_libraries(atlas-gl PUBLIC OpenGL::GL glfw)
 target_compile_features(atlas-gl PUBLIC cxx_std_17)
 target_compile_options(atlas-gl PUBLIC "${ATLAS_COMPILER_FLAGS}")
 if (MSVC)
@@ -96,12 +96,12 @@ add_library(atlas::gl ALIAS atlas-gl)
 #================================
 # GLEX module.
 #================================
-add_library(atlas-glx INTERFACE)
-target_include_directories(atlas-glx INTERFACE "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-glx INTERFACE atlas-gl)
-target_compile_features(atlas-glx INTERFACE cxx_std_17)
-target_compile_options(atlas-glx INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-glx INTERFACE "${ATLAS_DEBUG_FLAGS}")
+add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
+target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-glx PRIVATE atlas-gl)
+target_compile_features(atlas-glx PUBLIC cxx_std_17)
+target_compile_options(atlas-glx PUBLIC "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-glx PUBLIC "${ATLAS_DEBUG_FLAGS}")
 add_library(atlas::glx ALIAS atlas-glx)
 
 #================================
