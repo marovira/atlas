@@ -5,16 +5,16 @@
 enum class Test : int
 {
     A = 0,
-    B, 
+    B,
     C
 };
 
 TEST_CASE("Checking enum class conversion", "[core]")
 {
     using atlas::core::enumToUnderlyingType;
-    Test a{ Test::A };
-    Test b{ Test::B };
-    Test c{ Test::C };
+    Test a{Test::A};
+    Test b{Test::B};
+    Test c{Test::C};
 
     auto var = enumToUnderlyingType(a);
     REQUIRE(var == 0);
@@ -24,5 +24,4 @@ TEST_CASE("Checking enum class conversion", "[core]")
 
     var = enumToUnderlyingType(c);
     REQUIRE(var == 2);
-
 }

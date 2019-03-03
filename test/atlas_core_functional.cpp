@@ -4,7 +4,7 @@
 
 #include <vector>
 
-template <typename T>
+template<typename T>
 inline bool vectorEqual(std::vector<T> const& v1, std::vector<T> const& v2)
 {
     if (v1.size() != v2.size())
@@ -27,10 +27,11 @@ TEST_CASE("Checking iota", "[core]")
 {
     using atlas::core::iota;
 
-    std::vector<int> v1(10);
+    std::vector<int>   v1(10);
     std::vector<float> v2(10);
-    std::vector<int> c1{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    std::vector<float> c2{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f };
+    std::vector<int>   c1{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<float> c2{1.0f, 2.0f, 3.0f, 4.0f, 5.0f,
+                          6.0f, 7.0f, 8.0f, 9.0f, 10.0f};
 
     iota(v1.begin(), v1.end(), 1, 1);
     iota(v2.begin(), v2.end(), 1.0f, 1.0f);
