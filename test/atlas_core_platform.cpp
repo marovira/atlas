@@ -4,7 +4,7 @@
 
 #include <string>
 
-template <atlas::core::Platform P>
+template<atlas::core::Platform P>
 constexpr std::string getPlatformName()
 {
     if constexpr (P == atlas::core::Platform::Windows)
@@ -17,7 +17,7 @@ constexpr std::string getPlatformName()
     }
 }
 
-template <atlas::core::BuildType B>
+template<atlas::core::BuildType B>
 constexpr std::string getBuildType()
 {
     if constexpr (B == atlas::core::BuildType::Debug)

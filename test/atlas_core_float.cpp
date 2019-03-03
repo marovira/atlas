@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-template <typename T>
+template<typename T>
 inline constexpr T epsilon()
 {
     return static_cast<T>(0.00001);

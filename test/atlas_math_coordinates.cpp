@@ -1,17 +1,16 @@
-#include <atlas/math/Coordinates.hpp>
 #include <atlas/core/Float.hpp>
+#include <atlas/math/Coordinates.hpp>
 
 #include <catch2/catch.hpp>
 
 using atlas::core::areEqual;
 
-
 TEST_CASE("Checking Spherical Functions", "[math]")
 {
     using namespace atlas::math;
 
-    Point p1{ 1, 0, 0 };
-    Point p2{ 1, 1, 0 };
+    Point p1{1, 0, 0};
+    Point p2{1, 1, 0};
 
     auto s1 = cartesianToSpherical(p1);
     auto s2 = cartesianToSpherical(p2);
@@ -40,8 +39,8 @@ TEST_CASE("Checking Cylindrical Functions", "[math]")
 {
     using namespace atlas::math;
 
-    Point p1{ 1, 0, 0 };
-    Point p2{ 1, 1, 0 };
+    Point p1{1, 0, 0};
+    Point p2{1, 1, 0};
 
     auto x1 = cartesianToCylindrical(p1);
     auto x2 = cartesianToCylindrical(p2);
@@ -70,8 +69,8 @@ TEST_CASE("Checking Polar Functions", "[math]")
 {
     using namespace atlas::math;
 
-    Point2 p1{ 1, 0 };
-    Point2 p2{ 1, 1 };
+    Point2 p1{1, 0};
+    Point2 p2{1, 1};
 
     auto x1 = cartesianToPolar(p1);
     auto x2 = cartesianToPolar(p2);
