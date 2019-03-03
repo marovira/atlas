@@ -4,12 +4,11 @@
 
 namespace atlas::core
 {
-    template <typename T,
-    typename = std::enable_if<std::is_enum<T>::value>>
+    template<typename T, typename = std::enable_if<std::is_enum<T>::value>>
     constexpr typename std::underlying_type<T>::type
-        enumToUnderlyingType(T value)
+    enumToUnderlyingType(T value)
     {
         using underType = typename std::underlying_type<T>::type;
         return static_cast<underType>(value);
     }
-}
+} // namespace atlas::core
