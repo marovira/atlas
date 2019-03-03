@@ -1,0 +1,16 @@
+# Atlas coding standards.
+BasedOnStyle: LLVM
+Standard: Cpp11
+
+# Indentation and column settings
+IndentWidth: 4
+ColumnLimit: 80
+AccessModifierOffset: -4
+NamespaceIndentation: All
+
+# Brace Settings
+BreakBeforeBraces: Allman
+
+# Pointers
+DerivePointerAlignment: true
+PointerAlignment: Left
