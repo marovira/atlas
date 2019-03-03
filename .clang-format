@@ -1,16 +1,45 @@
 # Atlas coding standards.
 BasedOnStyle: LLVM
 Standard: Cpp11
+Language: Cpp
 
 # Indentation and column settings
 IndentWidth: 4
 ColumnLimit: 80
 AccessModifierOffset: -4
 NamespaceIndentation: All
+IndentCaseLabels: false
+IndentPPDirectives: AfterHash
+IndentWrappedFunctionNames: false
+
+# General Settings
+DerivePointerAlignment: true
+PointerAlignment: Left
+Cpp11BracedListStyle: true
+IncludeBlocks: Preserve
+SortIncludes: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+ReflowComments: true
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpacesInAngles: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlines: true
+AlignOperands: true
+AllowShortFunctionsOnASingleLine: None
 
 # Brace Settings
 BreakBeforeBraces: Allman
 
-# Pointers
-DerivePointerAlignment: true
-PointerAlignment: Left
+# Constructor Settings
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+SpaceBeforeCtorInitializerColon: true
