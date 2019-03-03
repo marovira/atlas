@@ -16,6 +16,5 @@ namespace atlas::glx
         {
             // Possibly throw?
         }
-
     }
 } // namespace atlas::glx
