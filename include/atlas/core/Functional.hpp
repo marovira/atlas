@@ -2,7 +2,7 @@
 
 namespace atlas::core
 {
-    template <typename ForwardIt, typename T>
+    template<typename ForwardIt, typename T>
     void iota(ForwardIt first, ForwardIt last, T value, T step)
     {
         while (first != last)
@@ -11,4 +11,4 @@ namespace atlas::core
             value += step;
         }
     }
-}
+} // namespace atlas::core

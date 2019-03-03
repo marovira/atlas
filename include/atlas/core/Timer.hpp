@@ -4,7 +4,7 @@
 
 namespace atlas::core
 {
-    template <typename T, typename Res = std::chrono::high_resolution_clock>
+    template<typename T, typename Res = std::chrono::high_resolution_clock>
     class Timer
     {
     public:
@@ -22,12 +22,12 @@ namespace atlas::core
 
         T elapsed() const
         {
-            return std::chrono::duration_cast<Second>(
-                Res::now() - mBegin).count();
+            return std::chrono::duration_cast<Second>(Res::now() - mBegin)
+                .count();
         }
 
     private:
         using Second = std::chrono::duration<T>;
         std::chrono::time_point<Res> mBegin;
     };
-}
+} // namespace atlas::core
