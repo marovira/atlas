@@ -5,7 +5,7 @@
  *	This header provides forward declarations for all memebers of this module.
  */
 
-#ifndef ATLAS_INCLDUE_ATLAS_TOOLS_TOOLS_HPP
+#ifndef ATLAS_INCLUDE_ATLAS_TOOLS_TOOLS_HPP
 #define ATLAS_INCLUDE_ATLAS_TOOLS_TOOLS_HPP
 
 #pragma once
