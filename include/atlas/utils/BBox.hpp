@@ -26,10 +26,10 @@ namespace atlas
                 float& hit1);
             bool intersect(atlas::math::Ray const& ray);
 
-            friend BBox join(BBox const& b1, BBox const& b2);
-
             atlas::math::Point pMin, pMax;
         };
+        
+        BBox join(BBox const& b1, BBox const& b2);
     }
 }
 
