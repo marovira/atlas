@@ -6,12 +6,10 @@ configure_file("${ATLAS_INCLUDE_ROOT}/Atlas.hpp.in" ${ATLAS_INCLUDE_ROOT_LIST})
 # Add the lower include directories
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/core")
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/math")
-add_subdirectory("${ATLAS_INCLUDE_ROOT}/gl")
 add_subdirectory("${ATLAS_INCLUDE_ROOT}/glx")
 
 # Now wrap each variable for the source group settings.
 set(ATLAS_INCLUDE_ROOT_GROUP ${ATLAS_INCLUDE_ROOT_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_CORE_GROUP ${ATLAS_INCLUDE_CORE_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_MATH_GROUP ${ATLAS_INCLUDE_MATH_LIST} PARENT_SCOPE)
-set(ATLAS_INCLUDE_GL_GROUP ${ATLAS_INCLUDE_GL_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_GLX_GROUP ${ATLAS_INCLUDE_GLX_LIST} PARENT_SCOPE)

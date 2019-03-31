@@ -1,3 +1,0 @@
-set(ATLAS_SOURCE_GL_LIST
-    "${ATLAS_SOURCE_ROOT}/gl/gl3w.c"
-    PARENT_SCOPE)
