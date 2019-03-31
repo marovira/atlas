@@ -49,6 +49,7 @@ find_package(fmt REQUIRED)
 find_package(glm REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(gl3w REQUIRED)
 
 #================================
 # Set compiler flags.
@@ -81,24 +82,11 @@ target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
 add_library(atlas::math ALIAS atlas-math)
 
 #================================
-# GL module.
-#================================
-add_library(atlas-gl ${ATLAS_INCLUDE_GL_GROUP} ${ATLAS_SOURCE_GL_GROUP})
-target_include_directories(atlas-gl PUBLIC "${ATLAS_INCLUDE_ROOT}/gl")
-target_link_libraries(atlas-gl PUBLIC OpenGL::GL glfw)
-target_compile_features(atlas-gl PUBLIC cxx_std_17)
-target_compile_options(atlas-gl PUBLIC "${ATLAS_COMPILER_FLAGS}")
-if (MSVC)
-    target_compile_options(atlas-gl PRIVATE -wd4152)
-endif()
-add_library(atlas::gl ALIAS atlas-gl)
-
-#================================
 # GLEX module.
 #================================
 add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
 target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-glx PRIVATE atlas-gl)
+target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w)
 target_compile_features(atlas-glx PUBLIC cxx_std_17)
 target_compile_options(atlas-glx PUBLIC "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-glx PUBLIC "${ATLAS_DEBUG_FLAGS}")
@@ -115,7 +103,7 @@ if (ATLAS_BUILD_TESTS)
     target_link_libraries(atlas-test 
         atlas-core 
         atlas-math 
-        atlas-gl
+        atlas-glx
         glfw
         Catch2::Catch2)
 
