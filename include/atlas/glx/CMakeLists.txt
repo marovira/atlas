@@ -1,4 +1,3 @@
 set(ATLAS_INCLUDE_GLX_LIST
-    "${ATLAS_INCLUDE_ROOT}/glx/GL.hpp"
     "${ATLAS_INCLUDE_ROOT}/glx/GLSL.hpp"
     PARENT_SCOPE)
