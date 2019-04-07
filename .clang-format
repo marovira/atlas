@@ -1,5 +1,4 @@
 # Atlas coding standards.
-BasedOnStyle: LLVM
 Standard: Cpp11
 Language: Cpp
 
@@ -9,7 +8,7 @@ ColumnLimit: 80
 AccessModifierOffset: -4
 NamespaceIndentation: All
 IndentCaseLabels: false
-IndentPPDirectives: AfterHash
+IndentPPDirectives: None
 IndentWrappedFunctionNames: false
 
 # General Settings
@@ -31,14 +30,26 @@ SpacesInParentheses: false
 SpacesInSquareBrackets: false
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
 AlignEscapedNewlines: true
 AlignOperands: true
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: false
 AlwaysBreakTemplateDeclarations: Yes
 
 # Brace Settings
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: true
+    AfterControlStatement: true
+    AfterEnum: true
+    AfterFunction: true
+    AfterNamespace: true
+    AfterStruct: true
+    AfterUnion: true
+    BeforeCatch: true
+    BeforeElse: true
+    SplitEmptyFunction: false
+    SplitEmptyRecord: false
+    SplitEmptyNamespace: false
 
 # Constructor Settings
 BreakConstructorInitializers: AfterColon
