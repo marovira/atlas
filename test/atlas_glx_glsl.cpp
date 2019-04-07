@@ -1,3 +1,5 @@
+#include "TestDataPaths.hpp"
+
 #include <GL/gl3w.h>
 #include <atlas/glx/GLSL.hpp>
 
@@ -5,6 +7,19 @@
 #include <catch2/catch.hpp>
 
 #include <functional>
+
+bool operator==(atlas::glx::FileData const& lhs,
+                atlas::glx::FileData const& rhs)
+{
+    return lhs.filename == rhs.filename && lhs.parent == rhs.parent &&
+           lhs.fileKey == rhs.fileKey && lhs.lastWrite == rhs.lastWrite;
+}
+
+bool operator!=(atlas::glx::FileData const& lhs,
+                atlas::glx::FileData const& rhs)
+{
+    return !(lhs == rhs);
+}
 
 std::size_t stringHash(std::string const& str)
 {
@@ -20,7 +35,7 @@ std::time_t getFileTimestamp(std::string const& filename)
     return decltype(ftime)::clock::to_time_t(ftime);
 }
 
-TEST_CASE("loadShaderFile: Empty file", "[glx]")
+TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 {
     using namespace atlas::glx;
     try
@@ -34,22 +49,32 @@ TEST_CASE("loadShaderFile: Empty file", "[glx]")
     }
 }
 
-TEST_CASE("loadShaderFile: Single line file", "[glx]")
+TEST_CASE("loadShaderFile: Empty file", "[glx]")
 {
     using namespace atlas::glx;
 
-    std::string const expectedSource = "#version 450 core";
-    std::string const testName       = "single_line.vs.glsl";
+    std::string filename{TestData[glx_empty_file]};
+    auto        result = loadShaderFile(filename);
+    REQUIRE(result.sourceString.empty() == true);
+    REQUIRE(result.includedFiles.size() == 1);
 
-    auto shaderFile = loadShaderFile("single_line.vs.glsl");
+    auto     includedFile = result.includedFiles.front();
+    FileData expectedFile{filename, -1, stringHash(filename),
+                          getFileTimestamp(filename)};
+    REQUIRE((includedFile == expectedFile) == true);
+}
 
-    REQUIRE(shaderFile.sourceString == expectedSource);
-    // REQUIRE(shaderFile.includedFiles.size() == 1);
+TEST_CASE("loadShaderFile: Single line", "[glx]")
+{
+    using namespace atlas::glx;
 
-    // auto includedFile = shaderFile.includedFiles[0];
+    std::string filename{TestData[glx_single_line]};
+    auto        result = loadShaderFile(filename);
+    REQUIRE(result.sourceString.empty() == false);
+    REQUIRE(result.includedFiles.size() == 1);
 
-    // REQUIRE(includedFile.filename == testName);
-    // REQUIRE(includedFile.parent == -1);
-    // REQUIRE(includedFile.fileKey == stringHash(testName));
-    // REQUIRE(includedFile.lastWrite == getFileTimestamp(testName));
+    auto     includedFile = result.includedFiles.front();
+    FileData expectedFile{filename, -1, stringHash(filename),
+                          getFileTimestamp(filename)};
+    REQUIRE((includedFile == expectedFile) == true);
 }
