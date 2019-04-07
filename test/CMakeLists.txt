@@ -57,5 +57,6 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_math_coordinates.cpp"
     "${ATLAS_TEST_ROOT}/atlas_math_ray.cpp"
     "${ATLAS_TEST_ROOT}/atlas_glx_gl.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_glx_glsl.cpp"
     ${ATLAS_TEST_HEADER}
     PARENT_SCOPE)
