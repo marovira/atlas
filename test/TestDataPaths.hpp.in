@@ -1,9 +1,8 @@
 #pragma once
 
 #include <array>
-#include <string_view>
 
-static constexpr std::array<std::string_view, @ATLAS_NUM_DATA_FILES@> TestData
+static constexpr std::array<char const*, @ATLAS_NUM_DATA_FILES@> TestData
 {
 @ATLAS_TEST_DATA_FILES@
 };
