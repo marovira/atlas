@@ -1,11 +1,11 @@
 #include "atlas/glx/GLSL.hpp"
 
 #if defined(max)
-#    undef max
+#undef max
 #endif
 
 #if defined(min)
-#    undef min
+#undef min
 #endif
 
 #include <fmt/printf.h>
@@ -27,15 +27,15 @@ namespace atlas::glx
     std::time_t getFileLastWrite(std::string const& filename)
     {
         fs::path filePath{filename};
-        auto     ftime = fs::last_write_time(filePath);
+        auto ftime = fs::last_write_time(filePath);
         return decltype(ftime)::clock::to_time_t(ftime);
     }
 
     ShaderFile loadShaderFile(std::string const& filename)
     {
-        ShaderFile             returnFile;
+        ShaderFile returnFile;
         std::hash<std::string> stringHash;
-        FileData               data{filename, -1, stringHash(filename), {}};
+        FileData data{filename, -1, stringHash(filename), {}};
         returnFile.sourceString = readShaderSource(data, returnFile);
         return returnFile;
     }
@@ -43,7 +43,7 @@ namespace atlas::glx
     std::string readShaderSource(FileData const& data, ShaderFile& shaderFile)
     {
         // Open the file to see if it exists.
-        std::ifstream     inStream{data.filename};
+        std::ifstream inStream{data.filename};
         std::stringstream outString;
 
         if (!inStream)
@@ -86,7 +86,7 @@ namespace atlas::glx
                 std::string path = line.substr(includeStr.size() + 1, pathSize);
 
                 // Add the file to the list of includes.
-                auto                   timestamp = getFileLastWrite(path);
+                auto timestamp = getFileLastWrite(path);
                 std::hash<std::string> stringHash;
                 shaderFile.includedFiles.emplace_back(
                     path, fileNum, stringHash(path), timestamp);
