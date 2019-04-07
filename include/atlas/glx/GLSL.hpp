@@ -1,25 +1,37 @@
 #pragma once
 
-#include "GL.hpp"
+#include <GL/gl3w.h>
 
 #include <cstdint>
+#include <experimental/filesystem>
 #include <string>
 #include <vector>
 
 namespace atlas::glx
 {
-    struct ShaderFile
+    struct FileData
     {
-        ShaderFile() = default;
+        FileData(std::string const& name, int p, std::size_t key,
+                 std::time_t time) :
+            filename{name},
+            parent{p},
+            fileKey{key},
+            lastWrite{time}
+        {
+        }
 
-        std::string             filePath;
-        std::string             fileContents;
-        std::vector<ShaderFile> includedFiles;
-        std::uint16_t           hash;
+        std::string filename;
+        int         parent;
+        std::size_t fileKey;
+        std::time_t lastWrite;
     };
 
-    ShaderFile  loadFile(std::string const& filename);
-    std::string assembleShader(ShaderFile const& shader);
-    GLuint      compileShader(std::string const& shaderFile);
+    struct ShaderFile
+    {
+        std::string           sourceString;
+        std::vector<FileData> includedFiles;
+    };
+
+    ShaderFile loadShaderFile(std::string&& filename);
 
 } // namespace atlas::glx
