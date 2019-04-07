@@ -9,3 +9,4 @@ generated/
 doc/html
 include/atlas/Atlas.hpp
 test/TestDataPaths.hpp
+test/TestExpectedPaths.hpp
