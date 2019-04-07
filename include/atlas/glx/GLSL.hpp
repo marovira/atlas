@@ -32,6 +32,6 @@ namespace atlas::glx
         std::vector<FileData> includedFiles;
     };
 
-    ShaderFile loadShaderFile(std::string&& filename);
+    ShaderFile loadShaderFile(std::string const& filename);
 
 } // namespace atlas::glx

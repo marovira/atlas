@@ -31,7 +31,7 @@ namespace atlas::glx
         return decltype(ftime)::clock::to_time_t(ftime);
     }
 
-    ShaderFile loadShaderFile(std::string&& filename)
+    ShaderFile loadShaderFile(std::string const& filename)
     {
         ShaderFile             returnFile;
         std::hash<std::string> stringHash;
