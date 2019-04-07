@@ -1,22 +1,26 @@
 #include "TestDataPaths.hpp"
+#include "TestExpectedPaths.hpp"
 
 #include <GL/gl3w.h>
 #include <atlas/glx/GLSL.hpp>
 
 #include <GLFW/glfw3.h>
 #include <catch2/catch.hpp>
+#include <fmt/format.h>
 
+#include <fstream>
 #include <functional>
+#include <sstream>
 
-bool operator==(atlas::glx::FileData const& lhs,
-                atlas::glx::FileData const& rhs)
+using namespace atlas::glx;
+
+bool operator==(FileData const& lhs, FileData const& rhs)
 {
     return lhs.filename == rhs.filename && lhs.parent == rhs.parent &&
            lhs.fileKey == rhs.fileKey && lhs.lastWrite == rhs.lastWrite;
 }
 
-bool operator!=(atlas::glx::FileData const& lhs,
-                atlas::glx::FileData const& rhs)
+bool operator!=(FileData const& lhs, FileData const& rhs)
 {
     return !(lhs == rhs);
 }
@@ -35,9 +39,36 @@ std::time_t getFileTimestamp(std::string const& filename)
     return decltype(ftime)::clock::to_time_t(ftime);
 }
 
+std::string loadExpectedString(std::string const& filename, std::size_t hash,
+                               bool substitute)
+{
+    std::ifstream     inStream{filename};
+    std::stringstream outString;
+
+    if (!inStream)
+    {
+        auto message =
+            fmt::format("Could not open expected test file: {}", filename);
+        throw std::runtime_error{message.c_str()};
+    }
+
+    std::string line;
+    while (std::getline(inStream, line))
+    {
+        // Substitute the placeholder hash for the real one.
+        if (line.find("#line") != std::string::npos && substitute)
+        {
+            std::string strHash = std::to_string(hash);
+            auto        pos     = line.find("hash");
+            line.replace(line.begin() + pos, line.end(), strHash);
+        }
+        outString << line + "\n";
+    }
+    return outString.str();
+}
+
 TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 {
-    using namespace atlas::glx;
     try
     {
         auto result = loadShaderFile("foo.glsl");
@@ -51,8 +82,6 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 
 TEST_CASE("loadShaderFile: Empty file", "[glx]")
 {
-    using namespace atlas::glx;
-
     std::string filename{TestData[glx_empty_file]};
     auto        result = loadShaderFile(filename);
     REQUIRE(result.sourceString.empty() == true);
@@ -61,20 +90,24 @@ TEST_CASE("loadShaderFile: Empty file", "[glx]")
     auto     includedFile = result.includedFiles.front();
     FileData expectedFile{filename, -1, stringHash(filename),
                           getFileTimestamp(filename)};
-    REQUIRE((includedFile == expectedFile) == true);
+    REQUIRE(includedFile == expectedFile);
 }
 
 TEST_CASE("loadShaderFile: Single line", "[glx]")
 {
-    using namespace atlas::glx;
-
     std::string filename{TestData[glx_single_line]};
-    auto        result = loadShaderFile(filename);
-    REQUIRE(result.sourceString.empty() == false);
+    std::string expectedFilename{ExpectedFiles[glx_single_line_expected]};
+
+    // Load the expected string.
+    auto expectedString =
+        loadExpectedString(expectedFilename, stringHash(filename), false);
+
+    auto result = loadShaderFile(filename);
+    REQUIRE(result.sourceString == expectedString);
     REQUIRE(result.includedFiles.size() == 1);
 
     auto     includedFile = result.includedFiles.front();
     FileData expectedFile{filename, -1, stringHash(filename),
                           getFileTimestamp(filename)};
-    REQUIRE((includedFile == expectedFile) == true);
+    REQUIRE(includedFile == expectedFile);
 }
