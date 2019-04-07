@@ -18,6 +18,6 @@ TEST_CASE("Checking Ray class", "[math]")
     REQUIRE((r != r1) == true);
 
     Point p{2.0f};
-    auto  val = r1(1.0f);
+    auto val = r1(1.0f);
     REQUIRE((val == p) == true);
 }
