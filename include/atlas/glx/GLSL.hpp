@@ -17,18 +17,17 @@ namespace atlas::glx
             parent{p},
             fileKey{key},
             lastWrite{time}
-        {
-        }
+        {}
 
         std::string filename;
-        int         parent;
+        int parent;
         std::size_t fileKey;
         std::time_t lastWrite;
     };
 
     struct ShaderFile
     {
-        std::string           sourceString;
+        std::string sourceString;
         std::vector<FileData> includedFiles;
     };
 
