@@ -1,73 +1,61 @@
-# Atlas Framework 2.0
+# Atlas (dev)
+
+> A data-driven graphics development framework.
+
+[![Generic badge](https://img.shields.io/badge/License-MIT-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Language-C++17-red.svg)](https://shields.io/)
 
 ## What is Atlas?
-It is a simple, light-weight graphics framework designed to support all types of
-OpenGL applications. Atlas is designed to be a teaching, prototyping, and
-research framework that allows users to quickly focus on solving graphics 
-problems without having to worry about the details of how to set up things on 
-their own machines.
 
-## Internal Structre
-Atlas is divided into a series of submodules. Below is a brief description of
-each one. For full details, please see the documentation found 
-[here](https://marovira.github.io/atlas/).
+Atlas is the result of my years learning graphics and GPU programming.
+Initially, it started as a loose collection of wrappers for common OpenGL
+operations, but eventually grew to be a full development framework. As it always
+happens, throughout the journey, the internal specification for Atlas has
+changed and evolved to match my current understanding of graphics and GPU
+programming. This leads us to the current version, which abandons all pretenses
+of wrappers in favour of a clean, concise API that should permit development of
+*any* type of application.
 
-* ``core``: is the only independent module of Atlas, and contains a variety of
-  features such as: float comparisons, useful constants, platform identifying
-  macros, exception classes, timing system, header wrappers for external
-  libraries.
-* ``gl``: contains all the wrappers for OpenGL objects. These are: vertex array
-  objects, buffer objects, textures, shaders, and an error callback.
-* ``math``: contains typedefs for typically used types, along with polynomial
-  solvers, coordinate switching functions, and a random number generator.
-* ``utils``: contains a variety of utilities, including the Application class,
-  which the core of any Atlas application, Geometries, amongst others.
+The key features of Atlas are as follows:
+
+* Straight-forward, clear, function-based, data-driven API. In many ways, it
+  takes inspiration from Vulkan's general structure. 
+* Separation into independent modules makes adding them to your project easy.
+  Just pick whichever modules you prefer and off you go.
+* Convenience extensions to OpenGL and GLSL. Chief amongst them is a new file
+  include system for GLSL source files that emulates as closely as possible the
+  C++ inclusion system.
+* Live-library reloading. Allows for a significantly faster and more streamlined
+  workflow that does not waste time re-compiling the entire application every
+  time a change needs to be made.
 
 ## Dependencies
-Atlas is a completely self-contained library that only requires CMake to build.
-Internally, Atlas uses the following libraries:
 
-* GLFW: Used for window and context creation.
-* GL3W: Used to load OpenGL core profile functions.
-* GLM: Used for all math, vector, matrix, and quaternion operations.
-* TinyObj: Used for loading object files.
-* STB Image: used to load image files for textures.
-* ImGUI: Used to create simple GUIs.
+The following are **core** requirements of Atlas:
 
-## Quick Start with Atlas
-The easiest way to use Atlas is by using CMake. In your project's CMakeLists file, add the following lines:
+* OpenGL 4.5+,
+* C++17 compatible compiler (GCC, Clang, and MSVC are supported),
+* CMake 3.10+.
 
-~~~{.CMake}
-add_subdirectory(${ATLAS_DIR})
-...
-include_directories(${ATLAS_INCLUDE_DIRS})
-...
-target_link_libraries(${APP_NAME} ${ATLAS_LIBRARIES})
-~~~
+In addition, Atlas depends on the following libraries:
 
-## Supported Platforms and Compilers
-Atlas currently supports the following platforms:
+* [FMT](https://github.com/fmtlib/fmt),
+* [GLM](https://github.com/g-truc/glm),
+* [GLFW](https://github.com/glfw/glfw),
+* [GL3W](https://github.com/marovira/gl3w),
+* [ImGUI](https://github.com/ocornut/imgui),
+* [STB](https://github.com/nothings/stb).
 
-* Windows (7/8/10)
-* OSX (Yosemite)
-* Linux
+The dependencies per module are as follows:
 
-For compilers, please be aware that Atlas heavily uses C++11 features, as a result
-the following compilers are supported:
+| Module | Dependencies |
+| ------ | ------------ |
+| core | FMT |
+| math | GLM, core |
+| glx | OpenGL, GLFW, gl3w, FMT |
 
-* MSVC 12, 14 (ships with Visual Studio Community 2013 and 2015 respectively)
-* GCC 4.3+
-* LLVM Clang 3.3+
-* Apple Clang 4.0+
-* Intel C++ Composer XE 2013+ (experimental)
+## Contributing
 
-## Contributing to Atlas.
-At this point in time, you can support Atlas in one of two ways:
-
-* Create a ticket in the repo requesting a bug/feature/enhancement.
-* Making a pull request.
-
-If you are planning on making a pull request, please make sure that you take note of the coding standards used throughout Atlas.
-
-## Changelog
-Please see [here](https://github.com/marovira/atlas/wiki/Changelog) for the list of new features/fixes!
+For the time-being, pull requests are not accepted. This is due to the fact that
+Atlas is undergoing a major redesign. I will change this note when a more stable
+state has been attained.
