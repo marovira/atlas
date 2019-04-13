@@ -2,8 +2,8 @@
 
 > A data-driven graphics development framework.
 
-[![Generic badge](https://img.shields.io/badge/License-MIT-blue.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/Language-C++17-red.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Generic badge](https://img.shields.io/badge/Language-C++17-red.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
 
 ## What is Atlas?
 
@@ -36,6 +36,8 @@ The following are **core** requirements of Atlas:
 * OpenGL 4.5+,
 * C++17 compatible compiler (GCC, Clang, and MSVC are supported),
 * CMake 3.10+.
+
+Please note that OSX is **not** supported.
 
 In addition, Atlas depends on the following libraries:
 
