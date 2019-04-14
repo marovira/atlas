@@ -35,7 +35,7 @@ namespace atlas::glx
     {
         ShaderFile returnFile;
         std::hash<std::string> stringHash;
-        FileData data{filename, -1, stringHash(filename), {}};
+        FileData data{filename, -1, createFileKey(stringHash(filename)), {}};
         returnFile.sourceString = readShaderSource(data, returnFile);
         return returnFile;
     }
@@ -89,7 +89,7 @@ namespace atlas::glx
                 auto timestamp = getFileLastWrite(path);
                 std::hash<std::string> stringHash;
                 shaderFile.includedFiles.emplace_back(
-                    path, fileNum, stringHash(path), timestamp);
+                    path, fileNum, createFileKey(stringHash(path)), timestamp);
 
                 // Now recurse on the included file.
                 auto parsedFile = readShaderSource(
