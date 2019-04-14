@@ -10,6 +10,7 @@
 
 #include <fstream>
 #include <functional>
+#include <iostream>
 #include <sstream>
 
 using namespace atlas::glx;
@@ -25,24 +26,24 @@ bool operator!=(FileData const& lhs, FileData const& rhs)
     return !(lhs == rhs);
 }
 
-std::size_t stringHash(std::string const& str)
+std::uint32_t stringHash(std::string const& str)
 {
     std::hash<std::string> hash;
-    return hash(str);
+    return createFileKey(hash(str));
 }
 
 std::time_t getFileTimestamp(std::string const& filename)
 {
     namespace fs = std::experimental::filesystem;
     fs::path filePath{filename};
-    auto     ftime = fs::last_write_time(filePath);
+    auto ftime = fs::last_write_time(filePath);
     return decltype(ftime)::clock::to_time_t(ftime);
 }
 
-std::string loadExpectedString(std::string const& filename, std::size_t hash,
+std::string loadExpectedString(std::string const& filename, std::uint32_t hash,
                                bool substitute)
 {
-    std::ifstream     inStream{filename};
+    std::ifstream inStream{filename};
     std::stringstream outString;
 
     if (!inStream)
@@ -59,7 +60,7 @@ std::string loadExpectedString(std::string const& filename, std::size_t hash,
         if (line.find("#line") != std::string::npos && substitute)
         {
             std::string strHash = std::to_string(hash);
-            auto        pos     = line.find("hash");
+            auto pos            = line.find("h");
             line.replace(line.begin() + pos, line.end(), strHash);
         }
         outString << line + "\n";
@@ -83,11 +84,11 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 TEST_CASE("loadShaderFile: Empty file", "[glx]")
 {
     std::string filename{TestData[glx_empty_file]};
-    auto        result = loadShaderFile(filename);
+    auto result = loadShaderFile(filename);
     REQUIRE(result.sourceString.empty() == true);
     REQUIRE(result.includedFiles.size() == 1);
 
-    auto     includedFile = result.includedFiles.front();
+    auto includedFile = result.includedFiles.front();
     FileData expectedFile{filename, -1, stringHash(filename),
                           getFileTimestamp(filename)};
     REQUIRE(includedFile == expectedFile);
@@ -106,7 +107,25 @@ TEST_CASE("loadShaderFile: Single line", "[glx]")
     REQUIRE(result.sourceString == expectedString);
     REQUIRE(result.includedFiles.size() == 1);
 
-    auto     includedFile = result.includedFiles.front();
+    auto includedFile = result.includedFiles.front();
+    FileData expectedFile{filename, -1, stringHash(filename),
+                          getFileTimestamp(filename)};
+    REQUIRE(includedFile == expectedFile);
+}
+
+TEST_CASE("loadShaderFile: Simple file", "[glx]")
+{
+    std::string filename{TestData[glx_simple_file]};
+    std::string expectedFilename{ExpectedFiles[glx_simple_file_expected]};
+
+    auto expectedString =
+        loadExpectedString(expectedFilename, stringHash(filename), true);
+
+    auto result = loadShaderFile(filename);
+    REQUIRE(result.sourceString == expectedString);
+    REQUIRE(result.includedFiles.size() == 1);
+
+    auto includedFile = result.includedFiles.front();
     FileData expectedFile{filename, -1, stringHash(filename),
                           getFileTimestamp(filename)};
     REQUIRE(includedFile == expectedFile);
