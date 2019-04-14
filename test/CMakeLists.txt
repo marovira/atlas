@@ -9,6 +9,7 @@ set(ATLAS_TEST_DATA
 set(ATLAS_EXPECTED_DATA_ROOT "${ATLAS_TEST_ROOT}/expected")
 set(ATLAS_EXPECTED_DATA
     "${ATLAS_EXPECTED_DATA_ROOT}/glx_single_line.expected"
+    "${ATLAS_EXPECTED_DATA_ROOT}/glx_simple_file.expected"
     )
 
 # Grab the size of the lists.
@@ -51,7 +52,7 @@ foreach(EXPECTED_FILE ${ATLAS_EXPECTED_DATA})
     if (${i} EQUAL ${n})
         set(NAME_STRING "    \"${EXPECTED_FILE}\"")
     else()
-        set(NAME_STRING "    \"${EXPECTED_FILE}\"")
+        set(NAME_STRING "    \"${EXPECTED_FILE}\",")
     endif()
     list(APPEND EXPECTED_FILES "${NAME_STRING}")
 
@@ -65,6 +66,8 @@ foreach(EXPECTED_FILE ${ATLAS_EXPECTED_DATA})
         set(NAME_STRING "    ${FILE_NAME}_expected,")
     endif()
     list(APPEND EXPECTED_NAMES "${NAME_STRING}")
+
+    MATH(EXPR i "${i}+1")
 endforeach()
 
 # Strip the semi-colons of the lists.
