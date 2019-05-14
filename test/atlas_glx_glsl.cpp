@@ -11,6 +11,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include <sstream>
 
 using namespace atlas::glx;
@@ -59,9 +60,13 @@ std::string loadExpectedString(std::string const& filename, std::uint32_t hash,
         // Substitute the placeholder hash for the real one.
         if (line.find("#line") != std::string::npos && substitute)
         {
+            using std::istream_iterator;
             std::string strHash = std::to_string(hash);
-            auto pos            = line.find("h");
-            line.replace(line.begin() + pos, line.end(), strHash);
+            std::istringstream iss{line};
+            std::vector<std::string> tokens{istream_iterator<std::string>{iss},
+                                            istream_iterator<std::string>{}};
+            tokens[2] = strHash;
+            line      = tokens[0] + " " + tokens[1] + " " + tokens[2];
         }
         outString << line + "\n";
     }
