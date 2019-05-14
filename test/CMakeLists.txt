@@ -4,7 +4,7 @@ set(ATLAS_TEST_DATA
     "${ATLAS_TEST_DATA_ROOT}/glx_empty_file.glsl"
     "${ATLAS_TEST_DATA_ROOT}/glx_simple_file.glsl"
     "${ATLAS_TEST_DATA_ROOT}/glx_single_line.glsl"
-    "${ATLAS_TEST_DATA_ROOT}/glx/single_include.glsl"
+    "${ATLAS_TEST_DATA_ROOT}/glx_single_include.glsl"
     )
 
 set(ATLAS_EXPECTED_DATA_ROOT "${ATLAS_TEST_ROOT}/expected")
