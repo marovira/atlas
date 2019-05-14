@@ -136,3 +136,9 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
                           getFileTimestamp(filename)};
     REQUIRE(includedFile == expectedFile);
 }
+
+TEST_CASE("loadShaderFile: Single include", "[glx]")
+{
+    std::string filename{TestData[glx_single_include]};
+    std::string expectedFilename{ExpectedFiles[glx_single_include_expected]};
+}
