@@ -41,7 +41,8 @@ std::time_t getFileTimestamp(std::string const& filename)
     return decltype(ftime)::clock::to_time_t(ftime);
 }
 
-std::string loadExpectedString(std::string const& filename, std::uint32_t hash,
+std::string loadExpectedString(std::string const& filename,
+                               std::vector<std::uint32_t> const& hashes,
                                bool substitute)
 {
     std::ifstream inStream{filename};
@@ -61,11 +62,11 @@ std::string loadExpectedString(std::string const& filename, std::uint32_t hash,
         if (line.find("#line") != std::string::npos && substitute)
         {
             using std::istream_iterator;
-            std::string strHash = std::to_string(hash);
             std::istringstream iss{line};
             std::vector<std::string> tokens{istream_iterator<std::string>{iss},
                                             istream_iterator<std::string>{}};
-            tokens[2] = strHash;
+            int idx   = std::stoi(tokens[2]);
+            tokens[2] = std::to_string(hashes[idx]);
             line      = tokens[0] + " " + tokens[1] + " " + tokens[2];
         }
         outString << line + "\n";
@@ -106,7 +107,7 @@ TEST_CASE("loadShaderFile: Single line", "[glx]")
 
     // Load the expected string.
     auto expectedString =
-        loadExpectedString(expectedFilename, stringHash(filename), false);
+        loadExpectedString(expectedFilename, {stringHash(filename)}, false);
 
     auto result = loadShaderFile(filename);
     REQUIRE(result.sourceString == expectedString);
@@ -124,7 +125,7 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
     std::string expectedFilename{ExpectedFiles[glx_simple_file_expected]};
 
     auto expectedString =
-        loadExpectedString(expectedFilename, stringHash(filename), true);
+        loadExpectedString(expectedFilename, {stringHash(filename)}, true);
 
     auto result = loadShaderFile(filename);
     REQUIRE(result.sourceString == expectedString);
