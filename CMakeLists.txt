@@ -86,7 +86,7 @@ add_library(atlas::math ALIAS atlas-math)
 #================================
 add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
 target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w fmt::fmt)
+target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w atlas-core)
 target_compile_features(atlas-glx PUBLIC cxx_std_17)
 target_compile_options(atlas-glx PUBLIC "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-glx PUBLIC "${ATLAS_DEBUG_FLAGS}")
