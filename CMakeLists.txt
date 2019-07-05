@@ -90,6 +90,9 @@ target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w fmt::fmt)
 target_compile_features(atlas-glx PUBLIC cxx_std_17)
 target_compile_options(atlas-glx PUBLIC "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-glx PUBLIC "${ATLAS_DEBUG_FLAGS}")
+if (MSVC)
+    target_compile_definitions(atlas-glx PUBLIC -DNOMINMAX)
+endif()
 add_library(atlas::glx ALIAS atlas-glx)
 
 #================================

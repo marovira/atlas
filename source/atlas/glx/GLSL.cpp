@@ -1,13 +1,5 @@
 #include "atlas/glx/GLSL.hpp"
 
-#if defined(max)
-#undef max
-#endif
-
-#if defined(min)
-#undef min
-#endif
-
 #include <fmt/printf.h>
 
 #include <filesystem>
