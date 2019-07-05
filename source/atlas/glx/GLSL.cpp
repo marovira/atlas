@@ -1,6 +1,7 @@
 #include "atlas/glx/GLSL.hpp"
 
-#include <fmt/printf.h>
+#include <atlas/core/FMT.hpp>
+#include <atlas/core/Platform.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -10,14 +11,14 @@
 #include <set>
 #include <sstream>
 
+#if defined(ATLAS_PLATFORM_WINDOWS)
 namespace fs = std::experimental::filesystem;
+#else
+namespace fs = std::filesystem;
+#endif
 
 namespace atlas::glx
 {
-    std::string
-    readShaderSource(FileData const& data, ShaderFile& shaderFile,
-                     std::vector<std::string> const& includeDirectories);
-
     std::time_t getFileLastWrite(std::string const& filename)
     {
         fs::path filePath{filename};
@@ -25,47 +26,46 @@ namespace atlas::glx
         return decltype(ftime)::clock::to_time_t(ftime);
     }
 
+    std::string
+    recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
+                         std::vector<std::string> const& includeDirectories);
+
     ShaderFile
-    loadShaderFile(std::string const& filename,
-                   std::vector<std::string> const& includeDirectories)
+    readShaderSource(std::string const& filename,
+                     std::vector<std::string> const& includeDirectories)
     {
-        ShaderFile returnFile;
-        std::hash<std::string> stringHash;
-        FileData data{filename, -1, createFileKey(stringHash(filename)), {}};
-        returnFile.sourceString =
-            readShaderSource(data, returnFile, includeDirectories);
-        return returnFile;
+        ShaderFile file;
+        file.sourceString =
+            recurseOnShaderFiles(filename, file, includeDirectories);
+        return file;
     }
 
     std::string
-    readShaderSource(FileData const& data, ShaderFile& shaderFile,
-                     std::vector<std::string> const& includeDirectories)
+    recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
+                         std::vector<std::string> const& includeDirectories)
     {
-        // Open the file to see if it exists.
-        std::ifstream inStream{data.filename};
+        std::ifstream inFile{filename};
         std::stringstream outString;
 
-        if (!inStream)
+        if (!inFile)
         {
-            auto message =
-                fmt::format("Could not open file: {}", data.filename);
+            auto message = fmt::format("Could not open file: {}.", filename);
             throw std::runtime_error{message.c_str()};
         }
 
-        // Check to see if this is the first time that we are adding something.
-        // If it is, then we add the root file to create the hierarchy.
-        if (shaderFile.includedFiles.empty())
+        // Check to see if this is the first time we are adding something. If it
+        // is, then we add the root file to help us build a hierarchy of
+        // includes.
+        if (file.includedFiles.empty())
         {
-            auto timestamp = getFileLastWrite(data.filename);
-            shaderFile.includedFiles.emplace_back(data.filename, -1,
-                                                  data.fileKey, timestamp);
+            auto timestamp = getFileLastWrite(filename);
+            file.includedFiles.emplace_back(filename, -1, timestamp);
         }
 
-        int fileNum = static_cast<int>(shaderFile.includedFiles.size() - 1);
-        std::size_t lineNum = 1;
+        int fileNum = static_cast<int>(file.includedFiles.size()) - 1;
+        int lineNum = 1;
         std::string line;
-
-        while (std::getline(inStream, line))
+        while (std::getline(inFile, line))
         {
             // Check to see if the line is a #version. If it is, then we must
             // skip it while increasing the line counter.
@@ -76,31 +76,80 @@ namespace atlas::glx
                 continue;
             }
 
-            // Check to see if the line is an include.
+            // Check to see if the line is an #include
             if (line.find("#include") != std::string::npos)
             {
                 // We have an include, so extract the path of the included file.
-                std::string const includeStr = "#include ";
+                const std::string includeStr = "#include ";
                 std::size_t pathSize = line.size() - includeStr.size() - 2;
                 std::string path = line.substr(includeStr.size() + 1, pathSize);
 
-                // Add the file to the list of includes.
-                auto timestamp = getFileLastWrite(path);
-                std::hash<std::string> stringHash;
-                shaderFile.includedFiles.emplace_back(
-                    path, fileNum, createFileKey(stringHash(path)), timestamp);
+                // Compute the absolute path.
+                std::string absolutePath;
+                if (includeDirectories.empty())
+                {
+                    // If we are not given an include directory, grab the
+                    // directory of the current file.
+                    fs::path p{filename};
+                    auto baseDir = p.parent_path();
+                    baseDir /= path;
+                    absolutePath = baseDir.string();
+                }
+                else
+                {
+                    // We loop through all the include directories, testing
+                    // to see if the file is valid.
+                    for (auto& includeDir : includeDirectories)
+                    {
+                        auto tmpPath = includeDir + path;
+                        if (fs::exists(tmpPath))
+                        {
+                            absolutePath = tmpPath;
+                            break;
+                        }
+                    }
 
-                // Now recurse on the included file.
-                auto parsedFile = readShaderSource(
-                    shaderFile.includedFiles.back(), shaderFile);
+                    // If the path is still empty, we found nothing, so throw
+                    // an error.
+                    if (absolutePath.empty())
+                    {
+                        auto message = fmt::format(
+                            "In file {}({}): Cannot open include file: \'{}\': "
+                            "No such file or directory",
+                            filename, lineNum + 1, path);
+                        throw std::runtime_error{message};
+                    }
+                }
+
+                auto timestamp = getFileLastWrite(absolutePath);
+                FileData f{absolutePath, fileNum, timestamp};
+
+                // Check if we have seen this file before to prevent circular
+                // includes.
+
+                auto res = std::find_if(file.includedFiles.begin(),
+                                        file.includedFiles.end(),
+                                        [f](FileData const& other) -> bool {
+                                            return f.filename == other.filename;
+                                        });
+                if (res != file.includedFiles.end())
+                {
+                    // We have seen this file before, so do nothing.
+                    continue;
+                }
+
+                file.includedFiles.emplace_back(absolutePath, fileNum,
+                                                timestamp);
+                auto parsedFile = recurseOnShaderFiles(absolutePath, file,
+                                                       includeDirectories);
 
                 outString << parsedFile;
                 continue;
             }
 
             // Create the #line directive.
-            std::string lineInfo = "#line " + std::to_string(lineNum) + " " +
-                                   std::to_string(data.fileKey) + "\n";
+            std::string lineInfo =
+                fmt::format("#line {} {}\n", lineNum, fileNum);
             outString << lineInfo;
             outString << line + "\n";
             ++lineNum;
@@ -108,4 +157,5 @@ namespace atlas::glx
 
         return outString.str();
     }
+
 } // namespace atlas::glx
