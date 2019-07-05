@@ -2,9 +2,11 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 
-#include <fmt/printf.h>
+#include "FMT.hpp"
 
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 
 #include <cstring>

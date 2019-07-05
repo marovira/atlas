@@ -2,11 +2,11 @@
 #include "TestExpectedPaths.hpp"
 
 #include <GL/gl3w.h>
+#include <atlas/core/FMT.hpp>
 #include <atlas/glx/GLSL.hpp>
 
 #include <GLFW/glfw3.h>
 #include <catch2/catch.hpp>
-#include <fmt/format.h>
 
 #include <fstream>
 #include <functional>
