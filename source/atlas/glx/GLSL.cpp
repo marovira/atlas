@@ -35,8 +35,13 @@ namespace atlas::glx
                      std::vector<std::string> const& includeDirectories)
     {
         ShaderFile file;
+
+        // For the sake of uniformity, convert the file paths to the preferred
+        // system style.
+        fs::path p{filename};
+        p = p.make_preferred();
         file.sourceString =
-            recurseOnShaderFiles(filename, file, includeDirectories);
+            recurseOnShaderFiles(p.string(), file, includeDirectories);
         return file;
     }
 
