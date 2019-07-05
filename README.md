@@ -54,7 +54,7 @@ The dependencies per module are as follows:
 | ------ | ------------ |
 | core | FMT |
 | math | GLM, core |
-| glx | OpenGL, GLFW, gl3w, FMT |
+| glx | OpenGL, GLFW, gl3w, core |
 
 ## Contributing
 
