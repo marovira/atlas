@@ -22,7 +22,9 @@ namespace fs = std::experimental::filesystem;
 
 namespace atlas::glx
 {
-    std::string readShaderSource(FileData const& data, ShaderFile& shaderFile);
+    std::string
+    readShaderSource(FileData const& data, ShaderFile& shaderFile,
+                     std::vector<std::string> const& includeDirectories);
 
     std::time_t getFileLastWrite(std::string const& filename)
     {
@@ -31,16 +33,21 @@ namespace atlas::glx
         return decltype(ftime)::clock::to_time_t(ftime);
     }
 
-    ShaderFile loadShaderFile(std::string const& filename)
+    ShaderFile
+    loadShaderFile(std::string const& filename,
+                   std::vector<std::string> const& includeDirectories)
     {
         ShaderFile returnFile;
         std::hash<std::string> stringHash;
         FileData data{filename, -1, createFileKey(stringHash(filename)), {}};
-        returnFile.sourceString = readShaderSource(data, returnFile);
+        returnFile.sourceString =
+            readShaderSource(data, returnFile, includeDirectories);
         return returnFile;
     }
 
-    std::string readShaderSource(FileData const& data, ShaderFile& shaderFile)
+    std::string
+    readShaderSource(FileData const& data, ShaderFile& shaderFile,
+                     std::vector<std::string> const& includeDirectories)
     {
         // Open the file to see if it exists.
         std::ifstream inStream{data.filename};
@@ -81,7 +88,7 @@ namespace atlas::glx
             if (line.find("#include") != std::string::npos)
             {
                 // We have an include, so extract the path of the included file.
-                std::string const includeStr = "#include";
+                std::string const includeStr = "#include ";
                 std::size_t pathSize = line.size() - includeStr.size() - 2;
                 std::string path = line.substr(includeStr.size() + 1, pathSize);
 

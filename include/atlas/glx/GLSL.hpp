@@ -38,6 +38,8 @@ namespace atlas::glx
         return h1 ^ h2;
     }
 
-    ShaderFile loadShaderFile(std::string const& filename);
+    ShaderFile
+    loadShaderFile(std::string const& filename,
+                   std::vector<std::string> const& includeDirectories = {});
 
 } // namespace atlas::glx
