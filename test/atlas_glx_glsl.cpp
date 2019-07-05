@@ -62,6 +62,13 @@ std::string loadExpectedString(std::string const& filename)
     return outString.str();
 }
 
+std::string normalizePath(std::string const& path)
+{
+    fs::path p{path};
+    p = p.make_preferred();
+    return p.string();
+}
+
 TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 {
     try
@@ -77,8 +84,8 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 
 TEST_CASE("loadShaderFile: Empty file", "[glx]")
 {
-    std::string filename{TestData[glx_empty_file]};
-    auto result = readShaderSource(filename);
+    std::string filename = normalizePath(TestData[glx_empty_file]);
+    auto result          = readShaderSource(filename);
     REQUIRE(result.sourceString.empty() == true);
     REQUIRE(result.includedFiles.size() == 1);
 
@@ -89,7 +96,7 @@ TEST_CASE("loadShaderFile: Empty file", "[glx]")
 
 TEST_CASE("loadShaderFile: Single line", "[glx]")
 {
-    std::string filename{TestData[glx_single_line]};
+    std::string filename = normalizePath(TestData[glx_single_line]);
     std::string expectedFilename{ExpectedFiles[glx_single_line_expected]};
 
     // Load the expected string.
@@ -106,7 +113,7 @@ TEST_CASE("loadShaderFile: Single line", "[glx]")
 
 TEST_CASE("loadShaderFile: Simple file", "[glx]")
 {
-    std::string filename{TestData[glx_simple_file]};
+    std::string filename = normalizePath(TestData[glx_simple_file]);
     std::string expectedFilename{ExpectedFiles[glx_simple_file_expected]};
 
     auto expectedString = loadExpectedString(expectedFilename);
@@ -122,7 +129,7 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
 
 TEST_CASE("loadShaderFile: Single include", "[glx]")
 {
-    std::string filename{TestData[glx_single_include]};
+    std::string filename = normalizePath(TestData[glx_single_include]);
     std::string expectedFilename{ExpectedFiles[glx_single_include_expected]};
     auto expectedString = loadExpectedString(expectedFilename);
 
@@ -134,11 +141,8 @@ TEST_CASE("loadShaderFile: Single include", "[glx]")
     FileData expectedFile{filename, -1, getFileTimestamp(filename)};
     REQUIRE(includedFile == expectedFile);
 
-    fs::path p{TestData[uniform_matrices]};
-    p = p.make_preferred();
-
     includedFile           = result.includedFiles[1];
-    expectedFile.filename  = p.string();
+    expectedFile.filename  = normalizePath(TestData[uniform_matrices]);
     expectedFile.parent    = 0;
     expectedFile.lastWrite = getFileTimestamp(TestData[uniform_matrices]);
     REQUIRE(includedFile == expectedFile);
