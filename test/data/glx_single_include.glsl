@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec4 pos;
 
-#include "UniformMatrices.glsl"
+#include "uniform_matrices.glsl"
 
 void main()
 {

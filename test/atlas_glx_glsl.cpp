@@ -140,5 +140,12 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
 TEST_CASE("loadShaderFile: Single include", "[glx]")
 {
     std::string filename{TestData[glx_single_include]};
+    std::string included{TestData[uniform_matrices]};
     std::string expectedFilename{ExpectedFiles[glx_single_include_expected]};
+    auto expectedString = loadExpectedString(
+        expectedFilename, {stringHash(filename), stringHash(included)}, true);
+
+    auto result = loadShaderFile(filename);
+    REQUIRE(result.sourceString == expectedString);
+    REQUIRE(result.includedFiles.size() == 2);
 }
