@@ -1,3 +1,4 @@
 set(ATLAS_INCLUDE_GLX_LIST
     "${ATLAS_INCLUDE_ROOT}/glx/GLSL.hpp"
+    "${ATLAS_INCLUDE_ROOT}/glx/Buffer.hpp"
     PARENT_SCOPE)
