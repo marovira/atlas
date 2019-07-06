@@ -41,6 +41,7 @@ add_subdirectory("${ATLAS_SOURCE_ROOT}")
 # Source groups.
 #================================
 include("${ATLAS_SOURCE_DIR}/config/SourceGroups.cmake")
+include("${ATLAS_SOURCE_DIR}/config/ClangFormat.cmake")
 
 #================================
 # Find Packages.
@@ -50,6 +51,7 @@ find_package(glm REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(gl3w REQUIRED)
+
 
 #================================
 # Set compiler flags.
