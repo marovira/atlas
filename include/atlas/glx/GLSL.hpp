@@ -36,4 +36,6 @@ namespace atlas::glx
 
     std::optional<std::string> compileShader(std::string const& source,
                                              GLuint handle);
+
+    std::string parseErrorLog(ShaderFile const& file, std::string const& log);
 } // namespace atlas::glx

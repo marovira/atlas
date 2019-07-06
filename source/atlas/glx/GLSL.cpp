@@ -237,4 +237,98 @@ namespace atlas::glx
 #pragma warning(pop)
 #endif
 
+    std::string parseErrorLog(ShaderFile const& file, std::string const& log)
+    {
+        // If the log is empty, do nothing.
+        if (log.empty())
+        {
+            return {};
+        }
+
+        // It appears that this type of format only works on NVidia cards, so
+        // check to see if we're in an NVida card. If we aren't, return the
+        // log as is and output a message.
+        std::string vendorID =
+            reinterpret_cast<char const*>(glGetString(GL_VENDOR));
+        if (vendorID.find("NVIDIA") == std::string::npos)
+        {
+            fmt::print(stderr, "warning: unsupported vendor.\n");
+            fmt::print(stderr, "warning: error log is unchanged.\n");
+            return log;
+        }
+
+        std::stringstream logStream{log};
+        std::stringstream outLog;
+        std::string line;
+
+        while (std::getline(logStream, line, '\n'))
+        {
+            std::smatch match;
+            std::regex pattern("\\d+\\(\\d*\\)");
+
+            // We are only interested in the first match.
+            std::regex_search(line, match, pattern);
+
+            if (match.size() != 1)
+            {
+                // This should not be happening!
+                fmt::print(stderr,
+                           "warning: unrecognized OpenGL error syntax.\n");
+                fmt::print(stderr, "warning: error log is unchanged.\n");
+                return log;
+            }
+
+            std::string info  = match[0];
+            std::string error = match.suffix();
+            error             = error.substr(1, error.size() - 1);
+
+            // Now extract the numbers by locating ().
+            std::size_t start = info.find("(");
+            std::size_t end   = info.find(")");
+            std::size_t delta = end - start;
+
+            // Grab the numbers;
+            int fileNum = std::stoi(info.substr(0, start));
+            int lineNum = std::stoi(info.substr(start + 1, delta));
+
+            // Now assemble the include hierarchy for the file.
+            int parent = file.includedFiles[fileNum].parent;
+            std::vector<int> hierarchy;
+            hierarchy.push_back(fileNum);
+            while (parent != -1)
+            {
+                hierarchy.push_back(parent);
+                parent = file.includedFiles[parent].parent;
+            }
+
+            // Check if the hierarchy has size 1. If it does, then the error
+            // message was generated in the top file, and we just need to print
+            // out the error.
+            if (hierarchy.size() == 1)
+            {
+                auto message = fmt::format(
+                    "In file {}({}): {}\n",
+                    file.includedFiles[hierarchy[0]].filename, lineNum, error);
+                outLog << message;
+                continue;
+            }
+
+            // Otherwise, we have to generate the include hierarchy messages.
+            // To do this, we traverse the list in reverse.
+            for (std::size_t i{hierarchy.size() - 1}; i > 0; --i)
+            {
+                auto message =
+                    fmt::format("In file included from {}:\n",
+                                file.includedFiles[hierarchy[i]].filename);
+                outLog << message;
+            }
+
+            auto message = fmt::format(
+                "{}({}): {}\n", file.includedFiles[0].filename, lineNum, error);
+            outLog << message;
+        }
+
+        return outLog.str();
+    }
+
 } // namespace atlas::glx
