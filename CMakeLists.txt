@@ -68,6 +68,9 @@ target_link_libraries(atlas-core INTERFACE fmt::fmt)
 target_compile_features(atlas-core INTERFACE cxx_std_17)
 target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
+if (MSVC)
+    add_custom_target(_atlas-core SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
+endif()
 add_library(atlas::core ALIAS atlas-core)
 
 #================================
@@ -79,6 +82,9 @@ target_link_libraries(atlas-math INTERFACE glm atlas-core)
 target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
+if (MSVC)
+    add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
+endif()
 add_library(atlas::math ALIAS atlas-math)
 
 #================================
