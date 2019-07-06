@@ -1,7 +1,6 @@
 #include "atlas/glx/GLSL.hpp"
 
 #include <atlas/core/FMT.hpp>
-#include <atlas/core/Platform.hpp>
 
 #include <filesystem>
 #include <fstream>
@@ -40,6 +39,12 @@ namespace atlas::glx
         // system style.
         fs::path p{filename};
         p = p.make_preferred();
+        if (!fs::exists(p))
+        {
+            auto message = fmt::format(
+                "error: no such file or directory: \'{}\'.\n", filename);
+            throw std::runtime_error{message};
+        }
         file.sourceString =
             recurseOnShaderFiles(p.string(), file, includeDirectories);
         return file;
@@ -54,8 +59,9 @@ namespace atlas::glx
 
         if (!inFile)
         {
-            auto message = fmt::format("Could not open file: {}.", filename);
-            throw std::runtime_error{message.c_str()};
+            fmt::print(stderr, "error: no such file or directory: \'{}\'.\n",
+                       filename);
+            return {};
         }
 
         // Check to see if this is the first time we are adding something. If it
@@ -114,15 +120,14 @@ namespace atlas::glx
                         }
                     }
 
-                    // If the path is still empty, we found nothing, so throw
-                    // an error.
                     if (absolutePath.empty())
                     {
-                        auto message = fmt::format(
+                        fmt::print(
+                            stderr,
                             "In file {}({}): Cannot open include file: \'{}\': "
                             "No such file or directory",
                             filename, lineNum + 1, path);
-                        throw std::runtime_error{message};
+                        continue;
                     }
                 }
 
@@ -162,5 +167,74 @@ namespace atlas::glx
 
         return outString.str();
     }
+
+#if defined(ATLAS_PLATFORM_WINDOWS)
+#pragma warning(push)
+#pragma warning(disable : 26451)
+#endif
+
+    std::optional<std::string> compileShader(std::string const& source,
+                                             GLuint handle)
+    {
+        // If there's no source, do nothing.
+        if (source.empty())
+        {
+            return {};
+        }
+
+        auto glSource = static_cast<GLchar const*>(source.c_str());
+        glShaderSource(handle, 1, &glSource, nullptr);
+        glSource = nullptr;
+
+        glCompileShader(handle);
+
+        GLint compiled;
+        glGetShaderiv(handle, GL_COMPILE_STATUS, &compiled);
+        if (!compiled)
+        {
+            GLsizei len;
+            glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &len);
+
+            GLchar* log = new GLchar[len + 1];
+            glGetShaderInfoLog(handle, len, &len, log);
+            std::string errorMessage{log};
+            delete[] log;
+
+            return {errorMessage};
+        }
+
+        return {};
+    }
+
+    std::optional<std::string> linkShaders(GLuint handle)
+    {
+        if (!handle)
+        {
+            return {};
+        }
+
+        glLinkProgram(handle);
+
+        GLint linked;
+        glGetProgramiv(handle, GL_LINK_STATUS, &linked);
+        if (!linked)
+        {
+            GLsizei len;
+            glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &len);
+
+            GLchar* log = new GLchar[len + 1];
+            glGetProgramInfoLog(handle, len, &len, log);
+            std::string errorMessage{log};
+            delete[] log;
+
+            return {errorMessage};
+        }
+
+        return {};
+    }
+
+#if defined(ATLAS_PLATFORM_WINDOWS)
+#pragma warning(pop)
+#endif
 
 } // namespace atlas::glx

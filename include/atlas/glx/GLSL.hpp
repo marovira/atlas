@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <experimental/filesystem>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -32,4 +33,7 @@ namespace atlas::glx
     ShaderFile
     readShaderSource(std::string const& filename,
                      std::vector<std::string> const& includeDirectories = {});
+
+    std::optional<std::string> compileShader(std::string const& source,
+                                             GLuint handle);
 } // namespace atlas::glx
