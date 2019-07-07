@@ -169,8 +169,8 @@ namespace atlas::glx
     }
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
-#pragma warning(push)
-#pragma warning(disable : 26451)
+#    pragma warning(push)
+#    pragma warning(disable : 26451)
 #endif
 
     std::optional<std::string> compileShader(std::string const& source,
@@ -234,7 +234,7 @@ namespace atlas::glx
     }
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
     std::string parseErrorLog(ShaderFile const& file, std::string const& log)

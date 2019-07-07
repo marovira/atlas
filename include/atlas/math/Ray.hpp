@@ -4,11 +4,14 @@
 
 namespace atlas::math
 {
-    template<typename T> struct Ray
+    template<typename T>
+    struct Ray
     {
-        Ray() : o{0.0f}, d{0.0f} {}
+        Ray() : o{0.0f}, d{0.0f}
+        {}
 
-        Ray(T const& origin, T const& dir) : o{origin}, d{dir} {}
+        Ray(T const& origin, T const& dir) : o{origin}, d{dir}
+        {}
 
         T operator()(float t) const
         {
