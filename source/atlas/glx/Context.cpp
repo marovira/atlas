@@ -49,7 +49,7 @@ namespace atlas::glx
     bool initializeGLFW(GLFWerrorfun errorCallback)
     {
         glfwSetErrorCallback(errorCallback);
-        if (!glfwInit())
+        if (glfwInit() == 0)
         {
             fmt::print(stderr, "error: Could not initialize GLFW.\n");
             return false;
@@ -63,11 +63,13 @@ namespace atlas::glx
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, settings.version.major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, settings.version.minor);
         glfwWindowHint(GLFW_OPENGL_PROFILE, settings.profile);
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, settings.enableDebugContext);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, settings.isForwardCompat);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,
+                       static_cast<int>(settings.enableDebugContext));
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                       static_cast<int>(settings.isForwardCompat));
 
-        glfwWindowHint(GLFW_MAXIMIZED, settings.isMaximized);
-        glfwWindowHint(GLFW_RESIZABLE, settings.isResizeable);
+        glfwWindowHint(GLFW_MAXIMIZED, static_cast<int>(settings.isMaximized));
+        glfwWindowHint(GLFW_RESIZABLE, static_cast<int>(settings.isResizeable));
 
         GLFWmonitor* monitor =
             (settings.isFullscreen) ? glfwGetPrimaryMonitor() : nullptr;
@@ -84,13 +86,13 @@ namespace atlas::glx
             return false;
         }
 
-        if (gl3wInit())
+        if (gl3wInit() != 0)
         {
             fmt::print(stderr, "error: Could not initialize OpenGL.\n");
             return false;
         }
 
-        if (!gl3wIsSupported(version.major, version.minor))
+        if (gl3wIsSupported(version.major, version.minor) == 0)
         {
             fmt::print(stderr, "error: OpenGL {}.{} is not supported.\n",
                        version.major, version.minor);

@@ -12,8 +12,8 @@ namespace atlas::glx
 {
     struct FileData
     {
-        FileData(std::string const& name, int p, std::time_t time) :
-            filename{name},
+        FileData(std::string name, int p, std::time_t time) :
+            filename{std::move(name)},
             parent{p},
             lastWrite{time}
         {}

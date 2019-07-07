@@ -190,12 +190,12 @@ namespace atlas::glx
 
         GLint compiled;
         glGetShaderiv(handle, GL_COMPILE_STATUS, &compiled);
-        if (!compiled)
+        if (compiled == 0)
         {
             GLsizei len;
             glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &len);
 
-            GLchar* log = new GLchar[len + 1];
+            auto log = new GLchar[len + 1];
             glGetShaderInfoLog(handle, len, &len, log);
             std::string errorMessage{log};
             delete[] log;
@@ -208,7 +208,7 @@ namespace atlas::glx
 
     std::optional<std::string> linkShaders(GLuint handle)
     {
-        if (!handle)
+        if (handle == 0u)
         {
             return {};
         }
@@ -217,12 +217,12 @@ namespace atlas::glx
 
         GLint linked;
         glGetProgramiv(handle, GL_LINK_STATUS, &linked);
-        if (!linked)
+        if (linked == 0)
         {
             GLsizei len;
             glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &len);
 
-            GLchar* log = new GLchar[len + 1];
+            auto log = new GLchar[len + 1];
             glGetProgramInfoLog(handle, len, &len, log);
             std::string errorMessage{log};
             delete[] log;
@@ -264,7 +264,7 @@ namespace atlas::glx
         while (std::getline(logStream, line, '\n'))
         {
             std::smatch match;
-            std::regex pattern("\\d+\\(\\d*\\)");
+            std::regex pattern(R"(\d+\(\d*\))");
 
             // We are only interested in the first match.
             std::regex_search(line, match, pattern);
