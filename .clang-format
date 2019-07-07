@@ -8,7 +8,7 @@ ColumnLimit: 80
 AccessModifierOffset: -4
 NamespaceIndentation: All
 IndentCaseLabels: false
-IndentPPDirectives: None
+IndentPPDirectives: AfterHash
 IndentWrappedFunctionNames: false
 
 # General Settings
