@@ -1,3 +1,4 @@
 set(ATLAS_SOURCE_GLX_LIST
     "${ATLAS_SOURCE_ROOT}/glx/GLSL.cpp"
+    "${ATLAS_SOURCE_ROOT}/glx/Context.cpp"
     PARENT_SCOPE)
