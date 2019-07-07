@@ -13,7 +13,8 @@ namespace atlas::math
     public:
         Random() = default;
 
-        Random(typename Engine::result_type seed) : mEngine{seed} {}
+        Random(typename Engine::result_type seed) : mEngine{seed}
+        {}
 
         T getRandomRange(T min, T max) const
         {
