@@ -51,5 +51,5 @@ namespace atlas::glx
     bool createGLContext(GLFWwindow* window, ContextVersion const& version);
     void bindWindowCallbacks(GLFWwindow* window,
                              WindowCallbacks const& callbacks);
-
+    void destroyGLFW(GLFWwindow* window);
 } // namespace atlas::glx
