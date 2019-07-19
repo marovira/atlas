@@ -57,7 +57,7 @@ find_package(gl3w REQUIRED)
 # Set compiler flags.
 #================================
 if (MSVC)
-    set(ATLAS_COMPILER_FLAGS /W4 /WX)
+    set(ATLAS_COMPILER_FLAGS /W4 /WX /MP)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
 endif()
 
@@ -116,6 +116,9 @@ if (ATLAS_BUILD_TESTS)
         atlas-math 
         atlas-glx
         Catch2::Catch2)
+    target_compile_features(atlas-test PUBLIC cxx_std_17)
+    target_compile_options(atlas-test PUBLIC ${ATLAS_COMPILER_FLAGS})
+    target_compile_options(atlas-test PUBLIC ${ATLAS_DEBUG_FLAGS})
 
     include(CTest)
     include(Catch)
