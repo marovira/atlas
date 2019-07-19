@@ -5,45 +5,57 @@
 
 namespace atlas::glx
 {
-    static std::unordered_map<GLFWwindow*, WindowCallbacks> glfwWindowMap;
-
     static void mousePressCallback(GLFWwindow* window, int button, int action,
                                    int mods)
     {
-        glfwWindowMap.at(window).mousePressCallback(button, action, mods);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->mousePressCallback(button, action, mods);
     }
 
     static void mouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
     {
-        glfwWindowMap.at(window).mouseMoveCallback(xPos, yPos);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->mouseMoveCallback(xPos, yPos);
     }
 
     static void mouseScrollCallback(GLFWwindow* window, double xOffset,
                                     double yOffset)
     {
-        glfwWindowMap.at(window).mouseScrollCallback(xOffset, yOffset);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->mouseScrollCallback(xOffset, yOffset);
     }
 
     static void keyPressCallback(GLFWwindow* window, int key, int scancode,
                                  int action, int mods)
     {
-        glfwWindowMap.at(window).keyPressCallback(key, scancode, action, mods);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->keyPressCallback(key, scancode, action, mods);
     }
 
     static void windowSizeCallback(GLFWwindow* window, int width, int height)
     {
-        glfwWindowMap.at(window).windowSizeCallback(width, height);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->windowSizeCallback(width, height);
     }
 
     static void framebufferSizeCallback(GLFWwindow* window, int width,
                                         int height)
     {
-        glfwWindowMap.at(window).framebufferSizeCallback(width, height);
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->framebufferSizeCallback(width, height);
     }
 
     static void windowCloseCallback(GLFWwindow* window)
     {
-        glfwWindowMap.at(window).windowCloseCallback();
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        callbacks->windowCloseCallback();
     }
 
     bool initializeGLFW(GLFWerrorfun errorCallback)
@@ -109,7 +121,14 @@ namespace atlas::glx
     void bindWindowCallbacks(GLFWwindow* window,
                              WindowCallbacks const& callbacks)
     {
-        glfwWindowMap.insert({window, callbacks});
+        if (window == nullptr)
+        {
+            return;
+        }
+
+        WindowCallbacks* calls = new WindowCallbacks(callbacks);
+        glfwSetWindowUserPointer(window, calls);
+
         glfwSetKeyCallback(window, keyPressCallback);
         glfwSetMouseButtonCallback(window, mousePressCallback);
         glfwSetScrollCallback(window, mouseScrollCallback);
@@ -118,5 +137,21 @@ namespace atlas::glx
         glfwSetWindowSizeCallback(window, windowSizeCallback);
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
         glfwSetWindowCloseCallback(window, windowCloseCallback);
+    }
+
+    void destroyGLFW(GLFWwindow* window)
+    {
+        if (window == nullptr)
+        {
+            return;
+        }
+
+        WindowCallbacks* callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        delete callbacks;
+        glfwSetWindowUserPointer(window, nullptr);
+
+        glfwDestroyWindow(window);
+        glfwTerminate();
     }
 } // namespace atlas::glx
