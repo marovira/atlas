@@ -1,6 +1,6 @@
 #include "atlas/glx/Context.hpp"
 
-#include <atlas/core/FMT.hpp>
+#include <fmt/printf.h>
 #include <map>
 
 namespace atlas::glx
@@ -139,7 +139,7 @@ namespace atlas::glx
         glfwSetWindowCloseCallback(window, windowCloseCallback);
     }
 
-    void destroyGLFW(GLFWwindow* window)
+    void destroyGLFWWindow(GLFWwindow* window)
     {
         if (window == nullptr)
         {
@@ -152,6 +152,10 @@ namespace atlas::glx
         glfwSetWindowUserPointer(window, nullptr);
 
         glfwDestroyWindow(window);
+    }
+
+    void terminateGLFW()
+    {
         glfwTerminate();
     }
 } // namespace atlas::glx
