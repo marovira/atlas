@@ -11,6 +11,7 @@ endif()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 option(ATLAS_BUILD_TESTS "Build Atlas test" ON)
+option(ATLAS_BUILD_GL_TEST "Build Atlas OpenGL tests" ON)
 
 # Now setup the version data.
 set(ATLAS_VERSION_MAJOR "3")
@@ -119,6 +120,11 @@ if (ATLAS_BUILD_TESTS)
     target_compile_features(atlas-test PUBLIC cxx_std_17)
     target_compile_options(atlas-test PUBLIC ${ATLAS_COMPILER_FLAGS})
     target_compile_options(atlas-test PUBLIC ${ATLAS_DEBUG_FLAGS})
+    if (ATLAS_BUILD_GL_TEST)
+        if (MSVC)
+            target_compile_definitions(atlas-test PUBLIC -DATLAS_BUILD_GL_TESTS)
+        endif()
+    endif()
 
     include(CTest)
     include(Catch)
