@@ -8,54 +8,110 @@ namespace atlas::glx
     static void mousePressCallback(GLFWwindow* window, int button, int action,
                                    int mods)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->mousePressCallback(button, action, mods);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->mousePressCallback)
+        {
+            callbacks->mousePressCallback(button, action, mods);
+        }
     }
 
     static void mouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->mouseMoveCallback(xPos, yPos);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->mouseMoveCallback)
+        {
+            callbacks->mouseMoveCallback(xPos, yPos);
+        }
     }
 
     static void mouseScrollCallback(GLFWwindow* window, double xOffset,
                                     double yOffset)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->mouseScrollCallback(xOffset, yOffset);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->mouseScrollCallback)
+        {
+            callbacks->mouseScrollCallback(xOffset, yOffset);
+        }
     }
 
     static void keyPressCallback(GLFWwindow* window, int key, int scancode,
                                  int action, int mods)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->keyPressCallback(key, scancode, action, mods);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->keyPressCallback)
+        {
+            callbacks->keyPressCallback(key, scancode, action, mods);
+        }
     }
 
     static void windowSizeCallback(GLFWwindow* window, int width, int height)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->windowSizeCallback(width, height);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->windowSizeCallback)
+        {
+            callbacks->windowSizeCallback(width, height);
+        }
     }
 
     static void framebufferSizeCallback(GLFWwindow* window, int width,
                                         int height)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->framebufferSizeCallback(width, height);
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->framebufferSizeCallback)
+        {
+            callbacks->framebufferSizeCallback(width, height);
+        }
     }
 
     static void windowCloseCallback(GLFWwindow* window)
     {
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
-        callbacks->windowCloseCallback();
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->windowCloseCallback)
+        {
+            callbacks->windowCloseCallback();
+        }
     }
 
     bool initializeGLFW(GLFWerrorfun errorCallback)
@@ -111,7 +167,8 @@ namespace atlas::glx
             return false;
         }
 
-        GLint major, minor;
+        GLint major;
+        GLint minor;
         glGetIntegerv(GL_MAJOR_VERSION, &major);
         glGetIntegerv(GL_MINOR_VERSION, &minor);
         fmt::print(stdout, "Created OpenGL context {}.{}\n", major, minor);
@@ -126,7 +183,7 @@ namespace atlas::glx
             return;
         }
 
-        WindowCallbacks* calls = new WindowCallbacks(callbacks);
+        auto calls = new WindowCallbacks(callbacks);
         glfwSetWindowUserPointer(window, calls);
 
         glfwSetKeyCallback(window, keyPressCallback);
@@ -146,7 +203,7 @@ namespace atlas::glx
             return;
         }
 
-        WindowCallbacks* callbacks =
+        auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         delete callbacks;
         glfwSetWindowUserPointer(window, nullptr);
