@@ -4,6 +4,7 @@
 
 #include <catch2/catch.hpp>
 
+#if defined(ATLAS_BUILD_GL_TESTS)
 static void errorCallback(int code, char const* message)
 {
     fmt::print("error ({}):{}\n", code, message);
@@ -143,3 +144,4 @@ TEST_CASE("Checking callbacks on multiple windows", "[glx]")
     destroyGLFWWindow(window2);
     terminateGLFW();
 }
+#endif
