@@ -83,3 +83,65 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     destroyGLFWWindow(window);
     terminateGLFW();
 }
+
+TEST_CASE("Checking callbacks on multiple windows", "[glx]")
+{
+    initializeGLFW(errorCallback);
+    WindowSettings settings;
+    auto window1 = createGLFWWindow(settings);
+    auto window2 = createGLFWWindow(settings);
+
+    bool callback1{false}, callback2{false};
+    auto mousePressCallback1 = [&callback1](int, int, int) {
+        fmt::print("In callback 1\n");
+        callback1 = true;
+    };
+    auto mousePressCallback2 = [&callback2](int, int, int) {
+        fmt::print("In callback 2\n");
+        callback2 = true;
+    };
+
+    WindowCallbacks cb1, cb2;
+    cb1.mousePressCallback = mousePressCallback1;
+    cb2.mousePressCallback = mousePressCallback2;
+
+    bindWindowCallbacks(window1, cb1);
+    bindWindowCallbacks(window2, cb2);
+
+    glfwMakeContextCurrent(window1);
+    REQUIRE(createGLContext(window1,
+                            {GLContextVersionMajor, GLContextVersionMinor}));
+
+    glfwMakeContextCurrent(window2);
+    REQUIRE(createGLContext(window2,
+                            {GLContextVersionMajor, GLContextVersionMinor}));
+
+    bool close1{false}, close2{false};
+    while (!(close1 && close2))
+    {
+        {
+            close1 = glfwWindowShouldClose(window1);
+            glfwMakeContextCurrent(window1);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+            glfwSwapBuffers(window1);
+        }
+
+        {
+            close2 = glfwWindowShouldClose(window2);
+            glfwMakeContextCurrent(window2);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+            glfwSwapBuffers(window2);
+        }
+
+        glfwPollEvents();
+    }
+
+    REQUIRE(callback1);
+    REQUIRE(callback2);
+
+    destroyGLFWWindow(window1);
+    destroyGLFWWindow(window2);
+    terminateGLFW();
+}
