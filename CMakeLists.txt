@@ -63,7 +63,7 @@ if (MSVC)
 endif()
 
 #================================
-# Core Module.
+# Core module.
 #================================
 add_library(atlas-core INTERFACE)
 target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
@@ -77,7 +77,7 @@ endif()
 add_library(atlas::core ALIAS atlas-core)
 
 #================================
-# Math Module.
+# Math module.
 #================================
 add_library(atlas-math INTERFACE)
 target_include_directories(atlas-math INTERFACE "${ATLAS_SOURCE_DIR}/include")
@@ -91,7 +91,7 @@ endif()
 add_library(atlas::math ALIAS atlas-math)
 
 #================================
-# GLEX module.
+# GLX module.
 #================================
 add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
 target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
@@ -103,6 +103,17 @@ if (MSVC)
     target_compile_definitions(atlas-glx PUBLIC -DNOMINMAX)
 endif()
 add_library(atlas::glx ALIAS atlas-glx)
+
+#================================
+# GUI module.
+#================================
+add_library(atlas-gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
+target_include_directories(atlas-gui PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-gui PUBLIC atlas-glx atlas-core)
+target_compile_features(atlas-gui PUBLIC cxx_std_17)
+target_compile_options(atlas-gui PUBLIC "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-gui PUBLIC "${ATLAS_DEBUG_FLAGS}")
+add_library(atlas::gui ALIAS atlas-gui)
 
 #================================
 # Build the tests.
