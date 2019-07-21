@@ -109,12 +109,10 @@ TEST_CASE("Checking callbacks on multiple windows", "[glx]")
     bindWindowCallbacks(window2, cb2);
 
     glfwMakeContextCurrent(window1);
-    REQUIRE(createGLContext(window1,
-                            {GLContextVersionMajor, GLContextVersionMinor}));
+    REQUIRE(createGLContext(window1, {4, 5}));
 
     glfwMakeContextCurrent(window2);
-    REQUIRE(createGLContext(window2,
-                            {GLContextVersionMajor, GLContextVersionMinor}));
+    REQUIRE(createGLContext(window2, {4, 5}));
 
     bool close1{false}, close2{false};
     while (!(close1 && close2))
