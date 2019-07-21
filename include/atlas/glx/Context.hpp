@@ -12,13 +12,13 @@ namespace atlas::glx
 {
     struct WindowCallbacks
     {
-        std::function<void(int, int, int)> mousePressCallback;
-        std::function<void(double, double)> mouseMoveCallback;
-        std::function<void(double, double)> mouseScrollCallback;
-        std::function<void(int, int, int, int)> keyPressCallback;
-        std::function<void(int, int)> windowSizeCallback;
-        std::function<void(int, int)> framebufferSizeCallback;
-        std::function<void()> windowCloseCallback;
+        std::function<void(int, int, int)> mousePressCallback{};
+        std::function<void(double, double)> mouseMoveCallback{};
+        std::function<void(double, double)> mouseScrollCallback{};
+        std::function<void(int, int, int, int)> keyPressCallback{};
+        std::function<void(int, int)> windowSizeCallback{};
+        std::function<void(int, int)> framebufferSizeCallback{};
+        std::function<void()> windowCloseCallback{};
     };
 
     struct ContextVersion
