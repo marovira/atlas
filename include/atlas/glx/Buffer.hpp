@@ -17,5 +17,8 @@ namespace atlas::glx
     }
 
     template<typename T>
-    constexpr auto size = stride<T>;
+    constexpr GLsizei size(std::size_t num)
+    {
+        return static_cast<GLsizei>(num * sizeof(T));
+    }
 } // namespace atlas::glx
