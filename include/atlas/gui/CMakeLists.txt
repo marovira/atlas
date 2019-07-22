@@ -5,4 +5,5 @@ set(ATLAS_INCLUDE_GUI_LIST
     "${ATLAS_INCLUDE_ROOT}/gui/imstb_rectpack.h"
     "${ATLAS_INCLUDE_ROOT}/gui/imstb_textedit.h"
     "${ATLAS_INCLUDE_ROOT}/gui/imstb_truetype.h"
+    "${ATLAS_INCLUDE_ROOT}/gui/GUI.hpp"
     PARENT_SCOPE)
