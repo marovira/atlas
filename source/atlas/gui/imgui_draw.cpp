@@ -1,4 +1,4 @@
-// dear imgui, v1.72 WIP
+// dear imgui, v1.71
 // (drawing and font code)
 
 /*
@@ -100,9 +100,6 @@ Index of this file:
 #    endif
 #elif defined(__GNUC__)
 #    pragma GCC diagnostic ignored \
-        "-Wpragmas" // warning: unknown option after '#pragma GCC diagnostic'
-                    // kind
-#    pragma GCC diagnostic ignored \
         "-Wunused-function" // warning: 'xxxx' defined but not used
 #    pragma GCC diagnostic ignored \
         "-Wdouble-promotion" // warning: implicit conversion from 'float' to
@@ -113,11 +110,13 @@ Index of this file:
 #    pragma GCC diagnostic ignored \
         "-Wstack-protector" // warning: stack protector not protecting local
                             // variables: variable length buffer
-#    pragma GCC diagnostic ignored \
-        "-Wclass-memaccess" // [__GNUC__ >= 8] warning: 'memset/memcpy'
-                            // clearing/writing an object of type 'xxxx' with no
-                            // trivial copy-assignment; use assignment or
-                            // value-initialization instead
+#    if __GNUC__ >= 8
+#        pragma GCC diagnostic ignored \
+            "-Wclass-memaccess" // warning: 'memset/memcpy' clearing/writing an
+                                // object of type 'xxxx' with no trivial
+                                // copy-assignment; use assignment or
+                                // value-initialization instead
+#    endif
 #endif
 
 //-------------------------------------------------------------------------
@@ -315,7 +314,7 @@ void ImGui::StyleColorsClassic(ImGuiStyle* dst)
     colors[ImGuiCol_Header]               = ImVec4(0.40f, 0.40f, 0.90f, 0.45f);
     colors[ImGuiCol_HeaderHovered]        = ImVec4(0.45f, 0.45f, 0.90f, 0.80f);
     colors[ImGuiCol_HeaderActive]         = ImVec4(0.53f, 0.53f, 0.87f, 0.80f);
-    colors[ImGuiCol_Separator]            = ImVec4(0.50f, 0.50f, 0.50f, 0.60f);
+    colors[ImGuiCol_Separator]            = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
     colors[ImGuiCol_SeparatorHovered]     = ImVec4(0.60f, 0.60f, 0.70f, 1.00f);
     colors[ImGuiCol_SeparatorActive]      = ImVec4(0.70f, 0.70f, 0.90f, 1.00f);
     colors[ImGuiCol_ResizeGrip]           = ImVec4(1.00f, 1.00f, 1.00f, 0.16f);
@@ -376,7 +375,7 @@ void ImGui::StyleColorsLight(ImGuiStyle* dst)
     colors[ImGuiCol_Header]               = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
     colors[ImGuiCol_HeaderHovered]        = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
     colors[ImGuiCol_HeaderActive]         = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_Separator]            = ImVec4(0.39f, 0.39f, 0.39f, 0.62f);
+    colors[ImGuiCol_Separator]            = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
     colors[ImGuiCol_SeparatorHovered]     = ImVec4(0.14f, 0.44f, 0.80f, 0.78f);
     colors[ImGuiCol_SeparatorActive]      = ImVec4(0.14f, 0.44f, 0.80f, 1.00f);
     colors[ImGuiCol_ResizeGrip]           = ImVec4(0.80f, 0.80f, 0.80f, 0.56f);
@@ -429,7 +428,7 @@ void ImDrawList::Clear()
     CmdBuffer.resize(0);
     IdxBuffer.resize(0);
     VtxBuffer.resize(0);
-    Flags             = _Data ? _Data->InitialFlags : ImDrawListFlags_None;
+    Flags             = _Data->InitialFlags;
     _VtxCurrentOffset = 0;
     _VtxCurrentIdx    = 0;
     _VtxWritePtr      = NULL;
@@ -456,7 +455,7 @@ void ImDrawList::ClearFreeMemory()
 
 ImDrawList* ImDrawList::CloneOutput() const
 {
-    ImDrawList* dst = IM_NEW(ImDrawList(_Data));
+    ImDrawList* dst = IM_NEW(ImDrawList(NULL));
     dst->CmdBuffer  = CmdBuffer;
     dst->IdxBuffer  = IdxBuffer;
     dst->VtxBuffer  = VtxBuffer;
@@ -1621,8 +1620,8 @@ void ImDrawListSplitter::Merge(ImDrawList* draw_list)
     // in each command.
     int new_cmd_buffer_count = 0;
     int new_idx_buffer_count = 0;
-    ImDrawCmd* last_cmd      = (_Count > 0 && draw_list->CmdBuffer.Size > 0)
-                              ? &draw_list->CmdBuffer.back()
+    ImDrawCmd* last_cmd      = (_Count > 0 && _Channels[0]._CmdBuffer.Size > 0)
+                              ? &_Channels[0]._CmdBuffer.back()
                               : NULL;
     int idx_offset = last_cmd ? last_cmd->IdxOffset + last_cmd->ElemCount : 0;
     for (int i = 1; i < _Count; i++)
@@ -1683,7 +1682,7 @@ void ImDrawListSplitter::Merge(ImDrawList* draw_list)
 
 void ImDrawListSplitter::SetCurrentChannel(ImDrawList* draw_list, int idx)
 {
-    IM_ASSERT(idx >= 0 && idx < _Count);
+    IM_ASSERT(idx < _Count);
     if (_Current == idx)
         return;
     // Overwrite ImVector (12/16 bytes), four times. This is merely a silly
@@ -2231,7 +2230,7 @@ int ImFontAtlas::AddCustomRectRegular(unsigned int id, int width, int height)
     IM_ASSERT(id >= 0x10000);
     IM_ASSERT(width > 0 && width <= 0xFFFF);
     IM_ASSERT(height > 0 && height <= 0xFFFF);
-    ImFontAtlasCustomRect r;
+    CustomRect r;
     r.ID     = id;
     r.Width  = (unsigned short)width;
     r.Height = (unsigned short)height;
@@ -2246,7 +2245,7 @@ int ImFontAtlas::AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width,
     IM_ASSERT(font != NULL);
     IM_ASSERT(width > 0 && width <= 0xFFFF);
     IM_ASSERT(height > 0 && height <= 0xFFFF);
-    ImFontAtlasCustomRect r;
+    CustomRect r;
     r.ID            = id;
     r.Width         = (unsigned short)width;
     r.Height        = (unsigned short)height;
@@ -2257,8 +2256,8 @@ int ImFontAtlas::AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width,
     return CustomRects.Size - 1; // Return index
 }
 
-void ImFontAtlas::CalcCustomRectUV(const ImFontAtlasCustomRect* rect,
-                                   ImVec2* out_uv_min, ImVec2* out_uv_max)
+void ImFontAtlas::CalcCustomRectUV(const CustomRect* rect, ImVec2* out_uv_min,
+                                   ImVec2* out_uv_max)
 {
     IM_ASSERT(TexWidth > 0 &&
               TexHeight > 0);    // Font atlas needs to be built before we can
@@ -2282,7 +2281,7 @@ bool ImFontAtlas::GetMouseCursorTexData(ImGuiMouseCursor cursor_type,
         return false;
 
     IM_ASSERT(CustomRectIds[0] != -1);
-    ImFontAtlasCustomRect& r = CustomRects[CustomRectIds[0]];
+    ImFontAtlas::CustomRect& r = CustomRects[CustomRectIds[0]];
     IM_ASSERT(r.ID == FONT_ATLAS_DEFAULT_TEX_DATA_ID);
     ImVec2 pos = FONT_ATLAS_DEFAULT_TEX_CURSOR_DATA[cursor_type][0] +
                  ImVec2((float)r.X, (float)r.Y);
@@ -2739,7 +2738,7 @@ void ImFontAtlasBuildPackCustomRects(ImFontAtlas* atlas,
     stbrp_context* pack_context = (stbrp_context*)stbrp_context_opaque;
     IM_ASSERT(pack_context != NULL);
 
-    ImVector<ImFontAtlasCustomRect>& user_rects = atlas->CustomRects;
+    ImVector<ImFontAtlas::CustomRect>& user_rects = atlas->CustomRects;
     IM_ASSERT(user_rects.Size >=
               1); // We expect at least the default custom rects to be
                   // registered, else something went wrong.
@@ -2769,7 +2768,7 @@ static void ImFontAtlasBuildRenderDefaultTexData(ImFontAtlas* atlas)
 {
     IM_ASSERT(atlas->CustomRectIds[0] >= 0);
     IM_ASSERT(atlas->TexPixelsAlpha8 != NULL);
-    ImFontAtlasCustomRect& r = atlas->CustomRects[atlas->CustomRectIds[0]];
+    ImFontAtlas::CustomRect& r = atlas->CustomRects[atlas->CustomRectIds[0]];
     IM_ASSERT(r.ID == FONT_ATLAS_DEFAULT_TEX_DATA_ID);
     IM_ASSERT(r.IsPacked());
 
@@ -2811,7 +2810,7 @@ void ImFontAtlasBuildFinish(ImFontAtlas* atlas)
     // Register custom rectangle glyphs
     for (int i = 0; i < atlas->CustomRects.Size; i++)
     {
-        const ImFontAtlasCustomRect& r = atlas->CustomRects[i];
+        const ImFontAtlas::CustomRect& r = atlas->CustomRects[i];
         if (r.Font == NULL || r.ID > 0x10000)
             continue;
 
@@ -3584,7 +3583,7 @@ const char* ImFont::CalcWordWrapPositionA(float scale, const char* text,
         }
 
         // We ignore blank width at the end of the line (they can be skipped)
-        if (line_width + word_width > wrap_width)
+        if (line_width + word_width >= wrap_width)
         {
             // Words that cannot possibly fit within an entire line will be cut
             // anywhere.
