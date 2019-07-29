@@ -144,6 +144,16 @@ namespace atlas::gui
         updateMouseCursor(data);
     }
 
+    void destroyGuiWindow(GuiWindowData& data)
+    {
+        for (ImGuiMouseCursor i{0}; i < ImGuiMouseCursor_COUNT; ++i)
+        {
+            glfwDestroyCursor(data.mouseCursors[i]);
+            data.mouseCursors[i] = nullptr;
+        }
+        data.window = nullptr;
+    }
+
     void mousePressedCallback(GuiWindowData& data, int button, int action,
                               [[maybe_unused]] int mode)
     {
@@ -481,7 +491,7 @@ namespace atlas::gui
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &lastVertexArray);
 
         const GLchar* vertexShader =
-            "#version 450 core"
+            "#version 450 core\n"
             "layout (location = 0) in vec2 Position;\n"
             "layout (location = 1) in vec2 UV;\n"
             "layout (location = 2) in vec4 Color;\n"
@@ -495,7 +505,7 @@ namespace atlas::gui
             "    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
             "}\n";
         const GLchar* fragmentShader =
-            "#version 450 core"
+            "#version 450 core\n"
             "in vec2 Frag_UV;\n"
             "in vec4 Frag_Color;\n"
             "uniform sampler2D Texture;\n"
@@ -536,9 +546,9 @@ namespace atlas::gui
         auto& handle                = data.shaderHandle;
         data.texAttribLocation      = glGetUniformLocation(handle, "Texture");
         data.projMtxAttribLocation  = glGetUniformLocation(handle, "ProjMtx");
-        data.vtxPosAttribLocation   = glGetUniformLocation(handle, "Position");
-        data.vtxUVAttribLocation    = glGetUniformLocation(handle, "UV");
-        data.vtxColorAttribLocation = glGetUniformLocation(handle, "Color");
+        data.vtxPosAttribLocation   = glGetAttribLocation(handle, "Position");
+        data.vtxUVAttribLocation    = glGetAttribLocation(handle, "UV");
+        data.vtxColorAttribLocation = glGetAttribLocation(handle, "Color");
 
         glGenBuffers(1, &data.vboHandle);
         glGenBuffers(1, &data.elementsHandle);

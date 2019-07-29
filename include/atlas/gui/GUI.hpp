@@ -38,11 +38,12 @@ namespace atlas::gui
 
     bool initializeGuiRenderData(GuiRenderData& data);
     void destroyGuiRenderData(GuiRenderData& data);
-    void renderGuiFrame(GuiRenderData& data);
+    void renderGuiFrame(GuiRenderData const& data);
 
     bool initializeGuiWindowData(GuiWindowData& data);
     void setGuiWindow(GuiWindowData& data, GLFWwindow* window);
-    void updateGuiWindowFrame(GuiWindowData const& data);
+    void updateGuiWindowFrame(GuiWindowData& data);
+    void destroyGuiWindow(GuiWindowData& data);
 
     void mousePressedCallback(GuiWindowData& data, int button, int action,
                               int mode);
