@@ -21,7 +21,20 @@ namespace atlas::gui
     bool createDeviceObjects(GuiRenderData& data);
     void destroyDeviceObjects(GuiRenderData& data);
 
-    bool initializeGUI(GuiRenderData& data)
+    void updateMousePosAndButtons(GuiWindowData& data);
+    void updateMouseCursor(GuiWindowData& data);
+
+    const char* getClipboardText(void* userData)
+    {
+        return glfwGetClipboardString(static_cast<GLFWwindow*>(userData));
+    }
+
+    void setClipboardText(void* userData, char const* text)
+    {
+        glfwSetClipboardString(static_cast<GLFWwindow*>(userData), text);
+    }
+
+    bool initializeGuiRenderData(GuiRenderData& data)
     {
         auto& io               = ImGui::GetIO();
         io.BackendRendererName = "atlas_opengl";
@@ -29,14 +42,152 @@ namespace atlas::gui
         return true;
     }
 
-    void shutdownGUI(GuiRenderData& data)
+    void destroyGuiRenderData(GuiRenderData& data)
     {
         destroyDeviceObjects(data);
     }
 
-    void renderGUIFrame(GuiRenderData const& data)
+    void renderGuiFrame(GuiRenderData const& data)
     {
         renderDrawData(data, ImGui::GetDrawData());
+    }
+
+    bool initializeGuiWindowData(GuiWindowData& data)
+    {
+        auto& io = ImGui::GetIO();
+        io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+        io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+        io.BackendPlatformName = "atlas";
+
+        io.KeyMap[ImGuiKey_Tab]        = GLFW_KEY_TAB;
+        io.KeyMap[ImGuiKey_LeftArrow]  = GLFW_KEY_LEFT;
+        io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
+        io.KeyMap[ImGuiKey_UpArrow]    = GLFW_KEY_UP;
+        io.KeyMap[ImGuiKey_DownArrow]  = GLFW_KEY_DOWN;
+        io.KeyMap[ImGuiKey_PageUp]     = GLFW_KEY_PAGE_UP;
+        io.KeyMap[ImGuiKey_PageDown]   = GLFW_KEY_PAGE_DOWN;
+        io.KeyMap[ImGuiKey_Home]       = GLFW_KEY_HOME;
+        io.KeyMap[ImGuiKey_End]        = GLFW_KEY_END;
+        io.KeyMap[ImGuiKey_Insert]     = GLFW_KEY_INSERT;
+        io.KeyMap[ImGuiKey_Delete]     = GLFW_KEY_DELETE;
+        io.KeyMap[ImGuiKey_Backspace]  = GLFW_KEY_BACKSPACE;
+        io.KeyMap[ImGuiKey_Space]      = GLFW_KEY_SPACE;
+        io.KeyMap[ImGuiKey_Enter]      = GLFW_KEY_ENTER;
+        io.KeyMap[ImGuiKey_Escape]     = GLFW_KEY_ESCAPE;
+        io.KeyMap[ImGuiKey_A]          = GLFW_KEY_A;
+        io.KeyMap[ImGuiKey_C]          = GLFW_KEY_C;
+        io.KeyMap[ImGuiKey_V]          = GLFW_KEY_V;
+        io.KeyMap[ImGuiKey_X]          = GLFW_KEY_X;
+        io.KeyMap[ImGuiKey_Y]          = GLFW_KEY_Y;
+        io.KeyMap[ImGuiKey_Z]          = GLFW_KEY_Z;
+
+        io.SetClipboardTextFn = setClipboardText;
+        io.GetClipboardTextFn = getClipboardText;
+
+        data.mouseCursors[ImGuiMouseCursor_Arrow] =
+            glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_TextInput] =
+            glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_ResizeAll] =
+            glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_ResizeNS] =
+            glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_ResizeEW] =
+            glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_ResizeNESW] =
+            glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_ResizeNWSE] =
+            glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+        data.mouseCursors[ImGuiMouseCursor_Hand] =
+            glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+
+        return true;
+    }
+
+    void setGuiWindow(GuiWindowData& data, GLFWwindow* window)
+    {
+        data.window = window;
+        auto& io    = ImGui::GetIO();
+        io.ImeWindowHandle =
+            reinterpret_cast<void*>(glfwGetWin32Window(window));
+        io.ClipboardUserData = window;
+    }
+
+    void updateGuiWindowFrame(GuiWindowData& data)
+    {
+        auto& io = ImGui::GetIO();
+        if (!io.Fonts->IsBuilt())
+        {
+            throw std::runtime_error("error: font atlas not built. Did you "
+                                     "miss a call to initializeGuiRenderData?");
+        }
+
+        int w, h;
+        int displayW, displayH;
+        glfwGetWindowSize(data.window, &w, &h);
+        glfwGetFramebufferSize(data.window, &displayW, &displayH);
+        io.DisplaySize = ImVec2(static_cast<float>(w), static_cast<float>(h));
+        if (w > 0 && h > 0)
+        {
+            io.DisplayFramebufferScale =
+                ImVec2(static_cast<float>(displayW) / w,
+                       static_cast<float>(displayH) / h);
+        }
+
+        double currentTime = glfwGetTime();
+        io.DeltaTime       = data.time > 0.0
+                           ? static_cast<float>(currentTime - data.time)
+                           : 1.0f / 60.0f;
+        data.time = currentTime;
+
+        updateMousePosAndButtons(data);
+        updateMouseCursor(data);
+    }
+
+    void mousePressedCallback(GuiWindowData& data, int button, int action,
+                              [[maybe_unused]] int mode)
+    {
+        if (action == GLFW_PRESS && button >= 0 &&
+            button < data.mouseJustPressed.size())
+        {
+            data.mouseJustPressed[button] = true;
+        }
+    }
+
+    void mouseScrollCallback(double xOffset, double yOffset)
+    {
+        auto& io = ImGui::GetIO();
+        io.MouseWheelH += static_cast<float>(xOffset);
+        io.MouseWheel += static_cast<float>(yOffset);
+    }
+
+    void keyPressCallback(int key, [[maybe_unused]] int scancode, int action,
+                          [[maybe_unused]] int mods)
+    {
+        auto& io = ImGui::GetIO();
+        if (action == GLFW_PRESS)
+        {
+            io.KeysDown[key] = true;
+        }
+        if (action == GLFW_RELEASE)
+        {
+            io.KeysDown[key] = false;
+        }
+
+        io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] ||
+                     io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+        io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] ||
+                      io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+        io.KeyAlt =
+            io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+        io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] ||
+                      io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+    }
+
+    void charCallback(unsigned int c)
+    {
+        auto& io = ImGui::GetIO();
+        io.AddInputCharacter(c);
     }
 
     static void setupRenderState(GuiRenderData const& renderData,
@@ -57,6 +208,7 @@ namespace atlas::gui
         float R = drawData->DisplayPos.x + drawData->DisplaySize.x;
         float T = drawData->DisplayPos.y;
         float B = drawData->DisplayPos.y + drawData->DisplaySize.y;
+
         // clang-format off
         const std::array<std::array<float, 4>, 4> orthoProjection{{
             {{2.0f / (R - L),    0.0f,               0.0f,  0.0f}},
@@ -441,6 +593,62 @@ namespace atlas::gui
         }
 
         destroyFontsTexture(data);
+    }
+
+    void updateMousePosAndButtons(GuiWindowData& data)
+    {
+        auto& io = ImGui::GetIO();
+        for (int i{0}; i < IM_ARRAYSIZE(io.MouseDown); ++i)
+        {
+            io.MouseDown[i] = data.mouseJustPressed[i] ||
+                              glfwGetMouseButton(data.window, i) != 0;
+            data.mouseJustPressed[i] = false;
+        }
+
+        const ImVec2 mousePosBackup = io.MousePos;
+        io.MousePos                 = ImVec2(-std::numeric_limits<float>::max(),
+                             std::numeric_limits<float>::max());
+        const bool focused =
+            glfwGetWindowAttrib(data.window, GLFW_FOCUSED) != 0;
+        if (focused)
+        {
+            if (io.WantSetMousePos)
+            {
+                glfwSetCursorPos(data.window, mousePosBackup.x,
+                                 mousePosBackup.y);
+            }
+            else
+            {
+                double mouseX, mouseY;
+                glfwGetCursorPos(data.window, &mouseX, &mouseY);
+                io.MousePos = ImVec2(static_cast<float>(mouseX),
+                                     static_cast<float>(mouseY));
+            }
+        }
+    }
+
+    void updateMouseCursor(GuiWindowData& data)
+    {
+        auto& io = ImGui::GetIO();
+        if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) ||
+            glfwGetInputMode(data.window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+        {
+            return;
+        }
+
+        ImGuiMouseCursor imguiCursor = ImGui::GetMouseCursor();
+        if (imguiCursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
+        {
+            glfwSetInputMode(data.window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        }
+        else
+        {
+            glfwSetCursor(data.window,
+                          data.mouseCursors[imguiCursor]
+                              ? data.mouseCursors[imguiCursor]
+                              : data.mouseCursors[ImGuiMouseCursor_Arrow]);
+            glfwSetInputMode(data.window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
 
 } // namespace atlas::gui

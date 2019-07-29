@@ -5,6 +5,7 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
+#include <array>
 #include <string>
 
 namespace atlas::gui
@@ -27,8 +28,26 @@ namespace atlas::gui
         GLuint elementsHandle{};
     };
 
-    bool initializeGUI(GuiRenderData& data);
-    void shutdownGUI(GuiRenderData& data);
-    void renderGUIFrame(GuiRenderData const& data);
+    struct GuiWindowData
+    {
+        GLFWwindow* window{nullptr};
+        double time{0.0};
+        std::array<bool, 5> mouseJustPressed;
+        std::array<GLFWcursor*, ImGuiMouseCursor_COUNT> mouseCursors;
+    };
+
+    bool initializeGuiRenderData(GuiRenderData& data);
+    void destroyGuiRenderData(GuiRenderData& data);
+    void renderGuiFrame(GuiRenderData& data);
+
+    bool initializeGuiWindowData(GuiWindowData& data);
+    void setGuiWindow(GuiWindowData& data, GLFWwindow* window);
+    void updateGuiWindowFrame(GuiWindowData const& data);
+
+    void mousePressedCallback(GuiWindowData& data, int button, int action,
+                              int mode);
+    void mouseScrollCallback(double xOffset, double yOffset);
+    void keyPressCallback(int key, int scancode, int action, int mods);
+    void charCallback(unsigned int c);
 
 } // namespace atlas::gui
