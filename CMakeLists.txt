@@ -127,6 +127,7 @@ if (ATLAS_BUILD_TESTS)
         atlas-core 
         atlas-math 
         atlas-glx
+        atlas-gui
         Catch2::Catch2)
     target_compile_features(atlas-test PUBLIC cxx_std_17)
     target_compile_options(atlas-test PUBLIC ${ATLAS_COMPILER_FLAGS})
