@@ -113,7 +113,7 @@ namespace atlas::gui
         io.ClipboardUserData = window;
     }
 
-    void updateGuiWindowFrame(GuiWindowData& data)
+    void startGuiWindowFrame(GuiWindowData& data)
     {
         auto& io = ImGui::GetIO();
         if (!io.Fonts->IsBuilt())
@@ -139,7 +139,10 @@ namespace atlas::gui
                            ? static_cast<float>(currentTime - data.time)
                            : 1.0f / 60.0f;
         data.time = currentTime;
+    }
 
+    void updateGuiWindowFrame(GuiWindowData& data)
+    {
         updateMousePosAndButtons(data);
         updateMouseCursor(data);
     }
@@ -198,6 +201,19 @@ namespace atlas::gui
     {
         auto& io = ImGui::GetIO();
         io.AddInputCharacter(c);
+    }
+
+    void newFrame(GuiWindowData& data)
+    {
+        startGuiWindowFrame(data);
+        ImGui::NewFrame();
+    }
+
+    void endFrame(GuiWindowData& windowData, GuiRenderData& renderData)
+    {
+        ImGui::Render();
+        renderGuiFrame(renderData);
+        updateGuiWindowFrame(windowData);
     }
 
     static void setupRenderState(GuiRenderData const& renderData,
