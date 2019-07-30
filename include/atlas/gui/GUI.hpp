@@ -42,6 +42,7 @@ namespace atlas::gui
 
     bool initializeGuiWindowData(GuiWindowData& data);
     void setGuiWindow(GuiWindowData& data, GLFWwindow* window);
+    void startGuiWindowFrame(GuiWindowData& data);
     void updateGuiWindowFrame(GuiWindowData& data);
     void destroyGuiWindow(GuiWindowData& data);
 
@@ -50,5 +51,8 @@ namespace atlas::gui
     void mouseScrollCallback(double xOffset, double yOffset);
     void keyPressCallback(int key, int scancode, int action, int mods);
     void charCallback(unsigned int c);
+
+    void newFrame(GuiWindowData& data);
+    void endFrame(GuiWindowData& windowData, GuiRenderData& renderData);
 
 } // namespace atlas::gui
