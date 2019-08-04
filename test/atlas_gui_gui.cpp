@@ -40,10 +40,15 @@ TEST_CASE("Checking explicit GUI", "[gui]")
         gui::keyPressCallback(key, scancode, action, mods);
     };
 
+    auto charCallback = [](unsigned int codepoint) {
+        gui::charCallback(codepoint);
+    };
+
     WindowCallbacks callbacks;
     callbacks.mousePressCallback  = mousePressCallback;
     callbacks.mouseScrollCallback = mouseScrollCallback;
     callbacks.keyPressCallback    = keyPressCallback;
+    callbacks.charCallback        = charCallback;
 
     bindWindowCallbacks(window, callbacks);
 
