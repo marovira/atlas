@@ -99,6 +99,21 @@ namespace atlas::glx
         }
     }
 
+    static void charCallback(GLFWwindow* window, unsigned int codepoint)
+    {
+        auto callbacks =
+            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        if (callbacks == nullptr)
+        {
+            return;
+        }
+
+        if (callbacks->charCallback)
+        {
+            callbacks->charCallback(codepoint);
+        }
+    }
+
     static void windowCloseCallback(GLFWwindow* window)
     {
         auto callbacks =
@@ -194,6 +209,7 @@ namespace atlas::glx
         glfwSetWindowSizeCallback(window, windowSizeCallback);
         glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
         glfwSetWindowCloseCallback(window, windowCloseCallback);
+        glfwSetCharCallback(window, charCallback);
     }
 
     void destroyGLFWWindow(GLFWwindow* window)

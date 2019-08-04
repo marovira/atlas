@@ -18,6 +18,7 @@ namespace atlas::glx
         std::function<void(int, int, int, int)> keyPressCallback{};
         std::function<void(int, int)> windowSizeCallback{};
         std::function<void(int, int)> framebufferSizeCallback{};
+        std::function<void(unsigned int)> charCallback{};
         std::function<void()> windowCloseCallback{};
     };
 
