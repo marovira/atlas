@@ -34,7 +34,7 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     WindowSettings settings;
     auto window = createGLFWWindow(settings);
 
-    std::vector<bool> callbacksSuccess(7, false);
+    std::vector<bool> callbacksSuccess(8, false);
 
     auto mousePressCallback = [&callbacksSuccess](int, int, int) {
         callbacksSuccess[0] = true;
@@ -54,8 +54,11 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     auto framebufferSizeCallback = [&callbacksSuccess](int, int) {
         callbacksSuccess[5] = true;
     };
-    auto windowCloseCallback = [&callbacksSuccess]() {
+    auto charCallback = [&callbacksSuccess](unsigned int) {
         callbacksSuccess[6] = true;
+    };
+    auto windowCloseCallback = [&callbacksSuccess]() {
+        callbacksSuccess[7] = true;
     };
 
     WindowCallbacks callbacks{mousePressCallback,  mouseMoveCallback,
