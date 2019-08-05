@@ -2,12 +2,12 @@
 #include "TestExpectedPaths.hpp"
 
 #include <GL/gl3w.h>
-#include <atlas/core/FMT.hpp>
 #include <atlas/core/Platform.hpp>
 #include <atlas/glx/GLSL.hpp>
 
 #include <GLFW/glfw3.h>
 #include <catch2/catch.hpp>
+#include <fmt/printf.h>
 
 #include <fstream>
 #include <functional>

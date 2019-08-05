@@ -1,7 +1,8 @@
 #include <atlas/hlr/LoadLibrary.hpp>
 
-#include <atlas/core/FMT.hpp>
 #include <atlas/core/Platform.hpp>
+
+#include <fmt/printf.h>
 
 #if defined(ATLAS_BUILD_DEBUG)
 #    include "TestLibraryDebugPath.hpp"

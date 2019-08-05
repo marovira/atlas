@@ -1,6 +1,7 @@
 #include "atlas/glx/GLSL.hpp"
 
-#include <atlas/core/FMT.hpp>
+#include <atlas/core/Platform.hpp>
+#include <fmt/printf.h>
 
 #include <filesystem>
 #include <fstream>
