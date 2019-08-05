@@ -51,12 +51,14 @@ source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_GROUP})
 source_group("include\\atlas\\glx" FILES ${ATLAS_INCLUDE_GLX_GROUP})
 source_group("include\\atlas\\gui" FILES ${ATLAS_INCLUDE_GUI_GROUP})
 source_group("include\\atlas\\hlr" FILES ${ATLAS_INCLUDE_HLR_GROUP})
+source_group("include\\atlas\\utils" FILES ${ATLAS_INCLUDE_UTILS_GROUP})
 
 source_group("source" FILES)
 source_group("source\\atlas" FILES)
 source_group("source\\atlas\\glx" FILES ${ATLAS_SOURCE_GLX_GROUP})
 source_group("source\\atlas\\gui" FILES ${ATLAS_SOURCE_GUI_GROUP})
 source_group("source\\atlas\\hlr" FILES ${ATLAS_SOURCE_HLR_GROUP})
+source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_GROUP})
 
 #================================
 # Clang targets.
@@ -168,7 +170,7 @@ target_link_libraries(atlas-math INTERFACE glm atlas-core)
 target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
-target_compile_definitions(atlas-core INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
+target_compile_definitions(atlas-math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
     add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
 endif()
@@ -191,12 +193,25 @@ target_link_libraries(atlas-gui PUBLIC atlas-glx atlas-core)
 add_library(atlas::gui ALIAS atlas-gui)
 
 #================================
-# HLR module
+# HLR module.
 #================================
 add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
 target_include_directories(atlas-hlr PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-hlr PUBLIC atlas-core)
 add_library(atlas::hlr ALIAS atlas-hlr)
+
+#================================
+# Utils module.
+#================================
+add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
+    ${ATLAS_SOURCE_UTILS_GROUP})
+target_include_directories(atlas-utils PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-utils PUBLIC tinyobjloader::tinyobjloader fmt::fmt)
+target_compile_features(atlas-utils INTERFACE cxx_std_17)
+target_compile_options(atlas-utils INTERFACE "${ATLAS_COMPILER_FLAGS}")
+target_compile_options(atlas-utils INTERFACE "${ATLAS_DEBUG_FLAGS}")
+target_compile_definitions(atlas-utils INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
+add_library(atlas::utils ALIAS atlas-utils)
 
 #================================
 # Build the tests.
@@ -212,6 +227,7 @@ if (ATLAS_BUILD_TESTS)
         atlas-glx
         atlas-gui
         atlas-hlr
+        atlas-utils
         Catch2::Catch2)
     if (ATLAS_BUILD_GL_TEST)
         if (MSVC)
