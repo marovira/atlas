@@ -10,11 +10,6 @@ endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-option(ATLAS_BUILD_TESTS "Build Atlas test" ON)
-option(ATLAS_BUILD_GL_TEST "Build Atlas OpenGL tests" ON)
-option(ATLAS_BUILD_GUI_TEST "Build Atlas GUI tests" ON)
-
-# Now setup the version data.
 set(ATLAS_VERSION_MAJOR "3")
 set(ATLAS_VERSION_MINOR "0")
 set(ATLAS_VERSION_PATCH "0")
@@ -22,6 +17,13 @@ set(ATLAS_VERSION_EXTRA "")
 set(ATLAS_VERSION "${ATLAS_VERSION_MAJOR}.${ATLAS_VERSION_MINOR}")
 set(ATLAS_VERSION_FULL 
     "${ATLAS_VERSION}.${ATLAS_VERSION_PATCH}${ATLAS_VERSION_EXTRA}")
+
+#================================
+# Option variables.
+#================================
+option(ATLAS_BUILD_TESTS "Build Atlas test" ON)
+option(ATLAS_BUILD_GL_TEST "Build Atlas OpenGL tests" ON)
+option(ATLAS_BUILD_GUI_TEST "Build Atlas GUI tests" ON)
 
 #================================
 # Directory variables.
@@ -42,20 +44,89 @@ add_subdirectory("${ATLAS_SOURCE_ROOT}")
 #================================
 # Source groups.
 #================================
-include("${ATLAS_SOURCE_DIR}/cmake/SourceGroups.cmake")
+source_group("include" FILES)
+source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_GROUP})
+source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_GROUP})
+source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_GROUP})
+source_group("include\\atlas\\glx" FILES ${ATLAS_INCLUDE_GLX_GROUP})
+source_group("include\\atlas\\gui" FILES ${ATLAS_INCLUDE_GUI_GROUP})
+source_group("include\\atlas\\hlr" FILES ${ATLAS_INCLUDE_HLR_GROUP})
+
+source_group("source" FILES)
+source_group("source\\atlas" FILES)
+source_group("source\\atlas\\glx" FILES ${ATLAS_SOURCE_GLX_GROUP})
+source_group("source\\atlas\\gui" FILES ${ATLAS_SOURCE_GUI_GROUP})
+source_group("source\\atlas\\hlr" FILES ${ATLAS_SOURCE_HLR_GROUP})
 
 #================================
 # Clang targets.
 #================================
-include("${ATLAS_SOURCE_DIR}/cmake/Clang.cmake")
+find_program(CLANG_FORMAT_EXE 
+    NAMES "clang-format"
+    DOC "Path to clang-format executable"
+    )
+if (NOT CLANG_FORMAT_EXE)
+    message(STATUS "clang-format not found.")
+else()
+    message(STATUS "clang-format found: ${CLANG_FORMAT_EXE}")
+    set(ATLAS_FILES 
+        ${ATLAS_HEADER_FILES}
+        ${ATLAS_SOURCE_FILES}
+        )
+    add_custom_target(clang-format
+        COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${ATLAS_FILES}
+        )
+endif()
 
 #================================
 # Find Packages.
 #================================
-include("${ATLAS_SOURCE_DIR}/cmake/Packages.cmake")
+include(FetchContent)
+
+# Declare fetch content for all packages.
+FetchContent_Declare(
+    fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG 5.3.0)
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git 
+    GIT_TAG 0.9.9.5)
+FetchContent_Declare(
+    glfw
+    GIT_REPOSITORY https://github.com/glfw/glfw.git 
+    GIT_TAG 3.3)
+FetchContent_Declare(
+    gl3w
+    GIT_REPOSITORY https://github.com/marovira/gl3w.git)
+
+find_package(fmt QUIET)
+find_package(glm QUIET)
+find_package(glfw3 QUIET)
+find_package(gl3w QUIET)
+
+if (NOT fmt_FOUND AND NOT fmt_POPULATED)
+    FetchContent_Populate(fmt)
+    add_subdirectory(${fmt_SOURCE_DIR} ${fmt_BINARY_DIR})
+endif()
+
+if (NOT glm_FOUND AND NOT glm_POPULATED)
+    FetchContent_Populate(glm)
+    add_subdirectory(${glm_SOURCE_DIR} ${glm_BINARY_DIR})
+endif()
+
+if (NOT glfw3_FOUND AND NOT glfw_POPULATED)
+    FetchContent_Populate(glfw)
+    add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
+endif()
+
+if (NOT gl3w_FOUND AND NOT gl3w_POPULATED)
+    FetchContent_Populate(gl3w)
+    add_subdirectory(${gl3w_SOURCE_DIR} ${gl3w_BINARY_DIR})
+endif()
 
 #================================
-# Set compiler flags.
+# Compiler flags.
 #================================
 if (MSVC)
     set(ATLAS_COMPILER_FLAGS /W4 /WX /MP)
@@ -72,8 +143,8 @@ target_link_libraries(atlas-core INTERFACE fmt::fmt)
 target_compile_features(atlas-core INTERFACE cxx_std_17)
 target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
+target_compile_definitions(atlas-core INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
-    target_compile_definitions(atlas-core INTERFACE -DNOMINMAX)
     add_custom_target(_atlas-core SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
 endif()
 add_library(atlas::core ALIAS atlas-core)
@@ -87,8 +158,8 @@ target_link_libraries(atlas-math INTERFACE glm atlas-core)
 target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
+target_compile_definitions(atlas-core INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
-    target_compile_definitions(atlas-core INTERFACE -DNOMINMAX)
     add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
 endif()
 add_library(atlas::math ALIAS atlas-math)
