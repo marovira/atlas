@@ -1,0 +1,3 @@
+set(ATLAS_INCLUDE_HLR_LIST
+    "${ATLAS_INCLUDE_ROOT}/hlr/LoadLibrary.hpp"
+    PARENT_SCOPE)

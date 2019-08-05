@@ -1,0 +1,3 @@
+set(ATLAS_SOURCE_HLR_LIST
+    "${ATLAS_SOURCE_ROOT}/hlr/LoadLibrary.cpp"
+    PARENT_SCOPE)
