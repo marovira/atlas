@@ -17,3 +17,8 @@ else()
         COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${ATLAS_FILES}
         )
 endif()
+
+#================================
+# Clang-tidy setup.
+#================================
+# TODO: Figure out the settings we want for clang-tidy.
