@@ -99,11 +99,16 @@ FetchContent_Declare(
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/marovira/gl3w.git)
+FetchContent_Declare(
+    tinyobjloader
+    GIT_REPOSITORY https://github.com/syoyo/tinyobjloader.git
+    GIT_TAG v2.0-rc1)
 
 find_package(fmt QUIET)
 find_package(glm QUIET)
 find_package(glfw3 QUIET)
 find_package(gl3w QUIET)
+find_package(tinyobjloader QUIET)
 
 if (NOT fmt_FOUND AND NOT fmt_POPULATED)
     FetchContent_Populate(fmt)
@@ -123,6 +128,11 @@ endif()
 if (NOT gl3w_FOUND AND NOT gl3w_POPULATED)
     FetchContent_Populate(gl3w)
     add_subdirectory(${gl3w_SOURCE_DIR} ${gl3w_BINARY_DIR})
+endif()
+
+if (NOT tinyobjloader_FOUND AND NOT tinyobjloader_POPULATED)
+    FetchContent_Populate(tinyobjloader)
+    add_subdirectory(${tinyobjloader_SOURCE_DIR} ${tinyobjloader_BINARY_DIR})
 endif()
 
 #================================
