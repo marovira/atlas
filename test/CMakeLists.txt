@@ -87,6 +87,31 @@ set(ATLAS_EXPECTED_HEADER "${ATLAS_TEST_ROOT}/TestExpectedPaths.hpp")
 configure_file("${ATLAS_TEST_ROOT}/TestExpectedPaths.hpp.in"
     ${ATLAS_EXPECTED_HEADER})
 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+add_library(test_lib SHARED ${ATLAS_TEST_ROOT}/test_lib.cpp)
+target_link_libraries(test_lib PRIVATE atlas-hlr)
+if (MSVC)
+    target_compile_definitions(test_lib PRIVATE ATLAS_WINDOWS_EXPORT)
+endif()
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+
+
+set(ATLAS_TEST_LIBRARY_PATH "$<TARGET_FILE:test_lib>")
+set(ATLAS_TEST_DEBUG_LIBRARY_HEADER
+    "${ATLAS_TEST_ROOT}/TestLibraryDebugPath.hpp")
+set(ATLAS_TEST_RELEASE_LIBRARY_HEADER
+    "${ATLAS_TEST_ROOT}/TestLibraryReleasePath.hpp")
+
+configure_file("${ATLAS_TEST_ROOT}/TestLibraryDebugPath.hpp.in"
+    ${ATLAS_TEST_DEBUG_LIBRARY_HEADER})
+configure_file("${ATLAS_TEST_ROOT}/TestLibraryReleasePath.hpp.in"
+    ${ATLAS_TEST_RELEASE_LIBRARY_HEADER})
+
+file(GENERATE OUTPUT ${ATLAS_TEST_DEBUG_LIBRARY_HEADER} INPUT
+    ${ATLAS_TEST_DEBUG_LIBRARY_HEADER} CONDITION $<CONFIG:DEBUG>)
+file(GENERATE OUTPUT ${ATLAS_TEST_RELEASE_LIBRARY_HEADER} INPUT
+    ${ATLAS_TEST_RELEASE_LIBRARY_HEADER} CONDITION $<CONFIG:RELEASE>)
+
 set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/test_main.cpp"
     "${ATLAS_TEST_ROOT}/atlas_core_platform.cpp"
@@ -99,6 +124,10 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_glx_glsl.cpp"
     "${ATLAS_TEST_ROOT}/atlas_glx_context.cpp"
     "${ATLAS_TEST_ROOT}/atlas_gui_gui.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_hlr_loadlibrary.cpp"
     ${ATLAS_TEST_HEADER}
     ${ATLAS_EXPECTED_HEADER}
+    ${ATLAS_TEST_DEBUG_LIBRARY_HEADER}
+    ${ATLAS_TEST_RELEASE_LIBRARY_HEADER}
     PARENT_SCOPE)
+
