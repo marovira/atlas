@@ -32,7 +32,7 @@ namespace atlas::hlr
             return nullptr;
         }
 
-        HMODULE h = reinterpret_cast<HMODULE>(handle);
+        auto h = reinterpret_cast<HMODULE>(handle);
 
         FARPROC procAddress = GetProcAddress(h, functionName.c_str());
         if (procAddress == nullptr)
@@ -47,7 +47,7 @@ namespace atlas::hlr
 
     void unloadLibraryHandle(void* handle)
     {
-        HMODULE h = reinterpret_cast<HMODULE>(handle);
+        auto h = reinterpret_cast<HMODULE>(handle);
         FreeLibrary(h);
     }
 #else
