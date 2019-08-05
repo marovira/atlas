@@ -1,0 +1,3 @@
+#pragma once
+
+char const* TestLibraryPath = "@ATLAS_TEST_LIBRARY_PATH@";
