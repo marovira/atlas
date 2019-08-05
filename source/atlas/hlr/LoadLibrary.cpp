@@ -1,7 +1,7 @@
 #include "atlas/hlr/LoadLibrary.hpp"
 
-#include <atlas/core/FMT.hpp>
 #include <atlas/core/Platform.hpp>
+#include <fmt/printf.h>
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
 #    define WIN32_LEAN_AND_MEAN

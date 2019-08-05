@@ -1,7 +1,7 @@
 #include <atlas/glx/Context.hpp>
 #include <atlas/gui/GUI.hpp>
 
-#include <atlas/core/FMT.hpp>
+#include <fmt/printf.h>
 
 #include <catch2/catch.hpp>
 
