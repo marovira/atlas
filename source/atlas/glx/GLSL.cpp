@@ -169,11 +169,6 @@ namespace atlas::glx
         return outString.str();
     }
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
-#    pragma warning(push)
-#    pragma warning(disable : 26451)
-#endif
-
     std::optional<std::string> compileShader(std::string const& source,
                                              GLuint handle)
     {
@@ -233,10 +228,6 @@ namespace atlas::glx
 
         return {};
     }
-
-#if defined(ATLAS_PLATFORM_WINDOWS)
-#    pragma warning(pop)
-#endif
 
     std::string parseErrorLog(ShaderFile const& file, std::string const& log)
     {
