@@ -54,7 +54,6 @@ include("${ATLAS_SOURCE_DIR}/cmake/Clang.cmake")
 #================================
 include("${ATLAS_SOURCE_DIR}/cmake/Packages.cmake")
 
-
 #================================
 # Set compiler flags.
 #================================
@@ -111,6 +110,14 @@ target_link_libraries(atlas-gui PUBLIC atlas-glx atlas-core)
 add_library(atlas::gui ALIAS atlas-gui)
 
 #================================
+# HLR module
+#================================
+add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
+target_include_directories(atlas-hlr PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas-hlr PUBLIC atlas-core)
+add_library(atlas::hlr ALIAS atlas-hlr)
+
+#================================
 # Build the tests.
 #================================
 if (ATLAS_BUILD_TESTS)
@@ -123,6 +130,7 @@ if (ATLAS_BUILD_TESTS)
         atlas-math 
         atlas-glx
         atlas-gui
+        atlas-hlr
         Catch2::Catch2)
     if (ATLAS_BUILD_GL_TEST)
         if (MSVC)
