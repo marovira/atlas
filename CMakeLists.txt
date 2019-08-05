@@ -206,11 +206,8 @@ add_library(atlas::hlr ALIAS atlas-hlr)
 add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
     ${ATLAS_SOURCE_UTILS_GROUP})
 target_include_directories(atlas-utils PUBLIC "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-utils PUBLIC tinyobjloader::tinyobjloader fmt::fmt)
-target_compile_features(atlas-utils INTERFACE cxx_std_17)
-target_compile_options(atlas-utils INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-utils INTERFACE "${ATLAS_DEBUG_FLAGS}")
-target_compile_definitions(atlas-utils INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
+target_link_libraries(atlas-utils PUBLIC atlas-math tinyobjloader::tinyobjloader
+    fmt::fmt)
 add_library(atlas::utils ALIAS atlas-utils)
 
 #================================
