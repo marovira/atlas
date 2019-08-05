@@ -122,13 +122,13 @@ ShowExampleAppCustomRendering()
                                               // use #define NULL 0
 #    endif
 #    if __has_warning("-Wdouble-promotion")
-#        pragma clang diagnostic \
-            ignored "-Wdouble-promotion" // warning: implicit conversion from
-                                         // 'float' to 'double' when passing
-                                         // argument to function  // using
-                                         // printf() is a misery with this as
-                                         // C++ va_arg ellipsis changes float to
-                                         // double.
+#        pragma clang diagnostic ignored \
+            "-Wdouble-promotion" // warning: implicit conversion from
+                                 // 'float' to 'double' when passing
+                                 // argument to function  // using
+                                 // printf() is a misery with this as
+                                 // C++ va_arg ellipsis changes float to
+                                 // double.
 #    endif
 #    if __has_warning("-Wreserved-id-macro")
 #        pragma clang diagnostic ignored \
@@ -907,8 +907,8 @@ static void ShowDemoWindowWidgets()
                         (1 << node_clicked); // CTRL+click to toggle
                 else // if (!(selection_mask & (1 << node_clicked))) //
                      // Depending on selection behavior you want, this commented
-                     // bit preserve selection when clicking on item that is part
-                     // of the selection
+                     // bit preserve selection when clicking on item that is
+                     // part of the selection
                     selection_mask =
                         (1 << node_clicked); // Click to single-select
             }
