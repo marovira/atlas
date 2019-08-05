@@ -1,9 +1,10 @@
 #include "atlas/gui/GUI.hpp"
 
-#include <atlas/core/FMT.hpp>
 #include <atlas/core/Platform.hpp>
 #include <atlas/glx/Buffer.hpp>
 #include <atlas/glx/GLSL.hpp>
+
+#include <fmt/printf.h>
 
 #if defined(ATLAS_PLATFORM_WINDOWS)
 #    define GLFW_EXPOSE_NATIVE_WIN32

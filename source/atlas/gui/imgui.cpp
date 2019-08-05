@@ -1571,13 +1571,13 @@ functions)
                                               // #define NULL 0
 #    endif
 #    if __has_warning("-Wdouble-promotion")
-#        pragma clang diagnostic \
-            ignored "-Wdouble-promotion" // warning: implicit conversion from
-                                         // 'float' to 'double' when passing
-                                         // argument to function  // using
-                                         // printf() is a misery with this as
-                                         // C++ va_arg ellipsis changes float to
-                                         // double.
+#        pragma clang diagnostic ignored \
+            "-Wdouble-promotion" // warning: implicit conversion from
+                                 // 'float' to 'double' when passing
+                                 // argument to function  // using
+                                 // printf() is a misery with this as
+                                 // C++ va_arg ellipsis changes float to
+                                 // double.
 #    endif
 #elif defined(__GNUC__)
 #    pragma GCC diagnostic ignored \
