@@ -1753,10 +1753,11 @@ enum ImGuiWindowFlags_
 
     // [Obsolete]
     // ImGuiWindowFlags_ShowBorders          = 1 << 7,   // --> Set
-    // style.FrameBorderSize=1.0f / style.WindowBorderSize=1.0f to enable borders
-    // around windows and items ImGuiWindowFlags_ResizeFromAnySide    = 1 << 17,
-    // // --> Set io.ConfigWindowsResizeFromEdges and make sure mouse cursors are
-    // supported by back-end (io.BackendFlags &
+    // style.FrameBorderSize=1.0f / style.WindowBorderSize=1.0f to enable
+    // borders around windows and items ImGuiWindowFlags_ResizeFromAnySide    =
+    // 1 << 17,
+    // // --> Set io.ConfigWindowsResizeFromEdges and make sure mouse cursors
+    // are supported by back-end (io.BackendFlags &
     // ImGuiBackendFlags_HasMouseCursors)
 };
 
@@ -2325,9 +2326,9 @@ enum ImGuiCol_
     ImGuiCol_ColumnHovered = ImGuiCol_SeparatorHovered,
     ImGuiCol_ColumnActive  = ImGuiCol_SeparatorActive // [renamed in 1.51]
 // ImGuiCol_CloseButton, ImGuiCol_CloseButtonActive,
-// ImGuiCol_CloseButtonHovered, // [unused since 1.60+] the close button now uses
-// regular button colors. ImGuiCol_ComboBg, // [unused since 1.53+] ComboBg has
-// been merged with PopupBg, so a redirect isn't accurate.
+// ImGuiCol_CloseButtonHovered, // [unused since 1.60+] the close button now
+// uses regular button colors. ImGuiCol_ComboBg, // [unused since 1.53+] ComboBg
+// has been merged with PopupBg, so a redirect isn't accurate.
 #endif
 };
 
@@ -4339,8 +4340,8 @@ struct ImFontConfig
                       //          maps to the resulting font height).
     int OversampleH;  // 3        // Rasterize at higher quality for sub-pixel
                       // positioning. Read
-                     // https://github.com/nothings/stb/blob/master/tests/oversample/README.md
-                     // for details.
+    // https://github.com/nothings/stb/blob/master/tests/oversample/README.md
+    // for details.
     int OversampleV; // 1        // Rasterize at higher quality for sub-pixel
                      // positioning. We don't use sub-pixel positions on the Y
                      // axis.
@@ -4425,10 +4426,11 @@ struct ImFontGlyphRangesBuilder
         const char* text,
         const char* text_end =
             NULL); // Add string (each character of the UTF-8 string are added)
-    IMGUI_API void
-    AddRanges(const ImWchar* ranges); // Add ranges, e.g.
-                                      // builder.AddRanges(ImFontAtlas::GetGlyphRangesDefault())
-                                      // to force add all of ASCII/Latin+Ext
+    IMGUI_API void AddRanges(
+        const ImWchar*
+            ranges); // Add ranges, e.g.
+                     // builder.AddRanges(ImFontAtlas::GetGlyphRangesDefault())
+                     // to force add all of ASCII/Latin+Ext
     IMGUI_API void
     BuildRanges(ImVector<ImWchar>* out_ranges); // Output new ranges
 };

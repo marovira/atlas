@@ -2032,8 +2032,8 @@ struct IMGUI_API ImGuiWindowTempData
     ImVec2 MenuBarOffset;  // MenuBarOffset.x is sort of equivalent of a
                            // per-layer CursorPos.x, saved/restored as we switch
                            // to the menu bar. The only situation when
-                          // MenuBarOffset.y is > 0 if when (SafeAreaPadding.y >
-                          // FramePadding.y), often used on TVs.
+    // MenuBarOffset.y is > 0 if when (SafeAreaPadding.y >
+    // FramePadding.y), often used on TVs.
     ImVector<ImGuiWindow*> ChildWindows;
     ImGuiStorage* StateStorage;
     ImGuiLayoutType LayoutType;

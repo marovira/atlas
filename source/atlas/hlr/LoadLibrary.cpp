@@ -7,7 +7,7 @@
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #else
-#include <dlfcn.h>
+#    include <dlfcn.h>
 #endif
 
 namespace atlas::hlr
