@@ -20,15 +20,18 @@ using namespace atlas::glx;
 using namespace atlas::core;
 namespace fs = std::experimental::filesystem;
 
-bool operator==(FileData const& lhs, FileData const& rhs)
+namespace atlas::glx
 {
-    return lhs.filename == rhs.filename && lhs.parent == rhs.parent &&
-           lhs.lastWrite == rhs.lastWrite;
-}
+    bool operator==(FileData const& lhs, FileData const& rhs)
+    {
+        return lhs.filename == rhs.filename && lhs.parent == rhs.parent &&
+               lhs.lastWrite == rhs.lastWrite;
+    }
 
-bool operator!=(FileData const& lhs, FileData const& rhs)
-{
-    return !(lhs == rhs);
+    bool operator!=(FileData const& lhs, FileData const& rhs)
+    {
+        return !(lhs == rhs);
+    }
 }
 
 std::string loadExpectedString(std::string const& filename)
