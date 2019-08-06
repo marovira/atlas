@@ -1,5 +1,6 @@
 #include "atlas/glx/GLSL.hpp"
 
+#include <atlas/core/Filesystem.hpp>
 #include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>
 
@@ -19,13 +20,6 @@ namespace fs = std::filesystem;
 
 namespace atlas::glx
 {
-    std::time_t getFileLastWrite(std::string const& filename)
-    {
-        fs::path filePath{filename};
-        auto ftime = fs::last_write_time(filePath);
-        return decltype(ftime)::clock::to_time_t(ftime);
-    }
-
     std::string
     recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
                          std::vector<std::string> const& includeDirectories);
@@ -55,7 +49,7 @@ namespace atlas::glx
     {
         for (auto& unit : file.includedFiles)
         {
-            std::time_t stamp = getFileLastWrite(unit.filename);
+            std::time_t stamp = core::getFileLastWrite(unit.filename);
             double secs       = std::difftime(stamp, unit.lastWrite);
             if (secs > 0)
             {
@@ -85,7 +79,7 @@ namespace atlas::glx
         // includes.
         if (file.includedFiles.empty())
         {
-            auto timestamp = getFileLastWrite(filename);
+            auto timestamp = core::getFileLastWrite(filename);
             file.includedFiles.emplace_back(filename, -1, timestamp);
         }
 
@@ -147,7 +141,7 @@ namespace atlas::glx
                     }
                 }
 
-                auto timestamp = getFileLastWrite(absolutePath);
+                auto timestamp = core::getFileLastWrite(absolutePath);
                 FileData f{absolutePath, fileNum, timestamp};
 
                 // Check if we have seen this file before to prevent circular
