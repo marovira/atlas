@@ -34,8 +34,15 @@ The key features of Atlas are as follows:
 The following are **core** requirements of Atlas:
 
 * OpenGL 4.5+,
-* C++17 compatible compiler (GCC, Clang, and MSVC are supported),
-* CMake 3.10+.
+* CMake 3.12+.
+
+Atlas supports the following C++17 compliant compilers:
+
+| Compiler | Version |
+| -------- | ------- |
+| MSVC | 16.1 |
+| GCC | 9.1 |
+| LLVM Clang | 8.0 |
 
 Please note that OSX is **not** supported.
 
@@ -57,6 +64,7 @@ The dependencies per module are as follows:
 | glx | OpenGL, GLFW, gl3w, core |
 | gui | glx, core, ImGUI (included) |
 | hlr | core |
+| utils | math, FMT, tinyobjloader, stb (included) | 
 
 ## Contributing
 
