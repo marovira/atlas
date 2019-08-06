@@ -18,6 +18,10 @@ set(ATLAS_VERSION "${ATLAS_VERSION_MAJOR}.${ATLAS_VERSION_MINOR}")
 set(ATLAS_VERSION_FULL 
     "${ATLAS_VERSION}.${ATLAS_VERSION_PATCH}${ATLAS_VERSION_EXTRA}")
 
+if (POLICY CMP0072)
+    cmake_policy(SET CMP0072 NEW)
+endif()
+
 #================================
 # Option variables.
 #================================
@@ -111,6 +115,7 @@ find_package(glm QUIET)
 find_package(glfw3 QUIET)
 find_package(gl3w QUIET)
 find_package(tinyobjloader QUIET)
+find_package(OpenGL REQUIRED QUIET)
 
 if (NOT fmt_FOUND AND NOT fmt_POPULATED)
     FetchContent_Populate(fmt)
@@ -132,9 +137,11 @@ if (NOT gl3w_FOUND AND NOT gl3w_POPULATED)
     add_subdirectory(${gl3w_SOURCE_DIR} ${gl3w_BINARY_DIR})
 endif()
 
+set(TINYOBJLOADER_LIB "tinyobjloader::tinyobjloader")
 if (NOT tinyobjloader_FOUND AND NOT tinyobjloader_POPULATED)
     FetchContent_Populate(tinyobjloader)
     add_subdirectory(${tinyobjloader_SOURCE_DIR} ${tinyobjloader_BINARY_DIR})
+    set(TINYOBJLOADER_LIB "tinyobjloader")
 endif()
 
 #================================
@@ -206,7 +213,7 @@ add_library(atlas::hlr ALIAS atlas-hlr)
 add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
     ${ATLAS_SOURCE_UTILS_GROUP})
 target_include_directories(atlas-utils PUBLIC "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-utils PUBLIC atlas-math tinyobjloader::tinyobjloader
+target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
     fmt::fmt)
 add_library(atlas::utils ALIAS atlas-utils)
 
