@@ -109,7 +109,7 @@ namespace atlas::gui
     {
         data.window = window;
         auto& io    = ImGui::GetIO();
-#if defined (ATLAS_PLATFORM_WINDOWS)
+#if defined(ATLAS_PLATFORM_WINDOWS)
         io.ImeWindowHandle =
             reinterpret_cast<void*>(glfwGetWin32Window(window));
 #endif
