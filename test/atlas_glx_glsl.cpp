@@ -3,6 +3,7 @@
 
 #include <GL/gl3w.h>
 #include <atlas/core/Platform.hpp>
+#include <atlas/core/Filesystem.hpp>
 #include <atlas/glx/GLSL.hpp>
 
 #include <GLFW/glfw3.h>
@@ -16,12 +17,8 @@
 #include <sstream>
 
 using namespace atlas::glx;
-
-#if defined(ATLAS_PLATFORM_WINDOWS)
+using namespace atlas::core;
 namespace fs = std::experimental::filesystem;
-#else
-namespace fs = std::filesystem;
-#endif
 
 bool operator==(FileData const& lhs, FileData const& rhs)
 {
@@ -32,13 +29,6 @@ bool operator==(FileData const& lhs, FileData const& rhs)
 bool operator!=(FileData const& lhs, FileData const& rhs)
 {
     return !(lhs == rhs);
-}
-
-std::time_t getFileTimestamp(std::string const& filename)
-{
-    fs::path filePath{filename};
-    auto ftime = fs::last_write_time(filePath);
-    return decltype(ftime)::clock::to_time_t(ftime);
 }
 
 std::string loadExpectedString(std::string const& filename)
@@ -90,7 +80,7 @@ TEST_CASE("loadShaderFile: Empty file", "[glx]")
     REQUIRE(result.includedFiles.size() == 1);
 
     auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileTimestamp(filename)};
+    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
     REQUIRE(includedFile == expectedFile);
 }
 
@@ -107,7 +97,7 @@ TEST_CASE("loadShaderFile: Single line", "[glx]")
     REQUIRE(result.includedFiles.size() == 1);
 
     auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileTimestamp(filename)};
+    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
     REQUIRE(includedFile == expectedFile);
 }
 
@@ -123,7 +113,7 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
     REQUIRE(result.includedFiles.size() == 1);
 
     auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileTimestamp(filename)};
+    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
     REQUIRE(includedFile == expectedFile);
 }
 
@@ -138,12 +128,12 @@ TEST_CASE("loadShaderFile: Single include", "[glx]")
     REQUIRE(result.includedFiles.size() == 2);
 
     auto includedFile = result.includedFiles[0];
-    FileData expectedFile{filename, -1, getFileTimestamp(filename)};
+    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
     REQUIRE(includedFile == expectedFile);
 
     includedFile           = result.includedFiles[1];
     expectedFile.filename  = normalizePath(TestData[uniform_matrices]);
     expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileTimestamp(TestData[uniform_matrices]);
+    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_matrices]);
     REQUIRE(includedFile == expectedFile);
 }

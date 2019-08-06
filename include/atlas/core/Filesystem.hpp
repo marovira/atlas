@@ -9,11 +9,7 @@ namespace atlas::core
 {
     std::time_t getFileLastWrite(std::string const& filename)
     {
-#if defined(ATLAS_PLATFORM_WINDOWS)
         namespace fs = std::experimental::filesystem;
-#else
-        namespace fs = std::filesystem;
-#endif
 
         fs::path filePath{filename};
         auto ftime = fs::last_write_time(filePath);
