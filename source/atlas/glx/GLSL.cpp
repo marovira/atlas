@@ -4,7 +4,6 @@
 #include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>
 
-#include <experimental/filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
