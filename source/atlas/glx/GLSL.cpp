@@ -4,7 +4,7 @@
 #include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>
 
-#include <filesystem>
+#include <experimental/filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -12,11 +12,7 @@
 #include <set>
 #include <sstream>
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
 namespace fs = std::experimental::filesystem;
-#else
-namespace fs = std::filesystem;
-#endif
 
 namespace atlas::glx
 {
