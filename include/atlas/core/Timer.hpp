@@ -17,7 +17,7 @@ namespace atlas::core
 
         void reset()
         {
-            mBegin = std::chrono::time_point<res>();
+            mBegin = std::chrono::time_point<Res>();
         }
 
         T elapsed() const
