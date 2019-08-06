@@ -7,7 +7,7 @@
 
 namespace atlas::core
 {
-    std::time_t getFileLastWrite(std::string const& filename)
+    inline std::time_t getFileLastWrite(std::string const& filename)
     {
         namespace fs = std::experimental::filesystem;
 
