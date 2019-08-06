@@ -6,6 +6,8 @@
 #if defined(ATLAS_PLATFORM_WINDOWS)
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
+#else
+#include <dlfcn.h>
 #endif
 
 namespace atlas::hlr
@@ -51,5 +53,38 @@ namespace atlas::hlr
         FreeLibrary(h);
     }
 #else
+    void* loadLibraryHandle(std::string const& libraryName)
+    {
+        void* handle = dlopen(libraryName.c_str(), RTLD_LAZY);
+        if (handle == nullptr)
+        {
+            auto errorMsg = dlerror();
+            fmt::print(stderr, "error: in dlopen: {}\n", errorMsg);
+        }
+
+        return handle;
+    }
+
+    void* loadRawFunctionPtr(void* handle, std::string const& functionName)
+    {
+        if (handle == nullptr)
+        {
+            fmt::print(stderr, "error: null library handle\n");
+            return nullptr;
+        }
+        void* procAddress = dlsym(handle, functionName.c_str());
+        if (procAddress == nullptr)
+        {
+            auto errorMsg = dlerror();
+            fmt::print(stderr, "error: in dlsym: {}\n", errorMsg);
+        }
+
+        return procAddress;
+    }
+
+    void unloadLibraryHandle(void* handle)
+    {
+        dlclose(handle);
+    }
 #endif
 } // namespace atlas::hlr
