@@ -151,6 +151,8 @@ if (MSVC)
     set(ATLAS_COMPILER_FLAGS /W4 /WX /MP)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
     set(ATLAS_COMPILE_DEFINITIONS -DNOMINMAX)
+else()
+    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:-g>")
 endif()
 
 #================================
@@ -158,7 +160,7 @@ endif()
 #================================
 add_library(atlas-core INTERFACE)
 target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-core INTERFACE fmt::fmt)
+target_link_libraries(atlas-core INTERFACE fmt::fmt stdc++fs)
 target_compile_features(atlas-core INTERFACE cxx_std_17)
 target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
