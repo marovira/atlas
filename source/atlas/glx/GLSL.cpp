@@ -51,6 +51,21 @@ namespace atlas::glx
         return file;
     }
 
+    bool shouldShaderBeReloaded(ShaderFile const& file)
+    {
+        for (auto& unit : file.includedFiles)
+        {
+            std::time_t stamp = getFileLastWrite(unit.filename);
+            double secs       = std::difftime(stamp, unit.lastWrite);
+            if (secs > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     std::string
     recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
                          std::vector<std::string> const& includeDirectories)

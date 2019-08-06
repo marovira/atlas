@@ -34,6 +34,8 @@ namespace atlas::glx
     readShaderSource(std::string const& filename,
                      std::vector<std::string> const& includeDirectories = {});
 
+    bool shouldShaderBeReloaded(ShaderFile const& file);
+
     std::optional<std::string> compileShader(std::string const& source,
                                              GLuint handle);
     std::optional<std::string> linkShaders(GLuint handle);
