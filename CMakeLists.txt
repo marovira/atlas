@@ -22,6 +22,7 @@ if (POLICY CMP0072)
     cmake_policy(SET CMP0072 NEW)
 endif()
 
+
 #================================
 # Option variables.
 #================================
@@ -38,6 +39,7 @@ set(ATLAS_BINARY_DIR "${PROJECT_BINARY_DIR}")
 set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
 set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
 set(ATLAS_TEST_ROOT "${ATLAS_SOURCE_DIR}/test")
+set(ATLAS_CMAKE_ROOT "${ATLAS_SOURCE_DIR}/cmake")
 
 #================================
 # Add subdirectories.
