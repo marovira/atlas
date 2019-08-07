@@ -1,6 +1,7 @@
 function(create_expected_header FILE_LIST OUTPUT_NUM_FILES OUTPUT_FILES
         OUTPUT_NAMES)
     list(LENGTH ${FILE_LIST} NUM_FILES)
+    set(FILE_SUFFIX ${ARGV4})
 
     MATH(EXPR n "${NUM_FILES}-1")
     set(i 0)
@@ -16,11 +17,11 @@ function(create_expected_header FILE_LIST OUTPUT_NUM_FILES OUTPUT_FILES
         # Now create the names that go in the enum.
         get_filename_component(FILE_NAME ${DATA_FILE} NAME_WE)
         if (${i} EQUAL 0)
-            set(NAME_STRING "    ${FILE_NAME} = 0,")
+            set(NAME_STRING "    ${FILE_NAME}${FILE_SUFFIX} = 0,")
         elseif(${i} EQUAL ${n})
-            set(NAME_STRING "    ${FILE_NAME}")
+            set(NAME_STRING "    ${FILE_NAME}${FILE_SUFFIX}")
         else()
-            set(NAME_STRING "    ${FILE_NAME},")
+            set(NAME_STRING "    ${FILE_NAME}${FILE_SUFFIX},")
         endif()
         list(APPEND DATA_NAMES "${NAME_STRING}")
 
