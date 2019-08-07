@@ -2,6 +2,8 @@
 
 #include <array>
 
+static constexpr char const* TestDataRoot{"@ATLAS_TEST_DATA_ROOT@/"};
+
 static constexpr std::array<char const*, @ATLAS_NUM_DATA_FILES@> TestData
 {
 @ATLAS_TEST_DATA_FILES@
