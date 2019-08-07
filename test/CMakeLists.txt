@@ -62,6 +62,7 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_glx_context.cpp"
     "${ATLAS_TEST_ROOT}/atlas_gui_gui.cpp"
     "${ATLAS_TEST_ROOT}/atlas_hlr_loadlibrary.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_utils_loadobj.cpp"
     ${ATLAS_TEST_HEADER}
     ${ATLAS_EXPECTED_HEADER}
     PARENT_SCOPE)
