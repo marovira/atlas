@@ -4,6 +4,7 @@ doc/
 bin/
 html/
 lib/
+test/data/obj/
 
 # Generated files #
 generated/
