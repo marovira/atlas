@@ -15,69 +15,11 @@ set(ATLAS_EXPECTED_DATA
     "${ATLAS_EXPECTED_DATA_ROOT}/glx_single_include.expected"
     )
 
-# Grab the size of the lists.
-list(LENGTH ATLAS_TEST_DATA ATLAS_NUM_DATA_FILES)
-list(LENGTH ATLAS_EXPECTED_DATA ATLAS_NUM_EXPECTED_FILES)
-
-# Compute the index of the final file.
-MATH(EXPR n "${ATLAS_NUM_DATA_FILES}-1")
-
-# Loop over the data files.
-set(i 0)
-foreach(DATA_FILE ${ATLAS_TEST_DATA})
-    # First create the strings with the filenames.
-    if (${i} EQUAL ${n})
-        set(NAME_STRING "    \"${DATA_FILE}\"")
-    else()
-        set(NAME_STRING "    \"${DATA_FILE}\",")
-    endif()
-    list(APPEND DATA_FILES "${NAME_STRING}")
-
-    # Now let's create the names that go in the enum
-    get_filename_component(FILE_NAME ${DATA_FILE} NAME_WE)
-    if (${i} EQUAL 0)
-        set(NAME_STRING "    ${FILE_NAME} = 0,")
-    elseif(${i} EQUAL ${n})
-        set(NAME_STRING "    ${FILE_NAME}")
-    else()
-        set(NAME_STRING "    ${FILE_NAME},")
-    endif()
-    list(APPEND DATA_NAMES "${NAME_STRING}")
-
-    MATH(EXPR i "${i}+1")
-endforeach()
-
-# Now loop over the expected files, resetting the variables.
-MATH(EXPR n "${ATLAS_NUM_EXPECTED_FILES}-1")
-set(i 0)
-foreach(EXPECTED_FILE ${ATLAS_EXPECTED_DATA})
-    # Create the strings with the filenames
-    if (${i} EQUAL ${n})
-        set(NAME_STRING "    \"${EXPECTED_FILE}\"")
-    else()
-        set(NAME_STRING "    \"${EXPECTED_FILE}\",")
-    endif()
-    list(APPEND EXPECTED_FILES "${NAME_STRING}")
-
-    # Now the names for the enum
-    get_filename_component(FILE_NAME ${EXPECTED_FILE} NAME_WE)
-    if (${i} EQUAL 0)
-        set(NAME_STRING "    ${FILE_NAME}_expected = 0,")
-    elseif(${i} EQUAL ${n})
-        set(NAME_STRING "    ${FILE_NAME}_expected")
-    else()
-        set(NAME_STRING "    ${FILE_NAME}_expected,")
-    endif()
-    list(APPEND EXPECTED_NAMES "${NAME_STRING}")
-
-    MATH(EXPR i "${i}+1")
-endforeach()
-
-# Strip the semi-colons of the lists.
-string(REPLACE ";" "\n" ATLAS_TEST_DATA_FILES "${DATA_FILES}")
-string(REPLACE ";" "\n" ATLAS_TEST_DATA_NAMES "${DATA_NAMES}")
-string(REPLACE ";" "\n" ATLAS_EXPECTED_FILES "${EXPECTED_FILES}")
-string(REPLACE ";" "\n" ATLAS_EXPECTED_NAMES "${EXPECTED_NAMES}")
+include("${ATLAS_CMAKE_ROOT}/CreateDataHeader.cmake")
+create_expected_header(ATLAS_EXPECTED_DATA ATLAS_NUM_EXPECTED_FILES
+    ATLAS_EXPECTED_FILES ATLAS_EXPECTED_NAMES)
+create_expected_header(ATLAS_TEST_DATA ATLAS_NUM_DATA_FILES
+    ATLAS_TEST_DATA_FILES ATLAS_TEST_DATA_NAMES)
 
 # Finally, create the config file and add it to the list.
 set(ATLAS_TEST_HEADER "${ATLAS_TEST_ROOT}/TestDataPaths.hpp")
@@ -95,28 +37,16 @@ if (MSVC)
 endif()
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 
-
-set(ATLAS_TEST_LIBRARY_PATH "$<TARGET_FILE:test_lib>")
-set(ATLAS_TEST_DEBUG_LIBRARY_HEADER
-    "${ATLAS_TEST_ROOT}/TestLibraryDebugPath.hpp")
-set(ATLAS_TEST_RELEASE_LIBRARY_HEADER
-    "${ATLAS_TEST_ROOT}/TestLibraryReleasePath.hpp")
-
-configure_file("${ATLAS_TEST_ROOT}/TestLibraryDebugPath.hpp.in"
-    ${ATLAS_TEST_DEBUG_LIBRARY_HEADER})
-configure_file("${ATLAS_TEST_ROOT}/TestLibraryReleasePath.hpp.in"
-    ${ATLAS_TEST_RELEASE_LIBRARY_HEADER})
-
+set(LIBRARY_HEADER "#pragma once\n\nchar const* TestLibraryPath =
+\"$<TARGET_FILE:test_lib>\"\;")
 if (MSVC)
-    file(GENERATE OUTPUT ${ATLAS_TEST_DEBUG_LIBRARY_HEADER} INPUT
-        ${ATLAS_TEST_DEBUG_LIBRARY_HEADER} CONDITION $<CONFIG:DEBUG>)
-    file(GENERATE OUTPUT ${ATLAS_TEST_RELEASE_LIBRARY_HEADER} INPUT
-        ${ATLAS_TEST_RELEASE_LIBRARY_HEADER} CONDITION $<CONFIG:RELEASE>)
+    file(GENERATE OUTPUT "${ATLAS_TEST_ROOT}/TestLibraryDebugPath.hpp" CONTENT
+        ${LIBRARY_HEADER} CONDITION $<CONFIG:DEBUG>)
+    file(GENERATE OUTPUT "${ATLAS_TEST_ROOT}/TestLibraryReleasePath.hpp" CONTENT
+        ${LIBRARY_HEADER} CONDITION $<CONFIG:RELEASE>)
 else()
-    file(GENERATE OUTPUT ${ATLAS_TEST_DEBUG_LIBRARY_HEADER} INPUT
-        ${ATLAS_TEST_DEBUG_LIBRARY_HEADER})
-    file(GENERATE OUTPUT ${ATLAS_TEST_RELEASE_LIBRARY_HEADER} INPUT
-        ${ATLAS_TEST_RELEASE_LIBRARY_HEADER})
+    file(GENERATE OUTPUT "${ATLAS_TEST_ROOT}/TestLibraryPath.hpp" CONTENT
+        ${LIBRARY_HEADER})
 endif()
 
 set(ATLAS_TEST_LIST
@@ -134,7 +64,5 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_hlr_loadlibrary.cpp"
     ${ATLAS_TEST_HEADER}
     ${ATLAS_EXPECTED_HEADER}
-    ${ATLAS_TEST_DEBUG_LIBRARY_HEADER}
-    ${ATLAS_TEST_RELEASE_LIBRARY_HEADER}
     PARENT_SCOPE)
 
