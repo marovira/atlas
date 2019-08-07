@@ -4,10 +4,14 @@
 
 #include <fmt/printf.h>
 
-#if defined(ATLAS_BUILD_DEBUG)
-#    include "TestLibraryDebugPath.hpp"
+#if defined(ATLAS_PLATFORM_WINDOWS)
+#    if defined(ATLAS_BUILD_DEBUG)
+#        include "TestLibraryDebugPath.hpp"
+#    else
+#        include "TestLibraryReleasePath.hpp"
+#    endif
 #else
-#    include "TestLibraryReleasePath.hpp"
+#    include "TestLibraryPath.hpp"
 #endif
 
 #include <catch2/catch.hpp>
