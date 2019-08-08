@@ -1,4 +1,4 @@
-# Atlas (dev)
+# Atlas v3.0
 
 > A data-driven graphics development framework.
 
