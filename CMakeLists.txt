@@ -29,6 +29,7 @@ endif()
 option(ATLAS_BUILD_TESTS "Build Atlas test" ON)
 option(ATLAS_BUILD_GL_TEST "Build Atlas OpenGL tests" ON)
 option(ATLAS_BUILD_GUI_TEST "Build Atlas GUI tests" ON)
+option(ATLAS_BUILD_EXAMPLES "Build Atlas examples" ON)
 
 #================================
 # Directory variables.
@@ -266,4 +267,9 @@ if (ATLAS_BUILD_TESTS)
     include(CTest)
     include(Catch)
     catch_discover_tests(atlas-test)
+endif()
+
+if (ATLAS_BUILD_EXAMPLES)
+    set(ATLAS_EXAMPLES_ROOT "${ATLAS_SOURCE_DIR}/examples")
+    add_subdirectory(${ATLAS_EXAMPLES_ROOT})
 endif()
