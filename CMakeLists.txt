@@ -225,6 +225,15 @@ target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
 add_library(atlas::utils ALIAS atlas-utils)
 
 #================================
+# Main Atlas library.
+#================================
+add_library(atlas ${ATLAS_SOURCE_ROOT_GROUP})
+target_include_directories(atlas PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_link_libraries(atlas PUBLIC atlas-core atlas-math atlas-glx atlas-gui
+    atlas-hlr atlas-utils)
+add_library(atlas::atlas ALIAS atlas)
+
+#================================
 # Build the tests.
 #================================
 if (ATLAS_BUILD_TESTS)
