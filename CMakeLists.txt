@@ -175,6 +175,7 @@ if (MSVC)
     add_custom_target(_atlas-core SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
 endif()
 add_library(atlas::core ALIAS atlas-core)
+set_target_properties(_atlas-core PROPERTIES FOLDER "atlas")
 
 #================================
 # Math module.
@@ -190,6 +191,7 @@ if (MSVC)
     add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
 endif()
 add_library(atlas::math ALIAS atlas-math)
+set_target_properties(_atlas-math PROPERTIES FOLDER "atlas")
 
 #================================
 # GLX module.
@@ -198,6 +200,7 @@ add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
 target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w atlas-core)
 add_library(atlas::glx ALIAS atlas-glx)
+set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
 
 #================================
 # GUI module.
@@ -206,6 +209,7 @@ add_library(atlas-gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
 target_include_directories(atlas-gui PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-gui PUBLIC atlas-glx atlas-core)
 add_library(atlas::gui ALIAS atlas-gui)
+set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
 
 #================================
 # HLR module.
@@ -214,6 +218,7 @@ add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
 target_include_directories(atlas-hlr PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-hlr PUBLIC atlas-core)
 add_library(atlas::hlr ALIAS atlas-hlr)
+set_target_properties(atlas-hlr PROPERTIES FOLDER "atlas")
 
 #================================
 # Utils module.
@@ -224,6 +229,7 @@ target_include_directories(atlas-utils PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
     fmt::fmt)
 add_library(atlas::utils ALIAS atlas-utils)
+set_target_properties(atlas-utils PROPERTIES FOLDER "atlas")
 
 #================================
 # Main Atlas library.
@@ -233,6 +239,7 @@ target_include_directories(atlas PUBLIC "${ATLAS_SOURCE_DIR}/include")
 target_link_libraries(atlas PUBLIC atlas-core atlas-math atlas-glx atlas-gui
     atlas-hlr atlas-utils)
 add_library(atlas::atlas ALIAS atlas)
+set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
 #================================
 # Build the tests.
@@ -263,6 +270,7 @@ if (ATLAS_BUILD_TESTS)
             target_compile_definitions(atlas-test PUBLIC -DATLAS_BUILD_GUI_TESTS)
         endif()
     endif()
+    set_target_properties(atlas-test PROPERTIES FOLDER "tests")
 
     include(CTest)
     include(Catch)
