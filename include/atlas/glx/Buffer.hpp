@@ -2,6 +2,8 @@
 
 #include <GL/gl3w.h>
 
+#include <cstddef>
+
 namespace atlas::glx
 {
     template<typename T>
