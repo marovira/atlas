@@ -5,11 +5,13 @@
 namespace atlas::core
 {
     template<typename T, typename = std::enable_if<std::is_enum<T>::value>>
+    using UnderlyingType = typename std::underlying_type<T>::type;
+
+    template<typename T, typename = std::enable_if<std::is_enum<T>::value>>
     constexpr typename std::underlying_type<T>::type
     enumToUnderlyingType(T value)
     {
-        using UnderType = typename std::underlying_type<T>::type;
-        return static_cast<UnderType>(value);
+        return static_cast<UnderlyingType<T>>(value);
     }
 
     template<typename T,
@@ -18,8 +20,7 @@ namespace atlas::core
                  std::is_unsigned<std::underlying_type<T>::type>::value>>
     constexpr T operator~(T a)
     {
-        using UnderType = typename std::underlying_type<T>::type;
-        UnderType var   = ~enumToUnderlyingType(a);
+        UnderlyingType<T> var = ~enumToUnderlyingType<T>(a);
         return static_cast<T>(var);
     }
 
@@ -29,9 +30,8 @@ namespace atlas::core
                  std::is_unsigned<std::underlying_type<T>::type>::value>>
     constexpr T operator|(T a, T b)
     {
-        using UnderType = typename std::underlying_type<T>::type;
-        UnderType uA    = enumToUnderlyingType(a);
-        UnderType uB    = enumToUnderlyingType(b);
+        UnderlyingType<T> uA = enumToUnderlyingType<T>(a);
+        UnderlyingType<T> uB = enumToUnderlyingType<T>(b);
         return static_cast<T>(uA | uB);
     }
 
@@ -41,9 +41,8 @@ namespace atlas::core
                  std::is_unsigned<std::underlying_type<T>::type>::value>>
     constexpr T operator&(T a, T b)
     {
-        using UnderType = typename std::underlying_type<T>::type;
-        UnderType uA    = enumToUnderlyingType(a);
-        UnderType uB    = enumToUnderlyingType(b);
+        UnderlyingType<T> uA = enumToUnderlyingType<T>(a);
+        UnderlyingType<T> uB = enumToUnderlyingType<T>(b);
         return static_cast<T>(uA & uB);
     }
 
@@ -53,9 +52,8 @@ namespace atlas::core
                  std::is_unsigned<std::underlying_type<T>::type>::value>>
     constexpr T operator^(T a, T b)
     {
-        using UnderType = typename std::underlying_type<T>::type;
-        UnderType uA    = enumToUnderlyingType(a);
-        UnderType uB    = enumToUnderlyingType(b);
+        UnderlyingType<T> uA = enumToUnderlyingType<T>(a);
+        UnderlyingType<T> uB = enumToUnderlyingType<T>(b);
         return static_cast<T>(uA ^ uB);
     }
 
