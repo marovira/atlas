@@ -245,7 +245,18 @@ set_target_properties(atlas PROPERTIES FOLDER "atlas")
 # Build the tests.
 #================================
 if (ATLAS_BUILD_TESTS)
-    find_package(Catch2 REQUIRED)
+    FetchContent_Declare(
+        catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v2.9.2)
+
+    find_package(Catch2 QUIET)
+    if (NOT Catch2_FOUND AND NOT catch2_POPULATED)
+        FetchContent_Populate(catch2)
+        add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
+            "${catch2_SOURCE_DIR}/contrib")
+    endif()
 
     add_subdirectory("${ATLAS_TEST_ROOT}")
     add_executable(atlas-test ${ATLAS_TEST_LIST})
