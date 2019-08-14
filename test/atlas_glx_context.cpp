@@ -57,7 +57,7 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     auto charCallback = [&callbacksSuccess](unsigned int) {
         callbacksSuccess[6] = true;
     };
-    auto windowCloseCallback = [&callbacksSuccess]() {
+    auto windowCloseCallback = [&callbacksSuccess](unsigned int) {
         callbacksSuccess[7] = true;
     };
 
