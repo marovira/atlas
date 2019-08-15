@@ -14,3 +14,4 @@ test/TestDataPaths.hpp
 test/TestExpectedPaths.hpp
 test/TestLibraryDebugPath.hpp
 test/TestLibraryReleasePath.hpp
+examples/hello_shader/ShaderPaths.hpp
