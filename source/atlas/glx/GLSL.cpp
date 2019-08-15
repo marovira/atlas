@@ -37,6 +37,7 @@ namespace atlas::glx
         }
         file.sourceString =
             recurseOnShaderFiles(p.string(), file, includeDirectories);
+        file.filename = p.string();
         return file;
     }
 
