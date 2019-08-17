@@ -105,6 +105,7 @@ int main()
     GLuint shaderProgram{0};
     glx::ShaderFile vertexSource;
     glx::ShaderFile fragmentSource;
+    std::vector<std::string> includeDirs = {ShaderPath};
     {
         // Let's setup our shaders first. Create the program and the shaders.
         shaderProgram  = glCreateProgram();
@@ -113,9 +114,9 @@ int main()
 
         std::string shaderRoot{ShaderPath};
         std::string vertexFilename = shaderRoot + "triangle.vs.glsl";
-        vertexSource = glx::readShaderSource(vertexFilename, {shaderRoot});
+        vertexSource = glx::readShaderSource(vertexFilename, includeDirs);
         std::string fragmentFilename = shaderRoot + "triangle.fs.glsl";
-        fragmentSource = glx::readShaderSource(fragmentFilename, {shaderRoot});
+        fragmentSource = glx::readShaderSource(fragmentFilename, includeDirs);
 
         // Now compile both the shaders.
         if (auto res =
@@ -175,7 +176,6 @@ int main()
     }
 
     // Now we are ready for our main loop.
-    bool reloadSuccess{true};
     while (!glfwWindowShouldClose(window))
     {
         int width, height;
@@ -187,59 +187,19 @@ int main()
         // Check if we have to reload the shaders.
         if (glx::shouldShaderBeReloaded(vertexSource))
         {
-            // First detach the shader.
-            glDetachShader(shaderProgram, vertexShader);
-
-            // Now load the shader back and re-compile it.
-            vertexSource =
-                glx::readShaderSource(vertexSource.filename, {ShaderPath});
-            if (auto res =
-                    glx::compileShader(vertexSource.sourceString, vertexShader);
-                res)
-            {
-                fmt::print("error: {}\n", res.value());
-                reloadSuccess &= false;
-            }
-
-            glAttachShader(shaderProgram, vertexShader);
-            if (auto res = glx::linkShaders(shaderProgram); res)
-            {
-                fmt::print("error: {}\n", res.value());
-                reloadSuccess &= false;
-            }
-
-            reloadSuccess = true;
+            glx::reloadShader(shaderProgram, vertexShader, vertexSource,
+                              includeDirs);
         }
 
         if (glx::shouldShaderBeReloaded(fragmentSource))
         {
-            glDetachShader(shaderProgram, fragmentShader);
-
-            fragmentSource =
-                glx::readShaderSource(fragmentSource.filename, {ShaderPath});
-            if (auto res = glx::compileShader(fragmentSource.sourceString,
-                                              fragmentShader);
-                res)
-            {
-                fmt::print("error: {}\n", res.value());
-                reloadSuccess &= false;
-            }
-
-            glAttachShader(shaderProgram, fragmentShader);
-            if (auto res = glx::linkShaders(shaderProgram); res)
-            {
-                fmt::print("error: {}\n", res.value());
-                reloadSuccess &= false;
-            }
-            reloadSuccess = true;
+            glx::reloadShader(shaderProgram, fragmentShader, fragmentSource,
+                              includeDirs);
         }
 
-        if (reloadSuccess)
-        {
-            glUseProgram(shaderProgram);
-            glBindVertexArray(vao);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-        }
+        glUseProgram(shaderProgram);
+        glBindVertexArray(vao);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Now draw the GUI elements.
         gui::newFrame(guiWindowData);
