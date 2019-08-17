@@ -328,4 +328,28 @@ namespace atlas::glx
         return outLog.str();
     }
 
+    bool reloadShader(GLuint programHandle, GLuint shaderHandle,
+                      ShaderFile& file,
+                      std::vector<std::string> const& includeDirectories)
+    {
+        file = readShaderSource(file.filename, includeDirectories);
+        if (auto res = glx::compileShader(file.sourceString, shaderHandle); res)
+        {
+            auto message = parseErrorLog(file, res.value());
+            fmt::print(stderr, "error: {}\n", message);
+            return false;
+        }
+
+        // glAttachShader(programHandle, shaderHandle);
+        if (auto res = glx::linkShaders(programHandle); res)
+        {
+            auto message = parseErrorLog(file, res.value());
+            fmt::print(stderr, "error: {}\n", message);
+            glDetachShader(programHandle, shaderHandle);
+            return false;
+        }
+
+        return true;
+    }
+
 } // namespace atlas::glx

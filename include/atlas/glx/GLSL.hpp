@@ -41,4 +41,8 @@ namespace atlas::glx
     std::optional<std::string> linkShaders(GLuint handle);
 
     std::string parseErrorLog(ShaderFile const& file, std::string const& log);
+
+    bool reloadShader(GLuint programHandle, GLuint shaderHandle,
+                      ShaderFile& file,
+                      std::vector<std::string> const& includeDirectories = {});
 } // namespace atlas::glx
