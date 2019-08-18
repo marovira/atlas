@@ -167,12 +167,14 @@ int main()
 
         glBindVertexArray(vao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glVertexAttribPointer(0, 3, GL_FLOAT, FALSE, glx::stride<float>(6),
+        glVertexAttribPointer(VERTEX_ATTRIB_LOCATION, 3, GL_FLOAT, FALSE,
+                              glx::stride<float>(6),
                               glx::bufferOffset<float>(0));
-        glVertexAttribPointer(1, 3, GL_FLOAT, FALSE, glx::stride<float>(6),
+        glVertexAttribPointer(COLOUR_ATTRIB_LOCATION, 3, GL_FLOAT, FALSE,
+                              glx::stride<float>(6),
                               glx::bufferOffset<float>(3));
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(VERTEX_ATTRIB_LOCATION);
+        glEnableVertexAttribArray(COLOUR_ATTRIB_LOCATION);
     }
 
     // Now we are ready for our main loop.
