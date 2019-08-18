@@ -20,8 +20,9 @@ namespace atlas::glx
                                       GLchar const* message,
                                       void const* userParam);
 
-    void initializeGLCallback(ErrorSource source, ErrorType type,
-                              ErrorSeverity severity)
+    void initializeGLCallback([[maybe_unused]] ErrorSource source,
+                              [[maybe_unused]] ErrorType type,
+                              [[maybe_unused]] ErrorSeverity severity)
     {
 #if defined(ATLAS_BUILD_DEBUG)
         if (glDebugMessageCallback)
