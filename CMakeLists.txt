@@ -87,6 +87,23 @@ else()
         )
 endif()
 
+find_program(CLANG_TIDY_EXE
+    NAMES "clang-tidy"
+    DOC "Path to clang-tidy executable"
+    )
+if (NOT CLANG_TIDY_EXE)
+    message(STATUS "clang-tidy not found")
+else()
+    message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
+    set(ATLAS_FILES
+        ${ATLAS_HEADER_FILES}
+        ${ATLAS_SOURCE_FILES}
+        )
+    add_custom_target(clang-tidy
+        COMMAND ${CLANG_TIDY_EXE} ${ATLAS_FILES} -config='' -- std=c++17
+        )
+endif()
+
 #================================
 # Find Packages.
 #================================

@@ -16,6 +16,11 @@ programming. This leads us to the current version, which abandons all pretenses
 of wrappers in favour of a clean, concise API that should permit development of
 *any* type of application.
 
+It is important to understand that Atlas is **not** a rendering engine or a game
+engine of any kind. It is a collection of modules that can be used to create an
+engine or any other type of application while giving the user full control over
+what is happening.
+
 The key features of Atlas are as follows:
 
 * Straight-forward, clear, function-based, data-driven API. In many ways, it
@@ -25,9 +30,6 @@ The key features of Atlas are as follows:
 * Convenience extensions to OpenGL and GLSL. Chief amongst them is a new file
   include system for GLSL source files that emulates as closely as possible the
   C++ inclusion system.
-* Live-library reloading. Allows for a significantly faster and more streamlined
-  workflow that does not waste time re-compiling the entire application every
-  time a change needs to be made.
 
 ## Dependencies
 
@@ -71,3 +73,18 @@ The dependencies per module are as follows:
 For the time-being, pull requests are not accepted. This is due to the fact that
 Atlas is undergoing a major redesign. I will change this note when a more stable
 state has been attained.
+
+## License
+
+Atlas is published under the MIT license and can be viewed
+[here](https://github.com/marovira/atlas/blob/master/LICENSE). Atlas also
+bundles third-party code that is distributed under their corresponding licenses
+which can be seen
+[here](https://github.com/marovira/atlas/blob/master/LICENSE-3RD-PARTY).
+
+## Documentation
+
+The documentation for Atlas is currently being re-written. Currently, Atlas
+ships with some ready-made examples of simple cases contained under the
+`examples` folder. For more help, including tutorials, instructions, etc. see
+[here](https://marovira.github.io/atlas/).
