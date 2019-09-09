@@ -65,7 +65,7 @@ The dependencies per module are as follows:
 | math | GLM, core |
 | glx | OpenGL, GLFW, gl3w, core |
 | gui | glx, core, ImGUI (included) |
-| hlr | core |
+| hlr | core, cr (included) |
 | utils | math, FMT, tinyobjloader, stb (included) | 
 
 ## Contributing
