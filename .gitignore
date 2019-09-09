@@ -5,6 +5,7 @@ bin/
 html/
 lib/
 test/data/obj/
+gh-pages/
 
 # Generated files #
 generated/
