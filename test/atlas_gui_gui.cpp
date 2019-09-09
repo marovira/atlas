@@ -27,8 +27,8 @@ TEST_CASE("Checking explicit GUI", "[gui]")
     gui::GuiRenderData guiRenderData;
     gui::GuiWindowData guiWindowData;
 
-    auto mousePressCallback = [&guiWindowData](int button, int action,
-                                               int mode) {
+    auto mousePressCallback = [&guiWindowData](int button, int action, int mode,
+                                               double, double) {
         gui::mousePressedCallback(guiWindowData, button, action, mode);
     };
 
@@ -122,8 +122,8 @@ TEST_CASE("Checking helper GUI", "[gui]")
     gui::GuiRenderData guiRenderData;
     gui::GuiWindowData guiWindowData;
 
-    auto mousePressCallback = [&guiWindowData](int button, int action,
-                                               int mode) {
+    auto mousePressCallback = [&guiWindowData](int button, int action, int mode,
+                                               double, double) {
         gui::mousePressedCallback(guiWindowData, button, action, mode);
     };
 

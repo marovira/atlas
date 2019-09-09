@@ -34,9 +34,10 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     WindowSettings settings;
     auto window = createGLFWWindow(settings);
 
-    std::vector<bool> callbacksSuccess(8, false);
+    std::vector<bool> callbacksSuccess(7, false);
 
-    auto mousePressCallback = [&callbacksSuccess](int, int, int) {
+    auto mousePressCallback = [&callbacksSuccess](int, int, int, double,
+                                                  double) {
         callbacksSuccess[0] = true;
     };
     auto mouseMoveCallback = [&callbacksSuccess](double, double) {
@@ -54,11 +55,8 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     auto framebufferSizeCallback = [&callbacksSuccess](int, int) {
         callbacksSuccess[5] = true;
     };
-    auto charCallback = [&callbacksSuccess](unsigned int) {
-        callbacksSuccess[6] = true;
-    };
     auto windowCloseCallback = [&callbacksSuccess](unsigned int) {
-        callbacksSuccess[7] = true;
+        callbacksSuccess[6] = true;
     };
 
     WindowCallbacks callbacks{mousePressCallback,  mouseMoveCallback,
@@ -96,11 +94,11 @@ TEST_CASE("Checking callbacks on multiple windows", "[glx]")
     auto window2 = createGLFWWindow(settings);
 
     bool callback1{false}, callback2{false};
-    auto mousePressCallback1 = [&callback1](int, int, int) {
+    auto mousePressCallback1 = [&callback1](int, int, int, double, double) {
         fmt::print("In callback 1\n");
         callback1 = true;
     };
-    auto mousePressCallback2 = [&callback2](int, int, int) {
+    auto mousePressCallback2 = [&callback2](int, int, int, double, double) {
         fmt::print("In callback 2\n");
         callback2 = true;
     };
