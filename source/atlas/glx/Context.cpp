@@ -17,7 +17,10 @@ namespace atlas::glx
 
         if (callbacks->mousePressCallback)
         {
-            callbacks->mousePressCallback(button, action, mods);
+            double x;
+            double y;
+            glfwGetCursorPos(window, &x, &y);
+            callbacks->mousePressCallback(button, action, mods, x, y);
         }
     }
 

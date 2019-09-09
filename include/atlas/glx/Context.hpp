@@ -12,7 +12,7 @@ namespace atlas::glx
 {
     struct WindowCallbacks
     {
-        std::function<void(int, int, int)> mousePressCallback{};
+        std::function<void(int, int, int, double, double)> mousePressCallback{};
         std::function<void(double, double)> mouseMoveCallback{};
         std::function<void(double, double)> mouseScrollCallback{};
         std::function<void(int, int, int, int)> keyPressCallback{};
