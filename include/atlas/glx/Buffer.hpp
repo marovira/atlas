@@ -23,4 +23,10 @@ namespace atlas::glx
     {
         return static_cast<GLsizei>(num * sizeof(T));
     }
+
+    template<typename T>
+    constexpr GLuint relativeOffset(std::size_t num)
+    {
+        return static_cast<GLuint>(num * sizeof(T));
+    }
 } // namespace atlas::glx
