@@ -35,6 +35,7 @@ target_link_libraries(test_lib PRIVATE atlas-hlr)
 if (MSVC)
     target_compile_definitions(test_lib PRIVATE ATLAS_WINDOWS_EXPORT)
 endif()
+set_target_properties(test_lib PROPERTIES FOLDER "tests")
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 
 set(LIBRARY_HEADER "#pragma once\n\nchar const* TestLibraryPath =
