@@ -10,10 +10,26 @@
 
 namespace atlas::utils
 {
+    struct Vertex
+    {
+        math::Point position{};
+        math::Normal normal{};
+        math::Point2 texCoord{};
+        std::size_t index{};
+        std::size_t faceId{};
+    };
+
+    struct Shape
+    {
+        std::vector<Vertex> vertices{};
+        std::vector<std::size_t> indices{};
+        std::vector<int> materialIds;
+        std::vector<unsigned int> smoothingGroupIds;
+    };
+
     struct ObjMesh
     {
-        tinyobj::attrib_t attrib;
-        std::vector<tinyobj::shape_t> shapes;
+        std::vector<Shape> shapes;
         std::vector<tinyobj::material_t> materials;
     };
 
