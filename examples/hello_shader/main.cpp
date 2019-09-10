@@ -39,7 +39,7 @@ int main()
     // Now, let's make the window callbacks.
     {
         auto mousePressCallback = [&guiWindowData](int button, int action,
-                                                   int mode) {
+                                                   int mode, double, double) {
             gui::mousePressedCallback(guiWindowData, button, action, mode);
         };
 
