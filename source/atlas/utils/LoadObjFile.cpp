@@ -65,6 +65,7 @@ namespace atlas::utils
         {
             Shape shape{};
             std::unordered_map<Vertex, std::size_t, VertexHash> vertexMap{};
+            std::vector<Vertex> uniqueVertices{};
             std::size_t indexOffset{0};
 
             for (std::size_t face{0};
@@ -107,6 +108,7 @@ namespace atlas::utils
                         vertex.index      = vertexMap.size();
                         vertex.faceId     = face;
                         vertexMap[vertex] = vertex.index;
+                        uniqueVertices.push_back(vertex);
                     }
 
                     shape.indices.push_back(vertexMap[vertex]);
@@ -114,11 +116,7 @@ namespace atlas::utils
                 indexOffset += numFaceVertices;
             }
 
-            for (auto& [vertex, index] : vertexMap)
-            {
-                shape.vertices.push_back(vertex);
-            }
-
+            shape.vertices          = uniqueVertices;
             shape.materialIds       = shapes[s].mesh.material_ids;
             shape.smoothingGroupIds = shapes[s].mesh.smoothing_group_ids;
 
