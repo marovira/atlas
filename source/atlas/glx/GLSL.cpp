@@ -340,7 +340,6 @@ namespace atlas::glx
             return false;
         }
 
-        // glAttachShader(programHandle, shaderHandle);
         if (auto res = glx::linkShaders(programHandle); res)
         {
             auto message = parseErrorLog(file, res.value());
@@ -351,5 +350,4 @@ namespace atlas::glx
 
         return true;
     }
-
 } // namespace atlas::glx
