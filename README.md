@@ -36,7 +36,8 @@ The key features of Atlas are as follows:
 The following are **core** requirements of Atlas:
 
 * OpenGL 4.5+,
-* CMake 3.12+.
+* CMake 3.12+,
+* Python 2.7+ or 3.x.
 
 Atlas supports the following C++17 compliant compilers:
 
@@ -55,7 +56,8 @@ In addition, Atlas depends on the following libraries:
 * [GLFW](https://github.com/glfw/glfw),
 * [GL3W](https://github.com/marovira/gl3w),
 * [ImGUI](https://github.com/ocornut/imgui),
-* [STB](https://github.com/nothings/stb).
+* [STB](https://github.com/nothings/stb),
+* [cr](https://github.com/fungos/cr).
 
 The dependencies per module are as follows:
 
