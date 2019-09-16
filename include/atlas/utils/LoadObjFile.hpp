@@ -33,5 +33,6 @@ namespace atlas::utils
         std::vector<tinyobj::material_t> materials;
     };
 
-    std::optional<ObjMesh> loadObjMesh(std::string const& filename);
+    std::optional<ObjMesh> loadObjMesh(std::string const& filename,
+                                       std::string const& materialPath = {});
 } // namespace atlas::utils

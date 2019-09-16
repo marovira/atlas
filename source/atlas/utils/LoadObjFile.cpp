@@ -1,5 +1,7 @@
 #include "atlas/utils/LoadObjFile.hpp"
 
+#include <atlas/core/Filesystem.hpp>
+
 #include <fmt/printf.h>
 
 #include <glm/gtx/hash.hpp>
@@ -26,13 +28,20 @@ namespace atlas::utils
         }
     };
 
-    std::optional<ObjMesh> loadObjMesh(std::string const& filename)
+    std::optional<ObjMesh> loadObjMesh(std::string const& filename,
+                                       std::string const& materialPath)
     {
         using namespace atlas::math;
         tinyobj::ObjReader reader;
         tinyobj::ObjReaderConfig config;
         config.triangulate  = true;
         config.vertex_color = false;
+
+        // Check if the material path is empty. If it is, then use the root
+        // directory of the file itself. Otherwise, use the provided path.
+        std::string rootDir = core::getFileDirectory(filename);
+        config.mtl_search_path =
+            (materialPath.empty()) ? rootDir : materialPath;
 
         bool ret = reader.ParseFromFile(filename, config);
         if (!ret || !reader.Valid())
