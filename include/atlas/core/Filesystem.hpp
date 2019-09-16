@@ -23,4 +23,18 @@ namespace atlas::core
         }
         return decltype(ftime)::clock::to_time_t(ftime);
     }
+
+    inline std::string getFileDirectory(std::string const& filename)
+    {
+        namespace fs = std::experimental::filesystem;
+
+        fs::path filePath{filename};
+        std::string rootDir;
+        if (filePath.has_parent_path())
+        {
+            rootDir = filePath.parent_path().string();
+        }
+
+        return rootDir;
+    }
 } // namespace atlas::core
