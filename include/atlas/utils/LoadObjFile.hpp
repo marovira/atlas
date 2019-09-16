@@ -21,6 +21,8 @@ namespace atlas::utils
 
     struct Shape
     {
+        bool hasNormals{true};
+        bool hasTextureCoords{true};
         std::vector<Vertex> vertices{};
         std::vector<std::size_t> indices{};
         std::vector<int> materialIds;

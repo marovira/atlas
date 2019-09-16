@@ -94,17 +94,25 @@ namespace atlas::utils
                     p.y = attrib.vertices[3 * idx.vertex_index + 1];
                     p.z = attrib.vertices[3 * idx.vertex_index + 2];
 
-                    if (idx.normal_index != -1)
+                    if (idx.normal_index != -1 && shape.hasNormals)
                     {
                         n.x = attrib.normals[3 * idx.normal_index + 0];
                         n.y = attrib.normals[3 * idx.normal_index + 1];
                         n.z = attrib.normals[3 * idx.normal_index + 2];
                     }
+                    else
+                    {
+                        shape.hasNormals = false;
+                    }
 
-                    if (idx.texcoord_index != -1)
+                    if (idx.texcoord_index != -1 && shape.hasTextureCoords)
                     {
                         tex.x = attrib.texcoords[2 * idx.texcoord_index + 0];
                         tex.y = attrib.texcoords[2 * idx.texcoord_index + 1];
+                    }
+                    else
+                    {
+                        shape.hasTextureCoords = false;
                     }
 
                     Vertex vertex{};
