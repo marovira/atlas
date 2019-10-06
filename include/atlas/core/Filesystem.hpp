@@ -4,6 +4,9 @@
 
 #include <fmt/printf.h>
 
+#if defined(ATLAS_PLATFORM_WINDOWS)
+#    define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#endif
 #include <experimental/filesystem>
 #include <string>
 
