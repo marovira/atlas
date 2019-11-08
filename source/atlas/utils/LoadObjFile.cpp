@@ -78,7 +78,8 @@ namespace atlas::utils
             std::size_t indexOffset{0};
 
             for (std::size_t face{0};
-                 face < shapes[s].mesh.num_face_vertices.size(); ++face)
+                 face < shapes[s].mesh.num_face_vertices.size();
+                 ++face)
             {
                 int numFaceVertices = shapes[s].mesh.num_face_vertices[face];
                 for (int v{0}; v < numFaceVertices; ++v)

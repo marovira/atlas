@@ -5,8 +5,8 @@
 
 namespace atlas::glx
 {
-    static void mousePressCallback(GLFWwindow* window, int button, int action,
-                                   int mods)
+    static void
+    mousePressCallback(GLFWwindow* window, int button, int action, int mods)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -39,8 +39,8 @@ namespace atlas::glx
         }
     }
 
-    static void mouseScrollCallback(GLFWwindow* window, double xOffset,
-                                    double yOffset)
+    static void
+    mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -55,8 +55,8 @@ namespace atlas::glx
         }
     }
 
-    static void keyPressCallback(GLFWwindow* window, int key, int scancode,
-                                 int action, int mods)
+    static void keyPressCallback(
+        GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
@@ -92,8 +92,8 @@ namespace atlas::glx
         }
     }
 
-    static void framebufferSizeCallback(GLFWwindow* window, int width,
-                                        int height)
+    static void
+    framebufferSizeCallback(GLFWwindow* window, int width, int height)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -165,9 +165,11 @@ namespace atlas::glx
 
         GLFWmonitor* monitor =
             (settings.isFullscreen) ? glfwGetPrimaryMonitor() : nullptr;
-        GLFWwindow* window =
-            glfwCreateWindow(settings.size.width, settings.size.height,
-                             settings.title.c_str(), monitor, nullptr);
+        GLFWwindow* window = glfwCreateWindow(settings.size.width,
+                                              settings.size.height,
+                                              settings.title.c_str(),
+                                              monitor,
+                                              nullptr);
         return window;
     }
 
@@ -186,8 +188,10 @@ namespace atlas::glx
 
         if (gl3wIsSupported(version.major, version.minor) == 0)
         {
-            fmt::print(stderr, "error: OpenGL {}.{} is not supported.\n",
-                       version.major, version.minor);
+            fmt::print(stderr,
+                       "error: OpenGL {}.{} is not supported.\n",
+                       version.major,
+                       version.minor);
             return false;
         }
 

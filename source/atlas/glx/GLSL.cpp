@@ -16,7 +16,8 @@ namespace fs = std::experimental::filesystem;
 namespace atlas::glx
 {
     std::string
-    recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
+    recurseOnShaderFiles(std::string const& filename,
+                         ShaderFile& file,
                          std::vector<std::string> const& includeDirectories);
 
     ShaderFile
@@ -57,7 +58,8 @@ namespace atlas::glx
     }
 
     std::string
-    recurseOnShaderFiles(std::string const& filename, ShaderFile& file,
+    recurseOnShaderFiles(std::string const& filename,
+                         ShaderFile& file,
                          std::vector<std::string> const& includeDirectories)
     {
         std::ifstream inFile{filename};
@@ -65,7 +67,8 @@ namespace atlas::glx
 
         if (!inFile)
         {
-            fmt::print(stderr, "error: no such file or directory: \'{}\'.\n",
+            fmt::print(stderr,
+                       "error: no such file or directory: \'{}\'.\n",
                        filename);
             return {};
         }
@@ -132,7 +135,9 @@ namespace atlas::glx
                             stderr,
                             "In file {}({}): Cannot open include file: \'{}\': "
                             "No such file or directory",
-                            filename, lineNum + 1, path);
+                            filename,
+                            lineNum + 1,
+                            path);
                         continue;
                     }
                 }
@@ -154,10 +159,10 @@ namespace atlas::glx
                     continue;
                 }
 
-                file.includedFiles.emplace_back(absolutePath, fileNum,
-                                                timestamp);
-                auto parsedFile = recurseOnShaderFiles(absolutePath, file,
-                                                       includeDirectories);
+                file.includedFiles.emplace_back(
+                    absolutePath, fileNum, timestamp);
+                auto parsedFile = recurseOnShaderFiles(
+                    absolutePath, file, includeDirectories);
 
                 outString << parsedFile;
                 continue;
@@ -303,9 +308,11 @@ namespace atlas::glx
             // out the error.
             if (hierarchy.size() == 1)
             {
-                auto message = fmt::format(
-                    "In file {}({}): {}\n",
-                    file.includedFiles[hierarchy[0]].filename, lineNum, error);
+                auto message =
+                    fmt::format("In file {}({}): {}\n",
+                                file.includedFiles[hierarchy[0]].filename,
+                                lineNum,
+                                error);
                 outLog << message;
                 continue;
             }
@@ -328,7 +335,8 @@ namespace atlas::glx
         return outLog.str();
     }
 
-    bool reloadShader(GLuint programHandle, GLuint shaderHandle,
+    bool reloadShader(GLuint programHandle,
+                      GLuint shaderHandle,
                       ShaderFile& file,
                       std::vector<std::string> const& includeDirectories)
     {

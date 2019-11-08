@@ -15,8 +15,11 @@ namespace atlas::glx
 
     static ErrorFilters gErrorFilters;
 
-    void APIENTRY openGLErrorCallback(GLenum source, GLenum type, GLuint id,
-                                      GLenum severity, GLsizei length,
+    void APIENTRY openGLErrorCallback(GLenum source,
+                                      GLenum type,
+                                      GLuint id,
+                                      GLenum severity,
+                                      GLsizei length,
                                       GLchar const* message,
                                       void const* userParam);
 
@@ -31,8 +34,8 @@ namespace atlas::glx
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageCallback(openGLErrorCallback, nullptr);
             GLuint unusedIds{0};
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
-                                  &unusedIds, true);
+            glDebugMessageControl(
+                GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
 
             gErrorFilters.source   = source;
             gErrorFilters.type     = type;
@@ -57,7 +60,9 @@ namespace atlas::glx
         return (res != 0);
     }
 
-    void APIENTRY openGLErrorCallback(GLenum source, GLenum type, GLuint id,
+    void APIENTRY openGLErrorCallback(GLenum source,
+                                      GLenum type,
+                                      GLuint id,
                                       GLenum severity,
                                       [[maybe_unused]] GLsizei length,
                                       GLchar const* message,

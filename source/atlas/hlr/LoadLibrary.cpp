@@ -19,7 +19,8 @@ namespace atlas::hlr
         if (handle == nullptr)
         {
             auto errorCode = GetLastError();
-            fmt::print(stderr, "error: LoadLibrary returned error code {}\n",
+            fmt::print(stderr,
+                       "error: LoadLibrary returned error code {}\n",
                        errorCode);
         }
 
@@ -40,7 +41,8 @@ namespace atlas::hlr
         if (procAddress == nullptr)
         {
             auto errorCode = GetLastError();
-            fmt::print(stderr, "error: GetProcAddress returned error code {}\n",
+            fmt::print(stderr,
+                       "error: GetProcAddress returned error code {}\n",
                        errorCode);
         }
 

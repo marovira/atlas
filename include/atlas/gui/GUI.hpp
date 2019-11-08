@@ -46,8 +46,8 @@ namespace atlas::gui
     void updateGuiWindowFrame(GuiWindowData& data);
     void destroyGuiWindow(GuiWindowData& data);
 
-    void mousePressedCallback(GuiWindowData& data, int button, int action,
-                              int mode);
+    void
+    mousePressedCallback(GuiWindowData& data, int button, int action, int mode);
     void mouseScrollCallback(double xOffset, double yOffset);
     void keyPressCallback(int key, int scancode, int action, int mods);
     void charCallback(unsigned int c);

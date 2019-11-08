@@ -6,7 +6,8 @@
 
 namespace atlas::math
 {
-    template<typename T, typename Engine,
+    template<typename T,
+             typename Engine,
              typename std::enable_if<std::is_arithmetic<T>::type>>
     class Random
     {

@@ -198,14 +198,20 @@ extern IMGUI_API ImGuiContext* GImGui; // Current implicit context pointer
 
 // Helpers: UTF-8 <> wchar
 IMGUI_API int
-ImTextStrToUtf8(char* buf, int buf_size, const ImWchar* in_text,
+ImTextStrToUtf8(char* buf,
+                int buf_size,
+                const ImWchar* in_text,
                 const ImWchar* in_text_end); // return output UTF-8 bytes count
 IMGUI_API int
-ImTextCharFromUtf8(unsigned int* out_char, const char* in_text,
+ImTextCharFromUtf8(unsigned int* out_char,
+                   const char* in_text,
                    const char* in_text_end); // read one character. return input
                                              // UTF-8 bytes count
 IMGUI_API int ImTextStrFromUtf8(
-    ImWchar* buf, int buf_size, const char* in_text, const char* in_text_end,
+    ImWchar* buf,
+    int buf_size,
+    const char* in_text,
+    const char* in_text_end,
     const char** in_remaining = NULL); // return input UTF-8 bytes count
 IMGUI_API int ImTextCountCharsFromUtf8(
     const char* in_text,
@@ -222,8 +228,9 @@ IMGUI_API int ImTextCountUtf8BytesFromStr(
 
 // Helpers: Misc
 IMGUI_API ImU32 ImHashData(const void* data, size_t data_size, ImU32 seed = 0);
-IMGUI_API ImU32 ImHashStr(const char* data, size_t data_size = 0,
-                          ImU32 seed = 0);
+IMGUI_API ImU32 ImHashStr(const char* data,
+                          size_t data_size = 0,
+                          ImU32 seed       = 0);
 IMGUI_API void* ImFileLoadToMemory(const char* filename,
                                    const char* file_open_mode,
                                    size_t* out_file_size = NULL,
@@ -262,15 +269,23 @@ static inline ImU32 ImHash(const void* data, int size, ImU32 seed = 0)
 #endif
 
 // Helpers: Geometry
-IMGUI_API ImVec2 ImLineClosestPoint(const ImVec2& a, const ImVec2& b,
+IMGUI_API ImVec2 ImLineClosestPoint(const ImVec2& a,
+                                    const ImVec2& b,
                                     const ImVec2& p);
-IMGUI_API bool ImTriangleContainsPoint(const ImVec2& a, const ImVec2& b,
-                                       const ImVec2& c, const ImVec2& p);
-IMGUI_API ImVec2 ImTriangleClosestPoint(const ImVec2& a, const ImVec2& b,
-                                        const ImVec2& c, const ImVec2& p);
-IMGUI_API void ImTriangleBarycentricCoords(const ImVec2& a, const ImVec2& b,
-                                           const ImVec2& c, const ImVec2& p,
-                                           float& out_u, float& out_v,
+IMGUI_API bool ImTriangleContainsPoint(const ImVec2& a,
+                                       const ImVec2& b,
+                                       const ImVec2& c,
+                                       const ImVec2& p);
+IMGUI_API ImVec2 ImTriangleClosestPoint(const ImVec2& a,
+                                        const ImVec2& b,
+                                        const ImVec2& c,
+                                        const ImVec2& p);
+IMGUI_API void ImTriangleBarycentricCoords(const ImVec2& a,
+                                           const ImVec2& b,
+                                           const ImVec2& c,
+                                           const ImVec2& p,
+                                           float& out_u,
+                                           float& out_v,
                                            float& out_w);
 IMGUI_API ImGuiDir ImGetDirQuadrantFromDelta(float dx, float dy);
 
@@ -280,25 +295,28 @@ IMGUI_API int ImStrnicmp(const char* str1, const char* str2, size_t count);
 IMGUI_API void ImStrncpy(char* dst, const char* src, size_t count);
 IMGUI_API char* ImStrdup(const char* str);
 IMGUI_API char* ImStrdupcpy(char* dst, size_t* p_dst_size, const char* str);
-IMGUI_API const char* ImStrchrRange(const char* str_begin, const char* str_end,
-                                    char c);
+IMGUI_API const char*
+ImStrchrRange(const char* str_begin, const char* str_end, char c);
 IMGUI_API int ImStrlenW(const ImWchar* str);
 IMGUI_API const char* ImStreolRange(const char* str,
                                     const char* str_end); // End end-of-line
 IMGUI_API const ImWchar*
 ImStrbolW(const ImWchar* buf_mid_line,
           const ImWchar* buf_begin); // Find beginning-of-line
-IMGUI_API const char* ImStristr(const char* haystack, const char* haystack_end,
-                                const char* needle, const char* needle_end);
+IMGUI_API const char* ImStristr(const char* haystack,
+                                const char* haystack_end,
+                                const char* needle,
+                                const char* needle_end);
 IMGUI_API void ImStrTrimBlanks(char* str);
 IMGUI_API int ImFormatString(char* buf, size_t buf_size, const char* fmt, ...)
     IM_FMTARGS(3);
-IMGUI_API int ImFormatStringV(char* buf, size_t buf_size, const char* fmt,
-                              va_list args) IM_FMTLIST(3);
+IMGUI_API int
+ImFormatStringV(char* buf, size_t buf_size, const char* fmt, va_list args)
+    IM_FMTLIST(3);
 IMGUI_API const char* ImParseFormatFindStart(const char* format);
 IMGUI_API const char* ImParseFormatFindEnd(const char* format);
-IMGUI_API const char* ImParseFormatTrimDecorations(const char* format,
-                                                   char* buf, size_t buf_size);
+IMGUI_API const char*
+ImParseFormatTrimDecorations(const char* format, char* buf, size_t buf_size);
 IMGUI_API int ImParseFormatPrecision(const char* format, int default_value);
 
 // Helpers: ImVec2/ImVec4 operators
@@ -501,8 +519,10 @@ static inline ImVec2 ImLerp(const ImVec2& a, const ImVec2& b, const ImVec2& t)
 }
 static inline ImVec4 ImLerp(const ImVec4& a, const ImVec4& b, float t)
 {
-    return ImVec4(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t,
-                  a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t);
+    return ImVec4(a.x + (b.x - a.x) * t,
+                  a.y + (b.y - a.y) * t,
+                  a.z + (b.z - a.z) * t,
+                  a.w + (b.w - a.w) * t);
 }
 static inline float ImSaturate(float f)
 {
@@ -1285,15 +1305,18 @@ struct ImGuiSettingsHandler
                           // characters: '[' ']'
     ImGuiID TypeHash;     // == ImHashStr(TypeName)
     void* (*ReadOpenFn)(
-        ImGuiContext* ctx, ImGuiSettingsHandler* handler,
+        ImGuiContext* ctx,
+        ImGuiSettingsHandler* handler,
         const char* name); // Read: Called when entering into a new ini entry
                            // e.g. "[Window][Name]"
-    void (*ReadLineFn)(ImGuiContext* ctx, ImGuiSettingsHandler* handler,
+    void (*ReadLineFn)(ImGuiContext* ctx,
+                       ImGuiSettingsHandler* handler,
                        void* entry,
                        const char* line); // Read: Called for every line of text
                                           // within an ini entry
     void (*WriteAllFn)(
-        ImGuiContext* ctx, ImGuiSettingsHandler* handler,
+        ImGuiContext* ctx,
+        ImGuiSettingsHandler* handler,
         ImGuiTextBuffer* out_buf); // Write: Output every entries into 'out_buf'
     void* UserData;
 
@@ -2458,12 +2481,12 @@ namespace ImGui
     IMGUI_API void SetWindowScrollX(ImGuiWindow* window, float new_scroll_x);
     IMGUI_API void SetWindowScrollY(ImGuiWindow* window, float new_scroll_y);
     IMGUI_API ImRect GetWindowAllowedExtentRect(ImGuiWindow* window);
-    IMGUI_API void SetWindowPos(ImGuiWindow* window, const ImVec2& pos,
-                                ImGuiCond cond = 0);
-    IMGUI_API void SetWindowSize(ImGuiWindow* window, const ImVec2& size,
-                                 ImGuiCond cond = 0);
-    IMGUI_API void SetWindowCollapsed(ImGuiWindow* window, bool collapsed,
-                                      ImGuiCond cond = 0);
+    IMGUI_API void
+    SetWindowPos(ImGuiWindow* window, const ImVec2& pos, ImGuiCond cond = 0);
+    IMGUI_API void
+    SetWindowSize(ImGuiWindow* window, const ImVec2& size, ImGuiCond cond = 0);
+    IMGUI_API void
+    SetWindowCollapsed(ImGuiWindow* window, bool collapsed, ImGuiCond cond = 0);
 
     IMGUI_API void SetCurrentFont(ImFont* font);
     inline ImFont* GetDefaultFont()
@@ -2521,16 +2544,17 @@ namespace ImGui
     // Basic Helpers for widget code
     IMGUI_API void ItemSize(const ImVec2& size, float text_offset_y = 0.0f);
     IMGUI_API void ItemSize(const ImRect& bb, float text_offset_y = 0.0f);
-    IMGUI_API bool ItemAdd(const ImRect& bb, ImGuiID id,
-                           const ImRect* nav_bb = NULL);
+    IMGUI_API bool
+    ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb = NULL);
     IMGUI_API bool ItemHoverable(const ImRect& bb, ImGuiID id);
-    IMGUI_API bool IsClippedEx(const ImRect& bb, ImGuiID id,
-                               bool clip_even_when_logged);
+    IMGUI_API bool
+    IsClippedEx(const ImRect& bb, ImGuiID id, bool clip_even_when_logged);
     IMGUI_API bool
     FocusableItemRegister(ImGuiWindow* window,
                           ImGuiID id); // Return true if focus is requested
     IMGUI_API void FocusableItemUnregister(ImGuiWindow* window);
-    IMGUI_API ImVec2 CalcItemSize(ImVec2 size, float default_w,
+    IMGUI_API ImVec2 CalcItemSize(ImVec2 size,
+                                  float default_w,
                                   float default_h);
     IMGUI_API float CalcWrapWidthForPos(const ImVec2& pos, float wrap_pos_x);
     IMGUI_API void PushMultiItemsWidths(int components, float width_full);
@@ -2542,8 +2566,8 @@ namespace ImGui
                               // toggle _event_ in order to handle clipping
                               // correctly)
     IMGUI_API ImVec2 GetContentRegionMaxAbs();
-    IMGUI_API void ShrinkWidths(ImGuiShrinkWidthItem* items, int count,
-                                float width_excess);
+    IMGUI_API void
+    ShrinkWidths(ImGuiShrinkWidthItem* items, int count, float width_excess);
 
     // Logging/Capture
     IMGUI_API void LogBegin(
@@ -2569,15 +2593,19 @@ namespace ImGui
     IMGUI_API ImGuiWindow* GetFrontMostPopupModal();
     IMGUI_API ImVec2 FindBestWindowPosForPopup(ImGuiWindow* window);
     IMGUI_API ImVec2 FindBestWindowPosForPopupEx(
-        const ImVec2& ref_pos, const ImVec2& size, ImGuiDir* last_dir,
-        const ImRect& r_outer, const ImRect& r_avoid,
+        const ImVec2& ref_pos,
+        const ImVec2& size,
+        ImGuiDir* last_dir,
+        const ImRect& r_outer,
+        const ImRect& r_avoid,
         ImGuiPopupPositionPolicy policy = ImGuiPopupPositionPolicy_Default);
 
     // Navigation
     IMGUI_API void NavInitWindow(ImGuiWindow* window, bool force_reinit);
     IMGUI_API bool NavMoveRequestButNoResultYet();
     IMGUI_API void NavMoveRequestCancel();
-    IMGUI_API void NavMoveRequestForward(ImGuiDir move_dir, ImGuiDir clip_dir,
+    IMGUI_API void NavMoveRequestForward(ImGuiDir move_dir,
+                                         ImGuiDir clip_dir,
                                          const ImRect& bb_rel,
                                          ImGuiNavMoveFlags move_flags);
     IMGUI_API void NavMoveRequestTryWrapping(ImGuiWindow* window,
@@ -2587,7 +2615,8 @@ namespace ImGui
                                          ImGuiInputReadMode mode,
                                          float slow_factor = 0.0f,
                                          float fast_factor = 0.0f);
-    IMGUI_API int CalcTypematicPressedRepeatAmount(float t, float t_prev,
+    IMGUI_API int CalcTypematicPressedRepeatAmount(float t,
+                                                   float t_prev,
                                                    float repeat_delay,
                                                    float repeat_rate);
     IMGUI_API void ActivateItem(
@@ -2595,8 +2624,8 @@ namespace ImGui
                      // given its unique ID. activation is queued and processed
                      // on the next frame when the item is encountered again.
     IMGUI_API void SetNavID(ImGuiID id, int nav_layer);
-    IMGUI_API void SetNavIDWithRectRel(ImGuiID id, int nav_layer,
-                                       const ImRect& rect_rel);
+    IMGUI_API void
+    SetNavIDWithRectRel(ImGuiID id, int nav_layer, const ImRect& rect_rel);
 
     // Inputs
     inline bool IsKeyPressedMap(ImGuiKey key, bool repeat = true)
@@ -2612,7 +2641,8 @@ namespace ImGui
     {
         return GetNavInputAmount(n, mode) > 0.0f;
     }
-    inline bool IsNavInputPressedAnyOfTwo(ImGuiNavInput n1, ImGuiNavInput n2,
+    inline bool IsNavInputPressedAnyOfTwo(ImGuiNavInput n1,
+                                          ImGuiNavInput n2,
                                           ImGuiInputReadMode mode)
     {
         return (GetNavInputAmount(n1, mode) + GetNavInputAmount(n2, mode)) >
@@ -2626,7 +2656,8 @@ namespace ImGui
 
     // New Columns API (FIXME-WIP)
     IMGUI_API void BeginColumns(
-        const char* str_id, int count,
+        const char* str_id,
+        int count,
         ImGuiColumnsFlags flags =
             0); // setup number of columns. use an identifier to distinguish
                 // multiple column sets. close with EndColumns().
@@ -2639,24 +2670,31 @@ namespace ImGui
                                                 ImGuiID id);
 
     // Tab Bars
-    IMGUI_API bool BeginTabBarEx(ImGuiTabBar* tab_bar, const ImRect& bb,
+    IMGUI_API bool BeginTabBarEx(ImGuiTabBar* tab_bar,
+                                 const ImRect& bb,
                                  ImGuiTabBarFlags flags);
     IMGUI_API ImGuiTabItem* TabBarFindTabByID(ImGuiTabBar* tab_bar,
                                               ImGuiID tab_id);
     IMGUI_API void TabBarRemoveTab(ImGuiTabBar* tab_bar, ImGuiID tab_id);
     IMGUI_API void TabBarCloseTab(ImGuiTabBar* tab_bar, ImGuiTabItem* tab);
     IMGUI_API void TabBarQueueChangeTabOrder(ImGuiTabBar* tab_bar,
-                                             const ImGuiTabItem* tab, int dir);
-    IMGUI_API bool TabItemEx(ImGuiTabBar* tab_bar, const char* label,
-                             bool* p_open, ImGuiTabItemFlags flags);
+                                             const ImGuiTabItem* tab,
+                                             int dir);
+    IMGUI_API bool TabItemEx(ImGuiTabBar* tab_bar,
+                             const char* label,
+                             bool* p_open,
+                             ImGuiTabItemFlags flags);
     IMGUI_API ImVec2 TabItemCalcSize(const char* label, bool has_close_button);
-    IMGUI_API void TabItemBackground(ImDrawList* draw_list, const ImRect& bb,
-                                     ImGuiTabItemFlags flags, ImU32 col);
+    IMGUI_API void TabItemBackground(ImDrawList* draw_list,
+                                     const ImRect& bb,
+                                     ImGuiTabItemFlags flags,
+                                     ImU32 col);
     IMGUI_API bool TabItemLabelAndCloseButton(ImDrawList* draw_list,
                                               const ImRect& bb,
                                               ImGuiTabItemFlags flags,
                                               ImVec2 frame_padding,
-                                              const char* label, ImGuiID tab_id,
+                                              const char* label,
+                                              ImGuiID tab_id,
                                               ImGuiID close_button_id);
 
     // Render helpers
@@ -2664,67 +2702,93 @@ namespace ImGui
     // FUNCTIONS ARE A MESS. THEIR SIGNATURE AND BEHAVIOR WILL CHANGE, THEY NEED
     // TO BE REFACTORED INTO SOMETHING DECENT. NB: All position are in absolute
     // pixels coordinates (we are never using window coordinates internally)
-    IMGUI_API void RenderText(ImVec2 pos, const char* text,
+    IMGUI_API void RenderText(ImVec2 pos,
+                              const char* text,
                               const char* text_end      = NULL,
                               bool hide_text_after_hash = true);
-    IMGUI_API void RenderTextWrapped(ImVec2 pos, const char* text,
-                                     const char* text_end, float wrap_width);
+    IMGUI_API void RenderTextWrapped(ImVec2 pos,
+                                     const char* text,
+                                     const char* text_end,
+                                     float wrap_width);
     IMGUI_API void RenderTextClipped(const ImVec2& pos_min,
-                                     const ImVec2& pos_max, const char* text,
+                                     const ImVec2& pos_max,
+                                     const char* text,
                                      const char* text_end,
                                      const ImVec2* text_size_if_known,
                                      const ImVec2& align     = ImVec2(0, 0),
                                      const ImRect* clip_rect = NULL);
     IMGUI_API void RenderTextClippedEx(ImDrawList* draw_list,
                                        const ImVec2& pos_min,
-                                       const ImVec2& pos_max, const char* text,
+                                       const ImVec2& pos_max,
+                                       const char* text,
                                        const char* text_end,
                                        const ImVec2* text_size_if_known,
                                        const ImVec2& align     = ImVec2(0, 0),
                                        const ImRect* clip_rect = NULL);
     IMGUI_API void RenderTextEllipsis(ImDrawList* draw_list,
                                       const ImVec2& pos_min,
-                                      const ImVec2& pos_max, float clip_max_x,
-                                      float ellipsis_max_x, const char* text,
+                                      const ImVec2& pos_max,
+                                      float clip_max_x,
+                                      float ellipsis_max_x,
+                                      const char* text,
                                       const char* text_end,
                                       const ImVec2* text_size_if_known);
-    IMGUI_API void RenderFrame(ImVec2 p_min, ImVec2 p_max, ImU32 fill_col,
-                               bool border = true, float rounding = 0.0f);
-    IMGUI_API void RenderFrameBorder(ImVec2 p_min, ImVec2 p_max,
-                                     float rounding = 0.0f);
+    IMGUI_API void RenderFrame(ImVec2 p_min,
+                               ImVec2 p_max,
+                               ImU32 fill_col,
+                               bool border    = true,
+                               float rounding = 0.0f);
     IMGUI_API void
-    RenderColorRectWithAlphaCheckerboard(ImVec2 p_min, ImVec2 p_max,
-                                         ImU32 fill_col, float grid_step,
-                                         ImVec2 grid_off, float rounding = 0.0f,
+    RenderFrameBorder(ImVec2 p_min, ImVec2 p_max, float rounding = 0.0f);
+    IMGUI_API void
+    RenderColorRectWithAlphaCheckerboard(ImVec2 p_min,
+                                         ImVec2 p_max,
+                                         ImU32 fill_col,
+                                         float grid_step,
+                                         ImVec2 grid_off,
+                                         float rounding             = 0.0f,
                                          int rounding_corners_flags = ~0);
     IMGUI_API void RenderCheckMark(ImVec2 pos, ImU32 col, float sz);
     IMGUI_API void RenderNavHighlight(
-        const ImRect& bb, ImGuiID id,
+        const ImRect& bb,
+        ImGuiID id,
         ImGuiNavHighlightFlags flags =
             ImGuiNavHighlightFlags_TypeDefault); // Navigation highlight
     IMGUI_API const char* FindRenderedTextEnd(
         const char* text,
         const char* text_end =
             NULL); // Find the optional ## from which we stop displaying text.
-    IMGUI_API void LogRenderedText(const ImVec2* ref_pos, const char* text,
+    IMGUI_API void LogRenderedText(const ImVec2* ref_pos,
+                                   const char* text,
                                    const char* text_end = NULL);
 
     // Render helpers (those functions don't access any ImGui state!)
-    IMGUI_API void RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col,
-                               ImGuiDir dir, float scale = 1.0f);
+    IMGUI_API void RenderArrow(ImDrawList* draw_list,
+                               ImVec2 pos,
+                               ImU32 col,
+                               ImGuiDir dir,
+                               float scale = 1.0f);
     IMGUI_API void RenderBullet(ImDrawList* draw_list, ImVec2 pos, ImU32 col);
     IMGUI_API void
-    RenderMouseCursor(ImDrawList* draw_list, ImVec2 pos, float scale,
+    RenderMouseCursor(ImDrawList* draw_list,
+                      ImVec2 pos,
+                      float scale,
                       ImGuiMouseCursor mouse_cursor = ImGuiMouseCursor_Arrow);
-    IMGUI_API void RenderArrowPointingAt(ImDrawList* draw_list, ImVec2 pos,
-                                         ImVec2 half_sz, ImGuiDir direction,
+    IMGUI_API void RenderArrowPointingAt(ImDrawList* draw_list,
+                                         ImVec2 pos,
+                                         ImVec2 half_sz,
+                                         ImGuiDir direction,
                                          ImU32 col);
     IMGUI_API void RenderRectFilledRangeH(ImDrawList* draw_list,
-                                          const ImRect& rect, ImU32 col,
-                                          float x_start_norm, float x_end_norm,
+                                          const ImRect& rect,
+                                          ImU32 col,
+                                          float x_start_norm,
+                                          float x_end_norm,
                                           float rounding);
-    IMGUI_API void RenderPixelEllipsis(ImDrawList* draw_list, ImVec2 pos,
-                                       ImU32 col, int count);
+    IMGUI_API void RenderPixelEllipsis(ImDrawList* draw_list,
+                                       ImVec2 pos,
+                                       ImU32 col,
+                                       int count);
 
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
     // 2019/06/07: Updating prototypes of some of the internal functions.
@@ -2732,8 +2796,8 @@ namespace ImGui
     inline void RenderArrow(ImVec2 pos, ImGuiDir dir, float scale = 1.0f)
     {
         ImGuiWindow* window = GetCurrentWindow();
-        RenderArrow(window->DrawList, pos, GetColorU32(ImGuiCol_Text), dir,
-                    scale);
+        RenderArrow(
+            window->DrawList, pos, GetColorU32(ImGuiCol_Text), dir, scale);
     }
     inline void RenderBullet(ImVec2 pos)
     {
@@ -2743,42 +2807,65 @@ namespace ImGui
 #endif
 
     // Widgets
-    IMGUI_API void TextEx(const char* text, const char* text_end = NULL,
+    IMGUI_API void TextEx(const char* text,
+                          const char* text_end = NULL,
                           ImGuiTextFlags flags = 0);
     IMGUI_API bool ButtonEx(const char* label,
                             const ImVec2& size_arg = ImVec2(0, 0),
                             ImGuiButtonFlags flags = 0);
     IMGUI_API bool CloseButton(ImGuiID id, const ImVec2& pos);
     IMGUI_API bool CollapseButton(ImGuiID id, const ImVec2& pos);
-    IMGUI_API bool ArrowButtonEx(const char* str_id, ImGuiDir dir,
-                                 ImVec2 size_arg, ImGuiButtonFlags flags);
+    IMGUI_API bool ArrowButtonEx(const char* str_id,
+                                 ImGuiDir dir,
+                                 ImVec2 size_arg,
+                                 ImGuiButtonFlags flags);
     IMGUI_API void Scrollbar(ImGuiAxis axis);
-    IMGUI_API bool ScrollbarEx(const ImRect& bb, ImGuiID id, ImGuiAxis axis,
-                               float* p_scroll_v, float avail_v,
+    IMGUI_API bool ScrollbarEx(const ImRect& bb,
+                               ImGuiID id,
+                               ImGuiAxis axis,
+                               float* p_scroll_v,
+                               float avail_v,
                                float contents_v,
                                ImDrawCornerFlags rounding_corners);
     IMGUI_API ImGuiID GetScrollbarID(ImGuiWindow* window, ImGuiAxis axis);
     IMGUI_API void SeparatorEx(ImGuiSeparatorFlags flags);
 
     // Widgets low-level behaviors
-    IMGUI_API bool ButtonBehavior(const ImRect& bb, ImGuiID id,
-                                  bool* out_hovered, bool* out_held,
+    IMGUI_API bool ButtonBehavior(const ImRect& bb,
+                                  ImGuiID id,
+                                  bool* out_hovered,
+                                  bool* out_held,
                                   ImGuiButtonFlags flags = 0);
-    IMGUI_API bool DragBehavior(ImGuiID id, ImGuiDataType data_type, void* v,
-                                float v_speed, const void* v_min,
-                                const void* v_max, const char* format,
-                                float power, ImGuiDragFlags flags);
-    IMGUI_API bool SliderBehavior(const ImRect& bb, ImGuiID id,
-                                  ImGuiDataType data_type, void* v,
-                                  const void* v_min, const void* v_max,
-                                  const char* format, float power,
-                                  ImGuiSliderFlags flags, ImRect* out_grab_bb);
-    IMGUI_API bool SplitterBehavior(const ImRect& bb, ImGuiID id,
-                                    ImGuiAxis axis, float* size1, float* size2,
-                                    float min_size1, float min_size2,
+    IMGUI_API bool DragBehavior(ImGuiID id,
+                                ImGuiDataType data_type,
+                                void* v,
+                                float v_speed,
+                                const void* v_min,
+                                const void* v_max,
+                                const char* format,
+                                float power,
+                                ImGuiDragFlags flags);
+    IMGUI_API bool SliderBehavior(const ImRect& bb,
+                                  ImGuiID id,
+                                  ImGuiDataType data_type,
+                                  void* v,
+                                  const void* v_min,
+                                  const void* v_max,
+                                  const char* format,
+                                  float power,
+                                  ImGuiSliderFlags flags,
+                                  ImRect* out_grab_bb);
+    IMGUI_API bool SplitterBehavior(const ImRect& bb,
+                                    ImGuiID id,
+                                    ImGuiAxis axis,
+                                    float* size1,
+                                    float* size2,
+                                    float min_size1,
+                                    float min_size2,
                                     float hover_extend           = 0.0f,
                                     float hover_visibility_delay = 0.0f);
-    IMGUI_API bool TreeNodeBehavior(ImGuiID id, ImGuiTreeNodeFlags flags,
+    IMGUI_API bool TreeNodeBehavior(ImGuiID id,
+                                    ImGuiTreeNodeFlags flags,
                                     const char* label,
                                     const char* label_end = NULL);
     IMGUI_API bool
@@ -2795,45 +2882,69 @@ namespace ImGui
     // IMGUI_API float RoundScalarWithFormatT<float, float>(const char* format,
     // ImGuiDataType data_type, float v); "
     template<typename T, typename SIGNED_T, typename FLOAT_T>
-    IMGUI_API bool DragBehaviorT(ImGuiDataType data_type, T* v, float v_speed,
-                                 T v_min, T v_max, const char* format,
-                                 float power, ImGuiDragFlags flags);
+    IMGUI_API bool DragBehaviorT(ImGuiDataType data_type,
+                                 T* v,
+                                 float v_speed,
+                                 T v_min,
+                                 T v_max,
+                                 const char* format,
+                                 float power,
+                                 ImGuiDragFlags flags);
     template<typename T, typename SIGNED_T, typename FLOAT_T>
-    IMGUI_API bool SliderBehaviorT(const ImRect& bb, ImGuiID id,
-                                   ImGuiDataType data_type, T* v, T v_min,
-                                   T v_max, const char* format, float power,
-                                   ImGuiSliderFlags flags, ImRect* out_grab_bb);
+    IMGUI_API bool SliderBehaviorT(const ImRect& bb,
+                                   ImGuiID id,
+                                   ImGuiDataType data_type,
+                                   T* v,
+                                   T v_min,
+                                   T v_max,
+                                   const char* format,
+                                   float power,
+                                   ImGuiSliderFlags flags,
+                                   ImRect* out_grab_bb);
     template<typename T, typename FLOAT_T>
-    IMGUI_API float SliderCalcRatioFromValueT(ImGuiDataType data_type, T v,
-                                              T v_min, T v_max, float power,
+    IMGUI_API float SliderCalcRatioFromValueT(ImGuiDataType data_type,
+                                              T v,
+                                              T v_min,
+                                              T v_max,
+                                              float power,
                                               float linear_zero_pos);
     template<typename T, typename SIGNED_T>
     IMGUI_API T RoundScalarWithFormatT(const char* format,
-                                       ImGuiDataType data_type, T v);
+                                       ImGuiDataType data_type,
+                                       T v);
 
     // Data type helpers
     IMGUI_API const ImGuiDataTypeInfo* DataTypeGetInfo(ImGuiDataType data_type);
-    IMGUI_API int DataTypeFormatString(char* buf, int buf_size,
+    IMGUI_API int DataTypeFormatString(char* buf,
+                                       int buf_size,
                                        ImGuiDataType data_type,
                                        const void* data_ptr,
                                        const char* format);
-    IMGUI_API void DataTypeApplyOp(ImGuiDataType data_type, int op,
-                                   void* output, void* arg_1,
+    IMGUI_API void DataTypeApplyOp(ImGuiDataType data_type,
+                                   int op,
+                                   void* output,
+                                   void* arg_1,
                                    const void* arg_2);
     IMGUI_API bool DataTypeApplyOpFromText(const char* buf,
                                            const char* initial_value_buf,
                                            ImGuiDataType data_type,
-                                           void* data_ptr, const char* format);
+                                           void* data_ptr,
+                                           const char* format);
 
     // InputText
-    IMGUI_API bool InputTextEx(const char* label, const char* hint, char* buf,
-                               int buf_size, const ImVec2& size_arg,
+    IMGUI_API bool InputTextEx(const char* label,
+                               const char* hint,
+                               char* buf,
+                               int buf_size,
+                               const ImVec2& size_arg,
                                ImGuiInputTextFlags flags,
                                ImGuiInputTextCallback callback = NULL,
                                void* user_data                 = NULL);
-    IMGUI_API bool TempInputTextScalar(const ImRect& bb, ImGuiID id,
+    IMGUI_API bool TempInputTextScalar(const ImRect& bb,
+                                       ImGuiID id,
                                        const char* label,
-                                       ImGuiDataType data_type, void* data_ptr,
+                                       ImGuiDataType data_type,
+                                       void* data_ptr,
                                        const char* format);
     inline bool TempInputTextIsActive(ImGuiID id)
     {
@@ -2842,37 +2953,52 @@ namespace ImGui
     }
 
     // Color
-    IMGUI_API void ColorTooltip(const char* text, const float* col,
-                                ImGuiColorEditFlags flags);
+    IMGUI_API void
+    ColorTooltip(const char* text, const float* col, ImGuiColorEditFlags flags);
     IMGUI_API void ColorEditOptionsPopup(const float* col,
                                          ImGuiColorEditFlags flags);
     IMGUI_API void ColorPickerOptionsPopup(const float* ref_col,
                                            ImGuiColorEditFlags flags);
 
     // Plot
-    IMGUI_API void PlotEx(ImGuiPlotType plot_type, const char* label,
+    IMGUI_API void PlotEx(ImGuiPlotType plot_type,
+                          const char* label,
                           float (*values_getter)(void* data, int idx),
-                          void* data, int values_count, int values_offset,
-                          const char* overlay_text, float scale_min,
-                          float scale_max, ImVec2 frame_size);
+                          void* data,
+                          int values_count,
+                          int values_offset,
+                          const char* overlay_text,
+                          float scale_min,
+                          float scale_max,
+                          ImVec2 frame_size);
 
     // Shade functions (write over already created vertices)
-    IMGUI_API void ShadeVertsLinearColorGradientKeepAlpha(
-        ImDrawList* draw_list, int vert_start_idx, int vert_end_idx,
-        ImVec2 gradient_p0, ImVec2 gradient_p1, ImU32 col0, ImU32 col1);
-    IMGUI_API void ShadeVertsLinearUV(ImDrawList* draw_list, int vert_start_idx,
-                                      int vert_end_idx, const ImVec2& a,
-                                      const ImVec2& b, const ImVec2& uv_a,
-                                      const ImVec2& uv_b, bool clamp);
+    IMGUI_API void ShadeVertsLinearColorGradientKeepAlpha(ImDrawList* draw_list,
+                                                          int vert_start_idx,
+                                                          int vert_end_idx,
+                                                          ImVec2 gradient_p0,
+                                                          ImVec2 gradient_p1,
+                                                          ImU32 col0,
+                                                          ImU32 col1);
+    IMGUI_API void ShadeVertsLinearUV(ImDrawList* draw_list,
+                                      int vert_start_idx,
+                                      int vert_end_idx,
+                                      const ImVec2& a,
+                                      const ImVec2& b,
+                                      const ImVec2& uv_a,
+                                      const ImVec2& uv_b,
+                                      bool clamp);
 
 } // namespace ImGui
 
 // ImFontAtlas internals
 IMGUI_API bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas);
 IMGUI_API void ImFontAtlasBuildRegisterDefaultCustomRects(ImFontAtlas* atlas);
-IMGUI_API void ImFontAtlasBuildSetupFont(ImFontAtlas* atlas, ImFont* font,
+IMGUI_API void ImFontAtlasBuildSetupFont(ImFontAtlas* atlas,
+                                         ImFont* font,
                                          ImFontConfig* font_config,
-                                         float ascent, float descent);
+                                         float ascent,
+                                         float descent);
 IMGUI_API void ImFontAtlasBuildPackCustomRects(ImFontAtlas* atlas,
                                                void* stbrp_context_opaque);
 IMGUI_API void ImFontAtlasBuildFinish(ImFontAtlas* atlas);
@@ -2881,17 +3007,22 @@ ImFontAtlasBuildMultiplyCalcLookupTable(unsigned char out_table[256],
                                         float in_multiply_factor);
 IMGUI_API void
 ImFontAtlasBuildMultiplyRectAlpha8(const unsigned char table[256],
-                                   unsigned char* pixels, int x, int y, int w,
-                                   int h, int stride);
+                                   unsigned char* pixels,
+                                   int x,
+                                   int y,
+                                   int w,
+                                   int h,
+                                   int stride);
 
 // Test engine hooks (imgui-test)
 //#define IMGUI_ENABLE_TEST_ENGINE
 #ifdef IMGUI_ENABLE_TEST_ENGINE
 extern void ImGuiTestEngineHook_PreNewFrame(ImGuiContext* ctx);
 extern void ImGuiTestEngineHook_PostNewFrame(ImGuiContext* ctx);
-extern void ImGuiTestEngineHook_ItemAdd(ImGuiContext* ctx, const ImRect& bb,
-                                        ImGuiID id);
-extern void ImGuiTestEngineHook_ItemInfo(ImGuiContext* ctx, ImGuiID id,
+extern void
+ImGuiTestEngineHook_ItemAdd(ImGuiContext* ctx, const ImRect& bb, ImGuiID id);
+extern void ImGuiTestEngineHook_ItemInfo(ImGuiContext* ctx,
+                                         ImGuiID id,
                                          const char* label,
                                          ImGuiItemStatusFlags flags);
 extern void ImGuiTestEngineHook_Log(ImGuiContext* ctx, const char* fmt, ...);
@@ -2899,11 +3030,14 @@ extern void ImGuiTestEngineHook_Log(ImGuiContext* ctx, const char* fmt, ...);
         ImGuiTestEngineHook_ItemAdd(&g, _BB, _ID) // Register item bounding box
 #    define IMGUI_TEST_ENGINE_ITEM_INFO(_ID, _LABEL, _FLAGS) \
         ImGuiTestEngineHook_ItemInfo(                        \
-            &g, _ID, _LABEL,                                 \
+            &g,                                              \
+            _ID,                                             \
+            _LABEL,                                          \
             _FLAGS) // Register item label and status flags (optional)
 #    define IMGUI_TEST_ENGINE_LOG(_FMT, ...) \
         ImGuiTestEngineHook_Log(             \
-            &g, _FMT,                        \
+            &g,                              \
+            _FMT,                            \
             __VA_ARGS__) // Custom log entry from user land into test log
 #else
 #    define IMGUI_TEST_ENGINE_ITEM_ADD(_BB, _ID) \

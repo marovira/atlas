@@ -57,8 +57,8 @@ namespace atlas::utils
                 Vector target{0};
                 auto azimuth =
                     glm::translate(Matrix4{1.0f}, data.azimuthTarget) *
-                    glm::rotate(Matrix4{1.0f}, glm::radians(delta.x),
-                                Vector{0, 1, 0}) *
+                    glm::rotate(
+                        Matrix4{1.0f}, glm::radians(delta.x), Vector{0, 1, 0}) *
                     glm::translate(Matrix4{1.0f}, -data.azimuthTarget);
 
                 auto elevation =

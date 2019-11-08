@@ -21,8 +21,8 @@ namespace atlas::core
         auto ftime = fs::last_write_time(filePath, code);
         if (code && CurrentBuild == BuildType::Debug)
         {
-            fmt::print(stderr, "warning: ({}): {}\n", code.value(),
-                       code.message());
+            fmt::print(
+                stderr, "warning: ({}): {}\n", code.value(), code.message());
         }
         return decltype(ftime)::clock::to_time_t(ftime);
     }

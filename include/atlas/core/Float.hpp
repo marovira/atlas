@@ -18,7 +18,8 @@ namespace atlas::core
         return std::abs(a - b) <= std::numeric_limits<T>::epsilon() * scale;
     }
 
-    template<typename T, EpsilonFn<T> epsilon,
+    template<typename T,
+             EpsilonFn<T> epsilon,
              typename = std::enable_if<std::is_floating_point<T>::value>>
     inline constexpr bool areEqual(T a, T b)
     {
@@ -33,7 +34,8 @@ namespace atlas::core
         return areEqual<T>(a, static_cast<T>(0));
     }
 
-    template<typename T, EpsilonFn<T> epsilon,
+    template<typename T,
+             EpsilonFn<T> epsilon,
              typename = std::enable_if<std::is_floating_point<T>::value>>
     inline constexpr bool isZero(T a)
     {
@@ -47,7 +49,8 @@ namespace atlas::core
         return (a > b) || areEqual<T>(a, b);
     }
 
-    template<typename T, EpsilonFn<T> epsilon,
+    template<typename T,
+             EpsilonFn<T> epsilon,
              typename = std::enable_if<std::is_floating_point<T>::value>>
     inline constexpr bool geq(T a, T b)
     {
@@ -61,7 +64,8 @@ namespace atlas::core
         return (a < b) || areEqual<T>(a, b);
     }
 
-    template<typename T, EpsilonFn<T> epsilon,
+    template<typename T,
+             EpsilonFn<T> epsilon,
              typename = std::enable_if<std::is_floating_point<T>::value>>
     inline constexpr bool leq(T a, T b)
     {

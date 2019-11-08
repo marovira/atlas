@@ -160,7 +160,9 @@ namespace atlas::gui
         data.window = nullptr;
     }
 
-    void mousePressedCallback(GuiWindowData& data, int button, int action,
+    void mousePressedCallback(GuiWindowData& data,
+                              int button,
+                              int action,
                               [[maybe_unused]] int mode)
     {
         if (action == GLFW_PRESS && button >= 0 &&
@@ -177,7 +179,9 @@ namespace atlas::gui
         io.MouseWheel += static_cast<float>(yOffset);
     }
 
-    void keyPressCallback(int key, [[maybe_unused]] int scancode, int action,
+    void keyPressCallback(int key,
+                          [[maybe_unused]] int scancode,
+                          int action,
                           [[maybe_unused]] int mods)
     {
         auto& io = ImGui::GetIO();
@@ -220,8 +224,10 @@ namespace atlas::gui
     }
 
     static void setupRenderState(GuiRenderData const& renderData,
-                                 ImDrawData* drawData, int fbWidth,
-                                 int fbHeight, GLuint vao)
+                                 ImDrawData* drawData,
+                                 int fbWidth,
+                                 int fbHeight,
+                                 GLuint vao)
     {
         glEnable(GL_BLEND);
         glBlendEquation(GL_FUNC_ADD);
@@ -231,7 +237,9 @@ namespace atlas::gui
         glDisable(GL_SCISSOR_TEST);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        glViewport(0, 0, static_cast<GLsizei>(fbWidth),
+        glViewport(0,
+                   0,
+                   static_cast<GLsizei>(fbWidth),
                    static_cast<GLsizei>(fbHeight));
         float L = drawData->DisplayPos.x;
         float R = drawData->DisplayPos.x + drawData->DisplaySize.x;
@@ -249,7 +257,9 @@ namespace atlas::gui
 
         glUseProgram(renderData.shaderHandle);
         glUniform1i(renderData.texAttribLocation, 0);
-        glUniformMatrix4fv(renderData.projMtxAttribLocation, 1, GL_FALSE,
+        glUniformMatrix4fv(renderData.projMtxAttribLocation,
+                           1,
+                           GL_FALSE,
                            &orthoProjection[0][0]);
         glBindSampler(0, 0);
 
@@ -261,15 +271,24 @@ namespace atlas::gui
         glEnableVertexAttribArray(renderData.vtxUVAttribLocation);
         glEnableVertexAttribArray(renderData.vtxColorAttribLocation);
         glVertexAttribPointer(
-            renderData.vtxPosAttribLocation, 2, GL_FLOAT, GL_FALSE,
+            renderData.vtxPosAttribLocation,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
             sizeof(ImDrawVert),
             reinterpret_cast<GLvoid*>(IM_OFFSETOF(ImDrawVert, pos)));
         glVertexAttribPointer(
-            renderData.vtxUVAttribLocation, 2, GL_FLOAT, GL_FALSE,
+            renderData.vtxUVAttribLocation,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
             sizeof(ImDrawVert),
             reinterpret_cast<GLvoid*>(IM_OFFSETOF(ImDrawVert, uv)));
         glVertexAttribPointer(
-            renderData.vtxColorAttribLocation, 4, GL_UNSIGNED_BYTE, GL_TRUE,
+            renderData.vtxColorAttribLocation,
+            4,
+            GL_UNSIGNED_BYTE,
+            GL_TRUE,
             sizeof(ImDrawVert),
             reinterpret_cast<GLvoid*>(IM_OFFSETOF(ImDrawVert, col)));
     }
@@ -356,8 +375,8 @@ namespace atlas::gui
                 {
                     if (pcmd->UserCallback == ImDrawCallback_ResetRenderState)
                     {
-                        setupRenderState(renderData, drawData, fbWidth,
-                                         fbHeight, vao);
+                        setupRenderState(
+                            renderData, drawData, fbWidth, fbHeight, vao);
                     }
                     else
                     {
@@ -395,7 +414,8 @@ namespace atlas::gui
                             static_cast<GLuint>(
                                 reinterpret_cast<intptr_t>(pcmd->TextureId)));
                         glDrawElementsBaseVertex(
-                            GL_TRIANGLES, static_cast<GLsizei>(pcmd->ElemCount),
+                            GL_TRIANGLES,
+                            static_cast<GLsizei>(pcmd->ElemCount),
                             sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT
                                                    : GL_UNSIGNED_INT,
                             glx::bufferOffset<ImDrawIdx>(pcmd->IdxOffset),
@@ -415,7 +435,9 @@ namespace atlas::gui
         glBindVertexArray(lastVertexArrayObject);
 
         glBlendEquationSeparate(lastBlendEquationRGB, lastBlendEquationAlpha);
-        glBlendFuncSeparate(lastBlendSrcRGB, lastBlendDstRGB, lastBlendSrcAlpha,
+        glBlendFuncSeparate(lastBlendSrcRGB,
+                            lastBlendDstRGB,
+                            lastBlendSrcAlpha,
                             lastBlendDstAlpha);
 
         if (lastEnableBlend != 0u)
@@ -456,10 +478,12 @@ namespace atlas::gui
 
         glPolygonMode(GL_FRONT_AND_BACK,
                       static_cast<GLenum>(lastPolygonMode[0]));
-        glViewport(lastViewport[0], lastViewport[1],
+        glViewport(lastViewport[0],
+                   lastViewport[1],
                    static_cast<GLsizei>(lastViewport[2]),
                    static_cast<GLsizei>(lastViewport[3]));
-        glScissor(lastScissorBox[0], lastScissorBox[1],
+        glScissor(lastScissorBox[0],
+                  lastScissorBox[1],
                   static_cast<GLsizei>(lastScissorBox[2]),
                   static_cast<GLsizei>(lastScissorBox[3]));
     }
@@ -479,8 +503,15 @@ namespace atlas::gui
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-                     GL_UNSIGNED_BYTE, pixels);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
+                     width,
+                     height,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     pixels);
 
         io.Fonts->TexID = reinterpret_cast<ImTextureID>(
             static_cast<intptr_t>(data.fontTexture));
@@ -557,7 +588,8 @@ namespace atlas::gui
         glAttachShader(data.shaderHandle, data.fragHandle);
         if (auto ret = glx::linkShaders(data.shaderHandle); ret)
         {
-            fmt::print(stderr, "error: GUI shader program failed to link: {}\n",
+            fmt::print(stderr,
+                       "error: GUI shader program failed to link: {}\n",
                        ret.value());
             return false;
         }
@@ -643,8 +675,8 @@ namespace atlas::gui
         {
             if (io.WantSetMousePos)
             {
-                glfwSetCursorPos(data.window, mousePosBackup.x,
-                                 mousePosBackup.y);
+                glfwSetCursorPos(
+                    data.window, mousePosBackup.x, mousePosBackup.y);
             }
             else
             {
