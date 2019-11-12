@@ -100,7 +100,11 @@ else()
         ${ATLAS_SOURCE_FILES}
         )
     add_custom_target(clang-tidy
-        COMMAND ${CLANG_TIDY_EXE} ${ATLAS_FILES} -config='' -- std=c++17
+        COMMAND ${CLANG_TIDY_EXE} ${ATLAS_FILES} 
+        -config=""
+        -- 
+        -std=c++17
+        -I${ATLAS_INCLUDE_ROOT}
         )
 endif()
 
