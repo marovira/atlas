@@ -194,9 +194,9 @@ target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
 target_compile_definitions(atlas-core INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
     add_custom_target(_atlas-core SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
+    set_target_properties(_atlas-core PROPERTIES FOLDER "atlas")
 endif()
 add_library(atlas::core ALIAS atlas-core)
-set_target_properties(_atlas-core PROPERTIES FOLDER "atlas")
 
 #================================
 # Math module.
@@ -210,9 +210,9 @@ target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
 target_compile_definitions(atlas-math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
     add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
+    set_target_properties(_atlas-math PROPERTIES FOLDER "atlas")
 endif()
 add_library(atlas::math ALIAS atlas-math)
-set_target_properties(_atlas-math PROPERTIES FOLDER "atlas")
 
 #================================
 # GLX module.
