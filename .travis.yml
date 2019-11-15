@@ -1,6 +1,6 @@
 language: cpp
 os: linux
-dist: bionic
+dist: xenial
 
 jobs:
     include:
@@ -8,9 +8,10 @@ jobs:
           addons:
               apt:
                   sources: ['ubuntu-toolchain-r-test']
-                  packages: ['g++-9']
+                  packages: ['g++-9', 'gcc-9', 'cmake']
           env:
               - CXX=g++-9
+              - CC=gcc-9
 
 script:
     - mkdir build && cd build
