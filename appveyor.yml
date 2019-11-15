@@ -12,7 +12,7 @@ configuration:
 before_build:
     - ps: New-Item -Path . -Name "build" -ItemType "directory"
     - ps: Set-Location -Path ./build
-    - cmake -G "Visual Studio 16 2019" ..
+    - cmake -G "Visual Studio 16 2019" .. -DATLAS_BUILD_EXAMPLES=OFF -DATLAS_BUILD_GL_TEST=OFF -DATLAS_BUILD_GUI_TEST=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF -DGLM_TEST_ENABLE=OFF
 
 build:
     project: $(APPVEYOR_BUILD_FOLDER)\build\$(APPVEYOR_PROJECT_NAME).sln
