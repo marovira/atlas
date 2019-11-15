@@ -1,21 +1,16 @@
 language: cpp
 os: linux
+dist: bionic
 
 jobs:
     include:
-        - os: linux
-          dist: bionic
-          compiler: gcc
+        - compiler: gcc
           addons:
               apt:
-                  sources:
-                      - ubuntu-toolchain-r/test
-                  packages:
-                      - g++-9
+                  sources: ['ubuntu-toolchain-r-test']
+                  packages: ['g++-9']
           env:
-              - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
-before_install:
-    - eval "${MATRIX_EVAL}"
+              - CXX=g++-9
 
 script:
     - mkdir build && cd build
