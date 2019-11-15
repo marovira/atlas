@@ -166,7 +166,7 @@ namespace atlas::gui
                               [[maybe_unused]] int mode)
     {
         if (action == GLFW_PRESS && button >= 0 &&
-            button < data.mouseJustPressed.size())
+            button < static_cast<int>(data.mouseJustPressed.size()))
         {
             data.mouseJustPressed[button] = true;
         }
