@@ -176,6 +176,7 @@ if (MSVC)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
     set(ATLAS_COMPILE_DEFINITIONS -DNOMINMAX)
 else()
+    set(ATLAS_COMPILER_FLAGS -Wall -Wextra --std=c++17)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:-g>")
 endif()
 
