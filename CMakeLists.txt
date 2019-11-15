@@ -119,6 +119,11 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
     GIT_TAG 5.3.0)
 FetchContent_Declare(
+    magic_enum
+    GIT_REPOSITORY https://github.com/Neargye/magic_enum
+    GIT_TAG v0.6.3
+    )
+FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
     GIT_TAG 0.9.9.5)
@@ -135,6 +140,7 @@ FetchContent_Declare(
     GIT_TAG v2.0-rc1)
 
 find_package(fmt QUIET)
+find_package(magic_enum QUIET)
 find_package(glm QUIET)
 find_package(glfw3 QUIET)
 find_package(gl3w QUIET)
@@ -144,6 +150,11 @@ find_package(OpenGL REQUIRED QUIET)
 if (NOT fmt_FOUND AND NOT fmt_POPULATED)
     FetchContent_Populate(fmt)
     add_subdirectory(${fmt_SOURCE_DIR} ${fmt_BINARY_DIR})
+endif()
+
+if (NOT magic_enum_FOUND AND NOT magic_enum_POPULATED)
+    FetchContent_Populate(magic_enum)
+    add_subdirectory(${magic_enum_SOURCE_DIR} ${magic_enum_BINARY_DIR})
 endif()
 
 if (NOT glm_FOUND AND NOT glm_POPULATED)
@@ -176,7 +187,7 @@ if (MSVC)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
     set(ATLAS_COMPILE_DEFINITIONS -DNOMINMAX)
 else()
-    set(ATLAS_COMPILER_FLAGS -Wall -Wextra --std=c++17)
+    set(ATLAS_COMPILER_FLAGS -Wall -Wextra -Werror)
     set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:-g>")
 endif()
 
@@ -185,7 +196,7 @@ endif()
 #================================
 add_library(atlas-core INTERFACE)
 target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
-target_link_libraries(atlas-core INTERFACE fmt::fmt)
+target_link_libraries(atlas-core INTERFACE fmt::fmt magic_enum::magic_enum)
 if (NOT MSVC)
     target_link_libraries(atlas-core INTERFACE stdc++fs)
 endif()

@@ -5,6 +5,7 @@
 #include <atlas/gui/GUI.hpp>
 
 #include <fmt/printf.h>
+#include <magic_enum.hpp>
 
 #include <array>
 
@@ -64,19 +65,19 @@ int main()
 
     // Now, let's make the window callbacks.
     {
-        auto mousePressCallback = [&guiWindowData](int button, int action,
-                                                   int mode, double, double) {
-            gui::mousePressedCallback(guiWindowData, button, action, mode);
-        };
+        auto mousePressCallback =
+            [&guiWindowData](int button, int action, int mode, double, double) {
+                gui::mousePressedCallback(guiWindowData, button, action, mode);
+            };
 
         auto mouseScrollCallback = [](double xOffset, double yOffset) {
             gui::mouseScrollCallback(xOffset, yOffset);
         };
 
-        auto keyPressCallback = [](int key, int scancode, int action,
-                                   int mods) {
-            gui::keyPressCallback(key, scancode, action, mods);
-        };
+        auto keyPressCallback =
+            [](int key, int scancode, int action, int mods) {
+                gui::keyPressCallback(key, scancode, action, mods);
+            };
 
         auto charCallback = [](unsigned int codepoint) {
             gui::charCallback(codepoint);
@@ -107,8 +108,9 @@ int main()
         glx::createGLContext(window, settings.version);
 
         // Set the error callback.
-        using namespace atlas::core;
-        glx::initializeGLCallback(glx::ErrorSource::All, glx::ErrorType::All,
+        using namespace magic_enum::bitwise_operators;
+        glx::initializeGLCallback(glx::ErrorSource::All,
+                                  glx::ErrorType::All,
                                   glx::ErrorSeverity::High |
                                       glx::ErrorSeverity::Medium);
     }
@@ -175,14 +177,22 @@ int main()
 
         glCreateVertexArrays(1, &vao);
         glCreateBuffers(1, &vbo);
-        glNamedBufferStorage(vbo, glx::size<float>(vertices.size()),
-                             vertices.data(), 0);
+        glNamedBufferStorage(
+            vbo, glx::size<float>(vertices.size()), vertices.data(), 0);
 
         glBindVertexArray(vao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glVertexAttribPointer(0, 3, GL_FLOAT, FALSE, glx::stride<float>(6),
+        glVertexAttribPointer(0,
+                              3,
+                              GL_FLOAT,
+                              FALSE,
+                              glx::stride<float>(6),
                               glx::bufferOffset<float>(0));
-        glVertexAttribPointer(1, 3, GL_FLOAT, FALSE, glx::stride<float>(6),
+        glVertexAttribPointer(1,
+                              3,
+                              GL_FLOAT,
+                              FALSE,
+                              glx::stride<float>(6),
                               glx::bufferOffset<float>(3));
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);

@@ -3,6 +3,7 @@
 #include <atlas/core/Platform.hpp>
 
 #include <fmt/printf.h>
+#include <magic_enum.hpp>
 
 namespace atlas::glx
 {
@@ -55,8 +56,9 @@ namespace atlas::glx
     template<typename T>
     bool check(T a, T b)
     {
+        using namespace magic_enum::bitwise_operators;
         T c      = a & b;
-        auto res = enumToUnderlyingType(c);
+        auto res = magic_enum::enum_integer(c);
         return (res != 0);
     }
 

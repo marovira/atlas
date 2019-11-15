@@ -1,7 +1,6 @@
 #pragma once
 
 #include <GL/gl3w.h>
-#include <atlas/core/Enum.hpp>
 
 namespace atlas::glx
 {
