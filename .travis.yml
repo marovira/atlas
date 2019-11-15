@@ -1,15 +1,15 @@
 language: cpp
+os: linux
 
-matrix:
+jobs:
     include:
         - os: linux
           dist: bionic
-          sudo: true
           compiler: gcc
           addons:
               apt:
                   sources:
-                      - ubuntu-toolchain-r-test
+                      - ubuntu-toolchain-r/test
                   packages:
                       - g++-9
           env:
