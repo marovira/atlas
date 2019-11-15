@@ -1,17 +1,12 @@
 language: cpp
 os: linux
-dist: xenial
+dist: bionic
 
 jobs:
     include:
-        - compiler: gcc
-          addons:
-              apt:
-                  sources: ['ubuntu-toolchain-r-test']
-                  packages: ['g++-9', 'gcc-9', 'cmake']
-          env:
-              - CXX=g++-9
-              - CC=gcc-9
+        compiler: gcc
+        before_install:
+            - sudo apt-get install xorg-dev
 
 script:
     - mkdir build && cd build
