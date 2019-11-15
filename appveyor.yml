@@ -17,5 +17,5 @@ before_build:
 build:
     project: $(APPVEYOR_BUILD_FOLDER)\build\$(APPVEYOR_PROJECT_NAME).sln
 
-test:
-    project: $(APPVEYOR_BUILD_FOLDER)\build\RUN_TESTS.vcxproj
+test_script:
+    - cmake --build . --target RUN_TESTS --config $(CONFIGURATION)
