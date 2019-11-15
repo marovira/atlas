@@ -10,7 +10,9 @@ configuration:
     - Debug
 
 before_build:
-    - cmake -G "Visual Studio 16 2019" .
+    - ps: New-Item -Path . -Name "build" -ItemType "directory"
+    - ps: Set-Location -Path ./build
+    - cmake -G "Visual Studio 16 2019" ..
 
 build:
     project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
