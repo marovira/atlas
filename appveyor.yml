@@ -18,4 +18,4 @@ build:
     project: $(APPVEYOR_BUILD_FOLDER)\build\$(APPVEYOR_PROJECT_NAME).sln
 
 test_script:
-    - cmake --build . --target RUN_TESTS --config $(CONFIGURATION)
+    - cmake --build . --target RUN_TESTS --config $(configuration)
