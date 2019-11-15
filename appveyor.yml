@@ -9,6 +9,9 @@ configuration:
     - Release
     - Debug
 
+environment:
+    CONFIG: $(CONFIGURATION)
+
 before_build:
     - ps: New-Item -Path . -Name "build" -ItemType "directory"
     - ps: Set-Location -Path ./build
@@ -18,4 +21,5 @@ build:
     project: $(APPVEYOR_BUILD_FOLDER)\build\$(APPVEYOR_PROJECT_NAME).sln
 
 test_script:
-    - cmake --build . --target RUN_TESTS --config $(configuration)
+    - echo %CONFIG%
+    - cmake --build . --target RUN_TESTS --config %CONFIG%
