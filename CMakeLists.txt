@@ -289,9 +289,6 @@ if (ATLAS_BUILD_TESTS)
         atlas-hlr
         atlas-utils
         Catch2::Catch2)
-    if (MSVC)
-        target_link_options(atlas-test PRIVATE /NODEFAULTLIB:MSVCRT)
-    endif()
     if (ATLAS_BUILD_GL_TEST)
         if (MSVC)
             target_compile_definitions(atlas-test PUBLIC -DATLAS_BUILD_GL_TESTS)
