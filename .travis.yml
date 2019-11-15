@@ -1,16 +1,17 @@
-language:
-    - cpp
+language: cpp
 
 matrix:
     include:
         - os: linux
           dist: bionic
+          sudo: true
+          compiler: gcc
           addons:
               apt:
                   sources:
                       - ubuntu-toolchain-r-test
                   packages:
-                      - g++-9.1
+                      - g++-9
           env:
               - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
 before_install:
