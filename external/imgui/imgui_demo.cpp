@@ -71,7 +71,7 @@ ShowExampleAppCustomRendering()
 #    define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "atlas/gui/imgui.h"
+#include "imgui.h"
 #include <ctype.h>  // toupper
 #include <limits.h> // INT_MIN, INT_MAX
 #include <math.h>   // sqrtf, powf, cosf, sinf, floorf, ceilf
@@ -5660,8 +5660,7 @@ struct ExampleAppConsole
         // data->SelectionStart, data->SelectionEnd);
         switch (data->EventFlag)
         {
-        case ImGuiInputTextFlags_CallbackCompletion:
-        {
+        case ImGuiInputTextFlags_CallbackCompletion: {
             // Example of TEXT COMPLETION
 
             // Locate beginning of current word
@@ -5738,8 +5737,7 @@ struct ExampleAppConsole
 
             break;
         }
-        case ImGuiInputTextFlags_CallbackHistory:
-        {
+        case ImGuiInputTextFlags_CallbackHistory: {
             // Example of HISTORY
             const int prev_history_pos = HistoryPos;
             if (data->EventKey == ImGuiKey_UpArrow)
@@ -6178,8 +6176,7 @@ static void ShowExampleAppLongText(bool* p_open)
         // Single call to TextUnformatted() with a big buffer
         ImGui::TextUnformatted(log.begin(), log.end());
         break;
-    case 1:
-    {
+    case 1: {
         // Multiple calls to Text(), manually coarsely clipped - demonstrate how
         // to use the ImGuiListClipper helper.
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));

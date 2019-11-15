@@ -1,9 +1,8 @@
 #pragma once
 
-#include "imgui.h"
-
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 
 #include <array>
 #include <string>

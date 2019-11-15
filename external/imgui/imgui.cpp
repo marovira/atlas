@@ -1492,11 +1492,11 @@ functions)
 #    define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "atlas/gui/imgui.h"
+#include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #    define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "atlas/gui/imgui_internal.h"
+#include "imgui_internal.h"
 
 #include <ctype.h>                        // toupper
 #include <stdio.h>                        // vsnprintf, sscanf, printf

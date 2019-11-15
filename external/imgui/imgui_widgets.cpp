@@ -33,11 +33,11 @@ Separator, etc.)
 #    define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "atlas/gui/imgui.h"
+#include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #    define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "atlas/gui/imgui_internal.h"
+#include "imgui_internal.h"
 
 #include <ctype.h>                        // toupper
 #if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
@@ -2824,8 +2824,7 @@ bool ImGui::DragBehavior(ImGuiID id,
 
     switch (data_type)
     {
-    case ImGuiDataType_S8:
-    {
+    case ImGuiDataType_S8: {
         ImS32 v32 = (ImS32) * (ImS8*)v;
         bool r    = DragBehaviorT<ImS32, ImS32, float>(
             ImGuiDataType_S32,
@@ -2840,8 +2839,7 @@ bool ImGui::DragBehavior(ImGuiID id,
             *(ImS8*)v = (ImS8)v32;
         return r;
     }
-    case ImGuiDataType_U8:
-    {
+    case ImGuiDataType_U8: {
         ImU32 v32 = (ImU32) * (ImU8*)v;
         bool r    = DragBehaviorT<ImU32, ImS32, float>(
             ImGuiDataType_U32,
@@ -2856,8 +2854,7 @@ bool ImGui::DragBehavior(ImGuiID id,
             *(ImU8*)v = (ImU8)v32;
         return r;
     }
-    case ImGuiDataType_S16:
-    {
+    case ImGuiDataType_S16: {
         ImS32 v32 = (ImS32) * (ImS16*)v;
         bool r    = DragBehaviorT<ImS32, ImS32, float>(
             ImGuiDataType_S32,
@@ -2872,8 +2869,7 @@ bool ImGui::DragBehavior(ImGuiID id,
             *(ImS16*)v = (ImS16)v32;
         return r;
     }
-    case ImGuiDataType_U16:
-    {
+    case ImGuiDataType_U16: {
         ImU32 v32 = (ImU32) * (ImU16*)v;
         bool r    = DragBehaviorT<ImU32, ImS32, float>(
             ImGuiDataType_U32,
@@ -3628,8 +3624,7 @@ bool ImGui::SliderBehavior(const ImRect& bb,
 {
     switch (data_type)
     {
-    case ImGuiDataType_S8:
-    {
+    case ImGuiDataType_S8: {
         ImS32 v32 = (ImS32) * (ImS8*)v;
         bool r    = SliderBehaviorT<ImS32, ImS32, float>(bb,
                                                       id,
@@ -3645,8 +3640,7 @@ bool ImGui::SliderBehavior(const ImRect& bb,
             *(ImS8*)v = (ImS8)v32;
         return r;
     }
-    case ImGuiDataType_U8:
-    {
+    case ImGuiDataType_U8: {
         ImU32 v32 = (ImU32) * (ImU8*)v;
         bool r    = SliderBehaviorT<ImU32, ImS32, float>(bb,
                                                       id,
@@ -3662,8 +3656,7 @@ bool ImGui::SliderBehavior(const ImRect& bb,
             *(ImU8*)v = (ImU8)v32;
         return r;
     }
-    case ImGuiDataType_S16:
-    {
+    case ImGuiDataType_S16: {
         ImS32 v32 = (ImS32) * (ImS16*)v;
         bool r    = SliderBehaviorT<ImS32, ImS32, float>(bb,
                                                       id,
@@ -3679,8 +3672,7 @@ bool ImGui::SliderBehavior(const ImRect& bb,
             *(ImS16*)v = (ImS16)v32;
         return r;
     }
-    case ImGuiDataType_U16:
-    {
+    case ImGuiDataType_U16: {
         ImU32 v32 = (ImU32) * (ImU16*)v;
         bool r    = SliderBehaviorT<ImU32, ImS32, float>(bb,
                                                       id,
@@ -4950,7 +4942,7 @@ namespace ImStb
 #define STB_TEXTEDIT_K_SHIFT 0x20000
 
 #define STB_TEXTEDIT_IMPLEMENTATION
-#include "atlas/gui/imstb_textedit.h"
+#include "imstb_textedit.h"
 
 } // namespace ImStb
 
