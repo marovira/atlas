@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------
                         The MIT License (MIT)
         applies to: 
-        - ImGUI, Copyright (c) Omar Cornut (contained in GUI module)
-        - CR , Copyright (c) Danny Angelo Carminati Grein (contained in HLDR
+        - ImGUI, Copyright (c) Omar Cornut (contained in external folder)
+        - CR,    Copyright (c) Danny Angelo Carminati Grein (contained in HLR
           module)
 -----------------------------------------------------------------------------
 
