@@ -8,6 +8,10 @@ jobs:
         before_install:
             - sudo apt-get install xorg-dev
             - sudo apt-get install mesa-utils libgl1-mesa-dev
+        compiler: clang
+        before_install:
+            - sudo apt-get install xorg-dev
+            - sudo apt-get install mesa-utils libgl1-mesa-dev
 
 script:
     - mkdir build && cd build
