@@ -96,6 +96,15 @@ namespace atlas::glx
                 continue;
             }
 
+            // Check to see if the line is a comment. If it is, then skip it
+            // while increasing the line counter.
+            if (line.find("//") != std::string::npos)
+            {
+                outString << line + "\n";
+                ++lineNum;
+                continue;
+            }
+
             // Check to see if the line is an #include
             if (line.find("#include") != std::string::npos)
             {
@@ -134,7 +143,7 @@ namespace atlas::glx
                         fmt::print(
                             stderr,
                             "In file {}({}): Cannot open include file: \'{}\': "
-                            "No such file or directory",
+                            "No such file or directory.\n",
                             filename,
                             lineNum + 1,
                             path);
@@ -155,7 +164,9 @@ namespace atlas::glx
                                         });
                 if (res != file.includedFiles.end())
                 {
-                    // We have seen this file before, so do nothing.
+                    // We have seen this file before, so do nothing while
+                    // increasing the line counter.
+                    ++lineNum;
                     continue;
                 }
 
@@ -165,6 +176,11 @@ namespace atlas::glx
                     absolutePath, file, includeDirectories);
 
                 outString << parsedFile;
+
+                // Since we are removing the #include directive from the code,
+                // we must increase the line counter to ensure that the next
+                // line we parse is correct.
+                ++lineNum;
                 continue;
             }
 
