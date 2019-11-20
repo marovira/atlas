@@ -1,0 +1,7 @@
+#ifndef UNIFORM_BINDINGS_GLSL
+#define UNIFORM_BINDINGS_GLSL
+
+#define VERTEX_LOCATION 0
+#define NORMAL_LOCATION 1
+
+#endif

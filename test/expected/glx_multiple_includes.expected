@@ -1,0 +1,57 @@
+#version 450 core
+#line 2 0
+
+#line 1 1
+#ifndef UNIFORM_BINDINGS_GLSL
+#line 2 1
+#define UNIFORM_BINDINGS_GLSL
+#line 3 1
+
+#line 4 1
+#define VERTEX_LOCATION 0
+#line 5 1
+#define NORMAL_LOCATION 1
+#line 6 1
+
+#line 7 1
+#endif
+#line 4 0
+
+#line 5 0
+layout(location = VERTEX_LOCATION) in vec4 pos;
+#line 6 0
+
+#line 1 2
+#ifndef UNIFORM_MATRICES_GLSL
+#line 2 2
+#define UNIFORM_MATRICES_GLSL
+#line 3 2
+
+#line 4 2
+layout (std140, binding = 0) uniform Matrices
+#line 5 2
+{
+#line 6 2
+    mat4 projection;
+#line 7 2
+    mat4 view;
+#line 8 2
+};
+#line 9 2
+
+#line 10 2
+uniform mat4 model;
+#line 11 2
+
+#line 12 2
+#endif
+#line 8 0
+
+#line 9 0
+void main()
+#line 10 0
+{
+#line 11 0
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+#line 12 0
+}

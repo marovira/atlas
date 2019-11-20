@@ -1,0 +1,45 @@
+#version 450 core
+#line 2 0
+
+#line 1 1
+#ifndef CIRCULAR_INCLUDE_A_GLSL
+#line 2 1
+#define CIRCULAR_INCLUDE_A_GLSL
+#line 3 1
+
+#line 4 1
+#define VERTEX_LOCATION 0
+#line 5 1
+
+#line 1 2
+#ifndef CIRCULAR_INCLUDE_B_GLSL
+#line 2 2
+#define CIRCULAR_INCLUDE_B_GLSL
+#line 3 2
+
+#line 4 2
+#define NORMAL_LOCATION 1
+#line 5 2
+
+#line 7 2
+
+#line 8 2
+#endif
+#line 7 1
+
+#line 8 1
+#endif
+#line 4 0
+
+#line 5 0
+layout(location = 0) in vec4 pos;
+#line 6 0
+
+#line 7 0
+void main()
+#line 8 0
+{
+#line 9 0
+    gl_Position = vec4(pos.xyz, 1.0);
+#line 10 0
+}
