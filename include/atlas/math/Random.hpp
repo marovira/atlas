@@ -7,8 +7,8 @@
 namespace atlas::math
 {
     template<typename T,
-             typename Engine,
-             typename std::enable_if<std::is_arithmetic<T>::type>>
+             typename Engine = std::mt19937,
+             typename        = std::enable_if<std::is_arithmetic<T>::value>>
     class Random
     {
     public:
@@ -17,19 +17,27 @@ namespace atlas::math
         Random(typename Engine::result_type seed) : mEngine{seed}
         {}
 
-        T getRandomRange(T min, T max) const
+        T getRandomRange(T min, T max)
         {
-            std::uniform_real_distribution<T> dist(min, max);
-            return dist(mEngine);
+            if constexpr (std::is_floating_point<T>::value)
+            {
+                std::uniform_real_distribution<T> dist{min, max};
+                return dist(mEngine);
+            }
+            else
+            {
+                std::uniform_int_distribution<T> dist{min, max};
+                return dist(mEngine);
+            }
         }
 
-        T getRandomMax() const
+        T getRandomMax()
         {
             return getRandomRange(static_cast<T>(0),
                                   std::numeric_limits<T>::max());
         }
 
-        T getRandomOne() const
+        T getRandomOne()
         {
             return getRandomRange(static_cast<T>(0), static_cast<T>(1));
         }

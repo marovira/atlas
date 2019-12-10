@@ -71,6 +71,7 @@ set(ATLAS_TEST_LIST
     "${ATLAS_TEST_ROOT}/atlas_core_timer.cpp"
     "${ATLAS_TEST_ROOT}/atlas_math_coordinates.cpp"
     "${ATLAS_TEST_ROOT}/atlas_math_ray.cpp"
+    "${ATLAS_TEST_ROOT}/atlas_math_random.cpp"
     "${ATLAS_TEST_ROOT}/atlas_glx_glsl.cpp"
     "${ATLAS_TEST_ROOT}/atlas_glx_context.cpp"
     "${ATLAS_TEST_ROOT}/atlas_gui_gui.cpp"
