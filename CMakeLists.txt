@@ -290,7 +290,7 @@ if (ATLAS_BUILD_TESTS)
     FetchContent_Declare(
         catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v2.11.2)
+        GIT_TAG v2.11.1)
 
     find_package(Catch2 QUIET)
     if (NOT Catch2_FOUND AND NOT catch2_POPULATED)
