@@ -120,20 +120,20 @@ include(FetchContent)
 FetchContent_Declare(
     fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG 5.3.0)
+    GIT_TAG 6.1.2)
 FetchContent_Declare(
     magic_enum
     GIT_REPOSITORY https://github.com/Neargye/magic_enum
-    GIT_TAG v0.6.3
+    GIT_TAG v0.6.4
     )
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
-    GIT_TAG 0.9.9.5)
+    GIT_TAG 0.9.9.7)
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git 
-    GIT_TAG 3.3)
+    GIT_TAG 3.3.1)
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/marovira/gl3w.git)
@@ -290,7 +290,7 @@ if (ATLAS_BUILD_TESTS)
     FetchContent_Declare(
         catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v2.9.2)
+        GIT_TAG v2.11.2)
 
     find_package(Catch2 QUIET)
     if (NOT Catch2_FOUND AND NOT catch2_POPULATED)
