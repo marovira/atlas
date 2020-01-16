@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math.hpp"
+
 #include <atlas/core/Float.hpp>
 
 #include <vector>
@@ -122,6 +124,8 @@ namespace atlas::math
              typename = std::enable_if<std::is_floating_point<T>::value>>
     int solveQuartic(std::vector<T>& coeffs, std::vector<T>& roots)
     {
+        using atlas::core::isZero;
+
         std::vector<T> c(4);
         T z, u, v, sub;
         T A, B, C, D;
