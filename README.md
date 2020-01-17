@@ -74,9 +74,28 @@ The dependencies per module are as follows:
 
 ## Contributing
 
-For the time-being, pull requests are not accepted. This is due to the fact that
-Atlas is undergoing a major redesign. I will change this note when a more stable
-state has been attained.
+There are three ways in which you can contribute to Atlas:
+
+* If you find a bug, please open an issue. Similarly, if you have a question
+  about how to use it, or if something is unclear, please post an issue so it
+  can be addressed.
+* If you have a fix for a bug, or a code enhancement, please open a pull
+  request. Before you submit it though, make sure to abide by the rules written
+  below.
+* If you have a feature proposal, you can either open an issue or create a pull
+  request. If you are submitting a pull request, it must abide by the rules
+  written below. Note that any new features need to be approved by me.
+
+If you are submitting a pull request, the guidelines are the following:
+
+1. Ensure that your code follows the standards and formatting of the framework.
+   The coding standards can be seen throughout the code, and the formatting is
+   handled through the `.clang-format` file located at the root of the
+   directory. Any changes that do not follow the style and format will be
+   rejected.
+2. Ensure that *all* unit tests are working prior to submitting the pull
+   request. If you are adding a new feature that has been approved, it is your
+   responsibility to provide the corresponding unit tests (if applicable). 
 
 ## License
 
