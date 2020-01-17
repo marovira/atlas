@@ -18,12 +18,12 @@ namespace atlas::math
             return o + (t * d);
         }
 
-        bool operator==(Ray const& rhs)
+        bool operator==(Ray const& rhs) const
         {
             return (o == rhs.o) && (d == rhs.d);
         }
 
-        bool operator!=(Ray const& rhs)
+        bool operator!=(Ray const& rhs) const
         {
             return !(*this == rhs);
         }
