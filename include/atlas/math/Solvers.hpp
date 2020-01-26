@@ -98,8 +98,7 @@ namespace atlas::math
             {
                 // Multiplicity 3.
                 roots[0] = 0;
-                roots.emplace_back(0);
-                num = 1;
+                num      = 1;
             }
             else
             {
