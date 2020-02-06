@@ -17,7 +17,7 @@ namespace atlas::math
         Random(typename Engine::result_type seed) : mEngine{seed}
         {}
 
-        T getRandomRange(T min, T max)
+        T getRandomRange(T min, T max) const
         {
             if constexpr (std::is_floating_point<T>::value)
             {
@@ -31,13 +31,13 @@ namespace atlas::math
             }
         }
 
-        T getRandomMax()
+        T getRandomMax() const
         {
             return getRandomRange(static_cast<T>(0),
                                   std::numeric_limits<T>::max());
         }
 
-        T getRandomOne()
+        T getRandomOne() const
         {
             return getRandomRange(static_cast<T>(0), static_cast<T>(1));
         }
