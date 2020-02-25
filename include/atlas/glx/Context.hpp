@@ -42,7 +42,7 @@ namespace atlas::glx
         int profile{GLFW_OPENGL_CORE_PROFILE};
         bool enableDebugContext{core::CurrentBuild == core::BuildType::Debug};
         bool isForwardCompat{true};
-        bool isMaximized{true};
+        bool isMaximized{false};
         bool isResizeable{true};
         bool isFullscreen{false};
     };
