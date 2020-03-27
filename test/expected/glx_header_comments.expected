@@ -1,0 +1,35 @@
+// Some comments
+// in the header of 
+// the file.
+
+#version 450 core
+#line 6 0
+
+#line 7 0
+layout(location = 0) in vec4 pos;
+#line 8 0
+
+#line 9 0
+layout(std140, binding = 0) uniform Matrices
+#line 10 0
+{
+#line 11 0
+    mat4 projection;
+#line 12 0
+    mat4 view;
+#line 13 0
+};
+#line 14 0
+
+#line 15 0
+uniform mat4 model;
+#line 16 0
+
+#line 17 0
+void main()
+#line 18 0
+{
+#line 19 0
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+#line 20 0
+}

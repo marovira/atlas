@@ -75,11 +75,16 @@ namespace atlas::glx
 
         // Check to see if this is the first time we are adding something. If it
         // is, then we add the root file to help us build a hierarchy of
-        // includes.
+        // includes. Additionally, if this is the first file, then by
+        // rule it must contain the #version directive, so set the
+        // found variable to false so we know when we've found it and can
+        // ignore any lines before it to avoid compiler errors.
+        bool foundVersionDirective{true};
         if (file.includedFiles.empty())
         {
             auto timestamp = core::getFileLastWrite(filename);
             file.includedFiles.emplace_back(filename, -1, timestamp);
+            foundVersionDirective = false;
         }
 
         int fileNum = static_cast<int>(file.includedFiles.size()) - 1;
@@ -87,21 +92,24 @@ namespace atlas::glx
         std::string line;
         while (std::getline(inFile, line))
         {
-            // Check to see if the line is a #version. If it is, then we must
-            // skip it while increasing the line counter.
-            if (line.find("#version") != std::string::npos)
+            // Check to see if the line is a comment. If it is, then skip it
+            // while increasing the line counter.
+            // Do this check first to accommodate for the case where there are
+            // comments before the #version directive.
+            if (line.find("//") != std::string::npos)
             {
                 outString << line + "\n";
                 ++lineNum;
                 continue;
             }
 
-            // Check to see if the line is a comment. If it is, then skip it
-            // while increasing the line counter.
-            if (line.find("//") != std::string::npos)
+            // Check to see if the line is a #version. If it is, then we must
+            // skip it while increasing the line counter.
+            if (line.find("#version") != std::string::npos)
             {
                 outString << line + "\n";
                 ++lineNum;
+                foundVersionDirective = true;
                 continue;
             }
 
@@ -180,6 +188,16 @@ namespace atlas::glx
                 // Since we are removing the #include directive from the code,
                 // we must increase the line counter to ensure that the next
                 // line we parse is correct.
+                ++lineNum;
+                continue;
+            }
+
+            // If we haven't found the version directive yet, do not add any
+            // #line directives as this will result in a compiler error.
+            // Instead, sip the line while increasing the line counter.
+            if (!foundVersionDirective)
+            {
+                outString << line + "\n";
                 ++lineNum;
                 continue;
             }
