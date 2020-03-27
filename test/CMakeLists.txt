@@ -10,6 +10,7 @@ set(ATLAS_TEST_DATA
     "${ATLAS_TEST_DATA_ROOT}/glx_nested_include.glsl"
     "${ATLAS_TEST_DATA_ROOT}/glx_circular_include.glsl"
     "${ATLAS_TEST_DATA_ROOT}/glx_header_comments.glsl"
+    "${ATLAS_TEST_DATA_ROOT}/glx_c_comments.glsl"
 
     "${ATLAS_TEST_DATA_ROOT}/nested_include.glsl"
     "${ATLAS_TEST_DATA_ROOT}/uniform_bindings.glsl"
@@ -28,6 +29,7 @@ set(ATLAS_EXPECTED_DATA
     "${ATLAS_EXPECTED_DATA_ROOT}/glx_nested_include.expected"
     "${ATLAS_EXPECTED_DATA_ROOT}/glx_circular_include.expected"
     "${ATLAS_EXPECTED_DATA_ROOT}/glx_header_comments.expected"
+    "${ATLAS_EXPECTED_DATA_ROOT}/glx_c_comments.expected"
     )
 
 include("${ATLAS_CMAKE_ROOT}/CreateDataHeader.cmake")

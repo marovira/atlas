@@ -152,6 +152,22 @@ TEST_CASE("loadShaderFile: Simple file with header comments", "[glx]")
     REQUIRE(includedFile == expectedFile);
 }
 
+TEST_CASE("loadShaderFile: Simple file with c-style comments", "[glx]")
+{
+    std::string filename = normalizePath(TestData[glx_c_comments]);
+    std::string expectedFilename{ExpectedFiles[glx_c_comments_expected]};
+
+    auto expectedString = loadExpectedString(expectedFilename);
+
+    auto result = readShaderSource(filename);
+    REQUIRE(result.sourceString == expectedString);
+    REQUIRE(result.includedFiles.size() == 1);
+
+    auto includedFile = result.includedFiles.front();
+    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
+    REQUIRE(includedFile == expectedFile);
+}
+
 TEST_CASE("loadShaderFile: Single include", "[glx]")
 {
     std::string filename = normalizePath(TestData[glx_single_include]);

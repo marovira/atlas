@@ -90,6 +90,7 @@ namespace atlas::glx
         int fileNum = static_cast<int>(file.includedFiles.size()) - 1;
         int lineNum = 1;
         std::string line;
+        bool inCComment{false};
         while (std::getline(inFile, line))
         {
             // Check to see if the line is a comment. If it is, then skip it
@@ -97,6 +98,36 @@ namespace atlas::glx
             // Do this check first to accommodate for the case where there are
             // comments before the #version directive.
             if (line.find("//") != std::string::npos)
+            {
+                outString << line + "\n";
+                ++lineNum;
+                continue;
+            }
+
+            // Found a starting C-style comment, so we simply skip the
+            // line while increasing the counter. This will continue until
+            // we find a terminating symbol.
+            if (line.find("/*") != std::string::npos)
+            {
+                inCComment = true;
+                outString << line + "\n";
+                ++lineNum;
+                continue;
+            }
+
+            // Found the closing symbol for the C-style comment, so parsing
+            // can resume as normal.
+            if (line.find("*/") != std::string::npos)
+            {
+                inCComment = false;
+                outString << line + "\n";
+                ++lineNum;
+                continue;
+            }
+
+            // If we are in the middle of a C-style comment, skip the lines
+            // while increasing the line counter.
+            if (inCComment)
             {
                 outString << line + "\n";
                 ++lineNum;
