@@ -140,7 +140,7 @@ FetchContent_Declare(
 FetchContent_Declare(
     tinyobjloader
     GIT_REPOSITORY https://github.com/syoyo/tinyobjloader.git
-    GIT_TAG v2.0-rc1)
+    GIT_TAG d7d53217c30a7970596d1b93f97a5fd97b7cf1a5)
 
 find_package(fmt QUIET)
 find_package(magic_enum QUIET)
