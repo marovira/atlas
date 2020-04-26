@@ -5,7 +5,7 @@
 #include <catch2/catch.hpp>
 
 #if defined(ATLAS_BUILD_GL_TESTS)
-static void errorCallback(int code, char const* message)
+static void error_callback(int code, char const* message)
 {
     fmt::print("error ({}):{}\n", code, message);
 }
@@ -14,59 +14,62 @@ using namespace atlas::glx;
 
 TEST_CASE("Checking single window, single context", "[glx]")
 {
-    REQUIRE(initializeGLFW(errorCallback));
+    REQUIRE(initialize_glfw(error_callback));
 
     WindowSettings settings;
-    auto window = createGLFWWindow(settings);
+    auto window = create_glfw_window(settings);
     REQUIRE(window != nullptr);
 
     glfwMakeContextCurrent(window);
 
-    REQUIRE(createGLContext(window, settings.version));
+    REQUIRE(create_gl_context(window, settings.version));
 
-    destroyGLFWWindow(window);
-    terminateGLFW();
+    destroy_glfw_window(window);
+    terminate_glfw();
 }
 
 TEST_CASE("Checking callbacks on single window", "[glx]")
 {
-    initializeGLFW(errorCallback);
+    initialize_glfw(error_callback);
     WindowSettings settings;
-    auto window = createGLFWWindow(settings);
+    auto window = create_glfw_window(settings);
 
-    std::vector<bool> callbacksSuccess(7, false);
+    std::vector<bool> callbacks_success(7, false);
 
-    auto mousePressCallback = [&callbacksSuccess](int, int, int, double,
-                                                  double) {
-        callbacksSuccess[0] = true;
+    auto mouse_press_callback =
+        [&callbacks_success](int, int, int, double, double) {
+            callbacks_success[0] = true;
+        };
+    auto mouse_move_callback = [&callbacks_success](double, double) {
+        callbacks_success[1] = true;
     };
-    auto mouseMoveCallback = [&callbacksSuccess](double, double) {
-        callbacksSuccess[1] = true;
+    auto mouse_scroll_callback = [&callbacks_success](double, double) {
+        callbacks_success[2] = true;
     };
-    auto mouseScrollCallback = [&callbacksSuccess](double, double) {
-        callbacksSuccess[2] = true;
+    auto key_press_callback = [&callbacks_success](int, int, int, int) {
+        callbacks_success[3] = true;
     };
-    auto keyPressCallback = [&callbacksSuccess](int, int, int, int) {
-        callbacksSuccess[3] = true;
+    auto window_size_callback = [&callbacks_success](int, int) {
+        callbacks_success[4] = true;
     };
-    auto windowSizeCallback = [&callbacksSuccess](int, int) {
-        callbacksSuccess[4] = true;
+    auto framebuffer_size_callback = [&callbacks_success](int, int) {
+        callbacks_success[5] = true;
     };
-    auto framebufferSizeCallback = [&callbacksSuccess](int, int) {
-        callbacksSuccess[5] = true;
-    };
-    auto windowCloseCallback = [&callbacksSuccess](unsigned int) {
-        callbacksSuccess[6] = true;
+    auto window_close_callback = [&callbacks_success](unsigned int) {
+        callbacks_success[6] = true;
     };
 
-    WindowCallbacks callbacks{mousePressCallback,  mouseMoveCallback,
-                              mouseScrollCallback, keyPressCallback,
-                              windowSizeCallback,  framebufferSizeCallback,
-                              windowCloseCallback};
+    WindowCallbacks callbacks{mouse_press_callback,
+                              mouse_move_callback,
+                              mouse_scroll_callback,
+                              key_press_callback,
+                              window_size_callback,
+                              framebuffer_size_callback,
+                              window_close_callback};
 
-    bindWindowCallbacks(window, callbacks);
+    bind_window_callbacks(window, callbacks);
     glfwMakeContextCurrent(window);
-    createGLContext(window, settings.version);
+    create_gl_context(window, settings.version);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -75,46 +78,46 @@ TEST_CASE("Checking callbacks on single window", "[glx]")
     }
 
     bool result{true};
-    for (auto res : callbacksSuccess)
+    for (auto res : callbacks_success)
     {
         result &= res;
     }
 
     REQUIRE(result == true);
 
-    destroyGLFWWindow(window);
-    terminateGLFW();
+    destroy_glfw_window(window);
+    terminate_glfw();
 }
 
 TEST_CASE("Checking callbacks on multiple windows", "[glx]")
 {
-    initializeGLFW(errorCallback);
+    initialize_glfw(error_callback);
     WindowSettings settings;
-    auto window1 = createGLFWWindow(settings);
-    auto window2 = createGLFWWindow(settings);
+    auto window1 = create_glfw_window(settings);
+    auto window2 = create_glfw_window(settings);
 
     bool callback1{false}, callback2{false};
-    auto mousePressCallback1 = [&callback1](int, int, int, double, double) {
+    auto mouse_press_callback1 = [&callback1](int, int, int, double, double) {
         fmt::print("In callback 1\n");
         callback1 = true;
     };
-    auto mousePressCallback2 = [&callback2](int, int, int, double, double) {
+    auto mouse_press_callback2 = [&callback2](int, int, int, double, double) {
         fmt::print("In callback 2\n");
         callback2 = true;
     };
 
     WindowCallbacks cb1, cb2;
-    cb1.mousePressCallback = mousePressCallback1;
-    cb2.mousePressCallback = mousePressCallback2;
+    cb1.mouse_press_callback = mouse_press_callback1;
+    cb2.mouse_press_callback = mouse_press_callback2;
 
-    bindWindowCallbacks(window1, cb1);
-    bindWindowCallbacks(window2, cb2);
+    bind_window_callbacks(window1, cb1);
+    bind_window_callbacks(window2, cb2);
 
     glfwMakeContextCurrent(window1);
-    REQUIRE(createGLContext(window1, {4, 5}));
+    REQUIRE(create_gl_context(window1, {4, 5}));
 
     glfwMakeContextCurrent(window2);
-    REQUIRE(createGLContext(window2, {4, 5}));
+    REQUIRE(create_gl_context(window2, {4, 5}));
 
     bool close1{false}, close2{false};
     while (!(close1 && close2))
@@ -141,8 +144,8 @@ TEST_CASE("Checking callbacks on multiple windows", "[glx]")
     REQUIRE(callback1);
     REQUIRE(callback2);
 
-    destroyGLFWWindow(window1);
-    destroyGLFWWindow(window2);
-    terminateGLFW();
+    destroy_glfw_window(window1);
+    destroy_glfw_window(window2);
+    terminate_glfw();
 }
 #endif

@@ -16,54 +16,54 @@ using namespace atlas::glx;
 
 TEST_CASE("Checking explicit GUI", "[gui]")
 {
-    REQUIRE(initializeGLFW(errorCallback));
+    REQUIRE(initialize_glfw(errorCallback));
 
     WindowSettings settings;
     settings.size.width  = 1280;
     settings.size.height = 720;
-    auto window          = createGLFWWindow(settings);
+    auto window          = create_glfw_window(settings);
     REQUIRE(window != nullptr);
 
-    gui::GuiRenderData guiRenderData;
-    gui::GuiWindowData guiWindowData;
+    gui::UIRenderData ui_render_data;
+    gui::UIWindowData ui_window_data;
 
-    auto mousePressCallback = [&guiWindowData](int button, int action, int mode,
-                                               double, double) {
-        gui::mousePressedCallback(guiWindowData, button, action, mode);
+    auto mouse_press_callback =
+        [&ui_window_data](int button, int action, int mode, double, double) {
+            gui::mouse_pressed_callback(ui_window_data, button, action, mode);
+        };
+
+    auto mouse_scroll_callback = [](double xOffset, double yOffset) {
+        gui::mouse_scroll_callback(xOffset, yOffset);
     };
 
-    auto mouseScrollCallback = [](double xOffset, double yOffset) {
-        gui::mouseScrollCallback(xOffset, yOffset);
+    auto key_press_callback = [](int key, int scancode, int action, int mods) {
+        gui::key_press_callback(key, scancode, action, mods);
     };
 
-    auto keyPressCallback = [](int key, int scancode, int action, int mods) {
-        gui::keyPressCallback(key, scancode, action, mods);
-    };
-
-    auto charCallback = [](unsigned int codepoint) {
-        gui::charCallback(codepoint);
+    auto char_callback = [](unsigned int codepoint) {
+        gui::char_callback(codepoint);
     };
 
     WindowCallbacks callbacks;
-    callbacks.mousePressCallback  = mousePressCallback;
-    callbacks.mouseScrollCallback = mouseScrollCallback;
-    callbacks.keyPressCallback    = keyPressCallback;
-    callbacks.charCallback        = charCallback;
+    callbacks.mouse_press_callback  = mouse_press_callback;
+    callbacks.mouse_scroll_callback = mouse_scroll_callback;
+    callbacks.key_press_callback    = key_press_callback;
+    callbacks.char_callback         = char_callback;
 
-    bindWindowCallbacks(window, callbacks);
+    bind_window_callbacks(window, callbacks);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    REQUIRE(createGLContext(window, settings.version));
+    REQUIRE(create_gl_context(window, settings.version));
 
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
-    initializeGuiWindowData(guiWindowData);
-    initializeGuiRenderData(guiRenderData);
-    setGuiWindow(guiWindowData, window);
-    bool showDemo{true};
-    bool windowOk{false};
+    initialize_ui_window_data(ui_window_data);
+    initialize_ui_render_data(ui_render_data);
+    set_ui_window(ui_window_data, window);
+    bool show_demo{true};
+    bool window_ok{false};
 
     while (!glfwWindowShouldClose(window))
     {
@@ -73,16 +73,16 @@ TEST_CASE("Checking explicit GUI", "[gui]")
         glClearColor(0.45f, 0.55f, 0.60f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        startGuiWindowFrame(guiWindowData);
+        start_ui_window_frame(ui_window_data);
         ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow(&showDemo);
+        ImGui::ShowDemoWindow(&show_demo);
         {
             ImGui::Begin("Test window");
             ImGui::Text("Please press on the button below");
             if (ImGui::Button("OK"))
             {
-                windowOk = true;
+                window_ok = true;
                 glfwSetWindowShouldClose(window, true);
             }
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
@@ -92,67 +92,67 @@ TEST_CASE("Checking explicit GUI", "[gui]")
         }
 
         ImGui::Render();
-        renderGuiFrame(guiRenderData);
+        render_ui_frame(ui_render_data);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-        updateGuiWindowFrame(guiWindowData);
+        update_ui_window_frame(ui_window_data);
     }
 
-    gui::destroyGuiRenderData(guiRenderData);
-    gui::destroyGuiWindow(guiWindowData);
+    gui::destroy_ui_render_data(ui_render_data);
+    gui::destroy_ui_window(ui_window_data);
     ImGui::DestroyContext();
 
-    destroyGLFWWindow(window);
-    terminateGLFW();
+    destroy_glfw_window(window);
+    terminate_glfw();
 
-    REQUIRE(windowOk);
+    REQUIRE(window_ok);
 }
 
 TEST_CASE("Checking helper GUI", "[gui]")
 {
-    REQUIRE(initializeGLFW(errorCallback));
+    REQUIRE(initialize_glfw(errorCallback));
 
     WindowSettings settings;
     settings.size.width  = 1280;
     settings.size.height = 720;
-    auto window          = createGLFWWindow(settings);
+    auto window          = create_glfw_window(settings);
     REQUIRE(window != nullptr);
 
-    gui::GuiRenderData guiRenderData;
-    gui::GuiWindowData guiWindowData;
+    gui::UIRenderData ui_render_data;
+    gui::UIWindowData ui_window_data;
 
-    auto mousePressCallback = [&guiWindowData](int button, int action, int mode,
-                                               double, double) {
-        gui::mousePressedCallback(guiWindowData, button, action, mode);
+    auto mouse_press_callback =
+        [&ui_window_data](int button, int action, int mode, double, double) {
+            gui::mouse_pressed_callback(ui_window_data, button, action, mode);
+        };
+
+    auto mouse_scroll_callback = [](double xOffset, double yOffset) {
+        gui::mouse_scroll_callback(xOffset, yOffset);
     };
 
-    auto mouseScrollCallback = [](double xOffset, double yOffset) {
-        gui::mouseScrollCallback(xOffset, yOffset);
-    };
-
-    auto keyPressCallback = [](int key, int scancode, int action, int mods) {
-        gui::keyPressCallback(key, scancode, action, mods);
+    auto key_press_callback = [](int key, int scancode, int action, int mods) {
+        gui::key_press_callback(key, scancode, action, mods);
     };
 
     WindowCallbacks callbacks;
-    callbacks.mousePressCallback  = mousePressCallback;
-    callbacks.mouseScrollCallback = mouseScrollCallback;
-    callbacks.keyPressCallback    = keyPressCallback;
+    callbacks.mouse_press_callback  = mouse_press_callback;
+    callbacks.mouse_scroll_callback = mouse_scroll_callback;
+    callbacks.key_press_callback    = key_press_callback;
 
-    bindWindowCallbacks(window, callbacks);
+    bind_window_callbacks(window, callbacks);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    REQUIRE(createGLContext(window, settings.version));
+    REQUIRE(create_gl_context(window, settings.version));
 
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
-    initializeGuiWindowData(guiWindowData);
-    initializeGuiRenderData(guiRenderData);
-    setGuiWindow(guiWindowData, window);
-    bool windowOk{false};
+    initialize_ui_window_data(ui_window_data);
+    initialize_ui_render_data(ui_render_data);
+    set_ui_window(ui_window_data, window);
+    bool window_ok{false};
 
     while (!glfwWindowShouldClose(window))
     {
@@ -162,13 +162,13 @@ TEST_CASE("Checking helper GUI", "[gui]")
         glClearColor(0.45f, 0.55f, 0.60f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        newFrame(guiWindowData);
+        new_frame(ui_window_data);
         {
             ImGui::Begin("Test window");
             ImGui::Text("Please press on the button below");
             if (ImGui::Button("OK"))
             {
-                windowOk = true;
+                window_ok = true;
                 glfwSetWindowShouldClose(window, true);
             }
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
@@ -176,19 +176,19 @@ TEST_CASE("Checking helper GUI", "[gui]")
                         ImGui::GetIO().Framerate);
             ImGui::End();
         }
-        endFrame(guiWindowData, guiRenderData);
+        end_frame(ui_window_data, ui_render_data);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    gui::destroyGuiRenderData(guiRenderData);
-    gui::destroyGuiWindow(guiWindowData);
+    gui::destroy_ui_render_data(ui_render_data);
+    gui::destroy_ui_window(ui_window_data);
     ImGui::DestroyContext();
 
-    destroyGLFWWindow(window);
-    terminateGLFW();
+    destroy_glfw_window(window);
+    terminate_glfw();
 
-    REQUIRE(windowOk);
+    REQUIRE(window_ok);
 }
 #endif

@@ -2,22 +2,19 @@
 #include "TestExpectedPaths.hpp"
 
 #include <GL/gl3w.h>
-#include <atlas/core/Filesystem.hpp>
-#include <atlas/core/Platform.hpp>
-#include <atlas/glx/GLSL.hpp>
-
 #include <GLFW/glfw3.h>
+#include <atlas/glx/GLSL.hpp>
 #include <catch2/catch.hpp>
 #include <fmt/printf.h>
-
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <numeric>
 #include <sstream>
+#include <zeus/filesystem.hpp>
+#include <zeus/platform.hpp>
 
 using namespace atlas::glx;
-using namespace atlas::core;
 namespace fs = std::experimental::filesystem;
 
 namespace atlas::glx
@@ -25,7 +22,7 @@ namespace atlas::glx
     bool operator==(FileData const& lhs, FileData const& rhs)
     {
         return lhs.filename == rhs.filename && lhs.parent == rhs.parent &&
-               lhs.lastWrite == rhs.lastWrite;
+               lhs.last_write == rhs.last_write;
     }
 
     bool operator!=(FileData const& lhs, FileData const& rhs)
@@ -34,12 +31,12 @@ namespace atlas::glx
     }
 } // namespace atlas::glx
 
-std::string loadExpectedString(std::string const& filename)
+std::string load_expected_string(std::string const& filename)
 {
-    std::ifstream inStream{filename};
-    std::stringstream outString;
+    std::ifstream in_stream{filename};
+    std::stringstream out_string;
 
-    if (!inStream)
+    if (!in_stream)
     {
         auto message =
             fmt::format("Could not open expected test file: {}", filename);
@@ -47,14 +44,14 @@ std::string loadExpectedString(std::string const& filename)
     }
 
     std::string line;
-    while (std::getline(inStream, line))
+    while (std::getline(in_stream, line))
     {
-        outString << line + "\n";
+        out_string << line + "\n";
     }
-    return outString.str();
+    return out_string.str();
 }
 
-std::string normalizePath(std::string const& path)
+std::string normalize_path(std::string const& path)
 {
     fs::path p{path};
     p = p.make_preferred();
@@ -65,7 +62,7 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 {
     try
     {
-        auto result = readShaderSource("foo.glsl");
+        auto result = read_shader_source("foo.glsl");
     }
     catch (std::runtime_error const& e)
     {
@@ -76,202 +73,211 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
 
 TEST_CASE("loadShaderFile: Empty file", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_empty_file]);
-    auto result          = readShaderSource(filename);
-    REQUIRE(result.sourceString.empty() == true);
-    REQUIRE(result.includedFiles.size() == 1);
+    std::string filename = normalize_path(TestData[glx_empty_file]);
+    auto result          = read_shader_source(filename);
+    REQUIRE(result.source_string.empty() == true);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Single line", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_single_line]);
-    std::string expectedFilename{ExpectedFiles[glx_single_line_expected]};
+    std::string filename = normalize_path(TestData[glx_single_line]);
+    std::string expected_filename{ExpectedFiles[glx_single_line_expected]};
 
     // Load the expected string.
-    auto expectedString = loadExpectedString(expectedFilename);
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 1);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Simple file", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_simple_file]);
-    std::string expectedFilename{ExpectedFiles[glx_simple_file_expected]};
+    std::string filename = normalize_path(TestData[glx_simple_file]);
+    std::string expected_filename{ExpectedFiles[glx_simple_file_expected]};
 
-    auto expectedString = loadExpectedString(expectedFilename);
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 1);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Simple file with comments", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_simple_file_comments]);
-    std::string expectedFilename{
+    std::string filename = normalize_path(TestData[glx_simple_file_comments]);
+    std::string expected_filename{
         ExpectedFiles[glx_simple_file_comments_expected]};
 
-    auto expectedString = loadExpectedString(expectedFilename);
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 1);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Simple file with header comments", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_header_comments]);
-    std::string expectedFilename{ExpectedFiles[glx_header_comments_expected]};
+    std::string filename = normalize_path(TestData[glx_header_comments]);
+    std::string expected_filename{ExpectedFiles[glx_header_comments_expected]};
 
-    auto expectedString = loadExpectedString(expectedFilename);
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 1);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Simple file with c-style comments", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_c_comments]);
-    std::string expectedFilename{ExpectedFiles[glx_c_comments_expected]};
+    std::string filename = normalize_path(TestData[glx_c_comments]);
+    std::string expected_filename{ExpectedFiles[glx_c_comments_expected]};
 
-    auto expectedString = loadExpectedString(expectedFilename);
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 1);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 1);
 
-    auto includedFile = result.includedFiles.front();
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files.front();
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Single include", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_single_include]);
-    std::string expectedFilename{ExpectedFiles[glx_single_include_expected]};
-    auto expectedString = loadExpectedString(expectedFilename);
+    std::string filename = normalize_path(TestData[glx_single_include]);
+    std::string expected_filename{ExpectedFiles[glx_single_include_expected]};
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 2);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 2);
 
-    auto includedFile = result.includedFiles[0];
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files[0];
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[1];
-    expectedFile.filename  = normalizePath(TestData[uniform_matrices]);
-    expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_matrices]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[1];
+    expected_file.filename = normalize_path(TestData[uniform_matrices]);
+    expected_file.parent   = 0;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[uniform_matrices]);
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Multiple includes", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_multiple_includes]);
-    std::string expectedFilename{ExpectedFiles[glx_multiple_includes_expected]};
-    auto expectedString = loadExpectedString(expectedFilename);
+    std::string filename = normalize_path(TestData[glx_multiple_includes]);
+    std::string expected_filename{
+        ExpectedFiles[glx_multiple_includes_expected]};
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 3);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 3);
 
-    auto includedFile = result.includedFiles[0];
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files[0];
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[1];
-    expectedFile.filename  = normalizePath(TestData[uniform_bindings]);
-    expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_bindings]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[1];
+    expected_file.filename = normalize_path(TestData[uniform_bindings]);
+    expected_file.parent   = 0;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[uniform_bindings]);
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[2];
-    expectedFile.filename  = normalizePath(TestData[uniform_matrices]);
-    expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_matrices]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[2];
+    expected_file.filename = normalize_path(TestData[uniform_matrices]);
+    expected_file.parent   = 0;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[uniform_matrices]);
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Nested includes", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_nested_include]);
-    std::string expectedFilename{ExpectedFiles[glx_nested_include_expected]};
-    auto expectedString = loadExpectedString(expectedFilename);
+    std::string filename = normalize_path(TestData[glx_nested_include]);
+    std::string expected_filename{ExpectedFiles[glx_nested_include_expected]};
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 4);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 4);
 
-    auto includedFile = result.includedFiles[0];
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files[0];
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[1];
-    expectedFile.filename  = normalizePath(TestData[nested_include]);
-    expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileLastWrite(TestData[nested_include]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[1];
+    expected_file.filename = normalize_path(TestData[nested_include]);
+    expected_file.parent   = 0;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[nested_include]);
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[2];
-    expectedFile.filename  = normalizePath(TestData[uniform_bindings]);
-    expectedFile.parent    = 1;
-    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_bindings]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[2];
+    expected_file.filename = normalize_path(TestData[uniform_bindings]);
+    expected_file.parent   = 1;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[uniform_bindings]);
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[3];
-    expectedFile.filename  = normalizePath(TestData[uniform_matrices]);
-    expectedFile.parent    = 1;
-    expectedFile.lastWrite = getFileLastWrite(TestData[uniform_matrices]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[3];
+    expected_file.filename = normalize_path(TestData[uniform_matrices]);
+    expected_file.parent   = 1;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[uniform_matrices]);
+    REQUIRE(included_file == expected_file);
 }
 
 TEST_CASE("loadShaderFile: Circular includes", "[glx]")
 {
-    std::string filename = normalizePath(TestData[glx_circular_include]);
-    std::string expectedFilename{ExpectedFiles[glx_circular_include_expected]};
-    auto expectedString = loadExpectedString(expectedFilename);
+    std::string filename = normalize_path(TestData[glx_circular_include]);
+    std::string expected_filename{ExpectedFiles[glx_circular_include_expected]};
+    auto expectedString = load_expected_string(expected_filename);
 
-    auto result = readShaderSource(filename);
-    REQUIRE(result.sourceString == expectedString);
-    REQUIRE(result.includedFiles.size() == 3);
+    auto result = read_shader_source(filename);
+    REQUIRE(result.source_string == expectedString);
+    REQUIRE(result.included_files.size() == 3);
 
-    auto includedFile = result.includedFiles[0];
-    FileData expectedFile{filename, -1, getFileLastWrite(filename)};
-    REQUIRE(includedFile == expectedFile);
+    auto included_file = result.included_files[0];
+    FileData expected_file{filename, -1, zeus::get_file_last_write(filename)};
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[1];
-    expectedFile.filename  = normalizePath(TestData[circular_include_a]);
-    expectedFile.parent    = 0;
-    expectedFile.lastWrite = getFileLastWrite(TestData[circular_include_a]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[1];
+    expected_file.filename = normalize_path(TestData[circular_include_a]);
+    expected_file.parent   = 0;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[circular_include_a]);
+    REQUIRE(included_file == expected_file);
 
-    includedFile           = result.includedFiles[2];
-    expectedFile.filename  = normalizePath(TestData[circular_include_b]);
-    expectedFile.parent    = 1;
-    expectedFile.lastWrite = getFileLastWrite(TestData[circular_include_b]);
-    REQUIRE(includedFile == expectedFile);
+    included_file          = result.included_files[2];
+    expected_file.filename = normalize_path(TestData[circular_include_b]);
+    expected_file.parent   = 1;
+    expected_file.last_write =
+        zeus::get_file_last_write(TestData[circular_include_b]);
+    REQUIRE(included_file == expected_file);
 }
