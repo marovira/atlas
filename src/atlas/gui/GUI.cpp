@@ -1,12 +1,12 @@
 #include "GUI.hpp"
 
-#include <atlas/core/Platform.hpp>
 #include <atlas/glx/Buffer.hpp>
 #include <atlas/glx/GLSL.hpp>
+#include <zeus/platform.hpp>
 
 #include <fmt/printf.h>
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
 #    define GLFW_EXPOSE_NATIVE_WIN32
 #    define GLFW_EXPOSE_NATIVE_WGL
 #endif

@@ -1,9 +1,9 @@
 #include "LoadLibrary.hpp"
 
-#include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>
+#include <zeus/platform.hpp>
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #else
@@ -12,7 +12,7 @@
 
 namespace atlas::hlr
 {
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
     void* loadLibraryHandle(std::string const& libraryName)
     {
         void* handle = LoadLibrary(libraryName.c_str());

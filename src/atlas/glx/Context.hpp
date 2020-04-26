@@ -1,6 +1,6 @@
 #pragma once
 
-#include <atlas/core/Platform.hpp>
+#include <zeus/platform.hpp>
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
@@ -40,7 +40,7 @@ namespace atlas::glx
         WindowSize size{};
         std::string title;
         int profile{GLFW_OPENGL_CORE_PROFILE};
-        bool enableDebugContext{core::CurrentBuild == core::BuildType::Debug};
+        bool enableDebugContext{zeus::current_build == zeus::BuildType::debug};
         bool isForwardCompat{true};
         bool isMaximized{false};
         bool isResizeable{true};

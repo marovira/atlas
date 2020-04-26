@@ -8,7 +8,6 @@ set(ATLAS_SOURCE_ROOT_LIST
     )
 
 # Add lower directories
-add_subdirectory(${ATLAS_SOURCE_ROOT}/atlas/core)
 add_subdirectory(${ATLAS_SOURCE_ROOT}/atlas/glx)
 add_subdirectory(${ATLAS_SOURCE_ROOT}/atlas/gui)
 add_subdirectory(${ATLAS_SOURCE_ROOT}/atlas/hlr)
@@ -17,7 +16,6 @@ add_subdirectory(${ATLAS_SOURCE_ROOT}/atlas/utils)
 
 # Wrap each list for the source groups above.
 set(ATLAS_INCLUDE_ROOT_GROUP ${ATLAS_INCLUDE_ROOT_LIST} PARENT_SCOPE)
-set(ATLAS_INCLUDE_CORE_GROUP ${ATLAS_INCLUDE_CORE_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_GLX_GROUP ${ATLAS_INCLUDE_GLX_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_GUI_GROUP ${ATLAS_INCLUDE_GUI_LIST} PARENT_SCOPE)
 set(ATLAS_INCLUDE_HLR_GROUP ${ATLAS_INCLUDE_HLR_LIST} PARENT_SCOPE)
@@ -33,7 +31,6 @@ set(ATLAS_SOURCE_UTILS_GROUP ${ATLAS_SOURCE_UTILS_LIST} PARENT_SCOPE)
 # Now compile the full list of files so we can format everything at once.
 set(ATLAS_HEADER_FILES
     ${ATLAS_INCLUDE_ROOT_LIST}
-    ${ATLAS_INCLUDE_CORE_LIST}
     ${ATLAS_INCLUDE_GLX_LIST}
     ${ATLAS_INCLUDE_GUI_LIST}
     ${ATLAS_INCLUDE_HLR_LIST}

@@ -30,6 +30,11 @@ option(ATLAS_BUILD_GL_TEST "Build Atlas OpenGL tests" ON)
 option(ATLAS_BUILD_GUI_TEST "Build Atlas GUI tests" ON)
 option(ATLAS_BUILD_EXAMPLES "Build Atlas examples" ON)
 
+# Make sure Zeus does not make the clang-format target and disable the
+# unit tests for it.
+set(ZEUS_CLANG_FORMAT_TARGET OFF CACHE INTERNAL "")
+set(ZEUS_BUILD_TESTS OFF CACHE INTERNAL "")
+
 #================================
 # Directory variables.
 #================================
@@ -51,7 +56,6 @@ add_subdirectory(${ATLAS_SOURCE_ROOT})
 #================================
 source_group("include" FILES)
 source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_GROUP})
-source_group("include\\atlas\\core" FILES ${ATLAS_INCLUDE_CORE_GROUP})
 source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_GROUP})
 source_group("include\\atlas\\glx" FILES ${ATLAS_INCLUDE_GLX_GROUP})
 source_group("include\\atlas\\gui" FILES ${ATLAS_INCLUDE_GUI_GROUP})
@@ -113,46 +117,44 @@ include(FetchContent)
 
 # Declare fetch content for all packages.
 FetchContent_Declare(
-    fmt
-    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-    GIT_TAG 6.1.2)
-FetchContent_Declare(
-    magic_enum
-    GIT_REPOSITORY https://github.com/Neargye/magic_enum
-    GIT_TAG v0.6.4
+    zeus
+    GIT_REPOSITORY https://github.com/marovira/zeus
+    GIT_TAG 1f218b3c2e5da95928d8d4ecdf5d385cae723212
     )
+
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
-    GIT_TAG 0.9.9.7)
+    GIT_TAG 0.9.9.7
+    )
+
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git 
-    GIT_TAG 3.3.1)
+    GIT_TAG 3.3.1
+    )
+
 FetchContent_Declare(
     gl3w
-    GIT_REPOSITORY https://github.com/marovira/gl3w.git)
+    GIT_REPOSITORY https://github.com/marovira/gl3w.git
+    )
+
 FetchContent_Declare(
     tinyobjloader
     GIT_REPOSITORY https://github.com/syoyo/tinyobjloader.git
-    GIT_TAG d7d53217c30a7970596d1b93f97a5fd97b7cf1a5)
+    GIT_TAG d7d53217c30a7970596d1b93f97a5fd97b7cf1a5
+    )
 
-find_package(fmt QUIET)
-find_package(magic_enum QUIET)
+find_package(zeus QUIET)
 find_package(glm QUIET)
 find_package(glfw3 QUIET)
 find_package(gl3w QUIET)
 find_package(tinyobjloader QUIET)
 find_package(OpenGL REQUIRED QUIET)
 
-if (NOT fmt_FOUND AND NOT fmt_POPULATED)
-    FetchContent_Populate(fmt)
-    add_subdirectory(${fmt_SOURCE_DIR} ${fmt_BINARY_DIR})
-endif()
-
-if (NOT magic_enum_FOUND AND NOT magic_enum_POPULATED)
-    FetchContent_Populate(magic_enum)
-    add_subdirectory(${magic_enum_SOURCE_DIR} ${magic_enum_BINARY_DIR})
+if (NOT zeus_FOUND AND NOT zeus_POPULATED)
+    FetchContent_Populate(zeus)
+    add_subdirectory(${zeus_SOURCE_DIR} ${zeus_BINARY_DIR})
 endif()
 
 if (NOT glm_FOUND AND NOT glm_POPULATED)
@@ -196,30 +198,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 endif()
 
 #================================
-# core module.
-#================================
-add_library(atlas-core INTERFACE)
-target_include_directories(atlas-core INTERFACE ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-core INTERFACE fmt::fmt magic_enum::magic_enum)
-if (NOT MSVC)
-    target_link_libraries(atlas-core INTERFACE stdc++fs)
-endif()
-target_compile_features(atlas-core INTERFACE cxx_std_17)
-target_compile_options(atlas-core INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-core INTERFACE "${ATLAS_DEBUG_FLAGS}")
-target_compile_definitions(atlas-core INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
-if (MSVC)
-    add_custom_target(_atlas-core SOURCES ${ATLAS_INCLUDE_CORE_GROUP})
-    set_target_properties(_atlas-core PROPERTIES FOLDER "atlas")
-endif()
-add_library(atlas::core ALIAS atlas-core)
-
-#================================
 # Math module.
 #================================
 add_library(atlas-math INTERFACE)
 target_include_directories(atlas-math INTERFACE ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-math INTERFACE glm atlas-core)
+target_link_libraries(atlas-math INTERFACE glm zeus::zeus)
 target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
 target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
@@ -235,7 +218,7 @@ add_library(atlas::math ALIAS atlas-math)
 #================================
 add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
 target_include_directories(atlas-glx PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w atlas-core)
+target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w zeus::zeus)
 add_library(atlas::glx ALIAS atlas-glx)
 set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
 
@@ -244,7 +227,7 @@ set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
 #================================
 add_library(atlas-gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
 target_include_directories(atlas-gui PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-gui PUBLIC imgui atlas-glx atlas-core)
+target_link_libraries(atlas-gui PUBLIC imgui atlas-glx zeus::zeus)
 add_library(atlas::gui ALIAS atlas-gui)
 set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
 
@@ -253,7 +236,7 @@ set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
 #================================
 add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
 target_include_directories(atlas-hlr PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-hlr PUBLIC atlas-core)
+target_link_libraries(atlas-hlr PUBLIC zeus::zeus)
 add_library(atlas::hlr ALIAS atlas-hlr)
 set_target_properties(atlas-hlr PROPERTIES FOLDER "atlas")
 
@@ -264,7 +247,7 @@ add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
     ${ATLAS_SOURCE_UTILS_GROUP})
 target_include_directories(atlas-utils PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
-    fmt::fmt stb)
+    zeus::zeus stb)
 add_library(atlas::utils ALIAS atlas-utils)
 set_target_properties(atlas-utils PROPERTIES FOLDER "atlas")
 
@@ -273,7 +256,7 @@ set_target_properties(atlas-utils PROPERTIES FOLDER "atlas")
 #================================
 add_library(atlas ${ATLAS_SOURCE_ROOT_GROUP})
 target_include_directories(atlas PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas PUBLIC atlas-core atlas-math atlas-glx atlas-gui
+target_link_libraries(atlas PUBLIC zeus::zeus atlas-math atlas-glx atlas-gui
     atlas-hlr atlas-utils)
 add_library(atlas::atlas ALIAS atlas)
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
@@ -298,7 +281,6 @@ if (ATLAS_BUILD_TESTS)
     add_subdirectory("${ATLAS_TEST_ROOT}")
     add_executable(atlas-test ${ATLAS_TEST_LIST})
     target_link_libraries(atlas-test 
-        atlas-core 
         atlas-math 
         atlas-glx
         atlas-gui
