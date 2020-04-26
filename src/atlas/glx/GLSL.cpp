@@ -1,28 +1,26 @@
 #include "GLSL.hpp"
 
-#include <atlas/core/Filesystem.hpp>
-#include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>
-
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <regex>
 #include <set>
 #include <sstream>
+#include <zeus/filesystem.hpp>
+#include <zeus/platform.hpp>
 
 namespace fs = std::experimental::filesystem;
 
 namespace atlas::glx
 {
     std::string
-    recurseOnShaderFiles(std::string const& filename,
-                         ShaderFile& file,
-                         std::vector<std::string> const& includeDirectories);
+    recurse_on_shader_files(std::string const& filename,
+                            ShaderFile& file,
+                            std::vector<std::string> const& include_dirs);
 
-    ShaderFile
-    readShaderSource(std::string const& filename,
-                     std::vector<std::string> const& includeDirectories)
+    ShaderFile read_shader_source(std::string const& filename,
+                                  std::vector<std::string> const& include_dirs)
     {
         ShaderFile file;
 
@@ -36,18 +34,18 @@ namespace atlas::glx
                 "error: no such file or directory: \'{}\'.\n", filename);
             throw std::runtime_error{message};
         }
-        file.sourceString =
-            recurseOnShaderFiles(p.string(), file, includeDirectories);
+        file.source_string =
+            recurse_on_shader_files(p.string(), file, include_dirs);
         file.filename = p.string();
         return file;
     }
 
-    bool shouldShaderBeReloaded(ShaderFile const& file)
+    bool should_shader_be_reloaded(ShaderFile const& file)
     {
-        for (auto& unit : file.includedFiles)
+        for (auto& unit : file.included_files)
         {
-            std::time_t stamp = core::getFileLastWrite(unit.filename);
-            double secs       = std::difftime(stamp, unit.lastWrite);
+            std::time_t stamp = zeus::get_file_last_write(unit.filename);
+            double secs       = std::difftime(stamp, unit.last_write);
             if (secs > 0)
             {
                 return true;
@@ -58,14 +56,14 @@ namespace atlas::glx
     }
 
     std::string
-    recurseOnShaderFiles(std::string const& filename,
-                         ShaderFile& file,
-                         std::vector<std::string> const& includeDirectories)
+    recurse_on_shader_files(std::string const& filename,
+                            ShaderFile& file,
+                            std::vector<std::string> const& include_dirs)
     {
-        std::ifstream inFile{filename};
-        std::stringstream outString;
+        std::ifstream in_file{filename};
+        std::stringstream out_string;
 
-        if (!inFile)
+        if (!in_file)
         {
             fmt::print(stderr,
                        "error: no such file or directory: \'{}\'.\n",
@@ -79,19 +77,19 @@ namespace atlas::glx
         // rule it must contain the #version directive, so set the
         // found variable to false so we know when we've found it and can
         // ignore any lines before it to avoid compiler errors.
-        bool foundVersionDirective{true};
-        if (file.includedFiles.empty())
+        bool found_version_directive{true};
+        if (file.included_files.empty())
         {
-            auto timestamp = core::getFileLastWrite(filename);
-            file.includedFiles.emplace_back(filename, -1, timestamp);
-            foundVersionDirective = false;
+            auto timestamp = zeus::get_file_last_write(filename);
+            file.included_files.emplace_back(filename, -1, timestamp);
+            found_version_directive = false;
         }
 
-        int fileNum = static_cast<int>(file.includedFiles.size()) - 1;
-        int lineNum = 1;
+        int file_num = static_cast<int>(file.included_files.size()) - 1;
+        int line_num = 1;
         std::string line;
-        bool inCComment{false};
-        while (std::getline(inFile, line))
+        bool in_c_comment{false};
+        while (std::getline(in_file, line))
         {
             // Check to see if the line is a comment. If it is, then skip it
             // while increasing the line counter.
@@ -99,8 +97,8 @@ namespace atlas::glx
             // comments before the #version directive.
             if (line.find("//") != std::string::npos)
             {
-                outString << line + "\n";
-                ++lineNum;
+                out_string << line + "\n";
+                ++line_num;
                 continue;
             }
 
@@ -109,9 +107,9 @@ namespace atlas::glx
             // we find a terminating symbol.
             if (line.find("/*") != std::string::npos)
             {
-                inCComment = true;
-                outString << line + "\n";
-                ++lineNum;
+                in_c_comment = true;
+                out_string << line + "\n";
+                ++line_num;
                 continue;
             }
 
@@ -119,18 +117,18 @@ namespace atlas::glx
             // can resume as normal.
             if (line.find("*/") != std::string::npos)
             {
-                inCComment = false;
-                outString << line + "\n";
-                ++lineNum;
+                in_c_comment = false;
+                out_string << line + "\n";
+                ++line_num;
                 continue;
             }
 
             // If we are in the middle of a C-style comment, skip the lines
             // while increasing the line counter.
-            if (inCComment)
+            if (in_c_comment)
             {
-                outString << line + "\n";
-                ++lineNum;
+                out_string << line + "\n";
+                ++line_num;
                 continue;
             }
 
@@ -138,9 +136,9 @@ namespace atlas::glx
             // skip it while increasing the line counter.
             if (line.find("#version") != std::string::npos)
             {
-                outString << line + "\n";
-                ++lineNum;
-                foundVersionDirective = true;
+                out_string << line + "\n";
+                ++line_num;
+                found_version_directive = true;
                 continue;
             }
 
@@ -148,104 +146,105 @@ namespace atlas::glx
             if (line.find("#include") != std::string::npos)
             {
                 // We have an include, so extract the path of the included file.
-                const std::string includeStr = "#include ";
-                std::size_t pathSize = line.size() - includeStr.size() - 2;
-                std::string path = line.substr(includeStr.size() + 1, pathSize);
+                const std::string include_string = "#include ";
+                std::size_t path_size = line.size() - include_string.size() - 2;
+                std::string path =
+                    line.substr(include_string.size() + 1, path_size);
 
                 // Compute the absolute path.
-                std::string absolutePath;
-                if (includeDirectories.empty())
+                std::string absolute_path;
+                if (include_dirs.empty())
                 {
                     // If we are not given an include directory, grab the
                     // directory of the current file.
                     fs::path p{filename};
-                    auto baseDir = p.parent_path();
-                    baseDir /= path;
-                    absolutePath = baseDir.string();
+                    auto base_dir = p.parent_path();
+                    base_dir /= path;
+                    absolute_path = base_dir.string();
                 }
                 else
                 {
                     // We loop through all the include directories, testing
                     // to see if the file is valid.
-                    for (auto& includeDir : includeDirectories)
+                    for (auto& include_dir : include_dirs)
                     {
-                        auto tmpPath = includeDir + path;
-                        if (fs::exists(tmpPath))
+                        auto temp_path = include_dir + path;
+                        if (fs::exists(temp_path))
                         {
-                            absolutePath = tmpPath;
+                            absolute_path = temp_path;
                             break;
                         }
                     }
 
-                    if (absolutePath.empty())
+                    if (absolute_path.empty())
                     {
                         fmt::print(
                             stderr,
                             "In file {}({}): Cannot open include file: \'{}\': "
                             "No such file or directory.\n",
                             filename,
-                            lineNum + 1,
+                            line_num + 1,
                             path);
                         continue;
                     }
                 }
 
-                auto timestamp = core::getFileLastWrite(absolutePath);
-                FileData f{absolutePath, fileNum, timestamp};
+                auto timestamp = zeus::get_file_last_write(absolute_path);
+                FileData f{absolute_path, file_num, timestamp};
 
                 // Check if we have seen this file before to prevent circular
                 // includes.
 
-                auto res = std::find_if(file.includedFiles.begin(),
-                                        file.includedFiles.end(),
+                auto res = std::find_if(file.included_files.begin(),
+                                        file.included_files.end(),
                                         [f](FileData const& other) -> bool {
                                             return f.filename == other.filename;
                                         });
-                if (res != file.includedFiles.end())
+                if (res != file.included_files.end())
                 {
                     // We have seen this file before, so do nothing while
                     // increasing the line counter.
-                    ++lineNum;
+                    ++line_num;
                     continue;
                 }
 
-                file.includedFiles.emplace_back(
-                    absolutePath, fileNum, timestamp);
-                auto parsedFile = recurseOnShaderFiles(
-                    absolutePath, file, includeDirectories);
+                file.included_files.emplace_back(
+                    absolute_path, file_num, timestamp);
+                auto parsed_file =
+                    recurse_on_shader_files(absolute_path, file, include_dirs);
 
-                outString << parsedFile;
+                out_string << parsed_file;
 
                 // Since we are removing the #include directive from the code,
                 // we must increase the line counter to ensure that the next
                 // line we parse is correct.
-                ++lineNum;
+                ++line_num;
                 continue;
             }
 
             // If we haven't found the version directive yet, do not add any
             // #line directives as this will result in a compiler error.
             // Instead, sip the line while increasing the line counter.
-            if (!foundVersionDirective)
+            if (!found_version_directive)
             {
-                outString << line + "\n";
-                ++lineNum;
+                out_string << line + "\n";
+                ++line_num;
                 continue;
             }
 
             // Create the #line directive.
-            std::string lineInfo =
-                fmt::format("#line {} {}\n", lineNum, fileNum);
-            outString << lineInfo;
-            outString << line + "\n";
-            ++lineNum;
+            std::string line_info =
+                fmt::format("#line {} {}\n", line_num, file_num);
+            out_string << line_info;
+            out_string << line + "\n";
+            ++line_num;
         }
 
-        return outString.str();
+        return out_string.str();
     }
 
-    std::optional<std::string> compileShader(std::string const& source,
-                                             GLuint handle)
+    std::optional<std::string> compile_shader(std::string const& source,
+                                              GLuint handle)
     {
         // If there's no source, do nothing.
         if (source.empty())
@@ -277,7 +276,7 @@ namespace atlas::glx
         return {};
     }
 
-    std::optional<std::string> linkShaders(GLuint handle)
+    std::optional<std::string> link_shaders(GLuint handle)
     {
         if (handle == 0u)
         {
@@ -304,7 +303,7 @@ namespace atlas::glx
         return {};
     }
 
-    std::string parseErrorLog(ShaderFile const& file, std::string const& log)
+    std::string parse_error_log(ShaderFile const& file, std::string const& log)
     {
         // If the log is empty, do nothing.
         if (log.empty())
@@ -315,20 +314,20 @@ namespace atlas::glx
         // It appears that this type of format only works on NVidia cards, so
         // check to see if we're in an NVida card. If we aren't, return the
         // log as is and output a message.
-        std::string vendorID =
+        std::string vendor_id =
             reinterpret_cast<char const*>(glGetString(GL_VENDOR));
-        if (vendorID.find("NVIDIA") == std::string::npos)
+        if (vendor_id.find("NVIDIA") == std::string::npos)
         {
             fmt::print(stderr, "warning: unsupported vendor.\n");
             fmt::print(stderr, "warning: error log is unchanged.\n");
             return log;
         }
 
-        std::stringstream logStream{log};
-        std::stringstream outLog;
+        std::stringstream log_stream{log};
+        std::stringstream out_log;
         std::string line;
 
-        while (std::getline(logStream, line, '\n'))
+        while (std::getline(log_stream, line, '\n'))
         {
             std::smatch match;
             std::regex pattern(R"(\d+\(\d*\))");
@@ -355,17 +354,17 @@ namespace atlas::glx
             std::size_t delta = end - start;
 
             // Grab the numbers;
-            int fileNum = std::stoi(info.substr(0, start));
-            int lineNum = std::stoi(info.substr(start + 1, delta));
+            int file_num = std::stoi(info.substr(0, start));
+            int line_num = std::stoi(info.substr(start + 1, delta));
 
             // Now assemble the include hierarchy for the file.
-            int parent = file.includedFiles[fileNum].parent;
+            int parent = file.included_files[file_num].parent;
             std::vector<int> hierarchy;
-            hierarchy.push_back(fileNum);
+            hierarchy.push_back(file_num);
             while (parent != -1)
             {
                 hierarchy.push_back(parent);
-                parent = file.includedFiles[parent].parent;
+                parent = file.included_files[parent].parent;
             }
 
             // Check if the hierarchy has size 1. If it does, then the error
@@ -375,10 +374,10 @@ namespace atlas::glx
             {
                 auto message =
                     fmt::format("In file {}({}): {}\n",
-                                file.includedFiles[hierarchy[0]].filename,
-                                lineNum,
+                                file.included_files[hierarchy[0]].filename,
+                                line_num,
                                 error);
-                outLog << message;
+                out_log << message;
                 continue;
             }
 
@@ -388,36 +387,39 @@ namespace atlas::glx
             {
                 auto message =
                     fmt::format("In file included from {}:\n",
-                                file.includedFiles[hierarchy[i]].filename);
-                outLog << message;
+                                file.included_files[hierarchy[i]].filename);
+                out_log << message;
             }
 
-            auto message = fmt::format(
-                "{}({}): {}\n", file.includedFiles[0].filename, lineNum, error);
-            outLog << message;
+            auto message = fmt::format("{}({}): {}\n",
+                                       file.included_files[0].filename,
+                                       line_num,
+                                       error);
+            out_log << message;
         }
 
-        return outLog.str();
+        return out_log.str();
     }
 
-    bool reloadShader(GLuint programHandle,
-                      GLuint shaderHandle,
-                      ShaderFile& file,
-                      std::vector<std::string> const& includeDirectories)
+    bool reload_shader(GLuint program_handle,
+                       GLuint shader_handle,
+                       ShaderFile& file,
+                       std::vector<std::string> const& include_dirs)
     {
-        file = readShaderSource(file.filename, includeDirectories);
-        if (auto res = glx::compileShader(file.sourceString, shaderHandle); res)
+        file = read_shader_source(file.filename, include_dirs);
+        if (auto res = glx::compile_shader(file.source_string, shader_handle);
+            res)
         {
-            auto message = parseErrorLog(file, res.value());
+            auto message = parse_error_log(file, res.value());
             fmt::print(stderr, "error: {}\n", message);
             return false;
         }
 
-        if (auto res = glx::linkShaders(programHandle); res)
+        if (auto res = glx::link_shaders(program_handle); res)
         {
-            auto message = parseErrorLog(file, res.value());
+            auto message = parse_error_log(file, res.value());
             fmt::print(stderr, "error: {}\n", message);
-            glDetachShader(programHandle, shaderHandle);
+            glDetachShader(program_handle, shader_handle);
             return false;
         }
 

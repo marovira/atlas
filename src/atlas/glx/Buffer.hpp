@@ -7,7 +7,7 @@
 namespace atlas::glx
 {
     template<typename T>
-    constexpr void* bufferOffset(std::size_t offset)
+    constexpr void* buffer_offset(std::size_t offset)
     {
         return reinterpret_cast<void*>(offset * sizeof(T));
     }
@@ -25,7 +25,7 @@ namespace atlas::glx
     }
 
     template<typename T>
-    constexpr GLuint relativeOffset(std::size_t num)
+    constexpr GLuint relative_offset(std::size_t num)
     {
         return static_cast<GLuint>(num * sizeof(T));
     }

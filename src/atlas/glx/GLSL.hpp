@@ -13,37 +13,35 @@ namespace atlas::glx
     struct FileData
     {
         FileData(std::string name, int p, std::time_t time) :
-            filename{std::move(name)},
-            parent{p},
-            lastWrite{time}
+            filename{std::move(name)}, parent{p}, last_write{time}
         {}
 
         std::string filename;
         int parent;
-        std::time_t lastWrite;
+        std::time_t last_write;
     };
 
     struct ShaderFile
     {
         std::string filename;
-        std::string sourceString;
-        std::vector<FileData> includedFiles;
+        std::string source_string;
+        std::vector<FileData> included_files;
     };
 
     ShaderFile
-    readShaderSource(std::string const& filename,
-                     std::vector<std::string> const& includeDirectories = {});
+    read_shader_source(std::string const& filename,
+                       std::vector<std::string> const& include_dirs = {});
 
-    bool shouldShaderBeReloaded(ShaderFile const& file);
+    bool should_shader_be_reloaded(ShaderFile const& file);
 
-    std::optional<std::string> compileShader(std::string const& source,
-                                             GLuint handle);
-    std::optional<std::string> linkShaders(GLuint handle);
+    std::optional<std::string> compile_shader(std::string const& source,
+                                              GLuint handle);
+    std::optional<std::string> link_shaders(GLuint handle);
 
-    std::string parseErrorLog(ShaderFile const& file, std::string const& log);
+    std::string parse_error_log(ShaderFile const& file, std::string const& log);
 
-    bool reloadShader(GLuint programHandle,
-                      GLuint shaderHandle,
-                      ShaderFile& file,
-                      std::vector<std::string> const& includeDirectories = {});
+    bool reload_shader(GLuint program_handle,
+                       GLuint shader_handle,
+                       ShaderFile& file,
+                       std::vector<std::string> const& include_dirs = {});
 } // namespace atlas::glx

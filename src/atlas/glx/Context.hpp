@@ -1,25 +1,24 @@
 #pragma once
 
-#include <zeus/platform.hpp>
-
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
-
 #include <functional>
 #include <string>
+#include <zeus/platform.hpp>
 
 namespace atlas::glx
 {
     struct WindowCallbacks
     {
-        std::function<void(int, int, int, double, double)> mousePressCallback{};
-        std::function<void(double, double)> mouseMoveCallback{};
-        std::function<void(double, double)> mouseScrollCallback{};
-        std::function<void(int, int, int, int)> keyPressCallback{};
-        std::function<void(int, int)> windowSizeCallback{};
-        std::function<void(int, int)> framebufferSizeCallback{};
-        std::function<void(unsigned int)> charCallback{};
-        std::function<void()> windowCloseCallback{};
+        std::function<void(int, int, int, double, double)>
+            mouse_press_callback{};
+        std::function<void(double, double)> mouse_move_callback{};
+        std::function<void(double, double)> mouse_scroll_callback{};
+        std::function<void(int, int, int, int)> key_press_callback{};
+        std::function<void(int, int)> window_size_callback{};
+        std::function<void(int, int)> framebuffer_size_callback{};
+        std::function<void(unsigned int)> char_callback{};
+        std::function<void()> window_close_callback{};
     };
 
     struct ContextVersion
@@ -40,19 +39,20 @@ namespace atlas::glx
         WindowSize size{};
         std::string title;
         int profile{GLFW_OPENGL_CORE_PROFILE};
-        bool enableDebugContext{zeus::current_build == zeus::BuildType::debug};
-        bool isForwardCompat{true};
-        bool isMaximized{false};
-        bool isResizeable{true};
-        bool isFullscreen{false};
+        bool enable_debug_context{zeus::current_build ==
+                                  zeus::BuildType::debug};
+        bool is_forward_compatible{true};
+        bool is_maximized{false};
+        bool is_resizeable{true};
+        bool is_fullscreen{false};
     };
 
-    bool initializeGLFW(GLFWerrorfun errorCallback);
-    GLFWwindow* createGLFWWindow(WindowSettings const& settings);
-    bool createGLContext(GLFWwindow* window, ContextVersion const& version);
-    void bindWindowCallbacks(GLFWwindow* window,
-                             WindowCallbacks const& callbacks);
-    void destroyGLFWWindow(GLFWwindow* window);
+    bool initialize_glfw(GLFWerrorfun errorCallback);
+    GLFWwindow* create_glfw_window(WindowSettings const& settings);
+    bool create_gl_context(GLFWwindow* window, ContextVersion const& version);
+    void bind_window_callbacks(GLFWwindow* window,
+                               WindowCallbacks const& callbacks);
+    void destroy_glfw_window(GLFWwindow* window);
 
-    void terminateGLFW();
+    void terminate_glfw();
 } // namespace atlas::glx

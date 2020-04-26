@@ -15,12 +15,12 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->mousePressCallback)
+        if (callbacks->mouse_press_callback)
         {
             double x;
             double y;
             glfwGetCursorPos(window, &x, &y);
-            callbacks->mousePressCallback(button, action, mods, x, y);
+            callbacks->mouse_press_callback(button, action, mods, x, y);
         }
     }
 
@@ -33,9 +33,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->mouseMoveCallback)
+        if (callbacks->mouse_move_callback)
         {
-            callbacks->mouseMoveCallback(xPos, yPos);
+            callbacks->mouse_move_callback(xPos, yPos);
         }
     }
 
@@ -49,9 +49,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->mouseScrollCallback)
+        if (callbacks->mouse_scroll_callback)
         {
-            callbacks->mouseScrollCallback(xOffset, yOffset);
+            callbacks->mouse_scroll_callback(xOffset, yOffset);
         }
     }
 
@@ -71,9 +71,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->keyPressCallback)
+        if (callbacks->key_press_callback)
         {
-            callbacks->keyPressCallback(key, scancode, action, mods);
+            callbacks->key_press_callback(key, scancode, action, mods);
         }
     }
 
@@ -86,9 +86,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->windowSizeCallback)
+        if (callbacks->window_size_callback)
         {
-            callbacks->windowSizeCallback(width, height);
+            callbacks->window_size_callback(width, height);
         }
     }
 
@@ -102,9 +102,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->framebufferSizeCallback)
+        if (callbacks->framebuffer_size_callback)
         {
-            callbacks->framebufferSizeCallback(width, height);
+            callbacks->framebuffer_size_callback(width, height);
         }
     }
 
@@ -117,9 +117,9 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->charCallback)
+        if (callbacks->char_callback)
         {
-            callbacks->charCallback(codepoint);
+            callbacks->char_callback(codepoint);
         }
     }
 
@@ -132,13 +132,13 @@ namespace atlas::glx
             return;
         }
 
-        if (callbacks->windowCloseCallback)
+        if (callbacks->window_close_callback)
         {
-            callbacks->windowCloseCallback();
+            callbacks->window_close_callback();
         }
     }
 
-    bool initializeGLFW(GLFWerrorfun errorCallback)
+    bool initialize_glfw(GLFWerrorfun errorCallback)
     {
         glfwSetErrorCallback(errorCallback);
         if (glfwInit() == 0)
@@ -150,21 +150,22 @@ namespace atlas::glx
         return true;
     }
 
-    GLFWwindow* createGLFWWindow(WindowSettings const& settings)
+    GLFWwindow* create_glfw_window(WindowSettings const& settings)
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, settings.version.major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, settings.version.minor);
         glfwWindowHint(GLFW_OPENGL_PROFILE, settings.profile);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,
-                       static_cast<int>(settings.enableDebugContext));
+                       static_cast<int>(settings.enable_debug_context));
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
-                       static_cast<int>(settings.isForwardCompat));
+                       static_cast<int>(settings.is_forward_compatible));
 
-        glfwWindowHint(GLFW_MAXIMIZED, static_cast<int>(settings.isMaximized));
-        glfwWindowHint(GLFW_RESIZABLE, static_cast<int>(settings.isResizeable));
+        glfwWindowHint(GLFW_MAXIMIZED, static_cast<int>(settings.is_maximized));
+        glfwWindowHint(GLFW_RESIZABLE,
+                       static_cast<int>(settings.is_resizeable));
 
         GLFWmonitor* monitor =
-            (settings.isFullscreen) ? glfwGetPrimaryMonitor() : nullptr;
+            (settings.is_fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
         GLFWwindow* window = glfwCreateWindow(settings.size.width,
                                               settings.size.height,
                                               settings.title.c_str(),
@@ -173,7 +174,7 @@ namespace atlas::glx
         return window;
     }
 
-    bool createGLContext(GLFWwindow* window, ContextVersion const& version)
+    bool create_gl_context(GLFWwindow* window, ContextVersion const& version)
     {
         if (window == nullptr)
         {
@@ -203,8 +204,8 @@ namespace atlas::glx
         return true;
     }
 
-    void bindWindowCallbacks(GLFWwindow* window,
-                             WindowCallbacks const& callbacks)
+    void bind_window_callbacks(GLFWwindow* window,
+                               WindowCallbacks const& callbacks)
     {
         if (window == nullptr)
         {
@@ -225,7 +226,7 @@ namespace atlas::glx
         glfwSetCharCallback(window, charCallback);
     }
 
-    void destroyGLFWWindow(GLFWwindow* window)
+    void destroy_glfw_window(GLFWwindow* window)
     {
         if (window == nullptr)
         {
@@ -240,7 +241,7 @@ namespace atlas::glx
         glfwDestroyWindow(window);
     }
 
-    void terminateGLFW()
+    void terminate_glfw()
     {
         glfwTerminate();
     }

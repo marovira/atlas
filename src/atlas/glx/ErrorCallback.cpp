@@ -1,9 +1,8 @@
 #include "ErrorCallback.hpp"
 
-#include <atlas/core/Platform.hpp>
-
 #include <fmt/printf.h>
 #include <magic_enum.hpp>
+#include <zeus/platform.hpp>
 
 namespace atlas::glx
 {
@@ -14,7 +13,7 @@ namespace atlas::glx
         ErrorSeverity severity;
     };
 
-    static ErrorFilters gErrorFilters;
+    static ErrorFilters error_filters;
 
     void APIENTRY openGLErrorCallback(GLenum source,
                                       GLenum type,
@@ -24,23 +23,23 @@ namespace atlas::glx
                                       GLchar const* message,
                                       void const* userParam);
 
-    void initializeGLCallback([[maybe_unused]] ErrorSource source,
-                              [[maybe_unused]] ErrorType type,
-                              [[maybe_unused]] ErrorSeverity severity)
+    void initialize_gl_error_callback([[maybe_unused]] ErrorSource source,
+                                      [[maybe_unused]] ErrorType type,
+                                      [[maybe_unused]] ErrorSeverity severity)
     {
-#if defined(ATLAS_BUILD_DEBUG)
+#if defined(ZEUS_BUILD_DEBUG)
         if (glDebugMessageCallback)
         {
             fmt::print("OpenGL debug callback available\n");
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageCallback(openGLErrorCallback, nullptr);
-            GLuint unusedIds{0};
+            GLuint unused_ids{0};
             glDebugMessageControl(
-                GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
+                GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unused_ids, true);
 
-            gErrorFilters.source   = source;
-            gErrorFilters.type     = type;
-            gErrorFilters.severity = severity;
+            error_filters.source   = source;
+            error_filters.type     = type;
+            error_filters.severity = severity;
         }
         else
         {
@@ -50,8 +49,6 @@ namespace atlas::glx
         fmt::print("OpenGL debug callback is only available in debug builds\n");
 #endif
     }
-
-    using namespace atlas::core;
 
     template<typename T>
     bool check(T a, T b)
@@ -70,182 +67,183 @@ namespace atlas::glx
                                       GLchar const* message,
                                       [[maybe_unused]] void const* userParam)
     {
-        std::string errorOrigin;
+        std::string error_origin;
         switch (source)
         {
         case GL_DEBUG_SOURCE_API:
-            if (check(gErrorFilters.source, ErrorSource::API))
+            if (check(error_filters.source, ErrorSource::api))
             {
-                errorOrigin = "OpenGL API";
+                error_origin = "OpenGL API";
                 break;
             }
 
             return;
 
         case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-            if (check(gErrorFilters.source, ErrorSource::WindowSystem))
+            if (check(error_filters.source, ErrorSource::window_system))
             {
-                errorOrigin = "window system";
+                error_origin = "window system";
                 break;
             }
 
             return;
 
         case GL_DEBUG_SOURCE_SHADER_COMPILER:
-            if (check(gErrorFilters.source, ErrorSource::ShaderCompiler))
+            if (check(error_filters.source, ErrorSource::shader_compiler))
             {
-                errorOrigin = "shader compiler";
+                error_origin = "shader compiler";
                 break;
             }
 
             return;
 
         case GL_DEBUG_SOURCE_THIRD_PARTY:
-            if (check(gErrorFilters.source, ErrorSource::ThirdParty))
+            if (check(error_filters.source, ErrorSource::third_party))
             {
-                errorOrigin = "third party";
+                error_origin = "third party";
                 break;
             }
 
             return;
 
         case GL_DEBUG_SOURCE_APPLICATION:
-            if (check(gErrorFilters.source, ErrorSource::Application))
+            if (check(error_filters.source, ErrorSource::application))
             {
-                errorOrigin = "user of application";
+                error_origin = "user of application";
                 break;
             }
 
             return;
 
         case GL_DEBUG_SOURCE_OTHER:
-            if (check(gErrorFilters.source, ErrorSource::Other))
+            if (check(error_filters.source, ErrorSource::other))
             {
-                errorOrigin = "other";
+                error_origin = "other";
                 break;
             }
 
             return;
         }
 
-        std::string errorType;
+        std::string error_type;
         switch (type)
         {
         case GL_DEBUG_TYPE_ERROR:
-            if (check(gErrorFilters.type, ErrorType::Error))
+            if (check(error_filters.type, ErrorType::error))
             {
-                errorType = "error";
+                error_type = "error";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-            if (check(gErrorFilters.type, ErrorType::DeprecatedBehaviour))
+            if (check(error_filters.type, ErrorType::deprecated_behaviour))
             {
-                errorType = "deprecated behaviour";
+                error_type = "deprecated behaviour";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-            if (check(gErrorFilters.type, ErrorType::UndefinedBehaviour))
+            if (check(error_filters.type, ErrorType::UndefinedBehaviour))
             {
-                errorType = "undefined behaviour";
+                error_type = "undefined behaviour";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_PORTABILITY:
-            if (check(gErrorFilters.type, ErrorType::Portability))
+            if (check(error_filters.type, ErrorType::portability))
             {
-                errorType = "portability";
+                error_type = "portability";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_PERFORMANCE:
-            if (check(gErrorFilters.type, ErrorType::Performance))
+            if (check(error_filters.type, ErrorType::performance))
             {
-                errorType = "performance";
+                error_type = "performance";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_MARKER:
-            if (check(gErrorFilters.type, ErrorType::Marker))
+            if (check(error_filters.type, ErrorType::marker))
             {
-                errorType = "marker";
+                error_type = "marker";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_PUSH_GROUP:
-            if (check(gErrorFilters.type, ErrorType::PushGroup))
+            if (check(error_filters.type, ErrorType::push_group))
             {
-                errorType = "push group";
+                error_type = "push group";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_POP_GROUP:
-            if (check(gErrorFilters.type, ErrorType::PopGroup))
+            if (check(error_filters.type, ErrorType::pop_group))
             {
-                errorType = "pop group";
+                error_type = "pop group";
                 break;
             }
 
             return;
 
         case GL_DEBUG_TYPE_OTHER:
-            if (check(gErrorFilters.type, ErrorType::Other))
+            if (check(error_filters.type, ErrorType::other))
             {
-                errorType = "other";
+                error_type = "other";
                 break;
             }
 
             return;
         }
 
-        std::string errorMessage =
-            fmt::format("{}({}):({}): {}", errorType, errorOrigin, id, message);
+        std::string error_message = fmt::format(
+            "{}({}):({}): {}", error_type, error_origin, id, message);
 
         switch (severity)
         {
         case GL_DEBUG_SEVERITY_NOTIFICATION:
-            if (check(gErrorFilters.severity, ErrorSeverity::Notification))
+            if (check(error_filters.severity, ErrorSeverity::notification))
             {
-                fmt::print(stdout, "OpenGL notification: {}\n", errorMessage);
+                fmt::print(stdout, "OpenGL notification: {}\n", error_message);
             }
 
             break;
 
         case GL_DEBUG_SEVERITY_LOW:
-            if (check(gErrorFilters.severity, ErrorSeverity::Low))
+            if (check(error_filters.severity, ErrorSeverity::low))
             {
-                fmt::print(stdout, "OpenGL warning: {}\n", errorMessage);
+                fmt::print(stdout, "OpenGL warning: {}\n", error_message);
             }
 
             break;
 
         case GL_DEBUG_SEVERITY_MEDIUM:
-            if (check(gErrorFilters.severity, ErrorSeverity::Medium))
+            if (check(error_filters.severity, ErrorSeverity::medium))
             {
-                fmt::print(stderr, "OpenGL error: {}\n", errorMessage);
+                fmt::print(stderr, "OpenGL error: {}\n", error_message);
             }
 
             break;
 
         case GL_DEBUG_SEVERITY_HIGH:
-            if (check(gErrorFilters.severity, ErrorSeverity::High))
+            if (check(error_filters.severity, ErrorSeverity::high))
             {
-                fmt::print(stderr, "OpenGL critical error: {}\n", errorMessage);
+                fmt::print(
+                    stderr, "OpenGL critical error: {}\n", error_message);
             }
             break;
         }

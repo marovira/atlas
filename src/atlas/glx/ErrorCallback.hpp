@@ -6,43 +6,44 @@ namespace atlas::glx
 {
     enum class ErrorSource : unsigned short
     {
-        API            = 0x01,
-        WindowSystem   = 0x02,
-        ShaderCompiler = 0x04,
-        ThirdParty     = 0x08,
-        Application    = 0x10,
-        Other          = 0x20,
-        All            = 0x3F,
-        None           = 0x00
+        api             = 0x01,
+        window_system   = 0x02,
+        shader_compiler = 0x04,
+        third_party     = 0x08,
+        application     = 0x10,
+        other           = 0x20,
+        all             = 0x3F,
+        none            = 0x00
     };
 
     enum class ErrorType : unsigned short
     {
-        Error               = 0x001,
-        DeprecatedBehaviour = 0x002,
-        UndefinedBehaviour  = 0x004,
-        Portability         = 0x008,
-        Performance         = 0x010,
-        Marker              = 0x020,
-        PushGroup           = 0x040,
-        PopGroup            = 0x080,
-        Other               = 0x100,
-        All                 = 0x1FF,
-        None                = 0x000
+        error                = 0x001,
+        deprecated_behaviour = 0x002,
+        UndefinedBehaviour   = 0x004,
+        portability          = 0x008,
+        performance          = 0x010,
+        marker               = 0x020,
+        push_group           = 0x040,
+        pop_group            = 0x080,
+        other                = 0x100,
+        all                  = 0x1FF,
+        none                 = 0x000
     };
 
     enum class ErrorSeverity : unsigned short
     {
-        Notification = 0x1,
-        Low          = 0x2,
-        Medium       = 0x4,
-        High         = 0x8,
-        All          = 0xF,
-        None         = 0x0
+        notification = 0x1,
+        low          = 0x2,
+        medium       = 0x4,
+        high         = 0x8,
+        all          = 0xF,
+        none         = 0x0
     };
 
-    void initializeGLCallback(ErrorSource source     = ErrorSource::All,
-                              ErrorType type         = ErrorType::All,
-                              ErrorSeverity severity = ErrorSeverity::All);
+    void
+    initialize_gl_error_callback(ErrorSource source     = ErrorSource::all,
+                                 ErrorType type         = ErrorType::all,
+                                 ErrorSeverity severity = ErrorSeverity::all);
 
 } // namespace atlas::glx
