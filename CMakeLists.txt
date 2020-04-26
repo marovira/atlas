@@ -119,7 +119,7 @@ include(FetchContent)
 FetchContent_Declare(
     zeus
     GIT_REPOSITORY https://github.com/marovira/zeus
-    GIT_TAG 1f218b3c2e5da95928d8d4ecdf5d385cae723212
+    GIT_TAG d0e476695f86e0f4be6740404f1be17b9dededff
     )
 
 FetchContent_Declare(
