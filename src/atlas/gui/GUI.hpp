@@ -9,49 +9,51 @@
 
 namespace atlas::gui
 {
-    struct GuiRenderData
+    struct UIRenderData
     {
-        GLuint fontTexture{};
-        GLuint shaderHandle{};
-        GLuint vertHandle{};
-        GLuint fragHandle{};
+        GLuint font_texture{};
+        GLuint shader_handle{};
+        GLuint vert_handle{};
+        GLuint frag_handle{};
 
-        int texAttribLocation{};
-        int projMtxAttribLocation{};
+        int tex_attrib_location{};
+        int proj_mtx_attrib_location{};
 
-        int vtxPosAttribLocation{};
-        int vtxUVAttribLocation{};
-        int vtxColorAttribLocation{};
+        int vtx_pos_attrib_location{};
+        int vts_uv_attrib_location{};
+        int vtx_colour_attrib_location{};
 
-        GLuint vboHandle{};
-        GLuint elementsHandle{};
+        GLuint vbo_handle{};
+        GLuint elements_handle{};
     };
 
-    struct GuiWindowData
+    struct UIWindowData
     {
         GLFWwindow* window{nullptr};
         double time{0.0};
-        std::array<bool, 5> mouseJustPressed;
-        std::array<GLFWcursor*, ImGuiMouseCursor_COUNT> mouseCursors;
+        std::array<bool, 5> mouse_just_pressed;
+        std::array<GLFWcursor*, ImGuiMouseCursor_COUNT> mouse_cursors;
     };
 
-    bool initializeGuiRenderData(GuiRenderData& data);
-    void destroyGuiRenderData(GuiRenderData& data);
-    void renderGuiFrame(GuiRenderData const& data);
+    bool initialize_ui_render_data(UIRenderData& data);
+    void destroy_ui_render_data(UIRenderData& data);
+    void render_ui_frame(UIRenderData const& data);
 
-    bool initializeGuiWindowData(GuiWindowData& data);
-    void setGuiWindow(GuiWindowData& data, GLFWwindow* window);
-    void startGuiWindowFrame(GuiWindowData& data);
-    void updateGuiWindowFrame(GuiWindowData& data);
-    void destroyGuiWindow(GuiWindowData& data);
+    bool initialize_ui_window_data(UIWindowData& data);
+    void set_ui_window(UIWindowData& data, GLFWwindow* window);
+    void start_ui_window_frame(UIWindowData& data);
+    void update_ui_window_frame(UIWindowData& data);
+    void destroy_ui_window(UIWindowData& data);
 
-    void
-    mousePressedCallback(GuiWindowData& data, int button, int action, int mode);
-    void mouseScrollCallback(double xOffset, double yOffset);
-    void keyPressCallback(int key, int scancode, int action, int mods);
-    void charCallback(unsigned int c);
+    void mouse_pressed_callback(UIWindowData& data,
+                                int button,
+                                int action,
+                                int mode);
+    void mouse_scroll_callback(double x_offset, double y_offset);
+    void key_press_callback(int key, int scancode, int action, int mods);
+    void char_callback(unsigned int c);
 
-    void newFrame(GuiWindowData& data);
-    void endFrame(GuiWindowData& windowData, GuiRenderData& renderData);
+    void new_frame(UIWindowData& data);
+    void end_frame(UIWindowData& window_data, UIRenderData& render_data);
 
 } // namespace atlas::gui
