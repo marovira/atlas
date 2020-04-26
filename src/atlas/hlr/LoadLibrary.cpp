@@ -13,21 +13,21 @@
 namespace atlas::hlr
 {
 #if defined(ZEUS_PLATFORM_WINDOWS)
-    void* loadLibraryHandle(std::string const& libraryName)
+    void* load_library_handle(std::string const& library_name)
     {
-        void* handle = LoadLibrary(libraryName.c_str());
+        void* handle = LoadLibrary(library_name.c_str());
         if (handle == nullptr)
         {
-            auto errorCode = GetLastError();
+            auto error_code = GetLastError();
             fmt::print(stderr,
                        "error: LoadLibrary returned error code {}\n",
-                       errorCode);
+                       error_code);
         }
 
         return handle;
     }
 
-    void* loadRawFunctionPtr(void* handle, std::string const& functionName)
+    void* load_raw_function_ptr(void* handle, std::string const& function_name)
     {
         if (handle == nullptr)
         {
@@ -35,56 +35,56 @@ namespace atlas::hlr
             return nullptr;
         }
 
-        auto h = reinterpret_cast<HMODULE>(handle);
+        auto hmodule = reinterpret_cast<HMODULE>(handle);
 
-        FARPROC procAddress = GetProcAddress(h, functionName.c_str());
-        if (procAddress == nullptr)
+        FARPROC prog_address = GetProcAddress(hmodule, function_name.c_str());
+        if (prog_address == nullptr)
         {
-            auto errorCode = GetLastError();
+            auto error_code = GetLastError();
             fmt::print(stderr,
                        "error: GetProcAddress returned error code {}\n",
-                       errorCode);
+                       error_code);
         }
 
-        return procAddress;
+        return prog_address;
     }
 
-    void unloadLibraryHandle(void* handle)
+    void unload_library_handle(void* handle)
     {
         auto h = reinterpret_cast<HMODULE>(handle);
         FreeLibrary(h);
     }
 #else
-    void* loadLibraryHandle(std::string const& libraryName)
+    void* load_library_handle(std::string const& library_name)
     {
-        void* handle = dlopen(libraryName.c_str(), RTLD_LAZY);
+        void* handle = dlopen(library_name.c_str(), RTLD_LAZY);
         if (handle == nullptr)
         {
-            auto errorMsg = dlerror();
-            fmt::print(stderr, "error: in dlopen: {}\n", errorMsg);
+            auto error_message = dlerror();
+            fmt::print(stderr, "error: in dlopen: {}\n", error_message);
         }
 
         return handle;
     }
 
-    void* loadRawFunctionPtr(void* handle, std::string const& functionName)
+    void* load_raw_function_ptr(void* handle, std::string const& function_name)
     {
         if (handle == nullptr)
         {
             fmt::print(stderr, "error: null library handle\n");
             return nullptr;
         }
-        void* procAddress = dlsym(handle, functionName.c_str());
-        if (procAddress == nullptr)
+        void* prog_address = dlsym(handle, function_name.c_str());
+        if (prog_address == nullptr)
         {
-            auto errorMsg = dlerror();
-            fmt::print(stderr, "error: in dlsym: {}\n", errorMsg);
+            auto error_message = dlerror();
+            fmt::print(stderr, "error: in dlsym: {}\n", error_message);
         }
 
-        return procAddress;
+        return prog_address;
     }
 
-    void unloadLibraryHandle(void* handle)
+    void unload_library_handle(void* handle)
     {
         dlclose(handle);
     }

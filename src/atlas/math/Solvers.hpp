@@ -1,27 +1,18 @@
 #pragma once
 
-#include <atlas/core/Float.hpp>
-
 #include <cassert>
 #include <cmath>
 #include <vector>
+#include <zeus/float.hpp>
 
 namespace atlas::math
 {
-    /**
-     * Solves a quadratic equation of the form Ax^2 + Bx + C.
-     * Note that the coefficients need to be passed in reverse, so {C, B, A}.
-     *
-     * @param coeffs The coefficients of the quadratic equation in reverse.
-     * @param roots The roots of the equation.
-     * @return The number of real roots (if any).
-     */
     template<typename T,
              typename = std::enable_if<std::is_floating_point<T>::value>>
-    std::size_t solveQuadratic(std::vector<T> const& coeffs,
-                               std::vector<T>& roots)
+    std::size_t solve_quadratic(std::vector<T> const& coeffs,
+                                std::vector<T>& roots)
     {
-        using atlas::core::isZero;
+        using zeus::is_zero;
 
         assert(coeffs.size() >= 3);
 
@@ -37,7 +28,7 @@ namespace atlas::math
 
         D = p * p - q;
 
-        if (isZero<T>(D))
+        if (is_zero<T>(D))
         {
             roots[0] = -p;
             return 1;
@@ -53,19 +44,11 @@ namespace atlas::math
         return 0;
     }
 
-    /**
-     * Solves a cubic equation of the form Ax^3 + Bx^2 + Cx + D. Note that the
-     * coefficients need to be passed in reverse, so {D, C, B, A}.
-     *
-     * @param coeffs The coefficients of the quadratic equation in reverse.
-     * @param roots The roots of the equation.
-     * @return The number of real roots (if any).
-     */
     template<typename T,
              typename = std::enable_if<std::is_floating_point<T>::value>>
-    std::size_t solveCubic(std::vector<T> const& coeffs, std::vector<T>& roots)
+    std::size_t solve_cubic(std::vector<T> const& coeffs, std::vector<T>& roots)
     {
-        using atlas::core::isZero;
+        using zeus::is_zero;
 
         assert(coeffs.size() >= 4);
 
@@ -92,9 +75,9 @@ namespace atlas::math
         T D   = q * q + cbP;
 
         std::size_t num{0};
-        if (isZero<T>(D))
+        if (is_zero<T>(D))
         {
-            if (isZero<T>(q))
+            if (is_zero<T>(q))
             {
                 // Multiplicity 3.
                 roots[0] = 0;
@@ -143,27 +126,16 @@ namespace atlas::math
         return num;
     }
 
-    /**
-     * Solves a quartic equation of the form Ax^4 + Bx^3 + Cx^2 + Dx + E. Note
-     * that the coefficients need to be passed in reverse, so {E, D, C, B, A}.
-     *
-     * Due to the comparison function used, roots of multiplicity greater than
-     * 1 may be returned more than once.
-     *
-     * @param coeffs The coefficients of the quadratic equation in reverse.
-     * @param roots The roots of the equation.
-     * @return The number of real roots (if any).
-     */
     template<typename T,
              typename = std::enable_if<std::is_floating_point<T>::value>>
-    std::size_t solveQuartic(std::vector<T> const& coeffs,
-                             std::vector<T>& roots)
+    std::size_t solve_quartic(std::vector<T> const& coeffs,
+                              std::vector<T>& roots)
     {
-        using atlas::core::isZero;
+        using zeus::is_zero;
 
         assert(coeffs.size() == 5);
 
-        auto weakIsZero = [](T x) {
+        auto weak_is_zero = [](T x) {
             return x > -std::numeric_limits<T>::epsilon() &&
                    x < std::numeric_limits<T>::epsilon();
         };
@@ -191,7 +163,7 @@ namespace atlas::math
               T{1} / T{4} * A * C + D;
 
         std::size_t num{0};
-        if (isZero<T>(r) || weakIsZero(r))
+        if (is_zero<T>(r) || weak_is_zero(r))
         {
             // No absolute term: y(y^3 + py + q) = 0.
             c[0] = q;
@@ -199,7 +171,7 @@ namespace atlas::math
             c[2] = 0;
             c[3] = 1;
 
-            num          = solveCubic<T>(c, roots);
+            num          = solve_cubic<T>(c, roots);
             roots[num++] = 0;
         }
         else
@@ -210,7 +182,7 @@ namespace atlas::math
             c[2] = -T{1} / T{2} * p;
             c[3] = 1;
 
-            solveCubic<T>(c, roots);
+            solve_cubic<T>(c, roots);
 
             // And take the one real solution
             T z = roots[0];
@@ -219,7 +191,7 @@ namespace atlas::math
             T u = z * z - r;
             T v = 2 * z - p;
 
-            if (isZero<T>(u) || weakIsZero(u))
+            if (is_zero<T>(u) || weak_is_zero(u))
             {
                 u = 0;
             }
@@ -232,7 +204,7 @@ namespace atlas::math
                 return 0;
             }
 
-            if (isZero<T>(v) || weakIsZero(v))
+            if (is_zero<T>(v) || weak_is_zero(v))
             {
                 v = 0;
             }
@@ -249,7 +221,7 @@ namespace atlas::math
             c[1] = (q < 0) ? -v : v;
             c[2] = 1;
 
-            num = solveQuadratic<T>(c, roots);
+            num = solve_quadratic<T>(c, roots);
 
             c[0] = z + u;
             c[1] = (q < 0) ? v : -v;
@@ -257,7 +229,7 @@ namespace atlas::math
 
             std::vector<T> s(2, T{0});
             std::size_t tmp = num;
-            num += solveQuadratic<T>(c, s);
+            num += solve_quadratic<T>(c, s);
             roots[tmp]     = s[0];
             roots[tmp + 1] = s[1];
         }

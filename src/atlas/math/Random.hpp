@@ -14,35 +14,35 @@ namespace atlas::math
     public:
         Random() = default;
 
-        Random(typename Engine::result_type seed) : mEngine{seed}
+        Random(typename Engine::result_type seed) : m_engine{seed}
         {}
 
-        T getRandomRange(T min, T max)
+        T get_random_in_range(T min, T max)
         {
             if constexpr (std::is_floating_point<T>::value)
             {
                 std::uniform_real_distribution<T> dist{min, max};
-                return dist(mEngine);
+                return dist(m_engine);
             }
             else
             {
                 std::uniform_int_distribution<T> dist{min, max};
-                return dist(mEngine);
+                return dist(m_engine);
             }
         }
 
-        T getRandomMax()
+        T get_random_zero_to_max()
         {
-            return getRandomRange(static_cast<T>(0),
-                                  std::numeric_limits<T>::max());
+            return get_random_in_range(static_cast<T>(0),
+                                       std::numeric_limits<T>::max());
         }
 
-        T getRandomOne()
+        T get_random_zero_to_one()
         {
-            return getRandomRange(static_cast<T>(0), static_cast<T>(1));
+            return get_random_in_range(static_cast<T>(0), static_cast<T>(1));
         }
 
     private:
-        Engine mEngine{std::random_device{}()};
+        Engine m_engine{std::random_device{}()};
     };
 } // namespace atlas::math

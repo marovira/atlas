@@ -5,22 +5,22 @@
 
 namespace atlas::hlr
 {
-    void* loadLibraryHandle(std::string const& libraryName);
-    void* loadRawFunctionPtr(void* handle, std::string const& functionName);
-    void unloadLibraryHandle(void* handle);
+    void* load_library_handle(std::string const& library_name);
+    void* load_raw_function_ptr(void* handle, std::string const& function_name);
+    void unload_library_handle(void* handle);
 
     template<typename FnType>
-    FnType loadFunctionPtr(void* handle, std::string const& functionName)
+    FnType load_function_ptr(void* handle, std::string const& function_name)
     {
         return reinterpret_cast<FnType>(
-            loadRawFunctionPtr(handle, functionName));
+            load_raw_function_ptr(handle, function_name));
     }
 
     template<typename FnPtrType, typename FnType>
-    std::function<FnType> loadFunction(void* handle,
-                                       std::string const& functionName)
+    std::function<FnType> load_function(void* handle,
+                                        std::string const& function_name)
     {
-        auto fnPtr = loadFunctionPtr<FnPtrType>(handle, functionName);
+        auto fnPtr = loadFunctionPtr<FnPtrType>(handle, function_name);
         return std::function<FnType>{fnPtr};
     }
 } // namespace atlas::hlr

@@ -4,9 +4,9 @@
 #define GLM_FORCE_SWIZZLE
 #define GLM_ENABLE_EXPERIMENTAL
 
-#include <atlas/core/Platform.hpp>
+#include <zeus/platform.hpp>
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
 #    pragma warning(push)
 #    pragma warning(disable : 4201)
 #endif
@@ -49,6 +49,6 @@ namespace atlas::math
     using Quaternion = glm::quat;
 } // namespace atlas::math
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
 #    pragma warning(pop)
 #endif

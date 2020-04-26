@@ -1,11 +1,9 @@
 #pragma once
 
 #include <atlas/math/Math.hpp>
-
-#include <tiny_obj_loader.h>
-
 #include <optional>
 #include <string>
+#include <tiny_obj_loader.h>
 #include <vector>
 
 namespace atlas::utils
@@ -14,19 +12,19 @@ namespace atlas::utils
     {
         math::Point position{};
         math::Normal normal{};
-        math::Point2 texCoord{};
+        math::Point2 tex_coord{};
         std::size_t index{};
-        std::size_t faceId{};
+        std::size_t face_id{};
     };
 
     struct Shape
     {
-        bool hasNormals{true};
-        bool hasTextureCoords{true};
+        bool has_normals{true};
+        bool has_texture_coords{true};
         std::vector<Vertex> vertices{};
         std::vector<std::size_t> indices{};
-        std::vector<int> materialIds;
-        std::vector<unsigned int> smoothingGroupIds;
+        std::vector<int> material_ids;
+        std::vector<unsigned int> smoothing_group_ids;
     };
 
     struct ObjMesh
@@ -35,6 +33,6 @@ namespace atlas::utils
         std::vector<tinyobj::material_t> materials;
     };
 
-    std::optional<ObjMesh> loadObjMesh(std::string const& filename,
-                                       std::string const& materialPath = {});
+    std::optional<ObjMesh> load_obj_mesh(std::string const& filename,
+                                         std::string const& material_path = {});
 } // namespace atlas::utils
