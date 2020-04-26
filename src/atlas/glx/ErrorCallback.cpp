@@ -1,4 +1,4 @@
-#include "atlas/glx/ErrorCallback.hpp"
+#include "ErrorCallback.hpp"
 
 #include <atlas/core/Platform.hpp>
 

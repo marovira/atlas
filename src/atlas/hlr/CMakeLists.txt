@@ -1,0 +1,10 @@
+set(ATLAS_HLR_ROOT ${ATLAS_SOURCE_ROOT}/atlas/hlr)
+
+set(ATLAS_INCLUDE_HLR_LIST
+    ${ATLAS_HLR_ROOT}/cr.h
+    ${ATLAS_HLR_ROOT}/LoadLibrary.hpp
+    PARENT_SCOPE)
+
+set(ATLAS_SOURCE_HLR_LIST
+    ${ATLAS_HLR_ROOT}/LoadLibrary.cpp
+    PARENT_SCOPE)

@@ -1,4 +1,4 @@
-#include "atlas/utils/LoadObjFile.hpp"
+#include "LoadObjFile.hpp"
 
 #include <atlas/core/Filesystem.hpp>
 

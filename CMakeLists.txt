@@ -22,7 +22,6 @@ if (POLICY CMP0072)
     cmake_policy(SET CMP0072 NEW)
 endif()
 
-
 #================================
 # Option variables.
 #================================
@@ -34,22 +33,18 @@ option(ATLAS_BUILD_EXAMPLES "Build Atlas examples" ON)
 #================================
 # Directory variables.
 #================================
-# Set up the directory roots for Atlas sources.
-set(ATLAS_SOURCE_DIR "${PROJECT_SOURCE_DIR}")
-set(ATLAS_BINARY_DIR "${PROJECT_BINARY_DIR}")
-set(ATLAS_INCLUDE_ROOT "${ATLAS_SOURCE_DIR}/include/atlas")
-set(ATLAS_SOURCE_ROOT "${ATLAS_SOURCE_DIR}/source/atlas")
-set(ATLAS_TEST_ROOT "${ATLAS_SOURCE_DIR}/test")
-set(ATLAS_CMAKE_ROOT "${ATLAS_SOURCE_DIR}/cmake")
-set(ATLAS_EXTERNAL_ROOT "${ATLAS_SOURCE_DIR}/external")
+set(ATLAS_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+set(ATLAS_SOURCE_ROOT ${ATLAS_SOURCE_DIR}/src)
+set(ATLAS_TEST_ROOT ${ATLAS_SOURCE_DIR}/test)
+set(ATLAS_CMAKE_ROOT ${ATLAS_SOURCE_DIR}/cmake)
+set(ATLAS_EXTERNAL_ROOT ${ATLAS_SOURCE_DIR}/external)
 
 #================================
 # Add subdirectories.
 #================================
-add_subdirectory("${ATLAS_EXTERNAL_ROOT}/imgui")
-add_subdirectory("${ATLAS_EXTERNAL_ROOT}/stb")
-add_subdirectory("${ATLAS_INCLUDE_ROOT}")
-add_subdirectory("${ATLAS_SOURCE_ROOT}")
+add_subdirectory(${ATLAS_EXTERNAL_ROOT}/imgui)
+add_subdirectory(${ATLAS_EXTERNAL_ROOT}/stb)
+add_subdirectory(${ATLAS_SOURCE_ROOT})
 
 #================================
 # Source groups.
@@ -201,10 +196,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 endif()
 
 #================================
-# Core module.
+# core module.
 #================================
 add_library(atlas-core INTERFACE)
-target_include_directories(atlas-core INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-core INTERFACE ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-core INTERFACE fmt::fmt magic_enum::magic_enum)
 if (NOT MSVC)
     target_link_libraries(atlas-core INTERFACE stdc++fs)
@@ -223,7 +218,7 @@ add_library(atlas::core ALIAS atlas-core)
 # Math module.
 #================================
 add_library(atlas-math INTERFACE)
-target_include_directories(atlas-math INTERFACE "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-math INTERFACE ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-math INTERFACE glm atlas-core)
 target_compile_features(atlas-math INTERFACE cxx_std_17)
 target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
@@ -239,7 +234,7 @@ add_library(atlas::math ALIAS atlas-math)
 # GLX module.
 #================================
 add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
-target_include_directories(atlas-glx PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-glx PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w atlas-core)
 add_library(atlas::glx ALIAS atlas-glx)
 set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
@@ -248,7 +243,7 @@ set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
 # GUI module.
 #================================
 add_library(atlas-gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
-target_include_directories(atlas-gui PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-gui PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-gui PUBLIC imgui atlas-glx atlas-core)
 add_library(atlas::gui ALIAS atlas-gui)
 set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
@@ -257,7 +252,7 @@ set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
 # HLR module.
 #================================
 add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
-target_include_directories(atlas-hlr PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-hlr PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-hlr PUBLIC atlas-core)
 add_library(atlas::hlr ALIAS atlas-hlr)
 set_target_properties(atlas-hlr PROPERTIES FOLDER "atlas")
@@ -267,7 +262,7 @@ set_target_properties(atlas-hlr PROPERTIES FOLDER "atlas")
 #================================
 add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
     ${ATLAS_SOURCE_UTILS_GROUP})
-target_include_directories(atlas-utils PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas-utils PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
     fmt::fmt stb)
 add_library(atlas::utils ALIAS atlas-utils)
@@ -277,7 +272,7 @@ set_target_properties(atlas-utils PROPERTIES FOLDER "atlas")
 # Main Atlas library.
 #================================
 add_library(atlas ${ATLAS_SOURCE_ROOT_GROUP})
-target_include_directories(atlas PUBLIC "${ATLAS_SOURCE_DIR}/include")
+target_include_directories(atlas PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas PUBLIC atlas-core atlas-math atlas-glx atlas-gui
     atlas-hlr atlas-utils)
 add_library(atlas::atlas ALIAS atlas)

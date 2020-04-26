@@ -1,4 +1,4 @@
-#include "atlas/hlr/LoadLibrary.hpp"
+#include "LoadLibrary.hpp"
 
 #include <atlas/core/Platform.hpp>
 #include <fmt/printf.h>

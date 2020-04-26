@@ -1,5 +1,6 @@
-#include "atlas/utils/Cameras.hpp"
-#include "atlas/core/Float.hpp"
+#include "Cameras.hpp"
+
+#include <atlas/core/Float.hpp>
 
 namespace atlas::utils
 {
@@ -18,8 +19,7 @@ namespace atlas::utils
 
             switch (data.movement)
             {
-            case Movements::Dolly:
-            {
+            case Movements::Dolly: {
                 delta *= -0.5f;
 
                 auto view = glm::normalize(data.position - data.target);
@@ -29,8 +29,7 @@ namespace atlas::utils
                 break;
             }
 
-            case Movements::Track:
-            {
+            case Movements::Track: {
                 delta *= 0.05f;
 
                 // Compute the full frame.
@@ -47,8 +46,7 @@ namespace atlas::utils
                 break;
             }
 
-            case Movements::Tumble:
-            {
+            case Movements::Tumble: {
                 delta *= 0.5f;
 
                 auto view  = glm::normalize(data.position - data.target);
@@ -70,8 +68,7 @@ namespace atlas::utils
                 break;
             }
 
-            case Movements::None:
-            {
+            case Movements::None: {
                 break;
             }
             }

@@ -10,7 +10,7 @@ gh-pages/
 # Generated files #
 generated/
 doc/html
-include/atlas/Atlas.hpp
+src/atlas.hpp
 test/TestDataPaths.hpp
 test/TestExpectedPaths.hpp
 test/TestLibraryDebugPath.hpp

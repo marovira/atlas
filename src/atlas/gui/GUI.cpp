@@ -1,4 +1,4 @@
-#include "atlas/gui/GUI.hpp"
+#include "GUI.hpp"
 
 #include <atlas/core/Platform.hpp>
 #include <atlas/glx/Buffer.hpp>

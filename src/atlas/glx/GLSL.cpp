@@ -1,4 +1,4 @@
-#include "atlas/glx/GLSL.hpp"
+#include "GLSL.hpp"
 
 #include <atlas/core/Filesystem.hpp>
 #include <atlas/core/Platform.hpp>

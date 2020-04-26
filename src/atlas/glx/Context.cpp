@@ -1,4 +1,4 @@
-#include "atlas/glx/Context.hpp"
+#include "Context.hpp"
 
 #include <fmt/printf.h>
 #include <map>
