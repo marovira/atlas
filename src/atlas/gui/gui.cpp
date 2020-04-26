@@ -1,7 +1,7 @@
 #include "gui.hpp"
 
-#include <atlas/glx/Buffer.hpp>
-#include <atlas/glx/GLSL.hpp>
+#include <atlas/glx/buffer.hpp>
+#include <atlas/glx/glsl.hpp>
 #include <zeus/platform.hpp>
 
 #include <fmt/printf.h>
