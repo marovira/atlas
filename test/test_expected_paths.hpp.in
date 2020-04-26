@@ -1,0 +1,13 @@
+#pragma once
+
+#include <array>
+
+static constexpr std::array<char const*, @ATLAS_NUM_EXPECTED_FILES@> expected_files
+{
+@ATLAS_EXPECTED_FILES@
+};
+
+enum expected_file_names
+{
+@ATLAS_EXPECTED_NAMES@
+};

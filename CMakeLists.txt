@@ -279,7 +279,17 @@ if (ATLAS_BUILD_TESTS)
     endif()
 
     add_subdirectory("${ATLAS_TEST_ROOT}")
+
+    source_group("include" FILES ${ATLAS_TEST_HEADER_GROUP})
+
+    source_group("source" FILES ${ATLAS_TEST_TOP_GROUP})
+    source_group("source\\glx" FILES ${ATLAS_TEST_GLX_GROUP})
+    source_group("source\\gui" FILES ${ATLAS_TEST_GUI_GROUP})
+    source_group("source\\hlr" FILES ${ATLAS_TEST_HLR_GROUP})
+    source_group("source\\math" FILES ${ATLAS_TEST_MATH_GROUP})
+
     add_executable(atlas-test ${ATLAS_TEST_LIST})
+    target_include_directories(atlas-test PRIVATE ${ATLAS_TEST_ROOT})
     target_link_libraries(atlas-test 
         atlas-math 
         atlas-glx

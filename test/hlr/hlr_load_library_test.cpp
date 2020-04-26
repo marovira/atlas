@@ -5,12 +5,12 @@
 
 #if defined(ZEUS_PLATFORM_WINDOWS)
 #    if defined(ZEUS_BUILD_DEBUG)
-#        include "TestLibraryDebugPath.hpp"
+#        include "test_data/hlr/test_library_debug_path.hpp"
 #    else
-#        include "TestLibraryReleasePath.hpp"
+#        include "test_data/hlr/test_library_release_path.hpp"
 #    endif
 #else
-#    include "TestLibraryPath.hpp"
+#    include "test_data/hlr/test_library_path.hpp"
 #endif
 
 #include <catch2/catch.hpp>
@@ -19,7 +19,7 @@ using namespace atlas;
 
 TEST_CASE("[hlr] - load_library_handle")
 {
-    const std::string library_path{TestLibraryPath};
+    const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
 
     REQUIRE(handle != nullptr);
@@ -31,7 +31,7 @@ typedef int (*SumFn)(int, int);
 
 TEST_CASE("[hlr] - load_raw_function_ptr")
 {
-    const std::string library_path{TestLibraryPath};
+    const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
 
     REQUIRE(handle != nullptr);
@@ -48,7 +48,7 @@ TEST_CASE("[hlr] - load_raw_function_ptr")
 
 TEST_CASE("[hlr] - load_function_ptr")
 {
-    const std::string library_path{TestLibraryPath};
+    const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
 
     REQUIRE(handle != nullptr);
@@ -63,7 +63,7 @@ TEST_CASE("[hlr] - load_function_ptr")
 
 TEST_CASE("[hlr] - load_function")
 {
-    const std::string library_path{TestLibraryPath};
+    const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
 
     REQUIRE(handle != nullptr);

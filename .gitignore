@@ -11,8 +11,7 @@ gh-pages/
 generated/
 doc/html
 src/atlas.hpp
-test/TestDataPaths.hpp
-test/TestExpectedPaths.hpp
-test/TestLibraryDebugPath.hpp
-test/TestLibraryReleasePath.hpp
-examples/hello_shader/ShaderPaths.hpp
+test/test_data_paths.hpp
+test/test_expected_paths.hpp
+test/test_data/hlr/test_library_debug_path.hpp
+test/test_data/hlr/test_library_release_path.hpp

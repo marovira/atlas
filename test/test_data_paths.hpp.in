@@ -1,0 +1,13 @@
+#pragma once
+
+#include <array>
+
+static constexpr std::array<char const*, @ATLAS_NUM_DATA_FILES@> test_data
+{
+@ATLAS_TEST_DATA_FILES@
+};
+
+enum test_data_names
+{
+@ATLAS_TEST_DATA_NAMES@
+};
