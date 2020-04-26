@@ -2,7 +2,7 @@ set(ATLAS_HLR_DATA_ROOT ${ATLAS_TEST_DATA_ROOT}/hlr)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 add_library(test_lib SHARED ${ATLAS_HLR_DATA_ROOT}/test_lib.cpp)
-target_link_libraries(test_lib PRIVATE atlas-hlr)
+target_link_libraries(test_lib PRIVATE atlas_hlr)
 target_include_directories(test_lib PUBLIC ${ATLAS_HLR_DATA_ROOT})
 if (MSVC)
     target_compile_definitions(test_lib PRIVATE ATLAS_WINDOWS_EXPORT)
