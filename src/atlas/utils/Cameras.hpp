@@ -56,7 +56,7 @@ namespace atlas::utils
 
         math::Matrix4 compute_view_matrix() const override;
 
-        void reset_camera();
+        void reset_camera() override;
 
     private:
         math::Point _position{30};
