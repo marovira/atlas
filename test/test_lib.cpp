@@ -1,4 +1,4 @@
-#include <atlas/hlr/Export.hpp>
+#include <atlas/hlr/export.hpp>
 
 extern "C" {
 EXPORTED int add(int a, int b)

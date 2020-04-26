@@ -4,7 +4,7 @@
 
 // TODO: Check if clang requires any specific flags to be set here.
 
-#if defined(ATLAS_PLATFORM_WINDOWS)
+#if defined(ZEUS_PLATFORM_WINDOWS)
 #    if defined(ATLAS_WINDOWS_EXPORT)
 #        if defined(__GNUC__)
 #            define EXPORTED __attribute__((dllexport))
