@@ -200,64 +200,64 @@ endif()
 #================================
 # Math module.
 #================================
-add_library(atlas-math INTERFACE)
-target_include_directories(atlas-math INTERFACE ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-math INTERFACE glm zeus::zeus)
-target_compile_features(atlas-math INTERFACE cxx_std_17)
-target_compile_options(atlas-math INTERFACE "${ATLAS_COMPILER_FLAGS}")
-target_compile_options(atlas-math INTERFACE "${ATLAS_DEBUG_FLAGS}")
-target_compile_definitions(atlas-math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
+add_library(atlas_math INTERFACE)
+target_include_directories(atlas_math INTERFACE ${ATLAS_SOURCE_ROOT})
+target_link_libraries(atlas_math INTERFACE glm zeus::zeus)
+target_compile_features(atlas_math INTERFACE cxx_std_17)
+target_compile_options(atlas_math INTERFACE ${ATLAS_COMPILER_FLAGS})
+target_compile_options(atlas_math INTERFACE ${ATLAS_DEBUG_FLAGS})
+target_compile_definitions(atlas_math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
-    add_custom_target(_atlas-math SOURCES ${ATLAS_INCLUDE_MATH_GROUP})
-    set_target_properties(_atlas-math PROPERTIES FOLDER "atlas")
+    add_custom_target(_atlas_math SOURCES ${ATLAS_INCLUDE_MATH_GROUP})
+    set_target_properties(_atlas_math PROPERTIES FOLDER "atlas")
 endif()
-add_library(atlas::math ALIAS atlas-math)
+add_library(atlas::math ALIAS atlas_math)
 
 #================================
 # GLX module.
 #================================
-add_library(atlas-glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
-target_include_directories(atlas-glx PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-glx PUBLIC OpenGL::GL glfw gl3w::gl3w zeus::zeus)
-add_library(atlas::glx ALIAS atlas-glx)
-set_target_properties(atlas-glx PROPERTIES FOLDER "atlas")
+add_library(atlas_glx ${ATLAS_INCLUDE_GLX_GROUP} ${ATLAS_SOURCE_GLX_GROUP})
+target_include_directories(atlas_glx PUBLIC ${ATLAS_SOURCE_ROOT})
+target_link_libraries(atlas_glx PUBLIC OpenGL::GL glfw gl3w::gl3w zeus::zeus)
+add_library(atlas::glx ALIAS atlas_glx)
+set_target_properties(atlas_glx PROPERTIES FOLDER "atlas")
 
 #================================
 # GUI module.
 #================================
-add_library(atlas-gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
-target_include_directories(atlas-gui PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-gui PUBLIC imgui atlas-glx zeus::zeus)
-add_library(atlas::gui ALIAS atlas-gui)
-set_target_properties(atlas-gui PROPERTIES FOLDER "atlas")
+add_library(atlas_gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
+target_include_directories(atlas_gui PUBLIC ${ATLAS_SOURCE_ROOT})
+target_link_libraries(atlas_gui PUBLIC imgui atlas_glx zeus::zeus)
+add_library(atlas::gui ALIAS atlas_gui)
+set_target_properties(atlas_gui PROPERTIES FOLDER "atlas")
 
 #================================
 # HLR module.
 #================================
-add_library(atlas-hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
-target_include_directories(atlas-hlr PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-hlr PUBLIC zeus::zeus)
-add_library(atlas::hlr ALIAS atlas-hlr)
-set_target_properties(atlas-hlr PROPERTIES FOLDER "atlas")
+add_library(atlas_hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
+target_include_directories(atlas_hlr PUBLIC ${ATLAS_SOURCE_ROOT})
+target_link_libraries(atlas_hlr PUBLIC zeus::zeus)
+add_library(atlas::hlr ALIAS atlas_hlr)
+set_target_properties(atlas_hlr PROPERTIES FOLDER "atlas")
 
 #================================
 # Utils module.
 #================================
-add_library(atlas-utils ${ATLAS_INCLUDE_UTILS_GROUP}
+add_library(atlas_utils ${ATLAS_INCLUDE_UTILS_GROUP}
     ${ATLAS_SOURCE_UTILS_GROUP})
-target_include_directories(atlas-utils PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas-utils PUBLIC atlas-math ${TINYOBJLOADER_LIB}
+target_include_directories(atlas_utils PUBLIC ${ATLAS_SOURCE_ROOT})
+target_link_libraries(atlas_utils PUBLIC atlas_math ${TINYOBJLOADER_LIB}
     zeus::zeus stb)
-add_library(atlas::utils ALIAS atlas-utils)
-set_target_properties(atlas-utils PROPERTIES FOLDER "atlas")
+add_library(atlas::utils ALIAS atlas_utils)
+set_target_properties(atlas_utils PROPERTIES FOLDER "atlas")
 
 #================================
 # Main Atlas library.
 #================================
 add_library(atlas ${ATLAS_SOURCE_ROOT_GROUP})
 target_include_directories(atlas PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas PUBLIC zeus::zeus atlas-math atlas-glx atlas-gui
-    atlas-hlr atlas-utils)
+target_link_libraries(atlas PUBLIC zeus::zeus atlas_math atlas_glx atlas_gui
+    atlas_hlr atlas_utils)
 add_library(atlas::atlas ALIAS atlas)
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
@@ -288,28 +288,28 @@ if (ATLAS_BUILD_TESTS)
     source_group("source\\hlr" FILES ${ATLAS_TEST_HLR_GROUP})
     source_group("source\\math" FILES ${ATLAS_TEST_MATH_GROUP})
 
-    add_executable(atlas-test ${ATLAS_TEST_LIST})
-    target_include_directories(atlas-test PRIVATE ${ATLAS_TEST_ROOT})
-    target_link_libraries(atlas-test 
-        atlas-math 
-        atlas-glx
-        atlas-gui
-        atlas-hlr
-        atlas-utils
+    add_executable(atlas_test ${ATLAS_TEST_LIST})
+    target_include_directories(atlas_test PRIVATE ${ATLAS_TEST_ROOT})
+    target_link_libraries(atlas_test 
+        atlas_math 
+        atlas_glx
+        atlas_gui
+        atlas_hlr
+        atlas_utils
         Catch2::Catch2)
     if (ATLAS_BUILD_GL_TEST)
         if (MSVC)
-            target_compile_definitions(atlas-test PUBLIC -DATLAS_BUILD_GL_TESTS)
+            target_compile_definitions(atlas_test PUBLIC -DATLAS_BUILD_GL_TESTS)
         endif()
     endif()
     if (ATLAS_BUILD_GUI_TEST)
         if (MSVC)
-            target_compile_definitions(atlas-test PUBLIC -DATLAS_BUILD_GUI_TESTS)
+            target_compile_definitions(atlas_test PUBLIC -DATLAS_BUILD_GUI_TESTS)
         endif()
     endif()
-    set_target_properties(atlas-test PROPERTIES FOLDER "tests")
+    set_target_properties(atlas_test PROPERTIES FOLDER "atlas")
 
     include(CTest)
     include(Catch)
-    catch_discover_tests(atlas-test)
+    catch_discover_tests(atlas_test)
 endif()
