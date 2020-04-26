@@ -6,7 +6,7 @@
 namespace atlas::glx
 {
     static void
-    mousePressCallback(GLFWwindow* window, int button, int action, int mods)
+    mouse_press_callback(GLFWwindow* window, int button, int action, int mods)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -24,7 +24,8 @@ namespace atlas::glx
         }
     }
 
-    static void mouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
+    static void
+    mouse_move_callback(GLFWwindow* window, double xPos, double yPos)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -40,7 +41,7 @@ namespace atlas::glx
     }
 
     static void
-    mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+    mouse_scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -55,7 +56,7 @@ namespace atlas::glx
         }
     }
 
-    static void keyPressCallback(
+    static void key_press_callback(
         GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -77,7 +78,7 @@ namespace atlas::glx
         }
     }
 
-    static void windowSizeCallback(GLFWwindow* window, int width, int height)
+    static void window_size_callback(GLFWwindow* window, int width, int height)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -93,7 +94,7 @@ namespace atlas::glx
     }
 
     static void
-    framebufferSizeCallback(GLFWwindow* window, int width, int height)
+    framebuffer_size_callback(GLFWwindow* window, int width, int height)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -108,7 +109,7 @@ namespace atlas::glx
         }
     }
 
-    static void charCallback(GLFWwindow* window, unsigned int codepoint)
+    static void char_callback(GLFWwindow* window, unsigned int codepoint)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -123,7 +124,7 @@ namespace atlas::glx
         }
     }
 
-    static void windowCloseCallback(GLFWwindow* window)
+    static void window_close_callback(GLFWwindow* window)
     {
         auto callbacks =
             static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
@@ -138,9 +139,9 @@ namespace atlas::glx
         }
     }
 
-    bool initialize_glfw(GLFWerrorfun errorCallback)
+    bool initialize_glfw(GLFWerrorfun error_callback)
     {
-        glfwSetErrorCallback(errorCallback);
+        glfwSetErrorCallback(error_callback);
         if (glfwInit() == 0)
         {
             fmt::print(stderr, "error: Could not initialize GLFW.\n");
@@ -215,15 +216,15 @@ namespace atlas::glx
         auto calls = new WindowCallbacks(callbacks);
         glfwSetWindowUserPointer(window, calls);
 
-        glfwSetKeyCallback(window, keyPressCallback);
-        glfwSetMouseButtonCallback(window, mousePressCallback);
-        glfwSetScrollCallback(window, mouseScrollCallback);
-        glfwSetCursorPosCallback(window, mouseMoveCallback);
+        glfwSetKeyCallback(window, key_press_callback);
+        glfwSetMouseButtonCallback(window, mouse_press_callback);
+        glfwSetScrollCallback(window, mouse_scroll_callback);
+        glfwSetCursorPosCallback(window, mouse_move_callback);
 
-        glfwSetWindowSizeCallback(window, windowSizeCallback);
-        glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-        glfwSetWindowCloseCallback(window, windowCloseCallback);
-        glfwSetCharCallback(window, charCallback);
+        glfwSetWindowSizeCallback(window, window_size_callback);
+        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+        glfwSetWindowCloseCallback(window, window_close_callback);
+        glfwSetCharCallback(window, char_callback);
     }
 
     void destroy_glfw_window(GLFWwindow* window)
