@@ -45,16 +45,15 @@ Atlas supports the following platforms and compilers:
 
 | Platform (Compiler) | Version |
 | ------------------- | ------- |
-| Windows (MSVC) | 19.23 |
-| Linux (GCC) | 7.4.0 |
-| Linux (LLVM Clang) | 7.0 |
+| Windows (MSVC) | 19.25 |
+| Linux (GCC) | 9.2 |
+| Linux (LLVM Clang) | 9.0 |
 
 Please note that macOS is **not** supported.
 
 In addition, Atlas depends on the following libraries:
 
-* [FMT](https://github.com/fmtlib/fmt),
-* [GLM](https://github.com/g-truc/glm),
+* [Zeus](https://github.com/marovira/zeus),
 * [GLFW](https://github.com/glfw/glfw),
 * [GL3W](https://github.com/marovira/gl3w),
 * [ImGUI](https://github.com/ocornut/imgui),
@@ -65,12 +64,11 @@ The dependencies per module are as follows:
 
 | Module | Dependencies |
 | ------ | ------------ |
-| core | FMT |
-| math | GLM, core |
-| glx | OpenGL, GLFW, gl3w, core |
-| gui | glx, core, ImGUI (included) |
-| hlr | core, cr (included) |
-| utils | math, FMT, tinyobjloader, stb (included) | 
+| math | GLM, Zeus |
+| glx | OpenGL, GLFW, gl3w, Zeus |
+| gui | glx, Zeus, ImGUI (included) |
+| hlr | Zeus, cr (included) |
+| utils | math, Zeus, tinyobjloader, stb (included) | 
 
 ## Contributing
 
@@ -107,7 +105,6 @@ which can be seen
 
 ## Documentation
 
-The documentation for Atlas is currently being re-written. Currently, Atlas
-ships with some ready-made examples of simple cases contained under the
-`examples` folder. For more help, including tutorials, instructions, etc. see
+The documentation for Atlas is currently being re-written.  For more help,
+including tutorials, instructions, etc. see
 [here](https://marovira.github.io/atlas/).

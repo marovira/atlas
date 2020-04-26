@@ -124,18 +124,19 @@ FetchContent_Declare(
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
-    GIT_TAG 0.9.9.7
+    GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e
     )
 
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git 
-    GIT_TAG 3.3.1
+    GIT_TAG 0a49ef0a00baa3ab520ddc452f0e3b1e099c5589
     )
 
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/marovira/gl3w.git
+    GIT_TAG 2041cebf56a0fc5650fc6e8f67414dd221a05657
     )
 
 FetchContent_Declare(
