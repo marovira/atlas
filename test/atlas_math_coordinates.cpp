@@ -1,4 +1,4 @@
-#include <atlas/math/Coordinates.hpp>
+#include <atlas/math/coordinates.hpp>
 #include <zeus/float.hpp>
 
 #include <catch2/catch.hpp>

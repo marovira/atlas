@@ -1,4 +1,4 @@
-#include <atlas/math/Random.hpp>
+#include <atlas/math/random.hpp>
 
 #include <catch2/catch.hpp>
 

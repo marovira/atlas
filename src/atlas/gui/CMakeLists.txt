@@ -1,9 +1,9 @@
 set(ATLAS_GUI_ROOT ${ATLAS_SOURCE_ROOT}/atlas/gui)
 
 set(ATLAS_INCLUDE_GUI_LIST
-    ${ATLAS_GUI_ROOT}/GUI.hpp
+    ${ATLAS_GUI_ROOT}/gui.hpp
     PARENT_SCOPE)
 
 set(ATLAS_SOURCE_GUI_LIST
-    ${ATLAS_GUI_ROOT}/GUI.cpp
+    ${ATLAS_GUI_ROOT}/gui.cpp
     PARENT_SCOPE)

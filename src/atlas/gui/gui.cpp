@@ -1,4 +1,4 @@
-#include "GUI.hpp"
+#include "gui.hpp"
 
 #include <atlas/glx/Buffer.hpp>
 #include <atlas/glx/GLSL.hpp>

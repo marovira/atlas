@@ -1,6 +1,6 @@
 #pragma once
 
-#include <atlas/math/Math.hpp>
+#include <atlas/math/math.hpp>
 #include <optional>
 #include <string>
 #include <tiny_obj_loader.h>

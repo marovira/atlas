@@ -1,4 +1,4 @@
-#include "GLSL.hpp"
+#include "glsl.hpp"
 
 #include <fmt/printf.h>
 #include <fstream>

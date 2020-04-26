@@ -1,4 +1,4 @@
-#include <atlas/math/Solvers.hpp>
+#include <atlas/math/solvers.hpp>
 #include <zeus/float.hpp>
 
 #include <catch2/catch.hpp>

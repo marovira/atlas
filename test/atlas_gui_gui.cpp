@@ -1,5 +1,5 @@
-#include <atlas/glx/Context.hpp>
-#include <atlas/gui/GUI.hpp>
+#include <atlas/glx/context.hpp>
+#include <atlas/gui/gui.hpp>
 
 #include <fmt/printf.h>
 

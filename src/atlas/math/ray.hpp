@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Math.hpp"
-
 namespace atlas::math
 {
     template<typename T>

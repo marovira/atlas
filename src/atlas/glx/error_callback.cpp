@@ -1,4 +1,4 @@
-#include "ErrorCallback.hpp"
+#include "error_callback.hpp"
 
 #include <fmt/printf.h>
 #include <magic_enum.hpp>

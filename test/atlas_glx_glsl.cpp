@@ -3,7 +3,7 @@
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
-#include <atlas/glx/GLSL.hpp>
+#include <atlas/glx/glsl.hpp>
 #include <catch2/catch.hpp>
 #include <fmt/printf.h>
 #include <fstream>

@@ -1,4 +1,4 @@
-#include "LoadObjFile.hpp"
+#include "load_obj_file.hpp"
 
 #include <algorithm>
 #include <fmt/printf.h>

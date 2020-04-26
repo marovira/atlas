@@ -1,4 +1,5 @@
-#include <atlas/math/Ray.hpp>
+#include <atlas/math/math.hpp>
+#include <atlas/math/ray.hpp>
 
 #include <catch2/catch.hpp>
 
