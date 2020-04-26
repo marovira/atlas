@@ -20,7 +20,7 @@ namespace atlas::hlr
     std::function<FnType> load_function(void* handle,
                                         std::string const& function_name)
     {
-        auto fnPtr = loadFunctionPtr<FnPtrType>(handle, function_name);
+        auto fnPtr = load_function_ptr<FnPtrType>(handle, function_name);
         return std::function<FnType>{fnPtr};
     }
 } // namespace atlas::hlr
