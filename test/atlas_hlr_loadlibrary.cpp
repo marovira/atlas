@@ -17,7 +17,7 @@
 
 using namespace atlas;
 
-TEST_CASE("Checking library loading", "[hlr]")
+TEST_CASE("[hlr] - load_library_handle")
 {
     const std::string library_path{TestLibraryPath};
     void* handle = hlr::load_library_handle(library_path);
@@ -29,7 +29,7 @@ TEST_CASE("Checking library loading", "[hlr]")
 
 typedef int (*SumFn)(int, int);
 
-TEST_CASE("Checking raw function loading", "[hlr]")
+TEST_CASE("[hlr] - load_raw_function_ptr")
 {
     const std::string library_path{TestLibraryPath};
     void* handle = hlr::load_library_handle(library_path);
@@ -46,7 +46,7 @@ TEST_CASE("Checking raw function loading", "[hlr]")
     hlr::unload_library_handle(handle);
 }
 
-TEST_CASE("Checking template function pointer loading", "[hlr]")
+TEST_CASE("[hlr] - load_function_ptr")
 {
     const std::string library_path{TestLibraryPath};
     void* handle = hlr::load_library_handle(library_path);
@@ -61,7 +61,7 @@ TEST_CASE("Checking template function pointer loading", "[hlr]")
     hlr::unload_library_handle(handle);
 }
 
-TEST_CASE("Checking template function loading", "[hlr]")
+TEST_CASE("[hlr] - load_function")
 {
     const std::string library_path{TestLibraryPath};
     void* handle = hlr::load_library_handle(library_path);

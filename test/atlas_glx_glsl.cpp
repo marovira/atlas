@@ -58,7 +58,7 @@ std::string normalize_path(std::string const& path)
     return p.string();
 }
 
-TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
+TEST_CASE("[glx] - load_shader_file: non-existent file")
 {
     try
     {
@@ -71,7 +71,7 @@ TEST_CASE("loadShaderFile: Non-existent file", "[glx]")
     }
 }
 
-TEST_CASE("loadShaderFile: Empty file", "[glx]")
+TEST_CASE("[glx] - load_shader_file: empty file")
 {
     std::string filename = normalize_path(TestData[glx_empty_file]);
     auto result          = read_shader_source(filename);
@@ -83,7 +83,7 @@ TEST_CASE("loadShaderFile: Empty file", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Single line", "[glx]")
+TEST_CASE("[glx] - load_shader_file: single line")
 {
     std::string filename = normalize_path(TestData[glx_single_line]);
     std::string expected_filename{ExpectedFiles[glx_single_line_expected]};
@@ -100,7 +100,7 @@ TEST_CASE("loadShaderFile: Single line", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Simple file", "[glx]")
+TEST_CASE("[glx] - load_shader_file: simple file")
 {
     std::string filename = normalize_path(TestData[glx_simple_file]);
     std::string expected_filename{ExpectedFiles[glx_simple_file_expected]};
@@ -116,7 +116,7 @@ TEST_CASE("loadShaderFile: Simple file", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Simple file with comments", "[glx]")
+TEST_CASE("[glx] - load_shader_file: simple file with comments")
 {
     std::string filename = normalize_path(TestData[glx_simple_file_comments]);
     std::string expected_filename{
@@ -133,7 +133,7 @@ TEST_CASE("loadShaderFile: Simple file with comments", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Simple file with header comments", "[glx]")
+TEST_CASE("[glx] - load_shader_file: simple file with header comments")
 {
     std::string filename = normalize_path(TestData[glx_header_comments]);
     std::string expected_filename{ExpectedFiles[glx_header_comments_expected]};
@@ -149,7 +149,7 @@ TEST_CASE("loadShaderFile: Simple file with header comments", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Simple file with c-style comments", "[glx]")
+TEST_CASE("[glx] - load_shader_file: simple file with c-style comments")
 {
     std::string filename = normalize_path(TestData[glx_c_comments]);
     std::string expected_filename{ExpectedFiles[glx_c_comments_expected]};
@@ -165,7 +165,7 @@ TEST_CASE("loadShaderFile: Simple file with c-style comments", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Single include", "[glx]")
+TEST_CASE("[glx] - load_shader_file: single include")
 {
     std::string filename = normalize_path(TestData[glx_single_include]);
     std::string expected_filename{ExpectedFiles[glx_single_include_expected]};
@@ -187,7 +187,7 @@ TEST_CASE("loadShaderFile: Single include", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Multiple includes", "[glx]")
+TEST_CASE("[glx] - load_shader_file: multiple includes")
 {
     std::string filename = normalize_path(TestData[glx_multiple_includes]);
     std::string expected_filename{
@@ -217,7 +217,7 @@ TEST_CASE("loadShaderFile: Multiple includes", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Nested includes", "[glx]")
+TEST_CASE("[glx] - load_shader_file: nested includes")
 {
     std::string filename = normalize_path(TestData[glx_nested_include]);
     std::string expected_filename{ExpectedFiles[glx_nested_include_expected]};
@@ -253,7 +253,7 @@ TEST_CASE("loadShaderFile: Nested includes", "[glx]")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("loadShaderFile: Circular includes", "[glx]")
+TEST_CASE("[glx] - load_shader_file: circular includes")
 {
     std::string filename = normalize_path(TestData[glx_circular_include]);
     std::string expected_filename{ExpectedFiles[glx_circular_include_expected]};

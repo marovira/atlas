@@ -4,7 +4,7 @@
 
 using namespace atlas::math;
 
-TEST_CASE("Checking Random<float> class", "[math]")
+TEST_CASE("[math] - Random<float>: get_random_in_range")
 {
     Random<float> engine;
 
@@ -12,7 +12,7 @@ TEST_CASE("Checking Random<float> class", "[math]")
     REQUIRE(r >= 0.0f);
 }
 
-TEST_CASE("Checking Random<int> class", "[math]")
+TEST_CASE("[math] - Random<int>: get_random_in_range")
 {
     Random<int> engine;
 
