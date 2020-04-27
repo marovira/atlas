@@ -59,15 +59,15 @@ namespace atlas::utils
         void reset_camera() override;
 
     private:
-        math::Point _position{30};
-        math::Point _target{0};
-        math::Vector _up{0, 1, 0};
-        math::Point _azimuth_target{_target};
-        math::Matrix4 _tumble{1.0f};
-        float _fov{45.0f};
+        math::Point m_position{30};
+        math::Point m_target{0};
+        math::Vector m_up{0, 1, 0};
+        math::Point m_azimuth_target{m_target};
+        math::Matrix4 m_tumble{1.0f};
+        float m_fov{45.0f};
 
-        math::Point2 _last_pos{0};
-        Movements _movement{Movements::none};
+        math::Point2 m_last_pos{0};
+        Movements m_movement{Movements::none};
     };
 
 } // namespace atlas::utils

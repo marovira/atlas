@@ -14,7 +14,7 @@ namespace atlas::math
     public:
         Random() = default;
 
-        Random(typename Engine::result_type seed) : _engine{seed}
+        Random(typename Engine::result_type seed) : m_engine{seed}
         {}
 
         T get_random_in_range(T min, T max)
@@ -22,12 +22,12 @@ namespace atlas::math
             if constexpr (std::is_floating_point<T>::value)
             {
                 std::uniform_real_distribution<T> dist{min, max};
-                return dist(_engine);
+                return dist(m_engine);
             }
             else
             {
                 std::uniform_int_distribution<T> dist{min, max};
-                return dist(_engine);
+                return dist(m_engine);
             }
         }
 
@@ -43,6 +43,6 @@ namespace atlas::math
         }
 
     private:
-        Engine _engine{std::random_device{}()};
+        Engine m_engine{std::random_device{}()};
     };
 } // namespace atlas::math
