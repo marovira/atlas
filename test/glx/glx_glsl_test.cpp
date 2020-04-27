@@ -58,7 +58,7 @@ std::string normalize_path(std::string const& path)
     return p.string();
 }
 
-TEST_CASE("[glx] - load_shader_file: non-existent file")
+TEST_CASE("[glsl] - load_shader_file: non-existent file", "[glx]")
 {
     try
     {
@@ -71,7 +71,7 @@ TEST_CASE("[glx] - load_shader_file: non-existent file")
     }
 }
 
-TEST_CASE("[glx] - load_shader_file: empty file")
+TEST_CASE("[glsl] - load_shader_file: empty file", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_empty_file]);
     auto result          = read_shader_source(filename);
@@ -83,7 +83,7 @@ TEST_CASE("[glx] - load_shader_file: empty file")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: single line")
+TEST_CASE("[glsl] - load_shader_file: single line", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_single_line]);
     std::string expected_filename{expected_files[glx_single_line_expected]};
@@ -100,7 +100,7 @@ TEST_CASE("[glx] - load_shader_file: single line")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: simple file")
+TEST_CASE("[glsl] - load_shader_file: simple file", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_simple_file]);
     std::string expected_filename{expected_files[glx_simple_file_expected]};
@@ -116,7 +116,7 @@ TEST_CASE("[glx] - load_shader_file: simple file")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: simple file with comments")
+TEST_CASE("[glsl] - load_shader_file: simple file with comments", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_simple_file_comments]);
     std::string expected_filename{
@@ -133,7 +133,8 @@ TEST_CASE("[glx] - load_shader_file: simple file with comments")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: simple file with header comments")
+TEST_CASE("[glsl] - load_shader_file: simple file with header comments",
+          "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_header_comments]);
     std::string expected_filename{expected_files[glx_header_comments_expected]};
@@ -149,7 +150,8 @@ TEST_CASE("[glx] - load_shader_file: simple file with header comments")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: simple file with c-style comments")
+TEST_CASE("[glsl] - load_shader_file: simple file with c-style comments",
+          "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_c_comments]);
     std::string expected_filename{expected_files[glx_c_comments_expected]};
@@ -165,7 +167,7 @@ TEST_CASE("[glx] - load_shader_file: simple file with c-style comments")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: single include")
+TEST_CASE("[glsl] - load_shader_file: single include", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_single_include]);
     std::string expected_filename{expected_files[glx_single_include_expected]};
@@ -187,7 +189,7 @@ TEST_CASE("[glx] - load_shader_file: single include")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: multiple includes")
+TEST_CASE("[glsl] - load_shader_file: multiple includes", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_multiple_includes]);
     std::string expected_filename{
@@ -217,7 +219,7 @@ TEST_CASE("[glx] - load_shader_file: multiple includes")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: nested includes")
+TEST_CASE("[glsl] - load_shader_file: nested includes", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_nested_include]);
     std::string expected_filename{expected_files[glx_nested_include_expected]};
@@ -253,7 +255,7 @@ TEST_CASE("[glx] - load_shader_file: nested includes")
     REQUIRE(included_file == expected_file);
 }
 
-TEST_CASE("[glx] - load_shader_file: circular includes")
+TEST_CASE("[glsl] - load_shader_file: circular includes", "[glx]")
 {
     std::string filename = normalize_path(test_data[glx_circular_include]);
     std::string expected_filename{

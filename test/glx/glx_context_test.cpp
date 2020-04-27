@@ -12,7 +12,7 @@ static void error_callback(int code, char const* message)
 
 using namespace atlas::glx;
 
-TEST_CASE("[glx] - single window, single context")
+TEST_CASE("[context] - glfw functions: single window, single context", "[glx]")
 {
     REQUIRE(initialize_glfw(error_callback));
 
@@ -28,7 +28,7 @@ TEST_CASE("[glx] - single window, single context")
     terminate_glfw();
 }
 
-TEST_CASE("[glx] - callbacks on single window")
+TEST_CASE("[context] - bind_window_callbacks: single window", "[glx]")
 {
     initialize_glfw(error_callback);
     WindowSettings settings;
@@ -89,7 +89,7 @@ TEST_CASE("[glx] - callbacks on single window")
     terminate_glfw();
 }
 
-TEST_CASE("[glx] - callbacks on multiple windows")
+TEST_CASE("[context] - bind_window_callbacks: multiple windows", "[glx]")
 {
     initialize_glfw(error_callback);
     WindowSettings settings;

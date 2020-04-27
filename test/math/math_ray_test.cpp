@@ -5,7 +5,7 @@
 
 using namespace atlas::math;
 
-TEST_CASE("[math] - Ray: default constructor")
+TEST_CASE("[Ray] - default constructor: math::Point", "[math]")
 {
     Ray<Point> r;
     Point pt{0.0f};
@@ -14,7 +14,7 @@ TEST_CASE("[math] - Ray: default constructor")
     REQUIRE(r.d == pt);
 }
 
-TEST_CASE("[math] - Ray: parametrized constructor")
+TEST_CASE("[Ray] - parametrized constructor: math::Point", "[math]")
 {
     Point o{0.0f}, d{1.0f};
     Ray<Point> r{o, d};
@@ -23,7 +23,7 @@ TEST_CASE("[math] - Ray: parametrized constructor")
     REQUIRE(r.d == d);
 }
 
-TEST_CASE("[math] - Ray: operator()")
+TEST_CASE("[Ray] - operator(): math::Point")
 {
     Point p{2.0f};
     Ray<Point> r{Point{1.0f}, Point{1.0f}};
@@ -32,7 +32,7 @@ TEST_CASE("[math] - Ray: operator()")
     REQUIRE(p == val);
 }
 
-TEST_CASE("[math] - Ray: operator==")
+TEST_CASE("[Ray] - operator==: math::Point", "[math]")
 {
     Ray<Point> r, r1;
 
@@ -44,7 +44,7 @@ TEST_CASE("[math] - Ray: operator==")
     REQUIRE_FALSE(r == r1);
 }
 
-TEST_CASE("[math] - Ray: operator!=")
+TEST_CASE("[Ray] - operator!=: math::Point", "[math]")
 {
     Ray<Point> r, r1;
 

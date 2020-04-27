@@ -14,7 +14,7 @@ void errorCallback(int code, char const* message)
 namespace gui = atlas::gui;
 using namespace atlas::glx;
 
-TEST_CASE("[gui] - explicit GUI")
+TEST_CASE("[gui] - gui functions: explicit GUI", "[gui]")
 {
     REQUIRE(initialize_glfw(errorCallback));
 
@@ -109,7 +109,7 @@ TEST_CASE("[gui] - explicit GUI")
     REQUIRE(window_ok);
 }
 
-TEST_CASE("[gui] - helper GUI")
+TEST_CASE("[gui] - gui functions: helper GUI", "[gui]")
 {
     REQUIRE(initialize_glfw(errorCallback));
 

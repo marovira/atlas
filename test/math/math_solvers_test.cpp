@@ -6,7 +6,7 @@
 using namespace atlas::math;
 using zeus::are_equal;
 
-TEST_CASE("[math] - solve_quadratic")
+TEST_CASE("[solvers] - solve_quadratic", "[math]")
 {
     // x^2 - 1 = 0.
     //  Two roots: 1, -1.
@@ -42,7 +42,7 @@ TEST_CASE("[math] - solve_quadratic")
     }
 }
 
-TEST_CASE("[math] - solve_cubic")
+TEST_CASE("[solvers] - solve_cubic", "[math]")
 {
     // -6 + 11x -6x^2 + x^3.
     // 3 roots: 1, 2, 3.
@@ -92,7 +92,7 @@ TEST_CASE("[math] - solve_cubic")
     }
 }
 
-TEST_CASE("[math] - solve_quartic")
+TEST_CASE("[solvers] - solve_quartic", "[math]")
 {
     // 24 + -50x + 35x^2 - 10x^3 + x^4
     // 4 roots: 1, 2, 3, 4.

@@ -6,7 +6,7 @@
 using zeus::are_equal;
 using namespace atlas::math;
 
-TEST_CASE("[math] - cartesian_to_spherical")
+TEST_CASE("[coordinates] - cartesian_to_spherical", "[math]")
 {
     Point p1{1, 0, 0};
     Point p2{1, 1, 0};
@@ -23,7 +23,7 @@ TEST_CASE("[math] - cartesian_to_spherical")
     REQUIRE(are_equal(s2.z, glm::radians(90.0f)));
 }
 
-TEST_CASE("[math] - spherical_to_cartesian")
+TEST_CASE("[coordinates] - spherical_to_cartesian", "[math]")
 {
     Point p1{1, 0, 0};
     Point p2{1, 1, 0};
@@ -43,7 +43,7 @@ TEST_CASE("[math] - spherical_to_cartesian")
     REQUIRE(are_equal(c2.z, glm::sqrt(2.0f) * glm::cos(glm::radians(90.0f))));
 }
 
-TEST_CASE("[math] - cartesian_to_cylindrical")
+TEST_CASE("[coordinates] - cartesian_to_cylindrical", "[math]")
 {
     Point p1{1, 0, 0};
     Point p2{1, 1, 0};
@@ -60,7 +60,7 @@ TEST_CASE("[math] - cartesian_to_cylindrical")
     REQUIRE(are_equal(x2.z, 0.0f));
 }
 
-TEST_CASE("[math] - cylindrical_to_cartesian")
+TEST_CASE("[coordinates] - cylindrical_to_cartesian", "[math]")
 {
     Point p1{1, 0, 0};
     Point p2{1, 1, 0};
@@ -80,7 +80,7 @@ TEST_CASE("[math] - cylindrical_to_cartesian")
     REQUIRE(are_equal(c2.z, 0.0f));
 }
 
-TEST_CASE("[math] - cartesian_to_polar")
+TEST_CASE("[coordinates] - cartesian_to_polar", "[math]")
 {
     Point2 p1{1, 0};
     Point2 p2{1, 1};
@@ -95,7 +95,7 @@ TEST_CASE("[math] - cartesian_to_polar")
     REQUIRE(are_equal(x2.y, glm::radians(45.0f)));
 }
 
-TEST_CASE("[math] - polar_to_cartesian")
+TEST_CASE("[coordinates] - polar_to_cartesian", "[math]")
 {
     Point2 p1{1, 0};
     Point2 p2{1, 1};

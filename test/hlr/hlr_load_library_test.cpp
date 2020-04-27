@@ -17,7 +17,7 @@
 
 using namespace atlas;
 
-TEST_CASE("[hlr] - load_library_handle")
+TEST_CASE("[load_library] - load_library_handle: valid library", "[hlr]")
 {
     const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
@@ -29,7 +29,8 @@ TEST_CASE("[hlr] - load_library_handle")
 
 typedef int (*SumFn)(int, int);
 
-TEST_CASE("[hlr] - load_raw_function_ptr")
+TEST_CASE("[load_library] - load_raw_function_ptr: valid function name",
+          "[hlr]")
 {
     const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
@@ -46,7 +47,7 @@ TEST_CASE("[hlr] - load_raw_function_ptr")
     hlr::unload_library_handle(handle);
 }
 
-TEST_CASE("[hlr] - load_function_ptr")
+TEST_CASE("[load_library] - load_function_ptr: valid function name", "[hlr]")
 {
     const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
@@ -61,7 +62,7 @@ TEST_CASE("[hlr] - load_function_ptr")
     hlr::unload_library_handle(handle);
 }
 
-TEST_CASE("[hlr] - load_function")
+TEST_CASE("[load_library] - load_function: valid function name", "[hlr]")
 {
     const std::string library_path{test_library_path};
     void* handle = hlr::load_library_handle(library_path);
