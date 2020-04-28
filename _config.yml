@@ -1,9 +1,0 @@
-title: Atlas Framework v3.0
-description: A data-driven graphics development framework.
-show_downloads: true
-google_analytics:
-remote_theme: "dracula/gh-pages"
-show_header: true
-
-sass:
-    style: compressed
