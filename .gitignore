@@ -6,6 +6,7 @@ html/
 lib/
 test/data/obj/
 gh-pages/
+site/
 
 # Generated files #
 generated/
