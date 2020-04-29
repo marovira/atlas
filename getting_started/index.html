@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Mauricio A. Rovira Galvez">
+        <link rel="canonical" href="https://github.com/marovira/atlas/getting_started/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Getting Started - Atlas</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Atlas</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../modules/glx/" class="dropdown-item">GLX</a>
+</li>
+                                    
+<li>
+    <a href="../modules/gui/" class="dropdown-item">GUI</a>
+</li>
+                                    
+<li>
+    <a href="../modules/hlr/" class="dropdown-item">HLR</a>
+</li>
+                                    
+<li>
+    <a href="../modules/math/" class="dropdown-item">Math</a>
+</li>
+                                    
+<li>
+    <a href="../modules/utils/" class="dropdown-item">Utils</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="navitem">
+                                <a href="../faq/" class="nav-link">FAQ</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../modules/glx/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/marovira/atlas" class="nav-link"><i class="fa fa-github"></i> GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#getting-started" class="nav-link">Getting Started</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#dependencies" class="nav-link">Dependencies</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#integrating-atlas" class="nav-link">Integrating Atlas</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#configuring-atlas" class="nav-link">Configuring Atlas</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">#</a></h1>
+<p>Atlas uses CMake in order to manage and generate the build files. As a result,
+there are two ways in which Atlas can be used:</p>
+<ul>
+<li>Adding the Atlas source directly to your project or,</li>
+<li>Using CMake to fetch the code directly.</li>
+</ul>
+<p>Note that this document assumes familiarity with CMake.</p>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">#</a></h2>
+<p>Before getting started, you must ensure that you have all dependencies
+installed. In particular, you will need the following:</p>
+<ul>
+<li>CMake 3.12+,</li>
+<li>Python 2.7+ or 3.x,</li>
+<li>Git.</li>
+</ul>
+<p>If you are going to be doing any development with OpenGL, then you will need
+OpenGL 4.5+. Once all packages are installed, you can proceed depending on how
+you plan to integrate Atlas into your project.</p>
+<blockquote>
+<p><strong>Note:</strong>
+OpenGL cannot be downloaded as it is part of the driver for your graphics
+card. In order to find out which OpenGL version your GPU supports, please see
+manufacturer's website.</p>
+</blockquote>
+<h2 id="integrating-atlas">Integrating Atlas<a class="headerlink" href="#integrating-atlas" title="Permanent link">#</a></h2>
+<h3 id="manually-adding-the-source-code">Manually Adding the Source Code<a class="headerlink" href="#manually-adding-the-source-code" title="Permanent link">#</a></h3>
+<p>At the top of your project directory, create a folder called <code>external</code> and
+inside it create another folder called <code>atlas</code>. Inside this folder, copy the
+source code for Atlas. Then, in your top-level <code>CMakeLists.txt</code> add the
+following:</p>
+<pre><code class="cmake">add_subdirectory(${PROJECT_SOURCE_DIR}/external/atlas)
+</code></pre>
+
+<p>Then, once you have defined your project's target, add the following:</p>
+<pre><code class="cmake">target_link_libraries(your_target PUBLIC atlas::atlas)
+</code></pre>
+
+<p>Using <code>atlas::atlas</code> will link the entire library, but you can selectively link
+modules if you don't need everything. The modules are:</p>
+<ul>
+<li><code>atlas::math</code>,</li>
+<li><code>atlas::glx</code>,</li>
+<li><code>atlas::gui</code>,</li>
+<li><code>atlas::hlr</code>,</li>
+<li><code>atlas::utils</code></li>
+</ul>
+<p>Check the project's <code>README</code> for a list of the dependencies for each module.</p>
+<p>An alternative version is to use a submodule in order to automatically download
+the code and keep it up to date. To do this, from the root of your directory
+execute the following:</p>
+<pre><code class="sh">git submodule add https://github.com/marovira/atlas.git external/atlas
+git submodule init
+git submodule update
+</code></pre>
+
+<p>This will add Atlas as a submodule located under <code>external/atlas</code>. The CMake
+configuration remains the same.</p>
+<h3 id="automatically-adding-atlas-through-cmake">Automatically Adding Atlas Through CMake<a class="headerlink" href="#automatically-adding-atlas-through-cmake" title="Permanent link">#</a></h3>
+<p>A simpler approach involves using the <code>FetchContent</code> package from CMake in order
+to automatically download and add the library to your project. This avoids
+having to deal with submodules and maintaining a local copy of the code. To do
+this, add the following in your top-level <code>CMakeLists.txt</code>:</p>
+<pre><code class="cmake">include(FetchContent)
+FetchContent_Declare(
+    atlas
+    GIT_REPOSITORY https://github.com/marovira/atlas.git
+    )
+FetchContent_Populate(atlas)
+add_subdirectory(${atlas_SOURCE_DIR} ${atlas_BINARY_DIR})
+</code></pre>
+
+<p>Once this is done, the necessary modules from Atlas can be linked as shown
+above.</p>
+<h2 id="configuring-atlas">Configuring Atlas<a class="headerlink" href="#configuring-atlas" title="Permanent link">#</a></h2>
+<p>Atlas defines the following CMake options:</p>
+<ul>
+<li><code>ATLAS_BUILD_TESTS</code>: this will build the unit tests shipped with Atlas and
+  create the <code>RUN_TESTS</code> target.</li>
+<li><code>ATLAS_BUILD_GL_TEST</code>: will build the OpenGL tests provided unit tests are
+  being built.</li>
+<li><code>ATLAS_BUILD_GUI_TEST</code>: will build the GUI tests provided unit tests are being
+  built.</li>
+</ul>
+<p>In order to ensure that your system is fully compatible, I recommend leaving
+these options on and running the unit tests for Atlas on your first run. Once
+the tests run successfully, you can turn <code>ATLAS_BUILD_TESTS</code> off and all unit
+tests will be disabled. If you are not interested in the OpenGL/GUI side of
+Atlas but still wish to run the unit tests, disable the corresponding options.</p>
+<p>If you are running all unit tests, there are 4 tests that require user input.
+These are:</p>
+<ul>
+<li><strong>Window Callback Test:</strong> a black window will appear. Please make sure that
+  you perform the following operations (not necessarily in this order):<ol>
+<li>Click any mouse button inside the black area,</li>
+<li>Move the mouse within the black area,</li>
+<li>Scroll within the black area,</li>
+<li>Press any key (except for ESC) with the window in focus,</li>
+<li>Resize the window, and</li>
+<li>Close the window.</li>
+</ol>
+</li>
+<li><strong>Multiple Windows:</strong> two windows, one red and one green will appear. Click in
+  both windows and then close them.</li>
+<li><strong>UI Tests:</strong> there are two of these, but they both require the same action.
+  Simply click the button that is mentioned in the UI.</li>
+</ul>
+<p>If any of these tests fail, it is probably because an operation was not
+captured. This is not entirely critical as it is more important that the windows
+appear as it signals that GLFW was initialized correctly and that your system
+supports the required version of OpenGL.</p>
+<p>If all the tests passed, then your system fully supports Atlas and you are now
+ready to begin developing your application.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
