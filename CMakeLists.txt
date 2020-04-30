@@ -49,6 +49,9 @@ set(ATLAS_EXTERNAL_ROOT ${ATLAS_SOURCE_DIR}/external)
 add_subdirectory(${ATLAS_EXTERNAL_ROOT}/imgui)
 add_subdirectory(${ATLAS_EXTERNAL_ROOT}/stb)
 add_subdirectory(${ATLAS_SOURCE_ROOT})
+if (ATLAS_BUILD_TESTS)
+    add_subdirectory(${ATLAS_TEST_ROOT})
+endif()
 
 #================================
 # Source groups.
@@ -82,6 +85,7 @@ else()
     set(ATLAS_FILES 
         ${ATLAS_HEADER_FILES}
         ${ATLAS_SOURCE_FILES}
+        ${ATLAS_TEST_LIST}
         )
     add_custom_target(clang-format
         COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${ATLAS_FILES}
@@ -277,8 +281,6 @@ if (ATLAS_BUILD_TESTS)
         set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
             "${catch2_SOURCE_DIR}/contrib")
     endif()
-
-    add_subdirectory("${ATLAS_TEST_ROOT}")
 
     source_group("include" FILES ${ATLAS_TEST_HEADER_GROUP})
 
