@@ -22,7 +22,8 @@ namespace atlas::utils
 
         switch (m_movement)
         {
-        case Movements::dolly: {
+        case Movements::dolly:
+        {
             delta *= -0.5f;
 
             auto view = glm::normalize(m_position - m_target);
@@ -32,7 +33,8 @@ namespace atlas::utils
             break;
         }
 
-        case Movements::track: {
+        case Movements::track:
+        {
             delta *= 0.05f;
 
             // Compute the full frame.
@@ -49,7 +51,8 @@ namespace atlas::utils
             break;
         }
 
-        case Movements::tumble: {
+        case Movements::tumble:
+        {
             delta *= 0.5f;
 
             auto view  = glm::normalize(m_position - m_target);
@@ -71,7 +74,8 @@ namespace atlas::utils
             break;
         }
 
-        case Movements::none: {
+        case Movements::none:
+        {
             break;
         }
         }
