@@ -112,6 +112,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#what-if-i-have-macos-and-want-to-use-atlas" class="nav-link">What if I have macOS and want to use Atlas?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -129,7 +133,56 @@ supporting OpenGL past version 4.2, which means that any code relying on modern
 OpenGL designs will not work. Ideological opinions aside, I do not have an Apple
 computer, nor do I have intentions of learning how to code in Metal and making
 changes to Atlas to use it. As a result, I removed Apple support from the
-framework.</p></div>
+framework.</p>
+<h2 id="what-if-i-have-macos-and-want-to-use-atlas">What if I have macOS and want to use Atlas?<a class="headerlink" href="#what-if-i-have-macos-and-want-to-use-atlas" title="Permanent link">#</a></h2>
+<p>Support for macOS has been deprecated from Atlas. That being said, Atlas does
+support Linux and Windows. As a result of this, you can work around the
+deprecation by using a VM on OSX. There are several options available for this:</p>
+<ul>
+<li>Use <a href="https://support.apple.com/boot-camp">Boot Camp</a> to install Windows along
+  with macOS.</li>
+<li>Use a VM software like <a href="https://www.parallels.com/ca/">Parallels Desktop</a>,
+  <a href="https://www.vmware.com/products/fusion.html">VMWare Fusion</a>, or
+  <a href="https://www.virtualbox.org/">VirtualBox</a>.</li>
+<li>Using <a href="https://www.vagrantup.com/">Vagrant</a> with
+  <a href="https://www.virtualbox.org/">VirtualBox</a>). If you go this route, please see
+  some recommendations listed below.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> If you use VM software, it is <em>very</em> likely that you will be unable to
+use the OpenGL utilities from Atlas as they require OpenGL 4.5+. To verify
+this, check the documentation for the software you are planning to use. In the
+case of Boot Camp, OpenGL support will be determined by the GPU installed on
+your computer. Please see the official specifications for your GPU to
+determine the version of OpenGL that it supports.</p>
+</blockquote>
+<h3 id="using-vagrant-and-virtualbox">Using Vagrant and VirtualBox<a class="headerlink" href="#using-vagrant-and-virtualbox" title="Permanent link">#</a></h3>
+<p>These are some guidelines for how to setup Vagrant and VirtualBox for
+development with Atlas. Please note that these have not been tested extensively
+and do not cover any troubleshooting. After installing both packages, open a
+terminal and do the following:</p>
+<pre><code class="sh"># Setup Vagrant
+vagrant init ubuntu/eoan64
+vagrant up
+vagrant ssh
+cd /vagrant
+
+# Optional updates
+sudo apt update
+sudo apt upgrade
+
+# Install CMake
+sudo apt install cmake
+
+# Install OpenGL packages (required for compiling)
+sudo apt install libgl1-mesa-dev
+sudo apt install libxrandr-dev
+sudo apt install libxinerama-dev
+sudo apt install libxcursor-dev
+sudo apt install libxi-dev
+
+# Run CMake as normal.
+</code></pre></div>
             </div>
         </div>
 

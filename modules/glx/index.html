@@ -116,6 +116,14 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#error-callback-error_callbackhpp" class="nav-link">Error Callback (error_callback.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#glsl-glslhpp" class="nav-link">GLSL (glsl.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -159,7 +167,383 @@ atlas::glx::buffer_offset&lt;float&gt;(0));
 
 <h2 id="context-contexthpp">Context (<code>context.hpp</code>)<a class="headerlink" href="#context-contexthpp" title="Permanent link">#</a></h2>
 <p>Defines all of the necessary structures to create a window using GLFW and an
-OpenGL context.</p></div>
+OpenGL context. In order to access the functions, use</p>
+<pre><code class="c++">#include &lt;atlas/glx/context.hpp&gt;
+</code></pre>
+
+<blockquote>
+<p><strong>Note:</strong> All examples below assume that this header has been included. It
+will be omitted to avoid redundancy.</p>
+</blockquote>
+<p>The header can be roughly divided into two groups: the GLFW
+related functions and those that deal with OpenGL. We will look at the ones
+dealing with GLFW first. Note that Atlas merely wraps GLFW in order to
+streamline certain workflows, but makes no effort to change or interfere with
+the interfaces that GLFW provides. As a result, it would be a good idea to read
+the corresponding documentation from GLFW
+<a href="https://www.glfw.org/docs/latest/">here</a>.</p>
+<blockquote>
+<p><strong>Note:</strong> This guide is does <em>not</em> cover all of the steps required to setup a
+window with GLFW. It merely documents the functions that Atlas provides to
+simplify the process.</p>
+</blockquote>
+<h3 id="glfw-related-functions-and-structures">GLFW-related Functions and Structures<a class="headerlink" href="#glfw-related-functions-and-structures" title="Permanent link">#</a></h3>
+<p>The first stage to setting up a GLFW window is to initialize GLFW and passing in
+an error function handler. This function will be invoked in the case where GLFW
+encounters an error. The function can be used as follows:</p>
+<pre><code class="c++">// The error handler must have this signature
+void error_handler(int code, char const* message)
+{
+    // Handle error here.
+}
+
+// ...
+
+if (!atlas::glx::initialize_glfw(error_handler))
+{
+    // GLFW failed.
+}
+</code></pre>
+
+<p>Once GLFW has been initialized, we can create our window. In order to do this,
+we must first fill in the <code>WindowSettings</code> struct which will contain all of the
+relevant information regarding the behaviour and properties of the window. Once
+the struct is filled in, we can now create the new window as follows:</p>
+<pre><code class="c++">atlas::glx::WindowSettings settings;
+
+// Determines the OpenGL version to use. Defaults to 4.5
+settings.version = atlas::glx::ContextVersion{4, 5};
+
+// Determines the dimensions of the window.
+settings.size = atlas::glx::WindowSize{300, 300};
+
+// Sets the window title. Defaults to the empty string.
+settings.title   = &quot;Sample Window&quot;;
+
+// Determines the OpenGL profile to use. See the GLFW documentation for all
+// available options. Defaults to GLFW_OPENGL_CORE_PROFILE
+settings.profile = GLFW_OPENGL_CORE_PROFILE;
+
+// Enables the creation of an OpenGL debug context. It is enabled by default on
+// debug builds.
+settings.enable_debug_contenxt = true;
+
+// Disables any legacy compatibilities with OpenGL (fixed-function pipeline). 
+// Defaults to true.
+settings.is_forward_compatible = true;
+
+// Determines if the window will be shown as maximized. If this is true, the 
+// window size will be ignored. Defaults to false.
+settings.is_maximized = false;
+
+// Determines if the window will be resizeable. Defaults to true.
+settings.is_resizeable = true;
+
+// Determines if the window will be fullscreen. If this is true, the window size
+// will be ingored. Defaults to false.
+settings.is_fullscreen = false;
+
+auto window = create_glfw_window(settings);
+if (window == nullptr)
+{
+    // Window creation failed.
+}
+</code></pre>
+
+<p>Once the window is ready, we can now bind the callback handlers that will be in
+charge of dealing with any inputs we require. Internally, Atlas registers its
+own callbacks and binds them to the provided window. It then passes a pointer to
+a <code>WindowCallbacks</code> struct which contains all of the callback handlers we need.
+When a new input comes in, the corresponding handler from Atlas is invoked, and
+then it will forward the inputs to the corresponding function in the struct (if
+there is one). You may override the default Atlas handlers by binding your own
+functions as per the GLFW documentation.</p>
+<p>The only important note to keep in mind is that for the key press callback,
+Atlas defaults to closing the window when the ESC key is pressed. The function
+binding can be done as follows:</p>
+<pre><code class="c++">auto mouse_press_callback =
+    [](int button, int action, int mode, double, double) {
+        // Handle the mouse press here.
+    };
+
+auto mouse_scroll_callback = [](double x_offset, double y_offset) {
+    // Handle mouse scroll here.
+};
+
+auto key_press_callback =
+    [](int key, int scancode, int action, int mods) {
+        // Handle key press here.
+    };
+
+atlas::glx::WindowCallbacks callbacks;
+callbacks.mouse_press_callback  = mousePressCallback;
+callbacks.mouse_scroll_callback = mouseScrollCallback;
+callbacks.key_press_callback    = keyPressCallback;
+
+atlas::glx::bind_window_callbacks(window, callbacks);
+</code></pre>
+
+<p>At the end of our application, we need to destroy the window and clear out the
+GLFW state. This can be done as follows:</p>
+<pre><code class="c++">destroy_glfw_window(window);
+terminate_glfw();
+</code></pre>
+
+<h3 id="opengl-related-functions-and-structures">OpenGL-related Functions and Structures<a class="headerlink" href="#opengl-related-functions-and-structures" title="Permanent link">#</a></h3>
+<p>Once we have a GLFW window created, we need to attach an OpenGL context to it.
+This can be accomplished by filling in the <code>ContextVersion</code> struct with the
+numbers for the OpenGL version we want as follows:</p>
+<pre><code class="c++">// Determines the OpenGL version to use. Defaults to 4.5
+atlas::glx::ContextVersion version{4, 5};
+
+if (!create_gl_context(window, version))
+{
+    // Failed to create OpenGL context.
+}
+</code></pre>
+
+<h2 id="error-callback-error_callbackhpp">Error Callback (<code>error_callback.hpp</code>)<a class="headerlink" href="#error-callback-error_callbackhpp" title="Permanent link">#</a></h2>
+<p>OpenGL 4.3 OpenGL introduced the ability to provide a callback function to
+forward GL errors and handle them as needed. Atlas provides a custom callback
+function that performs the following:</p>
+<ul>
+<li>Filters the error messages as specified when the function is setup.</li>
+<li>Prints the error messages to <code>stderr</code>.</li>
+</ul>
+<p>The filtering for the error messages is accomplished through 3 <code>enum class</code>
+types with contain the codes for all the OpenGL errors. These can be combined
+into a custom bit mask as follows:</p>
+<pre><code class="c++">// Needed for bit-wise operators on enum classes.
+#include &lt;magic_enum.h&gt;
+
+// Needed for out-of-box operators.
+using namespace magic_enum::bitwise_operators;
+atlas::glx::initialize_gl_error_callback(
+    atlas::glx::ErrorSource::all,           // Errors from all sources.
+    atlas::glx::ErrorType::all,             // All types of errors.
+    atlas::glx::ErrorSeverity::high | 
+    atlas::glx::ErrorSeverity::medium);     // Only high and medium errors allowed.
+</code></pre>
+
+<p>For further information on the sources, types, and severities, please see the
+declaration of the <code>ErrorSource</code>, <code>ErrorType</code>, and <code>ErrorSeverity</code> enums.</p>
+<h2 id="glsl-glslhpp">GLSL (<code>glsl.hpp</code>)<a class="headerlink" href="#glsl-glslhpp" title="Permanent link">#</a></h2>
+<p>This header contains several functions related to the compilation and linking of
+GLSL shaders. It also provides several extensions to the behaviour of GLSL to
+allow for more streamlined operations. The main features are:</p>
+<ul>
+<li>Streamlined compilation and linking of shaders,</li>
+<li>Ability to <code>#include</code> files in GLSL code,</li>
+<li>Ability to reload live GLSL code.</li>
+</ul>
+<p>The descriptions for each are outlined in the sections below. In order to use
+any of these functions, use</p>
+<pre><code class="c++">#include &lt;atlas/glx/glsl.hpp&gt;
+</code></pre>
+
+<h3 id="compiling-and-linking-shaders">Compiling and Linking Shaders<a class="headerlink" href="#compiling-and-linking-shaders" title="Permanent link">#</a></h3>
+<p>A shader can be compiled using <code>compile_shader</code>. The function will take in the
+handle and source string for the shader and compile it. It will also handle all
+errors and will return an <code>std::optional&lt;std::string&gt;</code>. If the return value is
+empty, then compilation was successful, otherwise the returned string will
+contain the error message from OpenGL. The function can be used as follows:</p>
+<pre><code class="c++">GLuint shader_handle{0};
+auto result = atlas::glx::compile_shader(source_string, shader_handle);
+if (!result)
+{
+    // Shader compilation failed.
+    auto message = *result;
+}
+</code></pre>
+
+<p>Similarly, shader linking is done with <code>link_shaders</code> which will take the
+program handle. All error handling is done internally, and the return is the
+same as <code>compile_shader</code>. It can be used as follows:</p>
+<pre><code class="c++">GLuint program_handle{0};
+auto result = atlas::glx::link_shaders(program_handle);
+if (!result)
+{
+    // Shader linking failed.
+    auto message = *result;
+}
+</code></pre>
+
+<h3 id="using-include-in-glsl">Using <code>#include</code> in GLSL<a class="headerlink" href="#using-include-in-glsl" title="Permanent link">#</a></h3>
+<p>In order to use this feature, the loading of the shader source has to be managed
+through <code>read_shader_source</code>. This function will take the name of the file, and
+a list of include directories. The function will then read the source file line
+by line and will transform it as follows:</p>
+<pre><code class="c++">#line &lt;line-num&gt; &lt;file-num&gt;
+&lt;code-line&gt;
+</code></pre>
+
+<p>If the line contains a <code>#include</code>, then the parser will split out the name of
+the included file and look for it in the included directories (note that the
+current working directory is only tested if the list of include directories is
+empty). It will then open the file and read its contents, pasting them into the
+final source string. The <code>#line</code> directives are used to keep track of the line
+number in the original file as well as which file is currently being read. Once
+the file is fully processed, the function will return a <code>ShaderFile</code> struct.
+This struct contains all of the needed information for the system to function
+correctly. Its contents are:</p>
+<ul>
+<li>The name of the top shader file <code>filename</code>,</li>
+<li>The compiled source string <code>source_string</code>, and</li>
+<li>A list of files that are included in the top file <code>included_files</code>.</li>
+</ul>
+<p>It is very important to not change <code>included_files</code> as it is used for other
+operations. This list will also contain the time stamp of the file, which can be
+used for live-reloading of shaders. The <code>source_string</code> variable can then be
+used as an argument to <code>compile_shader</code>. </p>
+<p>Let's consider the following simple GLSL file <code>simple.glsl</code>:</p>
+<pre><code class="glsl">#version 450 core
+
+layout(location = 0) in vec4 pos;
+
+#include &quot;uniform_matrices.glsl&quot;
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+}
+</code></pre>
+
+<p>The file <code>uniform_matrices.glsl</code> contains the following:</p>
+<pre><code class="glsl">#ifndef UNIFORM_MATRICES_GLSL
+#define UNIFORM_MATRICES_GLSL
+
+layout (std140, binding = 0) uniform Matrices
+{
+    mat4 projection;
+    mat4 view;
+};
+
+uniform mat4 model;
+
+#endif
+</code></pre>
+
+<p>We can then use <code>read_shader_source</code> as follows (assuming both files are in the
+same directory):</p>
+<pre><code class="c++">std::string filename{&quot;/path/to/simple.glsl&quot;};
+std::vector&lt;std::string&gt; include_dirs{&quot;/path/to/&quot;};
+atlas::glx::ShaderFile shader_source = atlas::glx::read_shader_source(filename, include_dirs);
+</code></pre>
+
+<p>The resulting shader source string will look like this:</p>
+<pre><code class="glsl">#version 450 core
+#line 2 0
+
+#line 3 0
+layout(location = 0) in vec4 pos;
+#line 4 0
+
+#line 1 1
+#ifndef UNIFORM_MATRICES_GLSL
+#line 2 1
+#define UNIFORM_MATRICES_GLSL
+#line 3 1
+
+#line 4 1
+layout (std140, binding = 0) uniform Matrices
+#line 5 1
+{
+#line 6 1
+    mat4 projection;
+#line 7 1
+    mat4 view;
+#line 8 1
+};
+#line 9 1
+
+#line 10 1
+uniform mat4 model;
+#line 11 1
+
+#line 12 1
+#endif
+#line 6 0
+
+#line 7 0
+void main()
+#line 8 0
+{
+#line 9 0
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+#line 10 0
+}
+</code></pre>
+
+<p>A couple of notes regarding the <code>#include</code> directive:</p>
+<ul>
+<li>The only supported syntax for including files is <code>#include "filename.glsl"</code>.</li>
+<li>Atlas is designed to avoid circular includes (A includes B which includes A),
+  as well as multiple includes in a single file.</li>
+<li>The top file <strong>must</strong> start with either a comment or a <code>#version</code> directive as
+  per the GLSL standards.</li>
+<li>You are responsible for header guards to ensure that variables aren't defined
+  multiple times.</li>
+</ul>
+<p>Since the generated source string for the shader is more complex to read, error
+messages will be more cryptic. To simplify this, Atlas provides a function that
+will parse the error string and return an output similar to the one that a C/C++
+compiler might return. To use it, do the following:</p>
+<pre><code class="c++">atlas::glx::ShaderFile file = atlas::glx::read_shader_source(filename, include_dirs);
+auto result = atlas::glx::compile_shader(file.source_string, handle);
+if (!result)
+{
+    std::string message = atlas::glx::parse_error_log(file, *result);
+    // Print the formatted message.
+}
+</code></pre>
+
+<p>It is important to note that currently the only types of messages that Atlas
+recognizes are ones generated from NVidia cards. If Atlas is unable to recognize
+the error formatting, it will return the string unchanged and will issue a
+warning message.</p>
+<blockquote>
+<p><strong>Note:</strong> The reason for this is that error messages are not standard across
+GPU vendors and the only types of GPUs I have access to are NVidia cards. If
+you wish to contribute to the project and have either an Intel or AMD card,
+please consider opening an issue providing the formatting of the error
+messages generated by those cards.</p>
+</blockquote>
+<p>The other important thing to keep in mind is that the error message parsing will
+<strong>only</strong> work for shader compilation, as linking strips away any means of
+identifying which file(s) caused the error.</p>
+<h3 id="live-reloading-of-shaders">Live-reloading of Shaders<a class="headerlink" href="#live-reloading-of-shaders" title="Permanent link">#</a></h3>
+<p>Atlas provides a system for detecting whether a shader file has changed, and if
+it has it will do the following:</p>
+<ul>
+<li>It will reload and parse the source string (including any <code>#include</code>
+  directives),</li>
+<li>Compile the shaders,</li>
+<li>Re-link the shader program.</li>
+</ul>
+<p>If any stage of this process fails, Atlas will leave the original shader program
+untouched and will simply output the error messages. Note that in order for this
+to work, your shader needs to have been loaded with <code>read_shader_source</code> as it
+will use the time stamps contained in the <code>included_files</code> list. You can check
+whether a shader needs to be reloaded and live-reload it as follows:</p>
+<pre><code class="c++">atlas::glx::ShaderFile file;
+GLuint program_handle{0}, shader_handle{0};
+std::vector&lt;std::string&gt; include_dirs;
+
+// ...
+
+if (atlas::glx::should_shader_be_reloaded(file))
+{
+    // Shader source changed, reload the shader.
+    if (reload_shader(program_handle, shader_handle, file, include_dirs))
+    {
+        // Reload successful.
+    }
+    else
+    {
+        // Reload failed.
+    }
+}
+</code></pre></div>
             </div>
         </div>
 
