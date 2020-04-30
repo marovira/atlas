@@ -221,4 +221,243 @@ declaration of the `ErrorSource`, `ErrorType`, and `ErrorSeverity` enums.
 ## GLSL (`glsl.hpp`)
 
 This header contains several functions related to the compilation and linking of
-GLSL shaders. It also provides several extensions and convenience functions.
+GLSL shaders. It also provides several extensions to the behaviour of GLSL to
+allow for more streamlined operations. The main features are:
+
+* Streamlined compilation and linking of shaders,
+* Ability to `#include` files in GLSL code,
+* Ability to reload live GLSL code.
+
+The descriptions for each are outlined in the sections below. In order to use
+any of these functions, use
+
+```c++
+#include <atlas/glx/glsl.hpp>
+```
+
+### Compiling and Linking Shaders
+
+A shader can be compiled using `compile_shader`. The function will take in the
+handle and source string for the shader and compile it. It will also handle all
+errors and will return an `std::optional<std::string>`. If the return value is
+empty, then compilation was successful, otherwise the returned string will
+contain the error message from OpenGL. The function can be used as follows:
+
+```c++
+GLuint shader_handle{0};
+auto result = atlas::glx::compile_shader(source_string, shader_handle);
+if (!result)
+{
+    // Shader compilation failed.
+    auto message = *result;
+}
+```
+
+Similarly, shader linking is done with `link_shaders` which will take the
+program handle. All error handling is done internally, and the return is the
+same as `compile_shader`. It can be used as follows:
+
+```c++
+GLuint program_handle{0};
+auto result = atlas::glx::link_shaders(program_handle);
+if (!result)
+{
+    // Shader linking failed.
+    auto message = *result;
+}
+```
+
+### Using `#include` in GLSL
+
+In order to use this feature, the loading of the shader source has to be managed
+through `read_shader_source`. This function will take the name of the file, and
+a list of include directories. The function will then read the source file line
+by line and will transform it as follows:
+
+```c++
+#line <line-num> <file-num>
+<code-line>
+```
+
+If the line contains a `#include`, then the parser will split out the name of
+the included file and look for it in the included directories (note that the
+current working directory is only tested if the list of include directories is
+empty). It will then open the file and read its contents, pasting them into the
+final source string. The `#line` directives are used to keep track of the line
+number in the original file as well as which file is currently being read. Once
+the file is fully processed, the function will return a `ShaderFile` struct.
+This struct contains all of the needed information for the system to function
+correctly. Its contents are:
+
+* The name of the top shader file `filename`,
+* The compiled source string `source_string`, and
+* A list of files that are included in the top file `included_files`.
+
+It is very important to not change `included_files` as it is used for other
+operations. This list will also contain the time stamp of the file, which can be
+used for live-reloading of shaders. The `source_string` variable can then be
+used as an argument to `compile_shader`. 
+
+Let's consider the following simple GLSL file `simple.glsl`:
+
+```glsl
+#version 450 core
+
+layout(location = 0) in vec4 pos;
+
+#include "uniform_matrices.glsl"
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+}
+```
+
+The file `uniform_matrices.glsl` contains the following:
+
+```glsl
+#ifndef UNIFORM_MATRICES_GLSL
+#define UNIFORM_MATRICES_GLSL
+
+layout (std140, binding = 0) uniform Matrices
+{
+    mat4 projection;
+    mat4 view;
+};
+
+uniform mat4 model;
+
+#endif
+```
+
+We can then use `read_shader_source` as follows (assuming both files are in the
+same directory):
+
+```c++
+std::string filename{"/path/to/simple.glsl"};
+std::vector<std::string> include_dirs{"/path/to/"};
+atlas::glx::ShaderFile shader_source = atlas::glx::read_shader_source(filename, include_dirs);
+```
+
+The resulting shader source string will look like this:
+
+```glsl
+#version 450 core
+#line 2 0
+
+#line 3 0
+layout(location = 0) in vec4 pos;
+#line 4 0
+
+#line 1 1
+#ifndef UNIFORM_MATRICES_GLSL
+#line 2 1
+#define UNIFORM_MATRICES_GLSL
+#line 3 1
+
+#line 4 1
+layout (std140, binding = 0) uniform Matrices
+#line 5 1
+{
+#line 6 1
+    mat4 projection;
+#line 7 1
+    mat4 view;
+#line 8 1
+};
+#line 9 1
+
+#line 10 1
+uniform mat4 model;
+#line 11 1
+
+#line 12 1
+#endif
+#line 6 0
+
+#line 7 0
+void main()
+#line 8 0
+{
+#line 9 0
+    gl_Position = projection * view * model * vec4(pos.xyz, 1.0);
+#line 10 0
+}
+```
+
+A couple of notes regarding the `#include` directive:
+
+* The only supported syntax for including files is `#include "filename.glsl"`.
+* Atlas is designed to avoid circular includes (A includes B which includes A),
+  as well as multiple includes in a single file.
+* The top file **must** start with either a comment or a `#version` directive as
+  per the GLSL standards.
+* You are responsible for header guards to ensure that variables aren't defined
+  multiple times.
+
+Since the generated source string for the shader is more complex to read, error
+messages will be more cryptic. To simplify this, Atlas provides a function that
+will parse the error string and return an output similar to the one that a C/C++
+compiler might return. To use it, do the following:
+
+```c++
+atlas::glx::ShaderFile file = atlas::glx::read_shader_source(filename, include_dirs);
+auto result = atlas::glx::compile_shader(file.source_string, handle);
+if (!result)
+{
+    std::string message = atlas::glx::parse_error_log(file, *result);
+    // Print the formatted message.
+}
+```
+
+It is important to note that currently the only types of messages that Atlas
+recognizes are ones generated from NVidia cards. If Atlas is unable to recognize
+the error formatting, it will return the string unchanged and will issue a
+warning message.
+
+> **Note:** The reason for this is that error messages are not standard across
+> GPU vendors and the only types of GPUs I have access to are NVidia cards. If
+> you wish to contribute to the project and have either an Intel or AMD card,
+> please consider opening an issue providing the formatting of the error
+> messages generated by those cards.
+
+The other important thing to keep in mind is that the error message parsing will
+**only** work for shader compilation, as linking strips away any means of
+identifying which file(s) caused the error.
+
+### Live-reloading of Shaders
+
+Atlas provides a system for detecting whether a shader file has changed, and if
+it has it will do the following:
+
+* It will reload and parse the source string (including any `#include`
+  directives),
+* Compile the shaders,
+* Re-link the shader program.
+
+If any stage of this process fails, Atlas will leave the original shader program
+untouched and will simply output the error messages. Note that in order for this
+to work, your shader needs to have been loaded with `read_shader_source` as it
+will use the time stamps contained in the `included_files` list. You can check
+whether a shader needs to be reloaded and live-reload it as follows:
+
+```c++
+atlas::glx::ShaderFile file;
+GLuint program_handle{0}, shader_handle{0};
+std::vector<std::string> include_dirs;
+
+// ...
+
+if (atlas::glx::should_shader_be_reloaded(file))
+{
+    // Shader source changed, reload the shader.
+    if (reload_shader(program_handle, shader_handle, file, include_dirs))
+    {
+        // Reload successful.
+    }
+    else
+    {
+        // Reload failed.
+    }
+}
+```
