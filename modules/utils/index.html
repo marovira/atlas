@@ -105,12 +105,93 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#utils-module" class="nav-link">Utils Module</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#cameras-camerashpp" class="nav-link">Cameras (cameras.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#loading-obj-files-load_obj_filehpp" class="nav-link">Loading OBJ Files (load_obj_file.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-</div>
+<h1 id="utils-module">Utils Module<a class="headerlink" href="#utils-module" title="Permanent link">#</a></h1>
+<p>Contains functionality that can be useful to simplify certain workflows. This
+module is built as an extension of tools for Atlas and is not required for any
+of the other modules to work (though it does depend on the math module).</p>
+<h2 id="cameras-camerashpp">Cameras (<code>cameras.hpp</code>)<a class="headerlink" href="#cameras-camerashpp" title="Permanent link">#</a></h2>
+<p>Provides a class interface for a generic camera class and a simple camera that
+emulates the behaviour of the arcball camera seen in Autodesk Maya that
+implements the interface. The <code>Canera</code> class provides only virtual functions
+(but none are pure virtual) for all mouse and key operations supported by GLFW.
+In addition, it also provides a function to compute the corresponding view
+matrix and a way to reset the camera. A more detailed example of how to
+implement the interface can be see in the implementation of <code>SimpleCamera</code>.</p>
+<h2 id="loading-obj-files-load_obj_filehpp">Loading OBJ Files (<code>load_obj_file.hpp</code>)<a class="headerlink" href="#loading-obj-files-load_obj_filehpp" title="Permanent link">#</a></h2>
+<p>This header provides a wrapper for TinyObjLoader's function to load OBJ files.
+The function will perform all of the required steps to load the data from the
+file, but will not mask any of the intrinsic types from the library. It is
+recommended that you look at the
+<a href="https://github.com/tinyobjloader/tinyobjloader">documentation</a> for more
+information on these types. </p>
+<p>The function (and related types) were designed without any assumptions of usage,
+and as a result make little effort to hide the results that TinyObjLoader would
+return. The function <code>load_obj_mesh</code> will return an <code>std::optional&lt;ObjMesh&gt;</code>. If
+the value is empty, the mesh failed to load. The <code>ObjMesh</code> struct is comprised
+of the following:</p>
+<ul>
+<li>A vector of <code>Shape</code>: this represents all the shapes contained in the OBJ
+  file.</li>
+<li>A vector of <code>tinyobj::material_t</code>: contains all of the materials used in the
+  OBJ file.</li>
+</ul>
+<p>The <code>Shape</code> struct is in turn comprised of the following:</p>
+<ul>
+<li>Two flags <code>has_normals</code> and <code>has_texture_coords</code> indicating whether the shape
+  has normals or texture coordinates,</li>
+<li>A vector of <code>Vertex</code>,</li>
+<li>A vector of indices,</li>
+<li>A vector of the material ids associated with the shape, and</li>
+<li>A vector of smoothing group ids.</li>
+</ul>
+<p>The vector of indices contains the vertex indices that conform the faces of the
+mesh. Note that while OBJ files by convention number their indices starting at
+1, this vector will have them starting at 0. Finally, the <code>Vertex</code> struct
+contains the following:</p>
+<ul>
+<li><code>position</code>: the position of the vertex,</li>
+<li><code>normal</code>: the normal (if <code>has_normals</code> is false, then this is a zero normal),</li>
+<li><code>tex_coord</code>: the texture coordinate (if <code>has_texture_coords</code> is false, then
+  this is a zero vector),</li>
+<li><code>index</code>: the index of the vertex, and</li>
+<li><code>face_id</code>: the id of the face.</li>
+</ul>
+<p>To use the function, do the following:</p>
+<pre><code class="c++">#include &lt;atlas/utils/load_obj_file.hpp&gt;
+
+std::string filename{&quot;path/to/file.obj&quot;};
+std::string material_path{&quot;path/to/materials&quot;};     // Where to search for .mtl files
+
+auto result = atlas::utils::load_obj_mesh(filename, material_path);
+
+if (!result)
+{
+    // Mesh failed to load
+}
+
+atlas::utils::ObjMesh mesh = *result;
+</code></pre>
+
+<p>Note that upon loading the mesh, the function will cull all repeated vertices
+(if any) in the OBJ file to reduce the memory footprint of the final mesh.</p></div>
             </div>
         </div>
 

@@ -105,12 +105,186 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#math-module" class="nav-link">Math Module</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#coordinates-coordinateshpp" class="nav-link">Coordinates (coordinates.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#math-mathhpp" class="nav-link">Math (math.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#random-randomhpp" class="nav-link">Random (random.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#ray-rayhpp" class="nav-link">Ray (ray.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#solvers-solvershpp" class="nav-link">Solvers (solvers.hpp)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
+<h1 id="math-module">Math Module<a class="headerlink" href="#math-module" title="Permanent link">#</a></h1>
+<p>The math module contains several utility functions and classes for common
+operations. The module relies on <a href="https://github.com/g-truc/glm">GLM</a> for all of
+the basic math types such as vectors, matrices, and all related functions. The
+module is split across 5 headers, which we will cover next.</p>
+<h2 id="coordinates-coordinateshpp">Coordinates (<code>coordinates.hpp</code>)<a class="headerlink" href="#coordinates-coordinateshpp" title="Permanent link">#</a></h2>
+<p>Contains a series of functions to convert to and from several coordinate spaces.
+The functions all follow the same naming convention: <code>&lt;space-1&gt;_to_&lt;space-2&gt;</code>.
+The currently implemented conversions are:</p>
+<ul>
+<li>Cartesian to Spherical: <code>cartesian_to_spherical</code>,</li>
+<li>Spherical to Cartesian: <code>spherical_to_cartesian</code>,</li>
+<li>Cartesian to Cylindrical: <code>cartesian_to_cylindrical</code>,</li>
+<li>Cylindrical to Cartesian: <code>cylindrical_to_cartesian</code>,</li>
+<li>Cartesian (<span><span class="MathJax_Preview">\mathbb{R}^2</span><script type="math/tex">\mathbb{R}^2</script></span>) to Polar: <code>cartesian_to_polar</code>,</li>
+<li>Polar to Cartesian (<span><span class="MathJax_Preview">\mathbb{R}^2</span><script type="math/tex">\mathbb{R}^2</script></span>): <code>polar_to_cartesian</code>.</li>
+</ul>
+<p>The functions all rely on the types defined by the main <code>math.hpp</code> header. To
+use them, do the following:</p>
+<pre><code class="c++">#include &lt;atlas/math/coordinates.hpp&gt;
+
+atlas::math::Point pt;
+auto pt_spherical = atlas::math::cartesian_to_spherical(pt);
+
+auto pt_cartesian = atlas::math::spherical_to_cartesian(pt_spherical);
+</code></pre>
+
+<h2 id="math-mathhpp">Math (<code>math.hpp</code>)<a class="headerlink" href="#math-mathhpp" title="Permanent link">#</a></h2>
+<p>This is the main math header that includes the following headers from GLM:</p>
+<ul>
+<li><code>glm/glm.hpp</code>,</li>
+<li><code>glm/gtc/constants.hpp</code></li>
+<li><code>glm/gtc/matrix_inverse.hpp</code></li>
+<li><code>glm/gtc/matrix_transform.hpp</code></li>
+<li><code>glm/gtc/quaternion.hpp</code></li>
+<li><code>glm/gtc/type_ptr.hpp</code></li>
+<li><code>glm/gtx/norm.hpp</code></li>
+<li><code>glm/gtx/projection.hpp</code></li>
+</ul>
+<p>These headers provide the functionality required by most graphics applications.
+In addition to this, it also defines the following GLM macros:</p>
+<ul>
+<li><code>GLM_FORCE_RADIANS</code>,</li>
+<li><code>GLM_FORCE_SWIZZLE</code>,</li>
+<li><code>GLM_ENABLE_EXPERIMENTAL</code>.</li>
+</ul>
+<p>For more information regarding the exact contents of these headers and the
+behaviour of the macros, please see the corresponding documentation from GLM. In
+addition, the header also provides aliases for most common types used in
+graphics applications. By default, the types <code>Vector</code>, <code>Point</code> and <code>Normal</code> are
+all in <span><span class="MathJax_Preview">\mathbb{R}^3</span><script type="math/tex">\mathbb{R}^3</script></span>.</p>
+<ul>
+<li><code>Vector2</code>, <code>Vector</code>, <code>Vector4</code></li>
+<li><code>Point2</code>, <code>Point</code>, <code>Point4</code></li>
+<li><code>Normal2</code>, <code>Normal</code>, <code>Normal4</code></li>
+<li><code>Matrix2</code> (<span><span class="MathJax_Preview">2 \times 2</span><script type="math/tex">2 \times 2</script></span> matrix), <code>Matrix3</code> (<span><span class="MathJax_Preview">3 \times 3</span><script type="math/tex">3 \times 3</script></span> matrix), <code>Matrix4</code>
+  (<span><span class="MathJax_Preview">4 \times 4</span><script type="math/tex">4 \times 4</script></span> matrix)</li>
+<li><code>Quaternion</code></li>
+</ul>
+<p>All headers within the math module rely on these types unless otherwise
+indicated.</p>
+<h2 id="random-randomhpp">Random (<code>random.hpp</code>)<a class="headerlink" href="#random-randomhpp" title="Permanent link">#</a></h2>
+<p>Defines a class for a simple random number generator. It is by default based on
+<code>std::mt19937</code>, which should provide relatively good random numbers for most
+applications. That being said, the class is fully templated to allow the user to
+change the random number generator and the type of number it creates. The only
+requirement is that the type must satisfy <code>std::is_arithmetic</code>. The class
+provides 3 functions to retrieve a random number:</p>
+<ul>
+<li><code>get_random_in_range</code>: given two numbers <span><span class="MathJax_Preview">a, b</span><script type="math/tex">a, b</script></span>, this function will return a
+  random number in the range <span><span class="MathJax_Preview">[a, b]</span><script type="math/tex">[a, b]</script></span>.</li>
+<li><code>get_random_zero_to_max</code>: returns a random number in the range <span><span class="MathJax_Preview">[0, \infty]</span><script type="math/tex">[0, \infty]</script></span>.</li>
+<li><code>get_random_zero_to_one</code>: returns a random number in the range <span><span class="MathJax_Preview">[0, 1]</span><script type="math/tex">[0, 1]</script></span>.</li>
+</ul>
+<p>To use the class, do the following:</p>
+<pre><code class="c++">#include &lt;atlas/math/random.hpp&gt;
+
+atlas::math::Random&lt;float&gt; engine;
+float r1 = engine.get_random_in_range(1.0f, 2.0f);
+</code></pre>
+
+<h2 id="ray-rayhpp">Ray (<code>ray.hpp</code>)<a class="headerlink" href="#ray-rayhpp" title="Permanent link">#</a></h2>
+<p>Defines a class representing a ray. This can be used for ray tracing, ray
+casting, or any other type of application that relies on a ray structure. The
+class is templated to allow for any dimension for the origin and direction of
+the ray. The class overloads the evaluation operator <code>operator()</code> as a way of
+evaluating the following equation:</p>
+<div>
+<div class="MathJax_Preview">
+r(t) = o + t \cdot \mathbf{d}
 </div>
+<script type="math/tex; mode=display">
+r(t) = o + t \cdot \mathbf{d}
+</script>
+</div>
+<p>Where <span><span class="MathJax_Preview">o</span><script type="math/tex">o</script></span> is the origin point of the ray, <span><span class="MathJax_Preview">t</span><script type="math/tex">t</script></span> is a scalar (<code>float</code>) and
+<span><span class="MathJax_Preview">\mathbf{d}</span><script type="math/tex">\mathbf{d}</script></span> is the direction of the ray. The class also provides equality
+operators and can be used as follows:</p>
+<pre><code class="c++">#include &lt;atlas/math/ray.hpp&gt;
+#include &lt;atlas/math/math.hpp&gt;              // Included here for the Vector alias.
+
+atlas::math::Ray&lt;atlas::math::Vector&gt; r1;   // o and d default to 0.
+
+atlas::math::Vector o{0, 1, 0};
+atlas::math::Vector d{0, 0, -1};
+atlas::math::Ray&lt;atlas::math::Vector&gt; r2{o, d};
+
+float t = r2(1.0f);                         // Evaluate the ray equation at t = 1.0f
+</code></pre>
+
+<h2 id="solvers-solvershpp">Solvers (<code>solvers.hpp</code>)<a class="headerlink" href="#solvers-solvershpp" title="Permanent link">#</a></h2>
+<p>Provides functions to solve 3 types of polynomial equations: quadratic, cubic,
+and quartic. For all equations, they must be in the following form:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{align*}
+    Ax^2 + Bx + C &amp;= 0 \\
+    Ax^3 + Bx^2 + Cx + D &amp;= 0 \\
+    Ax^4 + Bx^3 + Cx^2 + Dx + E &amp;= 0
+\end{align*}
+</div>
+<script type="math/tex; mode=display">
+\begin{align*}
+    Ax^2 + Bx + C &= 0 \\
+    Ax^3 + Bx^2 + Cx + D &= 0 \\
+    Ax^4 + Bx^3 + Cx^2 + Dx + E &= 0
+\end{align*}
+</script>
+</div>
+<p>The functions all have the same signature, and take two parameters:</p>
+<ul>
+<li>An <code>std::vector</code> with the coefficients <em>in reverse order</em></li>
+<li>An <code>std::vector</code> where the roots will be placed. Note that if the vector is
+  empty it will automatically be resized to the correct number of roots.</li>
+</ul>
+<p>The functions will return a number with the number of roots that were found.</p>
+<blockquote>
+<p><strong>Note:</strong> The quartic solver is currently not very precise due to rounding
+errors and as a result may return roots that are incorrect. Other
+implementations are being explored.</p>
+</blockquote>
+<p>The functions are all templated to allow for any precision, though they will
+only accept floating point types. To use them, do the following:</p>
+<pre><code class="c++">#include &lt;atlas/math/solvers.hpp&gt;
+
+// Solve 16x^2 + 24x + 12 = 0
+std::vector&lt;float&gt; coeffs{12.0f, 24.0f, 16.0f};
+std::vector&lt;float&gt; roots;
+std::size_t num_roots = atlas::math::solve_quadratic(coeffs, roots);
+</code></pre></div>
             </div>
         </div>
 
