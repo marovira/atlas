@@ -61,6 +61,8 @@ source_group("include\\atlas" FILES ${ATLAS_INCLUDE_ROOT_GROUP})
 source_group("include\\atlas\\math" FILES ${ATLAS_INCLUDE_MATH_GROUP})
 source_group("include\\atlas\\glx" FILES ${ATLAS_INCLUDE_GLX_GROUP})
 source_group("include\\atlas\\gui" FILES ${ATLAS_INCLUDE_GUI_GROUP})
+source_group("include\\atlas\\gui\\widgets" FILES
+    ${ATLAS_INCLUDE_GUI_WIDGETS_GROUP})
 source_group("include\\atlas\\hlr" FILES ${ATLAS_INCLUDE_HLR_GROUP})
 source_group("include\\atlas\\utils" FILES ${ATLAS_INCLUDE_UTILS_GROUP})
 
@@ -68,6 +70,8 @@ source_group("source" FILES)
 source_group("source\\atlas" FILES)
 source_group("source\\atlas\\glx" FILES ${ATLAS_SOURCE_GLX_GROUP})
 source_group("source\\atlas\\gui" FILES ${ATLAS_SOURCE_GUI_GROUP})
+source_group("source\\atlas\\gui\\widgets" FILES
+    ${ATLAS_SOURCE_GUI_WIDGETS_GROUP})
 source_group("source\\atlas\\hlr" FILES ${ATLAS_SOURCE_HLR_GROUP})
 source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_GROUP})
 
@@ -229,7 +233,12 @@ set_target_properties(atlas_glx PROPERTIES FOLDER "atlas")
 #================================
 # GUI module.
 #================================
-add_library(atlas_gui ${ATLAS_INCLUDE_GUI_GROUP} ${ATLAS_SOURCE_GUI_GROUP})
+add_library(atlas_gui 
+    ${ATLAS_INCLUDE_GUI_GROUP} 
+    ${ATLAS_INCLUDE_GUI_WIDGETS_GROUP}
+    ${ATLAS_SOURCE_GUI_GROUP}
+    ${ATLAS_SOURCE_GUI_WIDGETS_GROUP}
+    )
 target_include_directories(atlas_gui PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas_gui PUBLIC imgui atlas_glx zeus::zeus)
 add_library(atlas::gui ALIAS atlas_gui)
