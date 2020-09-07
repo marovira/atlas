@@ -1,9 +1,13 @@
 set(ATLAS_GUI_ROOT ${ATLAS_SOURCE_ROOT}/atlas/gui)
 
+add_subdirectory(${ATLAS_GUI_ROOT}/widgets)
+
 set(ATLAS_INCLUDE_GUI_LIST
     ${ATLAS_GUI_ROOT}/gui.hpp
+    ${ATLAS_INCLUDE_WIDGETS_LIST}
     PARENT_SCOPE)
 
 set(ATLAS_SOURCE_GUI_LIST
     ${ATLAS_GUI_ROOT}/gui.cpp
+    ${ATLAS_SOURCE_WIDGETS_LIST}
     PARENT_SCOPE)
