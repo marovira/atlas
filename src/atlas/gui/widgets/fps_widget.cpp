@@ -5,10 +5,10 @@
 #include <numeric>
 #include <vector>
 
-static constexpr std::size_t max_size{50};
-
-namespace widgets
+namespace atlas::gui::widgets
 {
+    static constexpr std::size_t max_size{50};
+
     FPSWidget::FPSWidget() :
         m_min_fps{std::numeric_limits<float>::infinity()},
         m_max_fps{-std::numeric_limits<float>::infinity()},
@@ -45,4 +45,4 @@ namespace widgets
                          ImVec2(0, 80));
         ImGui::End();
     }
-} // namespace widgets
+} // namespace atlas::gui::widgets

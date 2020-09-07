@@ -4,7 +4,7 @@
 
 #include <list>
 
-namespace widgets
+namespace atlas::gui::widgets
 {
     class FPSWidget : public Widget
     {
@@ -19,4 +19,4 @@ namespace widgets
         float m_max_fps;
         std::list<float> m_fps_points;
     };
-} // namespace widgets
+} // namespace atlas::gui::widgets

@@ -100,13 +100,13 @@ void test_window(Args&&... args)
 
 TEST_CASE("[AppPropertiesWidget] - draw: basic case", "[gui]")
 {
-    using widgets::AppPropertiesWidget;
+    using gui::widgets::AppPropertiesWidget;
     test_window<AppPropertiesWidget>("test_app");
 }
 
 TEST_CASE("[FPSWidget] - draw: basic case", "[gui]")
 {
-    using widgets::FPSWidget;
+    using gui::widgets::FPSWidget;
     test_window<FPSWidget>();
 }
 #endif

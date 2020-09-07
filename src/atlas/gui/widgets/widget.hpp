@@ -4,7 +4,7 @@
 
 #include <memory>
 
-namespace widgets
+namespace atlas::gui::widgets
 {
     class Widget
     {
@@ -24,4 +24,4 @@ namespace widgets
     };
 
     using WidgetPtr = std::shared_ptr<Widget>;
-} // namespace widgets
+} // namespace atlas::gui::widgets

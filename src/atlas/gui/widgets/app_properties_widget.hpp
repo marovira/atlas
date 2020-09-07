@@ -2,7 +2,7 @@
 
 #include "widget.hpp"
 
-namespace widgets
+namespace atlas::gui::widgets
 {
     class AppPropertiesWidget : public Widget
     {
@@ -15,4 +15,4 @@ namespace widgets
     private:
         std::string m_app_name;
     };
-} // namespace widgets
+} // namespace atlas::gui::widgets

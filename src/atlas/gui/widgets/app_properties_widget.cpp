@@ -4,7 +4,7 @@
 
 using namespace atlas;
 
-namespace widgets
+namespace atlas::gui::widgets
 {
     AppPropertiesWidget::AppPropertiesWidget(std::string app_name) :
         m_app_name{app_name}
@@ -32,4 +32,4 @@ namespace widgets
         ImGui::Text("Atlas version: %s", atlas_version_string.data());
         ImGui::End();
     }
-} // namespace widgets
+} // namespace atlas::gui::widgets
