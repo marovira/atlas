@@ -12,6 +12,7 @@
 #endif
 #include <GLFW/glfw3native.h>
 
+#include <algorithm>
 #include <array>
 
 namespace atlas::gui
@@ -55,6 +56,9 @@ namespace atlas::gui
 
     bool initialize_ui_window_data(UIWindowData& data)
     {
+        std::fill(
+            data.mouse_cursors.begin(), data.mouse_cursors.end(), nullptr);
+
         auto& io = ImGui::GetIO();
         io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
         io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
@@ -154,7 +158,10 @@ namespace atlas::gui
     {
         for (ImGuiMouseCursor i{0}; i < ImGuiMouseCursor_COUNT; ++i)
         {
-            glfwDestroyCursor(data.mouse_cursors[i]);
+            if (!data.mouse_cursors[i])
+            {
+                glfwDestroyCursor(data.mouse_cursors[i]);
+            }
             data.mouse_cursors[i] = nullptr;
         }
         data.window = nullptr;
