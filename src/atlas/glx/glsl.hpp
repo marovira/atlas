@@ -44,4 +44,13 @@ namespace atlas::glx
                        GLuint shader_handle,
                        ShaderFile& file,
                        std::vector<std::string> const& include_dirs = {});
+
+    std::optional<std::string>
+    create_shader_program(GLenum type, GLuint program, ShaderFile const& file);
+
+    bool
+    reload_shader_program(GLenum type,
+                          GLuint program_handle,
+                          ShaderFile& file,
+                          std::vector<std::string> const& include_dirs = {});
 } // namespace atlas::glx

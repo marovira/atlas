@@ -7,6 +7,7 @@
 #include <regex>
 #include <set>
 #include <sstream>
+#include <zeus/assert.hpp>
 #include <zeus/filesystem.hpp>
 #include <zeus/platform.hpp>
 
@@ -425,4 +426,86 @@ namespace atlas::glx
 
         return true;
     }
+
+    std::string get_shader_type_string(GLenum type)
+    {
+        if (type == GL_VERTEX_SHADER)
+        {
+            return "vertex shader";
+        }
+        else if (type == GL_GEOMETRY_SHADER)
+        {
+            return "geometry shader";
+        }
+        else if (type == GL_TESS_CONTROL_SHADER)
+        {
+            return "tessellation control shader";
+        }
+        else if (type == GL_TESS_EVALUATION_SHADER)
+        {
+            return "tessellation evaluation shader";
+        }
+        else if (type == GL_FRAGMENT_SHADER)
+        {
+            return "fragment shader";
+        }
+        else if (type == GL_COMPUTE_SHADER)
+        {
+            return "compute shader";
+        }
+
+        return "";
+    }
+
+    std::optional<std::string>
+    create_shader_program(GLenum type, GLuint program, ShaderFile const& file)
+    {
+        ASSERT(program != 0);
+
+        GLuint shader = glCreateShader(type);
+
+        if (!shader)
+        {
+            std::string shader_type = get_shader_type_string(type);
+            std::string message =
+                fmt::format("error: failed to create {}", shader_type);
+            throw std::runtime_error{message};
+        }
+
+        if (auto result = compile_shader(file.source_string, shader); result)
+        {
+            auto message = parse_error_log(file, *result);
+            return {message};
+        }
+
+        glProgramParameteri(program, GL_PROGRAM_SEPARABLE, GL_TRUE);
+        glAttachShader(program, shader);
+
+        if (auto result = link_shaders(program); result)
+        {
+            return result;
+        }
+
+        glDetachShader(program, shader);
+        glDeleteShader(shader);
+
+        return {};
+    }
+
+    bool reload_shader_program(GLenum type,
+                               GLuint program_handle,
+                               ShaderFile& file,
+                               std::vector<std::string> const& include_dirs)
+    {
+        file = read_shader_source(file.filename, include_dirs);
+        if (auto result = create_shader_program(type, program_handle, file);
+            result)
+        {
+            fmt::print(stderr, "error: {}\n", *result);
+            return false;
+        }
+
+        return true;
+    }
+
 } // namespace atlas::glx
