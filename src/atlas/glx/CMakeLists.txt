@@ -11,4 +11,5 @@ set(ATLAS_SOURCE_GLX_LIST
     ${ATLAS_GLX_ROOT}/glsl.cpp
     ${ATLAS_GLX_ROOT}/context.cpp
     ${ATLAS_GLX_ROOT}/error_callback.cpp
+    ${ATLAS_GLX_ROOT}/assert.cpp
     PARENT_SCOPE)
