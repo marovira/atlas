@@ -123,22 +123,25 @@ endif()
 include(FetchContent)
 
 # Declare fetch content for all packages.
+# Zeus always set to latest version.
 FetchContent_Declare(
     zeus
     GIT_REPOSITORY https://github.com/marovira/zeus
-    GIT_TAG bac6c8f734c569f3deb22dede69c80abb505d2a9
+    GIT_TAG fb160fe7ee496c270bb8c6e13cfbeec7d0a08ae8
     )
 
+# Version 0.9.9.8
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
     GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e
     )
 
+# Version 3.3.4
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git 
-    GIT_TAG 0a49ef0a00baa3ab520ddc452f0e3b1e099c5589
+    GIT_TAG 814b7929c5add4b0541ccad26fb81f28b71dc4d8
     )
 
 FetchContent_Declare(
@@ -147,10 +150,11 @@ FetchContent_Declare(
     GIT_TAG 2041cebf56a0fc5650fc6e8f67414dd221a05657
     )
 
+# Latest version
 FetchContent_Declare(
     tinyobjloader
     GIT_REPOSITORY https://github.com/syoyo/tinyobjloader.git
-    GIT_TAG d7d53217c30a7970596d1b93f97a5fd97b7cf1a5
+    GIT_TAG 0ed6c38f20c63b996fbb9fa949569b2acb213a3d
     )
 
 find_package(zeus QUIET)

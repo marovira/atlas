@@ -4,8 +4,9 @@ set(IMGUI_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(IMGUI_SOURCE_LIST
     "${IMGUI_SOURCE_DIR}/imgui.cpp"
-    "${IMGUI_SOURCE_DIR}/imgui_draw.cpp"
     "${IMGUI_SOURCE_DIR}/imgui_demo.cpp"
+    "${IMGUI_SOURCE_DIR}/imgui_draw.cpp"
+    "${IMGUI_SOURCE_DIR}/imgui_tables.cpp"
     "${IMGUI_SOURCE_DIR}/imgui_widgets.cpp"
     )
 set(IMGUI_INCLUDE_LIST
