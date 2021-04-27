@@ -57,9 +57,11 @@ In addition, Atlas depends on the following libraries:
 * [Zeus](https://github.com/marovira/zeus),
 * [GLFW](https://github.com/glfw/glfw),
 * [GL3W](https://github.com/marovira/gl3w),
+* [GLM](https://github.com/g-truc/glm),
 * [ImGUI](https://github.com/ocornut/imgui),
 * [STB](https://github.com/nothings/stb),
-* [cr](https://github.com/fungos/cr).
+* [cr](https://github.com/fungos/cr),
+* [tinyobjloader](https://github.com/tinyobjloader/tinyobjloader).
 
 The dependencies per module are as follows:
 
