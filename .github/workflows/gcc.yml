@@ -40,7 +40,7 @@ jobs:
           BUILD_TYPE: ${{ matrix.config.build_type }}
         run: |
           mkdir build && cd build
-          cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_SHARED_LIBS=OFF
+          cmake .. -G "Unix Makefiles" -DATLAS_BUILD_GL_TEST=OFF -DATLAS_BUILD_GUI_TEST=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF -DBUILD_SHARED_LIBS=OFF
 
       - name: Build
         shell: bash
