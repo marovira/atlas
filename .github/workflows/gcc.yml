@@ -29,6 +29,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install Packages
+        shell: bash
+        run: |
+          sudo apt-get xorg-dev mesa-utils libgl1-mesa-dev
+
       - name: Setup
         shell: bash
         env:
