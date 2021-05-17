@@ -19,7 +19,7 @@ jobs:
             cxx: "clang++"
           }
         - {
-            name: "Linux GCC Release",
+            name: "Linux Clang Release",
             artifact: "linux_gcc_release.tar.xz",
             os: ubuntu-latest,
             build_type: "Release",
