@@ -38,6 +38,8 @@ jobs:
         shell: bash
         env:
           BUILD_TYPE: ${{ matrix.config.build_type }}
+          CC: ${{ matrix.config.cc }}
+          CXX: ${{ matrix.config.cxx }}
         run: |
           mkdir build && cd build
           cmake .. -G "Unix Makefiles" -DATLAS_BUILD_GL_TEST=OFF -DATLAS_BUILD_GUI_TEST=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF -DBUILD_SHARED_LIBS=OFF
@@ -45,12 +47,18 @@ jobs:
       - name: Build
         shell: bash
         working-directory: ./build
+        env:
+          CC: ${{ matrix.config.cc }}
+          CXX: ${{ matrix.config.cxx }}
         run: |
           make
 
       - name: Test
         shell: bash
         working-directory: ./build
+        env:
+          CC: ${{ matrix.config.cc }}
+          CXX: ${{ matrix.config.cxx }}
         run: |
           make test
 
