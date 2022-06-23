@@ -2,8 +2,8 @@
 
 > A graphics framework for education and prototyping.
 
-[![Generic badge](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Generic badge](https://img.shields.io/badge/Language-C++17-red.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
+[![Generic badge](https://img.shields.io/badge/License-BSD3-blue)](LICENSE)
+[![Generic badge](https://img.shields.io/badge/Language-C++20-red.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![Clang](https://github.com/marovira/atlas/actions/workflows/clang.yml/badge.svg)](https://github.com/marovira/atlas/actions/workflows/clang.yml)
 [![GCC](https://github.com/marovira/atlas/actions/workflows/gcc.yml/badge.svg)](https://github.com/marovira/atlas/actions/workflows/gcc.yml)
 [![MSVC](https://github.com/marovira/atlas/actions/workflows/msvc.yml/badge.svg)](https://github.com/marovira/atlas/actions/workflows/msvc.yml)
@@ -40,16 +40,16 @@ The key features of Atlas are as follows:
 The following are **core** requirements of Atlas:
 
 * OpenGL 4.5+,
-* CMake 3.12+,
+* CMake 3.22+,
 * Python 2.7+ or 3.x.
 
 Atlas supports the following platforms and compilers:
 
 | Platform (Compiler) | Version |
 | ------------------- | ------- |
-| Windows (MSVC) | 19.25 |
-| Linux (GCC) | 9.2 |
-| Linux (LLVM Clang) | 9.0 |
+| Windows (MSVC) | 19.32 |
+| Linux (GCC) | 10.3.0 |
+| Linux (LLVM Clang) | 11.0 |
 
 Please note that macOS is **not** supported.
 
@@ -61,7 +61,6 @@ In addition, Atlas depends on the following libraries:
 * [GLM](https://github.com/g-truc/glm),
 * [ImGUI](https://github.com/ocornut/imgui),
 * [STB](https://github.com/nothings/stb),
-* [cr](https://github.com/fungos/cr),
 * [tinyobjloader](https://github.com/tinyobjloader/tinyobjloader).
 
 The dependencies per module are as follows:
@@ -71,7 +70,6 @@ The dependencies per module are as follows:
 | math | GLM, Zeus |
 | glx | OpenGL, GLFW, gl3w, Zeus |
 | gui | glx, Zeus, ImGUI (included) |
-| hlr | Zeus, cr (included) |
 | utils | math, Zeus, tinyobjloader, stb (included) | 
 
 ## Contributing
@@ -101,7 +99,7 @@ If you are submitting a pull request, the guidelines are the following:
 
 ## License
 
-Atlas is published under the MIT license and can be viewed
+Atlas is published under the BSD-3 license and can be viewed
 [here](https://github.com/marovira/atlas/blob/master/LICENSE). Atlas also
 bundles third-party code that is distributed under their corresponding licenses
 which can be seen
