@@ -9,6 +9,14 @@
 #if defined(ZEUS_PLATFORM_WINDOWS)
 #    define GLFW_EXPOSE_NATIVE_WIN32
 #    define GLFW_EXPOSE_NATIVE_WGL
+
+#    if defined(min)
+#        undef min
+#    endif
+
+#    if defined(max)
+#        undef max
+#    endif
 #endif
 #include <GLFW/glfw3native.h>
 
@@ -143,9 +151,9 @@ namespace atlas::gui
 
         double current_time = glfwGetTime();
         io.DeltaTime        = data.time > 0.0
-                           ? static_cast<float>(current_time - data.time)
-                           : 1.0f / 60.0f;
-        data.time = current_time;
+                                  ? static_cast<float>(current_time - data.time)
+                                  : 1.0f / 60.0f;
+        data.time           = current_time;
     }
 
     void update_ui_window_frame(UIWindowData& data)

@@ -4,6 +4,17 @@
 #include <limits>
 #include <numeric>
 #include <vector>
+#include <zeus/platform.hpp>
+
+#if defined(ZEUS_PLATFORM_WINDOWS)
+#    if defined(min)
+#        undef min
+#    endif
+
+#    if defined(max)
+#        undef max
+#    endif
+#endif
 
 namespace atlas::gui::widgets
 {
