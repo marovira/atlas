@@ -15,24 +15,19 @@ jobs:
             artifact: "linux_gcc_debug.tar.xz",
             os: ubuntu-latest,
             build_type: "Debug",
-            cc: "gcc",
-            cxx: "g++"
+            cc: "gcc-10",
+            cxx: "g++-10"
           }
         - {
             name: "Linux GCC Release",
             artifact: "linux_gcc_release.tar.xz",
             os: ubuntu-latest,
             build_type: "Release",
-            cc: "gcc",
-            cxx: "g++"
+            cc: "gcc-10",
+            cxx: "g++-10"
           }
     steps:
       - uses: actions/checkout@v2
-
-      - name: Install Packages
-        shell: bash
-        run: |
-          sudo apt-get install xorg-dev mesa-utils libgl1-mesa-dev
 
       - name: Setup
         shell: bash
@@ -41,9 +36,7 @@ jobs:
           CC: ${{ matrix.config.cc }}
           CXX: ${{ matrix.config.cxx }}
         run: |
-          mkdir build && cd build
-          cmake .. -G "Unix Makefiles" -DATLAS_BUILD_GL_TEST=OFF -DATLAS_BUILD_GUI_TEST=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF -DBUILD_SHARED_LIBS=OFF
-
+          cmake --preset=gcc -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_SHARED_LIBS=OFF
       - name: Build
         shell: bash
         working-directory: ./build
@@ -52,7 +45,6 @@ jobs:
           CXX: ${{ matrix.config.cxx }}
         run: |
           make
-
       - name: Test
         shell: bash
         working-directory: ./build
@@ -61,5 +53,3 @@ jobs:
           CXX: ${{ matrix.config.cxx }}
         run: |
           make test
-
-

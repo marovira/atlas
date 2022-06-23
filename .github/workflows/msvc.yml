@@ -36,10 +36,7 @@ jobs:
         env:
           BUILD_TYPE: ${{ matrix.config.build_type }}
         run: |
-          New-Item -Path . -Name "build" -ItemType "directory"
-          Set-Location -Path ./build
-          cmake -G "Visual Studio 16 2019" .. -DATLAS_BUILD_GL_TEST=OFF -DATLAS_BUILD_GUI_TEST=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF -DBUILD_SHARED_LIBS=OFF
-
+          cmake --preset=msvc -DBUILD_SHARED_LIBS=OFF
       - name: Build
         shell: powershell
         working-directory: ./build
@@ -47,7 +44,6 @@ jobs:
           BUILD_TYPE: ${{ matrix.config.build_type }}
         run: |
           cmake --build . --config $env:BUILD_TYPE
-
       - name: Test
         shell: powershell
         working-directory: ./build

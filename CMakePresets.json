@@ -1,0 +1,79 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired":{
+        "major": 3,
+        "minor": 22,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "common",
+            "hidden": true,
+            "displayName": "Common configuration",
+            "cacheVariables": {
+                "GLFW_BUILD_DOCS": "OFF",
+                "GLFW_BUILD_EXAMPLES": "OFF",
+                "GFW_BUILD_TESTS": "OFF",
+                "GLFW_BUILD_INSTALL": "OFF"
+            }
+        },
+        {
+            "name": "build",
+            "hidden": true,
+            "displayName": "Settings for builds",
+            "cacheVariables": {
+                "ATLAS_BUILD_GL_TEST": "OFF",
+                "ATLAS_BUILD_GUI_TEST": "OFF"
+            }
+        },
+        {
+            "name": "msvc",
+            "inherits": ["common", "build"],
+            "displayName": "MSVC",
+            "description": "Default build for MSVC",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "/W4 /WX /MP /EHsc -DNOMINMAX",
+                "CMAKE_CXX_FLAGS_DEBUG": "/ZI"
+            }
+        },
+        {
+            "name": "gcc",
+            "inherits": ["common", "build"],
+            "displayName": "GCC",
+            "description": "Default build for GCC",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror",
+                "CMAKE_CXX_FLAGS_DEBUG": "-g"
+            }
+        },
+        {
+            "name": "clang",
+            "inherits": ["common", "build"],
+            "displayName": "Clang",
+            "description": "Default build for Clang",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -pedantic -Werror -stdlib=libstdc++",
+                "CMAKE_CXX_FLAGS_DEBUG": "-g"
+            }
+        },
+        {
+            "name": "dev",
+            "inherits": "common",
+            "displayName": "Dev",
+            "description": "Settings for development",
+            "binaryDir": "${sourceDir}/build",
+            "generator": "Visual Studio 17 2022",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "/W4 /WX /MP /EHsc -DNOMINMAX",
+                "CMAKE_CXX_FLAGS_DEBUG": "/ZI",
+                "BUILD_SHARED_LIBS": "OFF"
+            }
+        }
+    ]
+}

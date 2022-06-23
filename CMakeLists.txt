@@ -1,7 +1,7 @@
 #================================
 # Project setup.
 #================================
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 project(atlas VERSION 3.0.0 LANGUAGES CXX C)
 
 if (APPLE)
@@ -150,33 +150,12 @@ if (NOT tinyobjloader_FOUND AND NOT tinyobjloader_POPULATED)
 endif()
 
 #================================
-# Compiler flags.
-#================================
-if (MSVC)
-    set(ATLAS_COMPILER_FLAGS /W4 /WX /MP)
-    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:Debug>:/ZI>")
-    set(ATLAS_COMPILE_DEFINITIONS -DNOMINMAX)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
-        "GNU")
-    set(ATLAS_COMMON_FLAGS -Wall -Wextra -pedantic -Werror)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(ATLAS_COMPILER_FLAGS ${ATLAS_COMMON_FLAGS})
-    else()
-        set(ATLAS_COMPILER_FLAGS ${ATLAS_COMMON_FLAGS} -stdlib=libstdc++)
-    endif()
-    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:-g>")
-endif()
-
-#================================
 # Math module.
 #================================
 add_library(atlas_math INTERFACE)
 target_include_directories(atlas_math INTERFACE ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas_math INTERFACE glm::glm zeus::zeus)
 target_compile_features(atlas_math INTERFACE cxx_std_20)
-target_compile_options(atlas_math INTERFACE ${ATLAS_COMPILER_FLAGS})
-target_compile_options(atlas_math INTERFACE ${ATLAS_DEBUG_FLAGS})
-target_compile_definitions(atlas_math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
 if (MSVC)
     add_custom_target(_atlas_math SOURCES ${ATLAS_INCLUDE_MATH_GROUP})
     set_target_properties(_atlas_math PROPERTIES FOLDER "atlas")
@@ -203,7 +182,6 @@ add_library(atlas_gui
     )
 target_include_directories(atlas_gui PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas_gui PUBLIC imgui atlas_glx zeus::zeus)
-target_compile_definitions(atlas_gui PUBLIC ${ATLAS_COMPILE_DEFINITIONS})
 add_library(atlas::gui ALIAS atlas_gui)
 set_target_properties(atlas_gui PROPERTIES FOLDER "atlas")
 
