@@ -457,8 +457,8 @@ namespace atlas::glx
         return "";
     }
 
-    std::optional<std::string>
-    create_shader_program(GLenum type, GLuint program, ShaderFile const& file)
+    std::optional<std::string> create_separable_shader_program(
+        GLenum type, GLuint program, ShaderFile const& file)
     {
         ASSERT(program != 0);
 
@@ -492,13 +492,15 @@ namespace atlas::glx
         return {};
     }
 
-    bool reload_shader_program(GLenum type,
-                               GLuint program_handle,
-                               ShaderFile& file,
-                               std::vector<std::string> const& include_dirs)
+    bool reload_separable_shader_program(
+        GLenum type,
+        GLuint program_handle,
+        ShaderFile& file,
+        std::vector<std::string> const& include_dirs)
     {
         file = read_shader_source(file.filename, include_dirs);
-        if (auto result = create_shader_program(type, program_handle, file);
+        if (auto result =
+                create_separable_shader_program(type, program_handle, file);
             result)
         {
             fmt::print(stderr, "error: {}\n", *result);

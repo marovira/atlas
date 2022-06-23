@@ -20,35 +20,6 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/projection.hpp>
 
-namespace atlas::math
-{
-    using Vector2 = glm::vec2;
-
-    using Vector = glm::vec3;
-
-    using Vector4 = glm::vec4;
-
-    using Point2 = Vector2;
-
-    using Point = Vector;
-
-    using Point4 = Vector4;
-
-    using Normal2 = Vector2;
-
-    using Normal = Vector;
-
-    using Normal4 = Vector4;
-
-    using Matrix2 = glm::mat2;
-
-    using Matrix3 = glm::mat3;
-
-    using Matrix4 = glm::mat4;
-
-    using Quaternion = glm::quat;
-} // namespace atlas::math
-
 #if defined(ZEUS_PLATFORM_WINDOWS)
 #    pragma warning(pop)
 #endif

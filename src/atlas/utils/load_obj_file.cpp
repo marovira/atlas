@@ -28,7 +28,6 @@ namespace atlas::utils
     std::optional<ObjMesh> load_obj_mesh(std::string const& filename,
                                          std::string const& material_path)
     {
-        using namespace atlas::math;
         tinyobj::ObjReader reader;
         tinyobj::ObjReaderConfig config;
         config.triangulate  = true;
@@ -81,9 +80,9 @@ namespace atlas::utils
                 int num_face_vertices = shapes[s].mesh.num_face_vertices[face];
                 for (int v{0}; v < num_face_vertices; ++v)
                 {
-                    Point p{};
-                    Normal n{};
-                    Point2 tex{};
+                    glm::vec3 p{};
+                    glm::vec3 n{};
+                    glm::vec2 tex{};
 
                     tinyobj::index_t idx =
                         shapes[s].mesh.indices[index_offset + v];

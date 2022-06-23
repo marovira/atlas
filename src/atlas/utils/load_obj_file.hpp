@@ -1,6 +1,6 @@
 #pragma once
 
-#include <atlas/math/math.hpp>
+#include <atlas/math/glm.hpp>
 #include <optional>
 #include <string>
 #include <tiny_obj_loader.h>
@@ -10,9 +10,9 @@ namespace atlas::utils
 {
     struct Vertex
     {
-        math::Point position{};
-        math::Normal normal{};
-        math::Point2 tex_coord{};
+        glm::vec3 position{};
+        glm::vec3 normal{};
+        glm::vec2 tex_coord{};
         std::size_t index{};
         std::size_t face_id{};
     };

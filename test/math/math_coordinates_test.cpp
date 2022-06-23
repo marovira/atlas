@@ -8,8 +8,8 @@ using namespace atlas::math;
 
 TEST_CASE("[coordinates] - cartesian_to_spherical", "[math]")
 {
-    Point p1{1, 0, 0};
-    Point p2{1, 1, 0};
+    glm::vec3 p1{1, 0, 0};
+    glm::vec3 p2{1, 1, 0};
 
     auto s1 = cartesian_to_spherical(p1);
     auto s2 = cartesian_to_spherical(p2);
@@ -25,8 +25,8 @@ TEST_CASE("[coordinates] - cartesian_to_spherical", "[math]")
 
 TEST_CASE("[coordinates] - spherical_to_cartesian", "[math]")
 {
-    Point p1{1, 0, 0};
-    Point p2{1, 1, 0};
+    glm::vec3 p1{1, 0, 0};
+    glm::vec3 p2{1, 1, 0};
 
     auto s1 = cartesian_to_spherical(p1);
     auto s2 = cartesian_to_spherical(p2);
@@ -45,8 +45,8 @@ TEST_CASE("[coordinates] - spherical_to_cartesian", "[math]")
 
 TEST_CASE("[coordinates] - cartesian_to_cylindrical", "[math]")
 {
-    Point p1{1, 0, 0};
-    Point p2{1, 1, 0};
+    glm::vec3 p1{1, 0, 0};
+    glm::vec3 p2{1, 1, 0};
 
     auto x1 = cartesian_to_cylindrical(p1);
     auto x2 = cartesian_to_cylindrical(p2);
@@ -62,8 +62,8 @@ TEST_CASE("[coordinates] - cartesian_to_cylindrical", "[math]")
 
 TEST_CASE("[coordinates] - cylindrical_to_cartesian", "[math]")
 {
-    Point p1{1, 0, 0};
-    Point p2{1, 1, 0};
+    glm::vec3 p1{1, 0, 0};
+    glm::vec3 p2{1, 1, 0};
 
     auto x1 = cartesian_to_cylindrical(p1);
     auto x2 = cartesian_to_cylindrical(p2);
@@ -82,8 +82,8 @@ TEST_CASE("[coordinates] - cylindrical_to_cartesian", "[math]")
 
 TEST_CASE("[coordinates] - cartesian_to_polar", "[math]")
 {
-    Point2 p1{1, 0};
-    Point2 p2{1, 1};
+    glm::vec2 p1{1, 0};
+    glm::vec2 p2{1, 1};
 
     auto x1 = cartesian_to_polar(p1);
     auto x2 = cartesian_to_polar(p2);
@@ -97,8 +97,8 @@ TEST_CASE("[coordinates] - cartesian_to_polar", "[math]")
 
 TEST_CASE("[coordinates] - polar_to_cartesian", "[math]")
 {
-    Point2 p1{1, 0};
-    Point2 p2{1, 1};
+    glm::vec2 p1{1, 0};
+    glm::vec2 p2{1, 1};
 
     auto x1 = cartesian_to_polar(p1);
     auto x2 = cartesian_to_polar(p2);

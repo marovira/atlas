@@ -45,12 +45,12 @@ namespace atlas::glx
                        ShaderFile& file,
                        std::vector<std::string> const& include_dirs = {});
 
-    std::optional<std::string>
-    create_shader_program(GLenum type, GLuint program, ShaderFile const& file);
+    std::optional<std::string> create_separable_shader_program(
+        GLenum type, GLuint program, ShaderFile const& file);
 
-    bool
-    reload_shader_program(GLenum type,
-                          GLuint program_handle,
-                          ShaderFile& file,
-                          std::vector<std::string> const& include_dirs = {});
+    bool reload_separable_shader_program(
+        GLenum type,
+        GLuint program_handle,
+        ShaderFile& file,
+        std::vector<std::string> const& include_dirs = {});
 } // namespace atlas::glx
