@@ -186,15 +186,6 @@ add_library(atlas::gui ALIAS atlas_gui)
 set_target_properties(atlas_gui PROPERTIES FOLDER "atlas")
 
 #================================
-# HLR module.
-#================================
-add_library(atlas_hlr ${ATLAS_INCLUDE_HLR_GROUP} ${ATLAS_SOURCE_HLR_GROUP})
-target_include_directories(atlas_hlr PUBLIC ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas_hlr PUBLIC zeus::zeus)
-add_library(atlas::hlr ALIAS atlas_hlr)
-set_target_properties(atlas_hlr PROPERTIES FOLDER "atlas")
-
-#================================
 # Utils module.
 #================================
 add_library(atlas_utils ${ATLAS_INCLUDE_UTILS_GROUP}
@@ -246,7 +237,6 @@ if (ATLAS_BUILD_TESTS)
         atlas_math 
         atlas_glx
         atlas_gui
-        atlas_hlr
         atlas_utils
         Catch2::Catch2)
     if (ATLAS_BUILD_GL_TEST)

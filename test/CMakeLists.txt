@@ -5,7 +5,6 @@ set(ATLAS_TEST_TOP_LIST
 # Add all tests.
 add_subdirectory(${ATLAS_TEST_ROOT}/glx)
 add_subdirectory(${ATLAS_TEST_ROOT}/gui)
-add_subdirectory(${ATLAS_TEST_ROOT}/hlr)
 add_subdirectory(${ATLAS_TEST_ROOT}/math)
 
 # Grab all of the test data and expected files so we can create the lists for
@@ -31,7 +30,6 @@ configure_file(${ATLAS_TEST_ROOT}/test_expected_paths.hpp.in
 set(ATLAS_TEST_TOP_GROUP ${ATLAS_TEST_TOP_LIST} PARENT_SCOPE)
 set(ATLAS_TEST_GLX_GROUP ${ATLAS_TEST_GLX_LIST} PARENT_SCOPE)
 set(ATLAS_TEST_GUI_GROUP ${ATLAS_TEST_GUI_LIST} PARENT_SCOPE)
-set(ATLAS_TEST_HLR_GROUP ${ATLAS_TEST_HLR_LIST} PARENT_SCOPE)
 set(ATLAS_TEST_MATH_GROUP ${ATLAS_TEST_MATH_LIST} PARENT_SCOPE)
 
 set(ATLAS_TEST_HEADER_GROUP
@@ -43,7 +41,6 @@ set(ATLAS_TEST_LIST
     ${ATLAS_TEST_TOP_LIST}
     ${ATLAS_TEST_GLX_LIST}
     ${ATLAS_TEST_GUI_LIST}
-    ${ATLAS_TEST_HLR_LIST}
     ${ATLAS_TEST_MATH_LIST}
     ${ATLAS_TEST_HEADER}
     ${ATLAS_EXPECTED_HEADER}
