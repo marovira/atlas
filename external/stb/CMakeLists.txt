@@ -18,5 +18,10 @@ source_group("source" FILES ${STB_SOURCE_LIST})
 
 add_library(stb ${STB_SOURCE_LIST} ${IMGUI_INCLUDE_LIST})
 target_include_directories(stb PUBLIC ${STB_SOURCE_DIR})
-target_compile_features(stb PUBLIC cxx_std_17)
+target_compile_features(stb PUBLIC cxx_std_20)
 set_target_properties(stb PROPERTIES FOLDER "stb")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL
+        "Clang")
+    target_compile_options(stb PRIVATE -Wno-missing-field-initializers)
+endif()
