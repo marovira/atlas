@@ -1,7 +1,7 @@
 #================================
 # Project setup.
 #================================
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.20)
 project(atlas VERSION 3.0.0 LANGUAGES CXX C)
 
 if (APPLE)
@@ -76,48 +76,6 @@ source_group("source\\atlas\\hlr" FILES ${ATLAS_SOURCE_HLR_GROUP})
 source_group("source\\atlas\\utils" FILES ${ATLAS_SOURCE_UTILS_GROUP})
 
 #================================
-# Clang targets.
-#================================
-find_program(CLANG_FORMAT_EXE 
-    NAMES "clang-format"
-    DOC "Path to clang-format executable"
-    )
-if (NOT CLANG_FORMAT_EXE)
-    message(STATUS "clang-format not found.")
-else()
-    message(STATUS "clang-format found: ${CLANG_FORMAT_EXE}")
-    set(ATLAS_FILES 
-        ${ATLAS_HEADER_FILES}
-        ${ATLAS_SOURCE_FILES}
-        ${ATLAS_TEST_LIST}
-        )
-    add_custom_target(clang-format
-        COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${ATLAS_FILES}
-        )
-endif()
-
-find_program(CLANG_TIDY_EXE
-    NAMES "clang-tidy"
-    DOC "Path to clang-tidy executable"
-    )
-if (NOT CLANG_TIDY_EXE)
-    message(STATUS "clang-tidy not found")
-else()
-    message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
-    set(ATLAS_FILES
-        ${ATLAS_HEADER_FILES}
-        ${ATLAS_SOURCE_FILES}
-        )
-    add_custom_target(clang-tidy
-        COMMAND ${CLANG_TIDY_EXE} ${ATLAS_FILES} 
-        -config=""
-        -- 
-        -std=c++17
-        -I${ATLAS_INCLUDE_ROOT}
-        )
-endif()
-
-#================================
 # Find Packages.
 #================================
 include(FetchContent)
@@ -127,27 +85,27 @@ include(FetchContent)
 FetchContent_Declare(
     zeus
     GIT_REPOSITORY https://github.com/marovira/zeus
-    GIT_TAG fb160fe7ee496c270bb8c6e13cfbeec7d0a08ae8
+    GIT_TAG 8167f1b3257d1ef99448304b3710bf0145218121
     )
 
-# Version 0.9.9.8
+# Move to latest version that has the INSTALL target
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git 
-    GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e
+    GIT_TAG cc98465e3508535ba8c7f6208df934c156a018dc
     )
 
-# Version 3.3.4
+# Version 3.3.7
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git 
-    GIT_TAG 814b7929c5add4b0541ccad26fb81f28b71dc4d8
+    GIT_TAG 45ce5ddd197d5c58f50fdd3296a5131c894e5527
     )
 
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/marovira/gl3w.git
-    GIT_TAG 2041cebf56a0fc5650fc6e8f67414dd221a05657
+    GIT_TAG d5a85780ea09a5a872c7e71877298a96834fa23c
     )
 
 # Latest version
@@ -196,7 +154,7 @@ endif()
 #================================
 if (MSVC)
     set(ATLAS_COMPILER_FLAGS /W4 /WX /MP)
-    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:DEBUG>:/ZI>")
+    set(ATLAS_DEBUG_FLAGS "$<$<CONFIG:Debug>:/ZI>")
     set(ATLAS_COMPILE_DEFINITIONS -DNOMINMAX)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
         "GNU")
@@ -214,8 +172,8 @@ endif()
 #================================
 add_library(atlas_math INTERFACE)
 target_include_directories(atlas_math INTERFACE ${ATLAS_SOURCE_ROOT})
-target_link_libraries(atlas_math INTERFACE glm zeus::zeus)
-target_compile_features(atlas_math INTERFACE cxx_std_17)
+target_link_libraries(atlas_math INTERFACE glm::glm zeus::zeus)
+target_compile_features(atlas_math INTERFACE cxx_std_20)
 target_compile_options(atlas_math INTERFACE ${ATLAS_COMPILER_FLAGS})
 target_compile_options(atlas_math INTERFACE ${ATLAS_DEBUG_FLAGS})
 target_compile_definitions(atlas_math INTERFACE ${ATLAS_COMPILE_DEFINITIONS})
@@ -245,6 +203,7 @@ add_library(atlas_gui
     )
 target_include_directories(atlas_gui PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas_gui PUBLIC imgui atlas_glx zeus::zeus)
+target_compile_definitions(atlas_gui PUBLIC ${ATLAS_COMPILE_DEFINITIONS})
 add_library(atlas::gui ALIAS atlas_gui)
 set_target_properties(atlas_gui PROPERTIES FOLDER "atlas")
 
