@@ -105,7 +105,7 @@ FetchContent_Declare(
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/marovira/gl3w.git
-    GIT_TAG d5a85780ea09a5a872c7e71877298a96834fa23c
+    GIT_TAG 03afb4623bf5117a577b4b6dff7739ef677a56cd
     )
 
 # Latest version
