@@ -23,5 +23,5 @@ source_group("source" FILES ${IMGUI_SOURCE_LIST})
 
 add_library(imgui ${IMGUI_SOURCE_LIST} ${IMGUI_INCLUDE_LIST})
 target_include_directories(imgui PUBLIC ${IMGUI_SOURCE_DIR})
-target_compile_features(imgui PUBLIC cxx_std_17)
+target_compile_features(imgui PUBLIC cxx_std_20)
 set_target_properties(imgui PROPERTIES FOLDER "imgui")

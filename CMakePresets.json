@@ -34,7 +34,7 @@
             "generator": "Visual Studio 17 2022",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "CMAKE_CXX_FLAGS": "/W4 /WX /MP /EHsc -DNOMINMAX -D_CRT_SECURE_NO_WARNINGS",
+                "CMAKE_CXX_FLAGS": "/W4 /WX /MP /EHsc -DNOMINMAX",
                 "CMAKE_CXX_FLAGS_DEBUG": "/ZI"
             }
         },
