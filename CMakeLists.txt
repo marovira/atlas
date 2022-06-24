@@ -202,7 +202,7 @@ set_target_properties(atlas_utils PROPERTIES FOLDER "atlas")
 add_library(atlas ${ATLAS_SOURCE_ROOT_GROUP})
 target_include_directories(atlas PUBLIC ${ATLAS_SOURCE_ROOT})
 target_link_libraries(atlas PUBLIC zeus::zeus atlas_math atlas_glx atlas_gui
-    atlas_hlr atlas_utils)
+    atlas_utils)
 add_library(atlas::atlas ALIAS atlas)
 set_target_properties(atlas PROPERTIES FOLDER "atlas")
 
