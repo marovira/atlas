@@ -16,3 +16,4 @@ test/test_data_paths.hpp
 test/test_expected_paths.hpp
 test/test_data/hlr/test_library_debug_path.hpp
 test/test_data/hlr/test_library_release_path.hpp
+.clang-format
