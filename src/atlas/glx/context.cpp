@@ -5,11 +5,9 @@
 
 namespace atlas::glx
 {
-    static void
-    mouse_press_callback(GLFWwindow* window, int button, int action, int mods)
+    static void mouse_press_callback(GLFWwindow* window, int button, int action, int mods)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -24,11 +22,9 @@ namespace atlas::glx
         }
     }
 
-    static void
-    mouse_move_callback(GLFWwindow* window, double xPos, double yPos)
+    static void mouse_move_callback(GLFWwindow* window, double xPos, double yPos)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -40,11 +36,9 @@ namespace atlas::glx
         }
     }
 
-    static void
-    mouse_scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
+    static void mouse_scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -56,8 +50,7 @@ namespace atlas::glx
         }
     }
 
-    static void key_press_callback(
-        GLFWwindow* window, int key, int scancode, int action, int mods)
+    static void key_press_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
@@ -65,8 +58,7 @@ namespace atlas::glx
             return;
         }
 
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -80,8 +72,7 @@ namespace atlas::glx
 
     static void window_size_callback(GLFWwindow* window, int width, int height)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -93,11 +84,9 @@ namespace atlas::glx
         }
     }
 
-    static void
-    framebuffer_size_callback(GLFWwindow* window, int width, int height)
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -111,8 +100,7 @@ namespace atlas::glx
 
     static void char_callback(GLFWwindow* window, unsigned int codepoint)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -126,8 +114,7 @@ namespace atlas::glx
 
     static void window_close_callback(GLFWwindow* window)
     {
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         if (callbacks == nullptr)
         {
             return;
@@ -156,22 +143,15 @@ namespace atlas::glx
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, settings.version.major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, settings.version.minor);
         glfwWindowHint(GLFW_OPENGL_PROFILE, settings.profile);
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,
-                       static_cast<int>(settings.enable_debug_context));
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
-                       static_cast<int>(settings.is_forward_compatible));
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, static_cast<int>(settings.enable_debug_context));
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, static_cast<int>(settings.is_forward_compatible));
 
         glfwWindowHint(GLFW_MAXIMIZED, static_cast<int>(settings.is_maximized));
-        glfwWindowHint(GLFW_RESIZABLE,
-                       static_cast<int>(settings.is_resizeable));
+        glfwWindowHint(GLFW_RESIZABLE, static_cast<int>(settings.is_resizeable));
 
-        GLFWmonitor* monitor =
-            (settings.is_fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
-        GLFWwindow* window = glfwCreateWindow(settings.size.width,
-                                              settings.size.height,
-                                              settings.title.c_str(),
-                                              monitor,
-                                              nullptr);
+        GLFWmonitor* monitor = (settings.is_fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
+        GLFWwindow* window =
+            glfwCreateWindow(settings.size.width, settings.size.height, settings.title.c_str(), monitor, nullptr);
         return window;
     }
 
@@ -190,10 +170,7 @@ namespace atlas::glx
 
         if (gl3wIsSupported(version.major, version.minor) == 0)
         {
-            fmt::print(stderr,
-                       "error: OpenGL {}.{} is not supported.\n",
-                       version.major,
-                       version.minor);
+            fmt::print(stderr, "error: OpenGL {}.{} is not supported.\n", version.major, version.minor);
             return false;
         }
 
@@ -205,8 +182,7 @@ namespace atlas::glx
         return true;
     }
 
-    void bind_window_callbacks(GLFWwindow* window,
-                               WindowCallbacks const& callbacks)
+    void bind_window_callbacks(GLFWwindow* window, WindowCallbacks const& callbacks)
     {
         if (window == nullptr)
         {
@@ -234,8 +210,7 @@ namespace atlas::glx
             return;
         }
 
-        auto callbacks =
-            static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
+        auto callbacks = static_cast<WindowCallbacks*>(glfwGetWindowUserPointer(window));
         delete callbacks;
         glfwSetWindowUserPointer(window, nullptr);
 

@@ -58,16 +58,13 @@ namespace atlas::utils
             auto right = glm::normalize(glm::cross(m_up, view));
 
             glm::vec3 target{0};
-            auto azimuth = glm::translate(glm::mat4{1.0f}, m_azimuth_target) *
-                           glm::rotate(glm::mat4{1.0f},
-                                       glm::radians(delta.x),
-                                       glm::vec3{0, 1, 0}) *
-                           glm::translate(glm::mat4{1.0f}, -m_azimuth_target);
+            auto azimuth = glm::translate(glm::mat4{1.0f}, m_azimuth_target)
+                           * glm::rotate(glm::mat4{1.0f}, glm::radians(delta.x), glm::vec3{0, 1, 0})
+                           * glm::translate(glm::mat4{1.0f}, -m_azimuth_target);
 
-            auto elevation =
-                glm::translate(glm::mat4{1.0f}, target) *
-                glm::rotate(glm::mat4{1.0f}, glm::radians(delta.y), right) *
-                glm::translate(glm::mat4{1.0f}, -target);
+            auto elevation = glm::translate(glm::mat4{1.0f}, target)
+                             * glm::rotate(glm::mat4{1.0f}, glm::radians(delta.y), right)
+                             * glm::translate(glm::mat4{1.0f}, -target);
 
             m_tumble = elevation * m_tumble * azimuth;
             break;

@@ -41,9 +41,8 @@ namespace atlas::glx
         none         = 0x0
     };
 
-    void
-    initialize_gl_error_callback(ErrorSource source     = ErrorSource::all,
-                                 ErrorType type         = ErrorType::all,
-                                 ErrorSeverity severity = ErrorSeverity::all);
+    void initialize_gl_error_callback(ErrorSource source     = ErrorSource::all,
+                                      ErrorType type         = ErrorType::all,
+                                      ErrorSeverity severity = ErrorSeverity::all);
 
 } // namespace atlas::glx

@@ -27,8 +27,7 @@ namespace atlas::gui::widgets
         ImGui::Text("Vendor graphic card: %s", glGetString(GL_VENDOR));
         ImGui::Text("Renderer: %s", glGetString(GL_RENDERER));
         ImGui::Text("OpenGL version: %s", glGetString(GL_VERSION));
-        ImGui::Text("GLSL version: %s",
-                    glGetString(GL_SHADING_LANGUAGE_VERSION));
+        ImGui::Text("GLSL version: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
         ImGui::Text("Atlas version: %s", atlas_version_string.data());
         ImGui::End();
     }

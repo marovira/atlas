@@ -25,8 +25,7 @@ namespace atlas::utils
         }
     };
 
-    std::optional<ObjMesh> load_obj_mesh(std::string const& filename,
-                                         std::string const& material_path)
+    std::optional<ObjMesh> load_obj_mesh(std::string const& filename, std::string const& material_path)
     {
         tinyobj::ObjReader reader;
         tinyobj::ObjReaderConfig config;
@@ -35,9 +34,8 @@ namespace atlas::utils
 
         // Check if the material path is empty. If it is, then use the root
         // directory of the file itself. Otherwise, use the provided path.
-        std::string root_dir = zeus::get_file_directory(filename);
-        config.mtl_search_path =
-            (material_path.empty()) ? root_dir : material_path;
+        std::string root_dir   = zeus::get_file_directory(filename);
+        config.mtl_search_path = (material_path.empty()) ? root_dir : material_path;
 
         bool ret = reader.ParseFromFile(filename, config);
         if (!ret || !reader.Valid())
@@ -47,8 +45,7 @@ namespace atlas::utils
 
         if (!reader.Warning().empty())
         {
-            fmt::print("warning: in function loadObjMesh: {}\n",
-                       reader.Warning());
+            fmt::print("warning: in function loadObjMesh: {}\n", reader.Warning());
         }
 
         if (!reader.Error().empty())
@@ -73,9 +70,7 @@ namespace atlas::utils
             std::vector<Vertex> unique_vertices{};
             std::size_t index_offset{0};
 
-            for (std::size_t face{0};
-                 face < shapes[s].mesh.num_face_vertices.size();
-                 ++face)
+            for (std::size_t face{0}; face < shapes[s].mesh.num_face_vertices.size(); ++face)
             {
                 int num_face_vertices = shapes[s].mesh.num_face_vertices[face];
                 for (int v{0}; v < num_face_vertices; ++v)
@@ -84,8 +79,7 @@ namespace atlas::utils
                     glm::vec3 n{};
                     glm::vec2 tex{};
 
-                    tinyobj::index_t idx =
-                        shapes[s].mesh.indices[index_offset + v];
+                    tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
                     p.x = attrib.vertices[3 * idx.vertex_index + 0];
                     p.y = attrib.vertices[3 * idx.vertex_index + 1];

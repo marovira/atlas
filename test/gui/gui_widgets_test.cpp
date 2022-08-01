@@ -30,10 +30,9 @@ void test_window(Args&&... args)
     gui::UIRenderData ui_render_data;
     gui::UIWindowData ui_window_data;
 
-    auto mouse_press_callback =
-        [&ui_window_data](int button, int action, int mode, double, double) {
-            gui::mouse_pressed_callback(ui_window_data, button, action, mode);
-        };
+    auto mouse_press_callback = [&ui_window_data](int button, int action, int mode, double, double) {
+        gui::mouse_pressed_callback(ui_window_data, button, action, mode);
+    };
 
     auto mouse_scroll_callback = [](double xOffset, double yOffset) {
         gui::mouse_scroll_callback(xOffset, yOffset);

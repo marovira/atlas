@@ -7,10 +7,8 @@
 
 namespace atlas::math
 {
-    template<typename T,
-             typename = std::enable_if<std::is_floating_point<T>::value>>
-    std::size_t solve_quadratic(std::vector<T> const& coeffs,
-                                std::vector<T>& roots)
+    template<typename T, typename = std::enable_if<std::is_floating_point<T>::value>>
+    std::size_t solve_quadratic(std::vector<T> const& coeffs, std::vector<T>& roots)
     {
         using zeus::is_zero;
 
@@ -44,8 +42,7 @@ namespace atlas::math
         return 0;
     }
 
-    template<typename T,
-             typename = std::enable_if<std::is_floating_point<T>::value>>
+    template<typename T, typename = std::enable_if<std::is_floating_point<T>::value>>
     std::size_t solve_cubic(std::vector<T> const& coeffs, std::vector<T>& roots)
     {
         using zeus::is_zero;
@@ -68,7 +65,7 @@ namespace atlas::math
         // x^3 + px + q = 0
         T sqA = A * A;
         T p   = T{1} / T{3} * (-T{1} / T{3} * sqA + B);
-        T q = T{1} / T{2} * (T{2} / T{27} * A * sqA - T{1} / T{3} * A * B + C);
+        T q   = T{1} / T{2} * (T{2} / T{27} * A * sqA - T{1} / T{3} * A * B + C);
 
         // Use Cardano's formula.
         T cbP = p * p * p;
@@ -126,18 +123,15 @@ namespace atlas::math
         return num;
     }
 
-    template<typename T,
-             typename = std::enable_if<std::is_floating_point<T>::value>>
-    std::size_t solve_quartic(std::vector<T> const& coeffs,
-                              std::vector<T>& roots)
+    template<typename T, typename = std::enable_if<std::is_floating_point<T>::value>>
+    std::size_t solve_quartic(std::vector<T> const& coeffs, std::vector<T>& roots)
     {
         using zeus::is_zero;
 
         assert(coeffs.size() == 5);
 
         auto weak_is_zero = [](T x) {
-            return x > -std::numeric_limits<T>::epsilon() &&
-                   x < std::numeric_limits<T>::epsilon();
+            return x > -std::numeric_limits<T>::epsilon() && x < std::numeric_limits<T>::epsilon();
         };
 
         if (roots.empty())
@@ -159,8 +153,7 @@ namespace atlas::math
         T sqA = A * A;
         T p   = -T{3} / T{8} * sqA + B;
         T q   = T{1} / T{8} * sqA * A - T{1} / T{2} * A * B + C;
-        T r   = -T{3} / T{256} * sqA * sqA + T{1} / T{16} * sqA * B -
-              T{1} / T{4} * A * C + D;
+        T r   = -T{3} / T{256} * sqA * sqA + T{1} / T{16} * sqA * B - T{1} / T{4} * A * C + D;
 
         std::size_t num{0};
         if (is_zero<T>(r) || weak_is_zero(r))

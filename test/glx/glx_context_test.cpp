@@ -36,10 +36,9 @@ TEST_CASE("[context] - bind_window_callbacks: single window", "[glx]")
 
     std::vector<bool> callbacks_success(7, false);
 
-    auto mouse_press_callback =
-        [&callbacks_success](int, int, int, double, double) {
-            callbacks_success[0] = true;
-        };
+    auto mouse_press_callback = [&callbacks_success](int, int, int, double, double) {
+        callbacks_success[0] = true;
+    };
     auto mouse_move_callback = [&callbacks_success](double, double) {
         callbacks_success[1] = true;
     };

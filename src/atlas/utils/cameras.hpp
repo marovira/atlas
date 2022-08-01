@@ -21,9 +21,7 @@ namespace atlas::utils
         virtual void on_mouse_scroll([[maybe_unused]] glm::vec2 const& point)
         {}
 
-        virtual void on_key_press([[maybe_unused]] int key,
-                                  [[maybe_unused]] int action,
-                                  [[maybe_unused]] int mods)
+        virtual void on_key_press([[maybe_unused]] int key, [[maybe_unused]] int action, [[maybe_unused]] int mods)
         {}
 
         virtual glm::mat4 compute_view_matrix() const
