@@ -105,8 +105,3 @@ bundles third-party code that is distributed under their corresponding licenses
 which can be seen
 [here](https://github.com/marovira/atlas/blob/master/LICENSE-3RD-PARTY).
 
-## Documentation
-
-The documentation for Atlas is currently being re-written.  For more help,
-including tutorials, instructions, etc. see
-[here](https://marovira.github.io/atlas/).
