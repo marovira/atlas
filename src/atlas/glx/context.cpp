@@ -50,7 +50,8 @@ namespace atlas::glx
         }
     }
 
-    static void key_press_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+    static void
+    key_press_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
@@ -143,15 +144,21 @@ namespace atlas::glx
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, settings.version.major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, settings.version.minor);
         glfwWindowHint(GLFW_OPENGL_PROFILE, settings.profile);
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, static_cast<int>(settings.enable_debug_context));
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, static_cast<int>(settings.is_forward_compatible));
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT,
+                       static_cast<int>(settings.enable_debug_context));
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                       static_cast<int>(settings.is_forward_compatible));
 
         glfwWindowHint(GLFW_MAXIMIZED, static_cast<int>(settings.is_maximized));
         glfwWindowHint(GLFW_RESIZABLE, static_cast<int>(settings.is_resizeable));
 
-        GLFWmonitor* monitor = (settings.is_fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
-        GLFWwindow* window =
-            glfwCreateWindow(settings.size.width, settings.size.height, settings.title.c_str(), monitor, nullptr);
+        GLFWmonitor* monitor =
+            (settings.is_fullscreen) ? glfwGetPrimaryMonitor() : nullptr;
+        GLFWwindow* window = glfwCreateWindow(settings.size.width,
+                                              settings.size.height,
+                                              settings.title.c_str(),
+                                              monitor,
+                                              nullptr);
         return window;
     }
 
@@ -170,7 +177,10 @@ namespace atlas::glx
 
         if (gl3wIsSupported(version.major, version.minor) == 0)
         {
-            fmt::print(stderr, "error: OpenGL {}.{} is not supported.\n", version.major, version.minor);
+            fmt::print(stderr,
+                       "error: OpenGL {}.{} is not supported.\n",
+                       version.major,
+                       version.minor);
             return false;
         }
 

@@ -34,7 +34,12 @@ namespace atlas::glx
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageCallback(openGLErrorCallback, nullptr);
             GLuint unused_ids{0};
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unused_ids, true);
+            glDebugMessageControl(GL_DONT_CARE,
+                                  GL_DONT_CARE,
+                                  GL_DONT_CARE,
+                                  0,
+                                  &unused_ids,
+                                  true);
 
             error_filters.source   = source;
             error_filters.type     = type;
@@ -209,7 +214,8 @@ namespace atlas::glx
             return;
         }
 
-        std::string error_message = fmt::format("{}({}):({}): {}", error_type, error_origin, id, message);
+        std::string error_message =
+            fmt::format("{}({}):({}): {}", error_type, error_origin, id, message);
 
         switch (severity)
         {

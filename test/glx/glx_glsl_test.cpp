@@ -22,7 +22,8 @@ namespace atlas::glx
 {
     bool operator==(FileData const& lhs, FileData const& rhs)
     {
-        return lhs.filename == rhs.filename && lhs.parent == rhs.parent && lhs.last_write == rhs.last_write;
+        return lhs.filename == rhs.filename && lhs.parent == rhs.parent
+               && lhs.last_write == rhs.last_write;
     }
 
     bool operator!=(FileData const& lhs, FileData const& rhs)

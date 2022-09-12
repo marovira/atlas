@@ -30,7 +30,8 @@ namespace atlas::glx
         std::vector<FileData> included_files;
     };
 
-    ShaderFile read_shader_source(std::string const& filename, std::vector<std::string> const& include_dirs = {});
+    ShaderFile read_shader_source(std::string const& filename,
+                                  std::vector<std::string> const& include_dirs = {});
 
     bool should_shader_be_reloaded(ShaderFile const& file);
 
@@ -44,10 +45,12 @@ namespace atlas::glx
                        ShaderFile& file,
                        std::vector<std::string> const& include_dirs = {});
 
-    std::optional<std::string> create_separable_shader_program(GLenum type, GLuint program, ShaderFile const& file);
+    std::optional<std::string>
+    create_separable_shader_program(GLenum type, GLuint program, ShaderFile const& file);
 
-    bool reload_separable_shader_program(GLenum type,
-                                         GLuint program_handle,
-                                         ShaderFile& file,
-                                         std::vector<std::string> const& include_dirs = {});
+    bool
+    reload_separable_shader_program(GLenum type,
+                                    GLuint program_handle,
+                                    ShaderFile& file,
+                                    std::vector<std::string> const& include_dirs = {});
 } // namespace atlas::glx

@@ -36,7 +36,8 @@ namespace atlas::gui::widgets
         m_fps_points.push_back(current_fps);
         m_fps_points.pop_front();
 
-        float average = std::accumulate(m_fps_points.begin(), m_fps_points.end(), 0.0f) / m_fps_points.size();
+        float average = std::accumulate(m_fps_points.begin(), m_fps_points.end(), 0.0f)
+                        / m_fps_points.size();
 
         std::vector<float> points{m_fps_points.begin(), m_fps_points.end()};
 

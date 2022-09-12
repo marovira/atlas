@@ -19,7 +19,8 @@ namespace atlas::glx
                                         ShaderFile& file,
                                         std::vector<std::string> const& include_dirs);
 
-    ShaderFile read_shader_source(std::string const& filename, std::vector<std::string> const& include_dirs)
+    ShaderFile read_shader_source(std::string const& filename,
+                                  std::vector<std::string> const& include_dirs)
     {
         ShaderFile file;
 
@@ -29,7 +30,8 @@ namespace atlas::glx
         p = p.make_preferred();
         if (!fs::exists(p))
         {
-            auto message = fmt::format("error: no such file or directory: \'{}\'.\n", filename);
+            auto message =
+                fmt::format("error: no such file or directory: \'{}\'.\n", filename);
             throw std::runtime_error{message};
         }
         file.source_string = recurse_on_shader_files(p.string(), file, include_dirs);
@@ -52,8 +54,9 @@ namespace atlas::glx
         return false;
     }
 
-    std::string
-    recurse_on_shader_files(std::string const& filename, ShaderFile& file, std::vector<std::string> const& include_dirs)
+    std::string recurse_on_shader_files(std::string const& filename,
+                                        ShaderFile& file,
+                                        std::vector<std::string> const& include_dirs)
     {
         std::ifstream in_file{filename};
         std::stringstream out_string;
@@ -140,8 +143,8 @@ namespace atlas::glx
             {
                 // We have an include, so extract the path of the included file.
                 const std::string include_string = "#include ";
-                std::size_t path_size            = line.size() - include_string.size() - 2;
-                std::string path                 = line.substr(include_string.size() + 1, path_size);
+                std::size_t path_size = line.size() - include_string.size() - 2;
+                std::string path      = line.substr(include_string.size() + 1, path_size);
 
                 // Compute the absolute path.
                 std::string absolute_path;
@@ -200,7 +203,8 @@ namespace atlas::glx
                 }
 
                 file.included_files.emplace_back(absolute_path, file_num, timestamp);
-                auto parsed_file = recurse_on_shader_files(absolute_path, file, include_dirs);
+                auto parsed_file =
+                    recurse_on_shader_files(absolute_path, file, include_dirs);
 
                 out_string << parsed_file;
 
@@ -357,8 +361,10 @@ namespace atlas::glx
             // out the error.
             if (hierarchy.size() == 1)
             {
-                auto message =
-                    fmt::format("In file {}({}): {}\n", file.included_files[hierarchy[0]].filename, line_num, error);
+                auto message = fmt::format("In file {}({}): {}\n",
+                                           file.included_files[hierarchy[0]].filename,
+                                           line_num,
+                                           error);
                 out_log << message;
                 continue;
             }
@@ -367,11 +373,15 @@ namespace atlas::glx
             // To do this, we traverse the list in reverse.
             for (std::size_t i{hierarchy.size() - 1}; i > 0; --i)
             {
-                auto message = fmt::format("In file included from {}:\n", file.included_files[hierarchy[i]].filename);
+                auto message = fmt::format("In file included from {}:\n",
+                                           file.included_files[hierarchy[i]].filename);
                 out_log << message;
             }
 
-            auto message = fmt::format("{}({}): {}\n", file.included_files[0].filename, line_num, error);
+            auto message = fmt::format("{}({}): {}\n",
+                                       file.included_files[0].filename,
+                                       line_num,
+                                       error);
             out_log << message;
         }
 
@@ -432,7 +442,8 @@ namespace atlas::glx
         return "";
     }
 
-    std::optional<std::string> create_separable_shader_program(GLenum type, GLuint program, ShaderFile const& file)
+    std::optional<std::string>
+    create_separable_shader_program(GLenum type, GLuint program, ShaderFile const& file)
     {
         ASSERT(program != 0);
 
@@ -441,7 +452,7 @@ namespace atlas::glx
         if (!shader)
         {
             std::string shader_type = get_shader_type_string(type);
-            std::string message     = fmt::format("error: failed to create {}", shader_type);
+            std::string message = fmt::format("error: failed to create {}", shader_type);
             throw std::runtime_error{message};
         }
 
@@ -471,7 +482,8 @@ namespace atlas::glx
                                          std::vector<std::string> const& include_dirs)
     {
         file = read_shader_source(file.filename, include_dirs);
-        if (auto result = create_separable_shader_program(type, program_handle, file); result)
+        if (auto result = create_separable_shader_program(type, program_handle, file);
+            result)
         {
             fmt::print(stderr, "error: {}\n", *result);
             return false;

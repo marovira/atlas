@@ -25,7 +25,8 @@ namespace atlas::utils
         }
     };
 
-    std::optional<ObjMesh> load_obj_mesh(std::string const& filename, std::string const& material_path)
+    std::optional<ObjMesh> load_obj_mesh(std::string const& filename,
+                                         std::string const& material_path)
     {
         tinyobj::ObjReader reader;
         tinyobj::ObjReaderConfig config;
@@ -70,7 +71,8 @@ namespace atlas::utils
             std::vector<Vertex> unique_vertices{};
             std::size_t index_offset{0};
 
-            for (std::size_t face{0}; face < shapes[s].mesh.num_face_vertices.size(); ++face)
+            for (std::size_t face{0}; face < shapes[s].mesh.num_face_vertices.size();
+                 ++face)
             {
                 int num_face_vertices = shapes[s].mesh.num_face_vertices[face];
                 for (int v{0}; v < num_face_vertices; ++v)
