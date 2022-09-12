@@ -1,3 +1,0 @@
-[submodule "clang-format"]
-	path = clang-format
-	url = git@github.com:marovira/clang-format.git
