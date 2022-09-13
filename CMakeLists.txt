@@ -1,7 +1,7 @@
 #================================
 # Project setup.
 #================================
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.24)
 project(atlas VERSION 3.0.0 LANGUAGES CXX C)
 
 if (APPLE)
@@ -17,10 +17,6 @@ set(ATLAS_VERSION_EXTRA "")
 set(ATLAS_VERSION "${ATLAS_VERSION_MAJOR}.${ATLAS_VERSION_MINOR}")
 set(ATLAS_VERSION_FULL 
     "${ATLAS_VERSION}.${ATLAS_VERSION_PATCH}${ATLAS_VERSION_EXTRA}")
-
-if (POLICY CMP0072)
-    cmake_policy(SET CMP0072 NEW)
-endif()
 
 #================================
 # Option variables.
