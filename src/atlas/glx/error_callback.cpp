@@ -23,7 +23,8 @@ namespace atlas::glx
                                       GLchar const* message,
                                       void const* userParam);
 
-    void initialize_gl_error_callback(InitializeGLErrorCallbackParams const& params)
+    void initialize_gl_error_callback(
+        [[maybe_unused]] InitializeGLErrorCallbackParams const& params)
     {
 #if defined(ZEUS_BUILD_DEBUG)
         auto [source, type, severity] = params;
