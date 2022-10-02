@@ -8,9 +8,9 @@ namespace atlas::glx
 {
     struct ErrorFilters
     {
-        ErrorSource source;
-        ErrorType type;
-        ErrorSeverity severity;
+        zeus::EnumBitfield<ErrorSource> source;
+        zeus::EnumBitfield<ErrorType> type;
+        zeus::EnumBitfield<ErrorSeverity> severity;
     };
 
     static ErrorFilters error_filters;
@@ -23,11 +23,11 @@ namespace atlas::glx
                                       GLchar const* message,
                                       void const* userParam);
 
-    void initialize_gl_error_callback([[maybe_unused]] ErrorSource source,
-                                      [[maybe_unused]] ErrorType type,
-                                      [[maybe_unused]] ErrorSeverity severity)
+    void initialize_gl_error_callback(InitializeGLErrorCallbackParams const& params)
     {
 #if defined(ZEUS_BUILD_DEBUG)
+        auto [source, type, severity] = params;
+
         if (glDebugMessageCallback)
         {
             fmt::print("OpenGL debug callback available\n");
@@ -54,15 +54,6 @@ namespace atlas::glx
 #endif
     }
 
-    template<typename T>
-    bool check(T a, T b)
-    {
-        using namespace magic_enum::bitwise_operators;
-        T c      = a & b;
-        auto res = magic_enum::enum_integer(c);
-        return (res != 0);
-    }
-
     void APIENTRY openGLErrorCallback(GLenum source,
                                       GLenum type,
                                       GLuint id,
@@ -75,7 +66,7 @@ namespace atlas::glx
         switch (source)
         {
         case GL_DEBUG_SOURCE_API:
-            if (check(error_filters.source, ErrorSource::api))
+            if (error_filters.source & ErrorSource::api)
             {
                 error_origin = "OpenGL API";
                 break;
@@ -84,7 +75,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-            if (check(error_filters.source, ErrorSource::window_system))
+            if (error_filters.source & ErrorSource::window_system)
             {
                 error_origin = "window system";
                 break;
@@ -93,7 +84,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_SOURCE_SHADER_COMPILER:
-            if (check(error_filters.source, ErrorSource::shader_compiler))
+            if (error_filters.source & ErrorSource::shader_compiler)
             {
                 error_origin = "shader compiler";
                 break;
@@ -102,7 +93,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_SOURCE_THIRD_PARTY:
-            if (check(error_filters.source, ErrorSource::third_party))
+            if (error_filters.source & ErrorSource::third_party)
             {
                 error_origin = "third party";
                 break;
@@ -111,7 +102,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_SOURCE_APPLICATION:
-            if (check(error_filters.source, ErrorSource::application))
+            if (error_filters.source & ErrorSource::application)
             {
                 error_origin = "user of application";
                 break;
@@ -120,7 +111,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_SOURCE_OTHER:
-            if (check(error_filters.source, ErrorSource::other))
+            if (error_filters.source & ErrorSource::other)
             {
                 error_origin = "other";
                 break;
@@ -133,7 +124,7 @@ namespace atlas::glx
         switch (type)
         {
         case GL_DEBUG_TYPE_ERROR:
-            if (check(error_filters.type, ErrorType::error))
+            if (error_filters.type & ErrorType::error)
             {
                 error_type = "error";
                 break;
@@ -142,7 +133,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-            if (check(error_filters.type, ErrorType::deprecated_behaviour))
+            if (error_filters.type & ErrorType::deprecated_behaviour)
             {
                 error_type = "deprecated behaviour";
                 break;
@@ -151,7 +142,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-            if (check(error_filters.type, ErrorType::UndefinedBehaviour))
+            if (error_filters.type & ErrorType::undefined_behaviour)
             {
                 error_type = "undefined behaviour";
                 break;
@@ -160,7 +151,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_PORTABILITY:
-            if (check(error_filters.type, ErrorType::portability))
+            if (error_filters.type & ErrorType::portability)
             {
                 error_type = "portability";
                 break;
@@ -169,7 +160,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_PERFORMANCE:
-            if (check(error_filters.type, ErrorType::performance))
+            if (error_filters.type & ErrorType::performance)
             {
                 error_type = "performance";
                 break;
@@ -178,7 +169,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_MARKER:
-            if (check(error_filters.type, ErrorType::marker))
+            if (error_filters.type & ErrorType::marker)
             {
                 error_type = "marker";
                 break;
@@ -187,7 +178,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_PUSH_GROUP:
-            if (check(error_filters.type, ErrorType::push_group))
+            if (error_filters.type & ErrorType::push_group)
             {
                 error_type = "push group";
                 break;
@@ -196,7 +187,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_POP_GROUP:
-            if (check(error_filters.type, ErrorType::pop_group))
+            if (error_filters.type & ErrorType::pop_group)
             {
                 error_type = "pop group";
                 break;
@@ -205,7 +196,7 @@ namespace atlas::glx
             return;
 
         case GL_DEBUG_TYPE_OTHER:
-            if (check(error_filters.type, ErrorType::other))
+            if (error_filters.type & ErrorType::other)
             {
                 error_type = "other";
                 break;
@@ -220,7 +211,7 @@ namespace atlas::glx
         switch (severity)
         {
         case GL_DEBUG_SEVERITY_NOTIFICATION:
-            if (check(error_filters.severity, ErrorSeverity::notification))
+            if (error_filters.severity & ErrorSeverity::notification)
             {
                 fmt::print(stdout, "OpenGL notification: {}\n", error_message);
             }
@@ -228,7 +219,7 @@ namespace atlas::glx
             break;
 
         case GL_DEBUG_SEVERITY_LOW:
-            if (check(error_filters.severity, ErrorSeverity::low))
+            if (error_filters.severity & ErrorSeverity::low)
             {
                 fmt::print(stdout, "OpenGL warning: {}\n", error_message);
             }
@@ -236,7 +227,7 @@ namespace atlas::glx
             break;
 
         case GL_DEBUG_SEVERITY_MEDIUM:
-            if (check(error_filters.severity, ErrorSeverity::medium))
+            if (error_filters.severity & ErrorSeverity::medium)
             {
                 fmt::print(stderr, "OpenGL error: {}\n", error_message);
             }
@@ -244,7 +235,7 @@ namespace atlas::glx
             break;
 
         case GL_DEBUG_SEVERITY_HIGH:
-            if (check(error_filters.severity, ErrorSeverity::high))
+            if (error_filters.severity & ErrorSeverity::high)
             {
                 fmt::print(stderr, "OpenGL critical error: {}\n", error_message);
             }

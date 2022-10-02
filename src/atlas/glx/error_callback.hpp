@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/gl3w.h>
+#include <zeus/enum_bitfield.hpp>
 
 namespace atlas::glx
 {
@@ -20,7 +21,7 @@ namespace atlas::glx
     {
         error                = 0x001,
         deprecated_behaviour = 0x002,
-        UndefinedBehaviour   = 0x004,
+        undefined_behaviour  = 0x004,
         portability          = 0x008,
         performance          = 0x010,
         marker               = 0x020,
@@ -41,8 +42,12 @@ namespace atlas::glx
         none         = 0x0
     };
 
-    void initialize_gl_error_callback(ErrorSource source     = ErrorSource::all,
-                                      ErrorType type         = ErrorType::all,
-                                      ErrorSeverity severity = ErrorSeverity::all);
+    struct InitializeGLErrorCallbackParams
+    {
+        zeus::EnumBitfield<ErrorSource> source{ErrorSource::all};
+        zeus::EnumBitfield<ErrorType> type{ErrorType::all};
+        zeus::EnumBitfield<ErrorSeverity> severity{ErrorSeverity::all};
+    };
 
+    void initialize_gl_error_callback(InitializeGLErrorCallbackParams const& params);
 } // namespace atlas::glx
