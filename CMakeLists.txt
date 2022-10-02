@@ -81,7 +81,7 @@ include(FetchContent)
 FetchContent_Declare(
     zeus
     GIT_REPOSITORY https://github.com/marovira/zeus
-    GIT_TAG 8167f1b3257d1ef99448304b3710bf0145218121
+    GIT_TAG 79280d3cfbe70e74029d6f14c874f358d17431f5
     )
 
 # Move to latest version that has the INSTALL target
@@ -209,14 +209,14 @@ if (ATLAS_BUILD_TESTS)
     FetchContent_Declare(
         catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v2.11.1)
+        GIT_TAG 97c48e0c343d26d50764fafdc90b1e630fbd10ce
+        )
 
-    find_package(Catch2 QUIET)
+    find_package(Catch2 3 QUIET)
     if (NOT Catch2_FOUND AND NOT catch2_POPULATED)
         FetchContent_Populate(catch2)
         add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
-        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
-            "${catch2_SOURCE_DIR}/contrib")
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${catch2_SOURCE_DIR}/extras")
     endif()
 
     source_group("include" FILES ${ATLAS_TEST_HEADER_GROUP})
@@ -234,7 +234,7 @@ if (ATLAS_BUILD_TESTS)
         atlas_glx
         atlas_gui
         atlas_utils
-        Catch2::Catch2)
+        Catch2::Catch2WithMain)
     if (ATLAS_BUILD_GL_TEST)
         if (MSVC)
             target_compile_definitions(atlas_test PUBLIC -DATLAS_BUILD_GL_TESTS)

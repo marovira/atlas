@@ -1,7 +1,7 @@
 #include <atlas/math/glm.hpp>
 #include <atlas/math/ray.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 using namespace atlas::math;
 

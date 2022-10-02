@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <atlas/glx/glsl.hpp>
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 #include <fmt/printf.h>
 #include <fstream>
 #include <functional>
@@ -16,7 +16,12 @@
 #include <zeus/platform.hpp>
 
 using namespace atlas::glx;
+
+#if defined(ZEUS_PLATFORM_WINDOWS)
+namespace fs = std::filesystem;
+#else
 namespace fs = std::experimental::filesystem;
+#endif
 
 namespace atlas::glx
 {

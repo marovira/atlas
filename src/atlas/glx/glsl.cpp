@@ -11,7 +11,11 @@
 #include <zeus/filesystem.hpp>
 #include <zeus/platform.hpp>
 
+#if defined(ZEUS_PLATFORM_WINDOWS)
+namespace fs = std::filesystem;
+#else
 namespace fs = std::experimental::filesystem;
+#endif
 
 namespace atlas::glx
 {

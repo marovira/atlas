@@ -1,7 +1,7 @@
 #include <atlas/math/coordinates.hpp>
 #include <zeus/float.hpp>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 using zeus::are_equal;
 using namespace atlas::math;

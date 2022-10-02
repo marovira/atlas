@@ -2,7 +2,7 @@
 
 #include <fmt/printf.h>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #if defined(ATLAS_BUILD_GL_TESTS)
 static void error_callback(int code, char const* message)

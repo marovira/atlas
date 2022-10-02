@@ -3,7 +3,7 @@
 
 #include <fmt/printf.h>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #if defined(ATLAS_BUILD_GUI_TESTS)
 void errorCallback(int code, char const* message)

@@ -1,5 +1,4 @@
 set(ATLAS_TEST_TOP_LIST
-    ${ATLAS_TEST_ROOT}/test_main.cpp
     )
 
 # Add all tests.
